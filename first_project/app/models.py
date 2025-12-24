@@ -24,6 +24,17 @@ class Usermanager(BaseUserManager):
         return user
 #ユーザーモデルの作成
 class User(AbstractBaseUser,PermissionsMixin):
-    username = models.CharField(max_length=150)
-    emali= models.EmailField(max_length=255,unique=True)
+    username = models.CharField(max_length=64)
+    email= models.EmailField(max_length=255,unique=True)
+    Is_active =models.BooleanField(default=True)
     #ここからER図確認しながらやる
+    
+    USERNAME_FIELD = 'email'#ログインの際、入力するもの
+    REQUIRED_FIELDS = ['username']
+    
+    objects = Usermanager()
+    
+    #ユーザーがログイン後、遷移する
+    def get_absolute_url(self):
+        return reverse_lazy('accounts;home')
+    
