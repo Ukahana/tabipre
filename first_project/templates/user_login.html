@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block content %}
+<h1>旅プレ</h1>
+<form method="POST">
+    {% csrf_token %} 
+    {{ form.as_p}}
+    <input type="submit" value="ログイン">
+</form>
+<a href="regist.html">アカウント登録</a>
+<p>パスワードを忘れた方は<a href="regist.html">こちら</a></p>
+{% endblock%}
