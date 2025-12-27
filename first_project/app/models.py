@@ -36,5 +36,5 @@ class User(AbstractBaseUser,PermissionsMixin):
     
     #ユーザーがログイン後、遷移する
     def get_absolute_url(self):
-        return reverse_lazy('accounts:home')
+        return reverse_lazy('app:login')
     
