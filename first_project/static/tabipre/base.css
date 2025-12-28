@@ -1,0 +1,35 @@
+/* ① 全体設定 */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "Helvetica", "Arial", sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* ② 共通レイアウト */
+.bottom-nav {
+    border-top: 1px solid #ddd;
+    padding: 5px 0;
+    background-color: #ffffff;
+}
+
+/* ③ 共通コンポーネント */
+.page-title {
+    text-align: center;
+    font-size: 24px;
+    margin: 20px 0;
+}
+
+/* ④ ユーティリティ */
+.text-center { text-align: center; }
+.mt-20 { margin-top: 20px; }
+
+/* ⑤ レスポンシブ */
+@media (max-width: 768px) {
+    .page-title {
+        font-size: 20px;
+    }
+}
+
+
+/* あとで直そう */

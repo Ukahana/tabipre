@@ -15,7 +15,7 @@ class RegistUserView(CreateView):
     success_url = reverse_lazy('app:home')
 
 class UserLoginView(FormView):
-    template_name = 'user_login.html'
+    template_name = 'login/user_login.html'
     form_class = UserLoginForm
     success_url = reverse_lazy('app.home')
     
