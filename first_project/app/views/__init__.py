@@ -1,5 +1,8 @@
-from .auth import RegistUserView, UserLoginView, PasswordResetMailView
+from.auth import (
+    RegistUserView,UserLoginView,
+    PasswordResetMailView
+)
+from .home import HomeView
 # ここからはまだ作ってない
-# from .home import HomeView
 # from .user import UserView
 # from .booking import BookingListView, BookingDetailView

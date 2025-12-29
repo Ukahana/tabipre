@@ -4,11 +4,11 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.views import PasswordResetView
 from django.urls import reverse_lazy
 from django.contrib import messages
-from ..forms import ResistForm, UserLoginForm
+from ..forms.auth import RegistForm, UserLoginForm
 
 class RegistUserView(CreateView):
-    template_name = 'regist.html'
-    form_class = ResistForm
+    template_name = 'login/regist.html'
+    form_class = RegistForm
     success_url = reverse_lazy('app:home')
 
 class UserLoginView(FormView):
@@ -31,9 +31,9 @@ class UserLoginView(FormView):
 class PasswordResetMailView(PasswordResetView):
     template_name = 'login/password_reset.html'
     # ここから
-    email_template_name = 'password_reset/password_reset_email.html'
-    subject_template_name = 'password_reset/password_reset_subject.txt'
-    success_url = reverse_lazy('app:password_reset')
+    email_template_name = 'login/password_reset_email.html'
+    subject_template_name = 'login/password_reset_subject.txt'
+    success_url = reverse_lazy('app:user_login')
 
     def form_valid(self, form):
         # 成功時
