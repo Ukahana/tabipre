@@ -23,8 +23,8 @@
 
         <!-- ユーザー名 -->
         <div class="mb-3">
-            {{ form.username.label_tag }}
-            {{ form.username }}
+            {{ form.user_name.label_tag }}
+            {{ form.user_name }}
             {% for error in form.username.errors %}
                 <div class="text-danger">{{ error }}</div>
             {% endfor %}
@@ -66,6 +66,9 @@
 
     <input type="submit" value="ユーザー登録"class="btn btn-primary mt-3">
    </form>
+    <p class="mt-2">
+        <a href="{% url 'app:user_login' %}">ログイン画面</a>
+    </p>
 </div>
 {% endblock%}
 {% comment %} 新規アカウント登録画面 {% endcomment %}

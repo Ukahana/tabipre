@@ -1,2 +1,2 @@
-from forms.auth import RegistForm, UserLoginForm
-from forms.home import ContactForm
+from .auth import RegistForm, UserLoginForm
+from .home import ContactForm
