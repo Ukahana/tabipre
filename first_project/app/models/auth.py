@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import (
     BaseUserManager, AbstractBaseUser, PermissionsMixin
 )
+from django.utils.translation import gettext_lazy as _
 from django.urls import reverse_lazy
 
 class UserManager(BaseUserManager):
@@ -17,7 +18,7 @@ class UserManager(BaseUserManager):
             user_name=user_name,
             email=email,
         )
-        user.set_password(password)  # password_hash に自動でハッシュが入る
+        user.set_password(password)  
         user.save(using=self._db)
         return user
 
@@ -30,11 +31,29 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    user_name = models.CharField(max_length=64)
-    email = models.EmailField(max_length=128,unique=True)
-    password_hash = models.CharField(max_length=128,blank=True)  # AbstractBaseUser の password を上書き
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    user_id = models.AutoField(
+        primary_key=True,
+        verbose_name=_("ユーザーID")
+    )
+    user_name = models.CharField(
+        max_length=64,
+        verbose_name=_("ユーザー名")
+        )
+    email = models.EmailField(
+        max_length=128,unique=True,
+         verbose_name=_("メールアドレス")
+        )
+    
+    # password フィールドは自前で定義しない。
+    
+    created_at = models.DateTimeField(
+         auto_now_add=True,
+         verbose_name=_("作成日")
+         )
+    updated_at = models.DateTimeField(
+        auto_now=True,
+        verbose_name=_("更新日")
+        )
 
     # Django 標準フィールド
     is_active = models.BooleanField(default=True)
@@ -44,12 +63,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['user_name']
 
     objects = UserManager()
-
-    def save(self, *args, **kwargs):
-        # AbstractBaseUser の password を password_hash に同期
-        if self.password and self.password != self.password_hash:
-            self.password_hash = self.password
-        super().save(*args, **kwargs)
 
     def get_absolute_url(self):
         return reverse_lazy('app:user_login')
