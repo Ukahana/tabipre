@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 from django.urls import reverse_lazy
 
 class UserManager(BaseUserManager):
-    def create_user(self, user_name, email, password=None):
+    def create_user(self,email,user_name, password=None):
         if not user_name:
             raise ValueError('ユーザーネームを入力してください')
         if not email:
@@ -22,10 +22,16 @@ class UserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, user_name, email, password=None):
+    def create_superuser(self,email,user_name, password=None):
         user = self.create_user(user_name, email, password)
         user.is_staff = True
         user.is_superuser = True
+        
+        if not user.is_staff:
+         raise ValueError('Superuser must have is_staff=True.')
+        if not user.is_superuser:
+         raise ValueError('Superuser must have is_superuser=True.')
+        
         user.save(using=self._db)
         return user
 
