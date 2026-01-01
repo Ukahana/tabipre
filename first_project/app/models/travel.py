@@ -1,10 +1,11 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from .auth import User 
+from django.conf import settings
 
 class Transport(models.Model):
     
-    # 選択肢
+    # 選択肢 
+    # defalteは設定する？
     class TransportType(models.IntegerChoices):
      SHINKANSEN = 0, _("新幹線")
      AIRPLANE   = 1, _("飛行機")
@@ -62,7 +63,7 @@ class Travel_info(models.Model):
     )
 
     user = models.ForeignKey(
-        User,
+        settings.AUTH_USER_MODEL, 
         on_delete=models.CASCADE,
         verbose_name=_("ユーザーID")
     )
