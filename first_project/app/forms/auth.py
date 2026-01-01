@@ -5,18 +5,18 @@ from ..models import User
 
 
 class RegistForm(forms.ModelForm):
+    password = forms.CharField(label='パスワード', widget=forms.PasswordInput)
     password2 = forms.CharField(label='パスワード(確認用)', widget=forms.PasswordInput)
 
     class Meta:
         model = User
-        fields = ['user_name','email', 'password']
+        fields = ['user_name','email']
         widgets = {
             'password': forms.PasswordInput(),
         }
         labels = {
             'user_name': '名前/ニックネーム',
             'email': 'メールアドレス',
-            'password': 'パスワード',
         }
 
     def clean(self):
