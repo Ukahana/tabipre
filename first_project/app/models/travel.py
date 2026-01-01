@@ -68,9 +68,9 @@ class Travel_info(models.Model):
         verbose_name=_("ユーザーID")
     )
     
-    travel_name = models.CharField(
+    travel_title = models.CharField(
         max_length=100,
-        verbose_name=_("旅行名")
+        verbose_name=_("旅行タイトル")
     )
     
     start_date = models.DateTimeField(

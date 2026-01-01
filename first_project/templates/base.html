@@ -21,9 +21,9 @@
     {% if user.is_authenticated %}
         <nav class="navbar navbar-light bg-light fixed-bottom bottom-nav">
             <div class="container d-flex justify-content-around text-center">
+                 <a class="nav-link text-center" href="{% url 'app:travel_step1' %}">新規旅行</a>
                  <a class="nav-link text-center" href="{% url 'app:home' %}">ホーム</a>
-                 <a class="nav-link text-center" href="{% url 'app:new_trip' %}">新規旅行</a>
-                 <a class="nav-link text-center" href="{% url 'app:mypage' %}">マイページ</a>
+                 {% comment %} <a class="nav-link text-center" href="{% url 'app:mypage' %}">マイページ</a> {% endcomment %}
             </div>
         </nav>
     {% endif %}

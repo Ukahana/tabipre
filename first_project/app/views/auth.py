@@ -10,6 +10,10 @@ class RegistUserView(CreateView):
     template_name = 'login/regist.html'
     form_class = RegistForm
     success_url = reverse_lazy('app:home')
+    
+    def form_valid(self, form):
+        user = form.save(commit=True) 
+        return super().form_valid(form)
 
 class UserLoginView(FormView):
     template_name = 'login/user_login.html'
@@ -19,14 +23,15 @@ class UserLoginView(FormView):
     def form_valid(self, form):
         email = form.cleaned_data['email']
         password = form.cleaned_data['password']
-        user = authenticate(email=email, password=password)
+        user = authenticate(username=email, password=password)
+
         if user:
             login(self.request, user)
             return redirect(self.get_success_url())
-        # ログイン失敗時
         else:
-          form.add_error(None, "メールアドレスまたはパスワードが違います")
-          return self.form_invalid(form)
+            form.add_error(None, "メールアドレスまたはパスワードが違います")
+            return self.form_invalid(form)
+
 
 class PasswordResetMailView(PasswordResetView):
     template_name = 'login/password_reset.html'

@@ -3,9 +3,114 @@
 
 {% block extra_css %}
 {{ block.super }}
-<link rel="stylesheet" href="{% static 'tabipre/home.css' %}">
+{% comment %} <link rel="stylesheet" href="{% static 'tabipre/home.css' %}"> {% endcomment %}
 {% endblock %}
 {% block content %}
+<div class="container mt-4 mb-5">
+
+    <!-- 🔍 キーワード検索 -->
+    <form method="GET" class="d-flex mb-3">
+        <input type="text" name="keyword" value="{{ keyword }}" class="form-control me-2"
+               placeholder="キーワード検索">
+        <button class="btn btn-primary">検索</button>
+    </form>
+
+    <!-- 🏷 交通手段タグ（横スクロール） -->
+    <div class="d-flex overflow-auto mb-3" style="white-space: nowrap;">
+        {% for tag in tags %}
+            <a href="?transport={{ tag.transport_type }}"
+               class="badge rounded-pill bg-secondary text-white me-2 p-2">
+                {{ tag.get_transport_type_display }}
+            </a>
+        {% endfor %}
+    </div>
+
+    <!-- 🔄 並び替えボタン -->
+    <button class="btn btn-outline-secondary mb-3" data-bs-toggle="modal" data-bs-target="#sortModal">
+        並び替え
+    </button>
+
+    <!-- 🔄 並び替えモーダル -->
+    <div class="modal fade" id="sortModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">並び替え</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <a href="?sort=title_asc" class="btn btn-light w-100 mb-2">タイトル昇順</a>
+                    <a href="?sort=title_desc" class="btn btn-light w-100 mb-2">タイトル降順</a>
+                    <a href="?sort=date_asc" class="btn btn-light w-100 mb-2">日付昇順</a>
+                    <a href="?sort=date_desc" class="btn btn-light w-100 mb-2">日付降順</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- 📄 旅行一覧（カード表示） -->
+    {% for t in travels %}
+        <div class="card mb-3 shadow-sm">
+            <div class="card-body">
+
+                <h5 class="card-title">{{ t.travel_title }}</h5>
+
+                <p class="card-text text-muted mb-1">
+                    {{ t.start_date|date:"Y-m-d" }} 〜 {{ t.end_date|date:"Y-m-d" }}
+                </p>
+
+                <p class="card-text">
+                    場所：{{ t.get_location_display }}
+                </p>
+
+                <div class="d-flex gap-3">
+                    <a href="{% url 'app:template_preview' %}?copy={{ t.travel_info_id }}"
+                       class="btn btn-sm btn-outline-primary">
+                        コピー
+                    </a>
+
+                    <a href="#" class="btn btn-sm btn-outline-secondary">
+                        詳細
+                    </a>
+                </div>
+
+            </div>
+        </div>
+    {% empty %}
+        <p class="text-center text-muted">旅行がありません</p>
+    {% endfor %}
+
+    <!-- ⏭ ページネーション -->
+    <div class="d-flex justify-content-center mt-4">
+        <nav>
+            <ul class="pagination">
+
+                {% if travels.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ travels.previous_page_number }}">前へ</a>
+                    </li>
+                {% endif %}
+
+                <li class="page-item disabled">
+                    <span class="page-link">
+                        {{ travels.number }} / {{ travels.paginator.num_pages }}
+                    </span>
+                </li>
+
+                {% if travels.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ travels.next_page_number }}">次へ</a>
+                    </li>
+                {% endif %}
+
+            </ul>
+        </nav>
+    </div>
+
+</div>
 
 
 

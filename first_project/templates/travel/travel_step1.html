@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+{{ block.super }}
+{% comment %} <link rel="stylesheet" href="{% static 'tabipre/login.css' %}"> {% endcomment %}
+{% endblock %}
+{% block content %}
+  <div class="container mt-4">
+    <h1 class="mb-4">新規旅行作成</h1>
+
+    <form method="POST" novalidate>
+        {% csrf_token %}
+
+        <!-- 旅行名 -->
+        <div class="mb-3">
+            <label for="travel_name" class="form-label">旅行名：</label>
+            <input type="text" id="travel_name" name="travel_name" class="form-control" required>
+        </div>
+
+        <!-- 開始日 -->
+        <div class="mb-3">
+            <label for="start_date" class="form-label">開始日：</label>
+            <input type="date" id="start_date" name="start_date" class="form-control" required>
+        </div>
+
+        <!-- 終了日 -->
+        <div class="mb-3">
+            <label for="end_date" class="form-label">終了日：</label>
+            <input type="date" id="end_date" name="end_date" class="form-control" required>
+        </div>
+
+        <!-- 宿泊タイプ -->
+        <div class="mb-3">
+            <label class="form-label">宿泊タイプ：</label><br>
+            <label><input type="radio" name="stay_type" value="0" checked> 日帰り</label><br>
+            <label><input type="radio" name="stay_type" value="1"> 宿泊あり</label>
+        </div>
+
+        <!-- 宿泊数 -->
+        <div class="mb-3">
+            <label class="form-label">宿泊数：</label>
+            <input type="number" id="nights" name="nights" class="form-control d-inline-block" style="width: 120px;" value="0">
+        </div>
+
+        <!-- 日数 -->
+        <div class="mb-3">
+            <label class="form-label">日数：</label>
+            <input type="number" id="days" name="days" class="form-control d-inline-block" style="width: 120px;" value="1">
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-3">次へ</button>
+        <a href="{% url 'home' %}" class="btn btn-secondary mt-3">キャンセル</a>
+    </form>
+</div>
+
+{% endblock%}
+{% comment %} 新規アカウント登録画面 {% endcomment %}
