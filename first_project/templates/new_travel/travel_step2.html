@@ -1,0 +1,97 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+{{ block.super }}
+{% comment %} <link rel="stylesheet" href="{% static 'tabipre/login.css' %}"> {% endcomment %}
+{% endblock %}
+{% block content %}
+<div class="container mt-4">
+
+    <h2 class="page-title mb-3">旅行の詳細設定</h2>
+
+    <!-- Step1 の内容を表示 -->
+    <div class="mb-4 p-3 border rounded bg-light">
+        <h5>Step1 の入力内容</h5>
+        <p><strong>タイトル：</strong> {{ step1.travel_title }}</p>
+        <p><strong>期間：</strong> {{ step1.start_date }} ～ {{ step1.end_date }}</p>
+    </div>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <!-- 場所の分類 -->
+        <div class="page-radio mb-4">
+            <h5>【場所の分類】</h5>
+            {{ form.location }}
+        </div>
+
+        <!-- 交通手段 -->
+        <div class="mb-4">
+            <h5>【目的地までの交通手段】</h5>
+            {{ form.transport }}
+
+            <div class="mt-2">
+                <label class="form-label">その他の交通手段</label>
+                {{ form.transport_other }}
+            </div>
+        </div>
+
+        <!-- メモ -->
+        <div class="mb-4">
+            <h5>【メモ】</h5>
+            {{ form.memo }}
+        </div>
+
+        <!-- ボタン -->
+        <div class="mt-4">
+            <button type="submit" name="action" value="template" class="btn btn-primary">
+                テンプレート作成
+            </button>
+
+            <!-- モーダル起動ボタン -->
+            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#copyModal">
+                前回の旅行からコピー
+            </button>
+
+            <a href="{% url 'app:home' %}" class="btn btn-outline-danger">
+                キャンセル
+            </a>
+        </div>
+    </form>
+
+</div>
+
+<!-- ▼▼ モーダル（過去の旅行一覧） ▼▼ -->
+<div class="modal fade" id="copyModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">過去の旅行からコピー</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+        {% if past_travels %}
+            {% for travel in past_travels %}
+                <div class="border rounded p-2 mb-2">
+                    <p class="mb-1"><strong>{{ travel.travel_title }}</strong></p>
+                    <p class="text-muted">{{ travel.start_date }} ～ {{ travel.end_date }}</p>
+
+                    <a href="{% url 'travel_copy' travel.id %}" class="btn btn-sm btn-primary">
+                        この旅行をコピー
+                    </a>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>過去の旅行がありません。</p>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- ▲▲ モーダルここまで ▲▲ -->
+
+{% endblock %}

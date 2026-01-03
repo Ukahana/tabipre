@@ -1,0 +1,24 @@
+{% extends "temolates/base.html" %}
+
+{% block content %}
+<h2>共有リンクが作成されました</h2>
+
+<p>以下のリンクをコピーして共有できます。</p>
+
+<input type="text" id="share_url" value="{{ share_url }}" readonly style="width: 100%;">
+
+<button onclick="copyLink()">コピー</button>
+
+<script>
+function copyLink() {
+    const input = document.getElementById("share_url");
+    input.select();
+    document.execCommand("copy");
+    alert("コピーしました");
+}
+</script>
+
+<br><br>
+
+<a href="{% url 'trip_detail' link.template.id %}">旅行詳細へ戻る</a>
+{% endblock %}
