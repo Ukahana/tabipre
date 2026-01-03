@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h3>項目を追加</h3>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <label>項目名</label>
+        <input type="text" name="item_name" class="form-control">
+
+        <!-- ⭐ お気に入り追加 -->
+        <div class="form-check mt-3">
+            <input class="form-check-input" type="checkbox" name="favorite" id="favoriteCheck">
+            <label class="form-check-label" for="favoriteCheck">
+                ⭐ お気に入りにも追加
+            </label>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 mt-3">登録</button>
+
+        <a href="{% url 'app:template_edit' category.template.travel_info_id %}"
+           class="btn btn-secondary w-100 mt-2">
+            キャンセル
+        </a>
+    </form>
+
+</div>
+{% endblock %}

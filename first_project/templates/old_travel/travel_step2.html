@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h3 class="mb-3">旅行詳細の編集</h3>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <!-- ▼ Step1 の情報（確認用） ▼ -->
+        <div class="mb-4">
+            <label class="form-label fw-bold">旅行タイトル</label>
+            <div>{{ travel.travel_title }}</div>
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label fw-bold">開始日</label>
+            <div>{{ travel.start_date }}</div>
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label fw-bold">終了日</label>
+            <div>{{ travel.end_date }}</div>
+        </div>
+
+        <div class="mb-4">
+            <label class="form-label fw-bold">宿泊タイプ</label>
+            <div>{{ travel.stay_type }}</div>
+        </div>
+
+        <hr>
+
+        <!-- ▼ Step2 の編集フォーム ▼ -->
+        <h5 class="mt-4 mb-3">旅行詳細</h5>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">場所</label>
+            {{ form3.location }}
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">交通手段</label>
+            {{ form3.transport }}
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">その他（自由記入）</label>
+            {{ form3.transport_other }}
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label fw-bold">メモ</label>
+            {{ form3.memo }}
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100 mt-3">保存する</button>
+    </form>
+
+    <div class="mt-3 text-center">
+        <a href="{% url 'app:travel_detail' travel.id %}" class="text-secondary">キャンセル（旅行詳細へ戻る）</a>
+    </div>
+
+</div>
+{% endblock %}

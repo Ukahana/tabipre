@@ -1,0 +1,54 @@
+{% extends "tabipre/base.html" %}
+{% load static %}
+
+{% block extra_css %}
+{% block content %}
+<div class="container mt-4">
+    <h2>{{ travel.travel_title }}</h2>
+    <p>
+        {{ travel.start_date|date:"Y/m/d" }} 〜 {{ travel.end_date|date:"Y/m/d" }}
+        <br>
+        <strong>{{ checked_items }} / {{ total_items }}</strong>
+    </p>
+
+    <!-- メモ -->
+    {% if travel.memo %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h5>メモ</h5>
+                <p>{{ travel.memo }}</p>
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- 分類と項目 -->
+    {% for category in categories %}
+        <div class="mb-4">
+            <h5 style="color: {{ category.get_category_color_display }};">
+                {{ category.category_name }}
+            </h5>
+
+            <ul class="list-group">
+                {% for item in category.travelitem_set.all %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ item.item_name }}
+                        <input type="checkbox" disabled {% if item.item_checked == 1 %}checked{% endif %}>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endfor %}
+
+    <!-- すべてのチェックを外す -->
+    <div class="mt-4">
+        <a href="#" class="text-danger">すべてのチェックを外す</a>
+    </div>
+
+    <!-- 編集・共有ボタン -->
+    <div class="mt-3">
+        <a href="#" class="btn btn-primary w-100 mb-2">テンプレートを編集</a>
+        <a href="#" class="btn btn-secondary w-100">共有リンクを作成</a>
+    </div>
+
+</div>
+{% endblock %}

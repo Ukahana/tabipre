@@ -1,5 +1,5 @@
 from django import forms
-from ..models.travel import (Travel_info,Transport)
+from ..models import (Travel_info,Transport,Template)
 
 class TravelStep1Form(forms.ModelForm):
     class Meta:
@@ -40,3 +40,18 @@ class TravelStep2Form(forms.Form):
         required=False,
         label="メモ"
     )
+
+class TravelEditForm(forms.ModelForm):
+    class Meta:
+        model = Travel_info
+        fields = ["travel_title", "start_date", "end_date"]
+        widgets = {
+            "start_date": forms.DateInput(attrs={"type": "date"}),
+            "end_date": forms.DateInput(attrs={"type": "date"}),
+        }
+
+class TemplateEditForm(forms.ModelForm):
+    class Meta:
+        model = Template
+        fields = ['template_source']
+        # かえるかも↑

@@ -126,7 +126,7 @@ class Travel_info(models.Model):
 
   #旅行の管理
     def __str__(self):
-       return f"{self.travel_name} ({self.user.username})"
+       return f"{self.travel_title} ({self.user.username})"
 
 class Travelmode(models.Model):
     travel_info = models.ForeignKey(

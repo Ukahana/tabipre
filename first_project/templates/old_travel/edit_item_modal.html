@@ -1,0 +1,27 @@
+{% extends "tabipre/base.html" %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h3>項目を編集</h3>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <label>項目名</label>
+        <input type="text" name="item_name" class="form-control" value="{{ item.item_name }}">
+
+        <button type="submit" class="btn btn-primary w-100 mt-3">保存</button>
+
+        <button type="submit" name="delete" class="btn btn-danger w-100 mt-2">
+            削除
+        </button>
+
+        <a href="{% url 'app:template_edit' item.travel_category.template.travel_info_id %}"
+           class="btn btn-secondary w-100 mt-2">
+            キャンセル
+        </a>
+    </form>
+
+</div>
+{% endblock %}
