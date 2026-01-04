@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from app.models import Travel_info, Template
-from app.forms import TravelStep2Form, TravelStep1Form, TemplateEditForm
+from app.forms import (TravelStep2Form, TravelStep1Form, TemplateEditForm, TravelEditForm,)
 
 def travel_edit(request, travel_id):
     travel = get_object_or_404(Travel_info, pk=travel_id)

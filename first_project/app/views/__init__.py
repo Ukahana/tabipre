@@ -4,13 +4,24 @@ from.auth import (
 )
 from .home import HomeView
 
+from .travel import travel_detail
+
+from .new_travel.travel_step import (
+    travel_create_step1,
+    travel_create_step2,
+)
+
+from .new_travel import (
+    TemplateCreateView,
+    TravelCopyModalView,
+    TravelCopyApplyView,
+)
+
+
 from .old_travel import (
     travel_detail, template_edit, edit_item,
     add_item, add_category_and_item, create_link
 )
 
-from .new_travel import (
-    TravelStep1View, TravelStep2View,
-    TemplateCreateView,TravelCopyModalView,TravelCopyApplyView
-)
+
 

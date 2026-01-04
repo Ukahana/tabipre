@@ -73,11 +73,11 @@ class Travel_info(models.Model):
         verbose_name=_("旅行タイトル")
     )
     
-    start_date = models.DateTimeField(
+    start_date = models.DateField(
         verbose_name=_("開始日")
     )
     
-    end_date = models.DateTimeField(
+    end_date = models.DateField(
         verbose_name=_("終了日")
     )
     
@@ -111,11 +111,11 @@ class Travel_info(models.Model):
     )
 
 
-    created_at = models.DateTimeField(
+    created_at = models.DateField(
         auto_now_add=True,
         verbose_name=_("作成日")
     )
-    updated_at = models.DateTimeField(
+    updated_at = models.DateField(
        auto_now=True,
         verbose_name=_("更新日")
     )

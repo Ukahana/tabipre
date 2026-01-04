@@ -3,7 +3,7 @@ from .views import (
     RegistUserView, UserLoginView, PasswordResetMailView,
     HomeView,
     travel_detail, template_edit, edit_item, add_item, add_category_and_item,
-    TravelStep1View, TravelStep2View,
+      travel_create_step1, travel_create_step2,
     TemplateCreateView, TravelCopyModalView, TravelCopyApplyView,
 )
 
@@ -27,8 +27,8 @@ urlpatterns = [
     path("template/<int:template_id>/add_category_item/",add_category_and_item,name="add_category_item"),
     
     # 新規テンプレート作成
-    path('travel_step1/', TravelStep1View, name='travel_step1'),
-    path('travel_step2/', TravelStep2View, name='travel_step2'),
+    path('travel_step1/', travel_create_step1, name='travel_step1'),
+    path('travel_step2/<int:travel_id>/', travel_create_step2, name='travel_step2'),
     path('template/create/', TemplateCreateView, name='template_create'),
     path('travel/copy/modal/', TravelCopyModalView, name='travel_copy_modal'),
     path('travel/copy/<int:travel_id>/', TravelCopyApplyView, name='travel_copy'),

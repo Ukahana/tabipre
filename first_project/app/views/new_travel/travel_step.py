@@ -1,61 +1,82 @@
-from django.shortcuts import render, redirect
-from app.forms.travel import TravelStep1Form, TravelStep2Form
-from app.models import Travel_info 
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth.decorators import login_required
+
+from ...models.travel import Travel_info, Transport, Travelmode
+from ...forms.travel import TravelStep1Form, TravelStep2Form
 
 
 # -----------------------------
-# Step1：旅行の基本情報入力
+# Step1：旅行基本情報入力
 # -----------------------------
-def TravelStep1View(request):
+@login_required
+def travel_create_step1(request):
     if request.method == "POST":
         form = TravelStep1Form(request.POST)
         if form.is_valid():
-            # Step2 に渡すためにセッションへ保存
-            request.session['travel_step1'] = form.cleaned_data
-            return redirect('travel_step2')
+            travel = form.save(commit=False)
+            travel.user = request.user
+            travel.location = None  # Step2 で設定
+            travel.save()
+
+            # Step2 へ
+            return redirect("app:travel_step2", travel_id=travel.travel_info_id)
     else:
         form = TravelStep1Form()
 
-    return render(request, 'new_travel/travel_step1.html', {
-        'form': form
-    })
+    return render(request, "new_travel/travel_step1.html", {"form": form})
 
 
 # -----------------------------
-# Step2：場所分類・交通手段・メモ
+# Step2：場所・交通手段・メモ
 # -----------------------------
-def TravelStep2View(request):
-    # Step1 の内容を取得（Step2 画面に表示するため）
-    step1 = request.session.get('travel_step1')
-
-    # モーダル用：過去の旅行一覧
-    past_travels = Travel_info.objects.all().order_by('-start_date')
+@login_required
+def travel_create_step2(request, travel_id):
+    travel = get_object_or_404(Travel_info, pk=travel_id)
 
     if request.method == "POST":
         form = TravelStep2Form(request.POST)
-
         if form.is_valid():
-            # Step2 のデータをセッションに保存（メモも含む）
-            request.session['travel_step2'] = form.cleaned_data
 
-            # どのボタンが押されたか判定
-            action = request.POST.get("action")
+            # location & memo を保存
+            travel.location = form.cleaned_data["location"]
+            travel.memo = form.cleaned_data["memo"]
+            travel.save()
 
-            # テンプレート作成ボタン
-            if action == "template":
-                return redirect('template_create')
+            # transport（チェックボックス）
+            transports = form.cleaned_data["transport"]
+            for t in transports:
+                Travelmode.objects.create(travel_info=travel, transport=t)
 
-            # 前回の旅行からコピー
-            if action == "copy":
-                return redirect('travel_copy_modal')
+            # その他自由記入
+            other = form.cleaned_data["transport_other"]
+            if other:
+                other_obj = Transport.objects.create(
+                    transport_type=Transport.TransportType.OTHER
+                )
+                Travelmode.objects.create(travel_info=travel, transport=other_obj)
 
-        # バリデーション NG の場合はそのまま下へ（エラー表示）
+            return redirect("app:travel_detail", travel_id=travel.travel_info_id)
 
     else:
         form = TravelStep2Form()
 
-    return render(request, 'new_travel/travel_step2.html', {
-        'form': form,
-        'step1': step1,
-        'past_travels': past_travels,  # モーダルで使用
+    return render(request, "new_travel/travel_step2.html", {
+        "form": form,
+        "travel": travel,
+    })
+
+
+# -----------------------------
+# 完了画面（詳細）
+# -----------------------------
+@login_required
+def travel_detail(request, travel_id):
+    travel = get_object_or_404(Travel_info, pk=travel_id)
+
+    # 交通手段一覧
+    transports = Travelmode.objects.filter(travel_info=travel)
+
+    return render(request, "app:travel_detail.html", {
+        "travel": travel,
+        "transports": transports,
     })

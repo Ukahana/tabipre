@@ -6,49 +6,77 @@
 {% comment %} <link rel="stylesheet" href="{% static 'tabipre/login.css' %}"> {% endcomment %}
 {% endblock %}
 {% block content %}
-  <div class="container mt-4">
+<div class="container mt-4">
     <h1 class="mb-4">新規旅行作成</h1>
 
     <form method="POST" novalidate>
         {% csrf_token %}
 
-        <!-- 旅行名 -->
+        <!-- 旅行タイトル -->
         <div class="mb-3">
-            <label for="travel_name" class="form-label">旅行タイトル</label>
-            <input type="text" id="travel_name" name="travel_name" class="form-control" required>
+            <label for="travel_title" class="form-label">旅行タイトル</label>
+            <input type="text" id="travel_title" name="travel_title"
+                   class="form-control"
+                   value="{{ form.travel_title.value|default:'' }}"
+                   required>
+            {% if form.travel_title.errors %}
+                <div class="text-danger small">{{ form.travel_title.errors.0 }}</div>
+            {% endif %}
         </div>
 
         <!-- 開始日 -->
         <div class="mb-3">
             <label for="start_date" class="form-label">開始日</label>
-            <input type="date" id="start_date" name="start_date" class="form-control" required placeholder="">
+            <input type="date" id="start_date" name="start_date"
+                   class="form-control"
+                   value="{{ form.start_date.value|default:'' }}"
+                   required>
+            {% if form.start_date.errors %}
+                <div class="text-danger small">{{ form.start_date.errors.0 }}</div>
+            {% endif %}
         </div>
 
         <!-- 終了日 -->
         <div class="mb-3">
             <label for="end_date" class="form-label">終了日</label>
-            <input type="date" id="end_date" name="end_date" class="form-control" required placeholder="">
+            <input type="date" id="end_date" name="end_date"
+                   class="form-control"
+                   value="{{ form.end_date.value|default:'' }}"
+                   required>
+            {% if form.end_date.errors %}
+                <div class="text-danger small">{{ form.end_date.errors.0 }}</div>
+            {% endif %}
         </div>
 
         <!-- 宿泊タイプ -->
         <div class="mb-3">
             <label class="form-label">宿泊タイプ</label><br>
-            <label><input type="radio" name="stay_type" value="0" checked> 日帰り</label>
-            <label><input type="radio" name="stay_type" value="1"> 宿泊あり</label>
+            {% for radio in form.stay_type %}
+                <label class="me-3">
+                    {{ radio.tag }} {{ radio.choice_label }}
+                </label>
+            {% endfor %}
+            {% if form.stay_type.errors %}
+                <div class="text-danger small">{{ form.stay_type.errors.0 }}</div>
+            {% endif %}
         </div>
 
-        <!-- 宿泊数 -->
+        <!-- 宿泊日数（表示のみ） -->
         <div class="mb-3">
-            <label class="form-label">宿泊数</label>
-            <input type="number" id="nights" name="nights" class="form-control d-inline-block" style="width: 120px;" value="0">
-            <label class="form-label">日数</label>
-            <input type="number" id="days" name="days" class="form-control d-inline-block" style="width: 120px;" value="1">
+            <label class="form-label">宿泊日数</label><br>
+            <span id="stay_nights">0泊</span>
+            <span id="stay_days">1日</span>
         </div>
+
         <button type="submit" class="btn btn-primary mt-3">次へ</button>
         <p class="mt-2">
-        <a href="{% url 'app:home' %}">キャンセル</a>
-    </p>
+            <a href="{% url 'app:home' %}">キャンセル</a>
+        </p>
     </form>
 </div>
 
-{% endblock%}
+<!-- JSファイル読み込み -->
+<script src="{% static 'tabipre/js/travel_step1.js' %}"></script>
+
+{% endblock %}
+
