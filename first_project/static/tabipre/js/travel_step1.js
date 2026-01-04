@@ -6,14 +6,14 @@ document.addEventListener("DOMContentLoaded", () => {
     const days = document.getElementById("stay_days");
     const stayTypeRadios = document.querySelectorAll("input[name='stay_type']");
 
-    let autoMode = true; // 初期は自動判定モード
+    let autoMode = true;
 
     function calcStay() {
         if (!start.value || !end.value) return;
 
         const s = new Date(start.value);
         const e = new Date(end.value);
-        const diff = (e - s) / (1000 * 60 * 60 * 24);
+        const diff = Math.round((e - s) / (1000 * 60 * 60 * 24));
 
         if (diff >= 0) {
             nights.textContent = `${diff}泊`;
@@ -22,44 +22,36 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function autoDetectStayType() {
-        if (!autoMode) return; // 手動変更後は自動判定しない
-
+        if (!autoMode) return;
         if (!start.value || !end.value) return;
 
         const s = new Date(start.value);
         const e = new Date(end.value);
-        const diff = (e - s) / (1000 * 60 * 60 * 24);
+        const diff = Math.round((e - s) / (1000 * 60 * 60 * 24));
 
         if (diff === 0) {
-            // 日帰り
-            document.querySelector("input[name='stay_type'][value='daytrip']").checked = true;
+            document.querySelector("input[name='stay_type'][value='0']").checked = true;
             stayInfo.style.display = "none";
         } else if (diff > 0) {
-            // 宿泊
-            document.querySelector("input[name='stay_type'][value='stay']").checked = true;
+            document.querySelector("input[name='stay_type'][value='1']").checked = true;
             stayInfo.style.display = "block";
             calcStay();
         }
     }
 
-    // 日付変更で自動判定
-    start.addEventListener("change", () => {
-        autoDetectStayType();
-    });
-    end.addEventListener("change", () => {
-        autoDetectStayType();
-    });
+    start.addEventListener("change", autoDetectStayType);
+    end.addEventListener("change", autoDetectStayType);
 
-    // ユーザーが宿泊タイプを変更したら自動判定を停止
     stayTypeRadios.forEach(radio => {
         radio.addEventListener("change", () => {
             autoMode = false;
 
-            if (radio.value === "stay") {
-                stayInfo.style.display = "block";
-                calcStay();
-            } else {
+            if (radio.value === "0") {
                 stayInfo.style.display = "none";
+                calcStay();
+            } else if (radio.value === "1") {
+                stayInfo.style.display = "block";
+            calcStay();
             }
         });
     });

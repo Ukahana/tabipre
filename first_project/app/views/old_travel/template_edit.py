@@ -3,10 +3,13 @@ from ...models.travel import Travel_info
 from ...models.template import Template, TravelCategory, TravelItem
 from ...models.favorite import Favorite, FavoriteItem
 
-def template_edit(request, travel_id):
-    travel = get_object_or_404(Travel_info, pk=travel_id)
-    template = Template.objects.get(travel_info=travel)
-    categories = TravelCategory.objects.filter(template=template)
+def template_edit(request, template_id):
+    template = get_object_or_404(Template, id=template_id)
+
+    return render(request, "new_travel/template_edit.html", {
+        "template": template
+    })
+
 
     # お気に入りリスト（後で作成して修正する）
     favorite, created = Favorite.objects.get_or_create(user=request.user)

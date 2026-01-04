@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
-from ..models.travel import Travel_info
+from ..models.travel import Travel_info, Transport, Travelmode
+
 from ..models.template import Template, TravelCategory, TravelItem
 
 def travel_detail(request, travel_id):
@@ -21,11 +22,17 @@ def travel_detail(request, travel_id):
         item_checked=TravelItem.ItemChecked.YES
     ).count()
 
+    transports = Travelmode.objects.filter(
+        travel_info=travel
+    ).select_related("transport")
+
+
     context = {
         "travel": travel,
         "categories": categories,
         "checked_items": checked_items,
         "total_items": total_items,
+        "transports": transports,
     }
 
     return render(request, "tabipre/travel_detail.html", context)

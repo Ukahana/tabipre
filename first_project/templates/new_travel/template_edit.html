@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h2 class="mb-3">{{ template.travel_info.travel_title }} のチェックリスト</h2>
+
+    {% for category in template.travelcategory_set.all %}
+        <div class="card mb-3 shadow-sm">
+
+            <!-- カテゴリヘッダー（背景色をモデルのカラーで反映） -->
+            <div class="card-header text-white"
+                 style="background-color: {{ category.get_category_color_display }};">
+                <strong>{{ category.category_name }}</strong>
+            </div>
+
+            <ul class="list-group list-group-flush">
+                {% for item in category.travelitem_set.all %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ item.item_name }}
+
+                        {% if item.item_checked == 1 %}
+                            <span class="badge bg-success">済</span>
+                        {% else %}
+                            <span class="badge bg-secondary">未</span>
+                        {% endif %}
+                    </li>
+                {% empty %}
+                    <li class="list-group-item text-muted">アイテムがありません</li>
+                {% endfor %}
+            </ul>
+
+        </div>
+    {% endfor %}
+
+</div>
+{% endblock %}

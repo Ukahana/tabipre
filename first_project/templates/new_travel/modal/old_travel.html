@@ -1,0 +1,46 @@
+<div class="modal fade" id="copyModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">テンプレートを選択</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+
+      <div class="modal-body">
+
+        {% if templates %}
+        <form method="POST">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="copy">
+
+          {% for template in templates %}
+            <div class="border rounded p-2 mb-2">
+              <label class="d-flex align-items-center">
+                <!-- ★ここを修正：template_id → old_travel_id -->
+                <input type="radio" name="old_travel_id" value="{{ template.travel_info.id }}" class="me-2">
+
+                <div>
+                  <strong>{{ template.travel_info.travel_title }}</strong><br>
+                  <small class="text-muted">
+                    {{ template.travel_info.start_date }} ～ {{ template.travel_info.end_date }}
+                  </small>
+                </div>
+              </label>
+            </div>
+          {% endfor %}
+
+          <button type="submit" class="btn btn-primary mt-2">
+            コピーして作成
+          </button>
+        </form>
+
+        {% else %}
+          <p>コピーできるテンプレートがありません。</p>
+        {% endif %}
+
+      </div>
+
+    </div>
+  </div>
+</div>

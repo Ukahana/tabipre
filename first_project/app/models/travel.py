@@ -5,14 +5,13 @@ from django.conf import settings
 class Transport(models.Model):
     
     # 選択肢 
-    # defalteは設定する？
     class TransportType(models.IntegerChoices):
      SHINKANSEN = 0, _("新幹線")
      AIRPLANE   = 1, _("飛行機")
      CAR        = 2, _("車")
      TRAIN      = 3, _("電車")
      BUS        = 4, _("バス")
-     OTHER      = 5, _("その他自由記入")
+     OTHER      = 5, _("その他")
 
         
     transport_id = models.AutoField(
@@ -141,6 +140,11 @@ class Travelmode(models.Model):
         verbose_name=_("交通手段ID")
     )
 
+    custom_transport_text = models.CharField(
+        max_length=100,
+        blank=True,
+        verbose_name=_("交通手段その他内容")
+    )
     created_at = models.DateTimeField(
         auto_now_add=True,
         verbose_name=_("作成日")

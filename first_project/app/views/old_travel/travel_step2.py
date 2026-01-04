@@ -38,7 +38,7 @@ def travel_detail_edit(request, travel_id):
 
         form3 = TravelStep2Form(initial={
             "location": travel.location,
-            "transport": travel.transport.all(),
+            "transport_types": travel.transport.all(),
             "transport_other": travel.transport_other,
             "memo": travel.memo,
         })

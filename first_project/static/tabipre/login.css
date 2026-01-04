@@ -58,3 +58,7 @@ p {
     font-weight: bold;
     margin-top: 5px;
 }
+.modal-dialog-scrollable .modal-body {
+    max-height: 60vh; /* 画面の60%の高さまで */
+    overflow-y: auto;
+}
