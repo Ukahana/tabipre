@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 from ...models import Travel_info, Transport, Travelmode,Template
 from ...forms.travel import TravelStep1Form, TravelStep2Form
@@ -72,12 +73,14 @@ def travel_step2(request):
                 )
 
             # Template 作成（分類生成は template_source に任せる）
-            template_source(travel, request.user)
+            template = template_source(travel, request.user)
+
 
             # Step1 の session を削除
             del request.session["travel_step1"]
+            messages.success(request, "テンプレートを作成しました")
+            return redirect("app:template_edit2", template_id=template.id)
 
-            return redirect("app:template_edit", template_id=travel.travel_info_id)
 
 
         # -----------------------------
@@ -110,7 +113,7 @@ def travel_step2(request):
                 )
 
             # Template 作成
-            Template.objects.create(
+            new_template = Template.objects.create(
                 user=request.user,
                 travel_info=travel,
                 template_source=old_template.template_source
@@ -118,12 +121,12 @@ def travel_step2(request):
 
             del request.session["travel_step1"]
 
-            return redirect("app:template_edit", template_id=travel.travel_info_id)
+            return redirect("app:travel_edit", template_id=travel.travel_info_id)
 
 
     else:
         form = TravelStep2Form()
-
+        
     return render(request, "new_travel/travel_step2.html", {
         "form": form,
         "step1": step1_data,
@@ -140,7 +143,7 @@ def travel_detail(request, travel_id):
     # 交通手段一覧
     transports = Travelmode.objects.filter(travel_info=travel)
 
-    return render(request, "new_travel/template_edit.html", {
+    return render(request, "new_travel/template_detail.html", {
         "travel": travel,
         "transports": transports,
     })

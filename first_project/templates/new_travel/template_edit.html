@@ -1,10 +1,14 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% load static %}
 
+{% block extra_css %}
+{{ block.super }}
+{% comment %} <link rel="stylesheet" href="{% static 'tabipre/login.css' %}"> {% endcomment %}
+{% endblock %}
 {% block content %}
 <div class="container mt-4">
 
-    <h2 class="mb-3">{{ template.travel_info.travel_title }} のチェックリスト</h2>
+    <h2 class="mb-3">{{ template.travel_info.travel_title }} </h2>
 
     {% for category in template.travelcategory_set.all %}
         <div class="card mb-3 shadow-sm">
@@ -33,6 +37,12 @@
 
         </div>
     {% endfor %}
+    <div class="text-center mt-4 mb-5">
+        <a href="{% url 'app:template_edit2' template.id %}" class="btn btn-primary btn-lg w-100">
+            編集する
+        </a>
+    </div>
+
 
 </div>
 {% endblock %}

@@ -1,5 +1,6 @@
 from django.shortcuts import redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 from app.models import Travel_info, Template, TravelCategory, TravelItem
 
@@ -36,4 +37,8 @@ def OldTravelCopyView(request, travel_id):
                     item_checked=TravelItem.ItemChecked.NO,
                 )
 
-    return redirect("app:template_edit", template_id=new_template.id)
+        messages.success(request, "テンプレートをコピーして作成しました！")
+        return redirect("app:template_edit", template_id=new_template.id)
+
+    return redirect("app:travel_detail", travel_id=travel_id)
+

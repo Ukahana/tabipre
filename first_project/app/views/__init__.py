@@ -8,7 +8,7 @@ from .travel import travel_detail
 
 from .new_travel.travel_step import (
     travel_create_step1,
-    travel_step2,
+    travel_step2
 
 )
 
@@ -17,6 +17,7 @@ from .new_travel import (
     TravelCopyModalView,
     TravelCopyApplyView,
     OldTravelCopyView,
+    template_edit2
 )
 
 

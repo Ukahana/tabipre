@@ -3,7 +3,7 @@
 <head>
     {% load static %}
     <meta charset="UTF-8">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>旅プレ</title> 
@@ -11,28 +11,31 @@
     <link rel="stylesheet" href="{% static 'tabipre/base.css' %}">
     {{ block.super }}
     {% endblock %}
-
 </head>
+
 <body>
 
-    {% block content %}
-    {% endblock %}
+    <div class="content-wrapper">
 
-    {% comment %} ログイン時のみ表示 {% endcomment %}
-    {% if user.is_authenticated %}
-        <nav class="navbar navbar-light fixed-bottom bottom-nav">
-            <div class="container d-flex justify-content-around text-center">
-                <!-- 新規旅行 -->
-                <a class="nav-link text-center" href="{% url 'app:travel_step1' %}">
-                    新規旅行<br>
-                    <img src="{% static 'tabipre/icons/travel.png' %}" width="28" alt="travel icon">
-                </a>
+        {% block content %}
+        {% endblock %}
 
-                <!-- ホーム -->
-                <a class="nav-link text-center" href="{% url 'app:home' %}">
-                    ホーム<br>
-                    <img src="{% static 'tabipre/icons/home.png' %}" width="28" alt="home icon">
-                </a>
+        {% if user.is_authenticated %}
+            {% include 'includes/toast.html' %}
+
+            <nav class="navbar navbar-light fixed-bottom bottom-nav">
+                <div class="container d-flex justify-content-around text-center">
+
+                    <a class="nav-link text-center" href="{% url 'app:travel_step1' %}">
+                        新規旅行<br>
+                        <img src="{% static 'tabipre/icons/travel.png' %}" width="28">
+                    </a>
+
+                    <a class="nav-link text-center" href="{% url 'app:home' %}">
+                        ホーム<br>
+                        <img src="{% static 'tabipre/icons/home.png' %}" width="28">
+                    </a>
+
 
                 {% comment %} <!-- マイページ -->
                 <a class="nav-link text-center" href="{% url 'app:mypage' %}">
@@ -40,13 +43,18 @@
                     <img src="{% static 'tabipre/icons/user.png' %}" width="28" alt="mypage icon">
                 </a> {% endcomment %}
 
-            </div>
-        </nav>
-    {% endif %}
+                </div>
+            </nav>
+        {% endif %}
 
-     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-     {% block extra_js %}
-     {% endblock %}
+    </div> 
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{% static 'tabipre/js/toast.js' %}"></script>
+
+    {% block extra_js %}
+    {{ block.super }}
+    {% endblock %}
 
 </body>
 </html>

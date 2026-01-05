@@ -1,0 +1,28 @@
+{% load static %}
+
+{% if messages %}
+<div aria-live="polite" aria-atomic="true" class="position-relative">
+  <div class="toast-container position-fixed top-0 end-0 p-3">
+
+    {% for message in messages %}
+    <div class="toast border shadow-sm" role="alert" data-bs-delay="2500">
+      <div class="d-flex align-items-center">
+
+        <!-- 左側の画像アイコン -->
+        <img src="{% static 'tabipre/icons/check.png' %}"
+             alt="success"
+             class="ms-2 my-auto"
+             style="width: 22px; height: 22px;">
+
+        <!-- メッセージ本文 -->
+        <div class="toast-body ms-2">
+          {{ message }}
+        </div>
+
+      </div>
+    </div>
+    {% endfor %}
+
+  </div>
+</div>
+{% endif %}

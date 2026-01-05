@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h2 class="mb-3">
+        {{ template.travel_info.travel_title }}
+        <span class="text-muted fs-6">（テンプレート編集）</span>
+    </h2>
+
+    <form method="post">
+        {% csrf_token %}
+
+        {% for category in categories %}
+            <div class="card mb-3 shadow-sm">
+
+                <!-- カテゴリヘッダー -->
+                <div class="card-header text-white"
+                     style="background-color: {{ category.get_category_color_display }};">
+                    <strong>{{ category.category_name }}</strong>
+
+                    {% with total=category.travelitem_set.count checked=category.travelitem_set.filter(item_checked=1).count %}
+                        <span class="badge bg-light text-dark ms-2">
+                            {{ checked }} / {{ total }}
+                        </span>
+                    {% endwith %}
+                </div>
+
+                <ul class="list-group list-group-flush">
+
+                    {% for item in category.travelitem_set.all|dictsort:"item_checked" %}
+                        <li class="list-group-item">
+
+                            <div class="d-flex justify-content-between align-items-center">
+
+                                <!-- 左側：チェック + 項目名 -->
+                                <div class="d-flex align-items-center">
+
+                                    <!-- チェックボックス -->
+                                    <input type="checkbox"
+                                           name="item_checked_{{ item.id }}"
+                                           class="form-check-input me-2"
+                                           {% if item.item_checked %}checked{% endif %}>
+
+                                    <!-- 項目名（長押しで編集） -->
+                                    <span class="editable"
+                                          data-id="{{ item.id }}"
+                                          style="cursor: pointer;">
+                                        {{ item.item_name }}
+                                    </span>
+                                </div>
+
+                                <!-- 右側：カテゴリ変更 + 削除 -->
+                                <div class="d-flex align-items-center">
+
+                                    <!-- カテゴリ変更 -->
+                                    <select name="category_{{ item.id }}"
+                                            class="form-select form-select-sm me-2">
+                                        {% for cat in categories %}
+                                            <option value="{{ cat.id }}"
+                                                {% if cat.id == item.travel_category.id %}selected{% endif %}>
+                                                {{ cat.category_name }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+
+                                    <!-- 削除ボタン -->
+                                    <button type="submit"
+                                            name="delete_item"
+                                            value="{{ item.id }}"
+                                            class="btn btn-danger btn-sm">
+                                        削除
+                                    </button>
+                                </div>
+
+                            </div>
+
+                        </li>
+                    {% empty %}
+                        <li class="list-group-item text-muted">項目がありません</li>
+                    {% endfor %}
+
+                </ul>
+
+            </div>
+        {% endfor %}
+
+        <button type="submit" class="btn btn-primary w-100 mt-3">変更を保存</button>
+    </form>
+</div>
+
+<!-- 長押し編集用スクリプト -->
+<script>
+document.querySelectorAll('.editable').forEach(el => {
+    let timer;
+
+    el.addEventListener('mousedown', () => {
+        timer = setTimeout(() => {
+            const newName = prompt("項目名を編集", el.textContent);
+            if (newName) {
+                el.textContent = newName;
+
+                // hidden input に反映
+                const hidden = document.createElement("input");
+                hidden.type = "hidden";
+                hidden.name = "rename_" + el.dataset.id;
+                hidden.value = newName;
+                document.forms[0].appendChild(hidden);
+            }
+        }, 600); // 長押し判定
+    });
+
+    el.addEventListener('mouseup', () => clearTimeout(timer));
+});
+</script>
+
+{% endblock %}

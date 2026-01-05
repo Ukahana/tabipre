@@ -26,41 +26,40 @@ def template_source(travel, user):
         source_type=Template.SourceType.FROM_TRAVEL
     )
 
-    # 分類リスト（重複防止のため set を使用）
-    categories = set()
+    # 分類リスト
+    categories = []
 
     # 共通は必ず入れる
-    categories.add("共通")
+    categories.append("共通")
 
     # 国内/海外
     if travel.location == Travel_info.LocationType.DOMESTIC:
-        categories.add("国内")
+        categories.append("国内")
     else:
-        categories.add("海外")
+        categories.append("海外")
 
     # 交通手段
     for tm in travel.travelmode_set.all():
         t = tm.transport.transport_type
 
         if t == Transport.TransportType.AIRPLANE:
-            categories.add("飛行機")
+            categories.append("飛行機")
         elif t == Transport.TransportType.SHINKANSEN:
-            categories.add("新幹線")
+            categories.append("新幹線")
         elif t == Transport.TransportType.CAR:
-            categories.add("車")
+            categories.append("車")
         elif t == Transport.TransportType.BUS:
-            categories.add("バス")
+            categories.append("バス")
         elif t == Transport.TransportType.TRAIN:
-            categories.add("電車")
+            categories.append("電車")
         elif t == Transport.TransportType.OTHER:
             # その他の入力があればそれをカテゴリ名にする
             if tm.custom_transport_text.strip():
-                categories.add(tm.custom_transport_text.strip())
+                categories.append(tm.custom_transport_text.strip())
             else:
-                categories.add("その他")
+                categories.append("その他")
 
-    # set → list に変換
-    categories = list(categories)
+
     CATEGORY_COLOR_MAP = {
        "共通": TravelCategory.CategoryColor.BLUE,
        "国内": TravelCategory.CategoryColor.GREEN,
@@ -84,10 +83,11 @@ def template_source(travel, user):
             travel_type=TravelCategory.TravelType.AUTO,
             category_color=color
         )
+        
+        key = cat if cat in INITIAL_ITEMS else "その他"
 
         # 初期アイテムが存在するカテゴリのみ追加
-        if cat in INITIAL_ITEMS:
-            for item in INITIAL_ITEMS[cat]:
+        for item in INITIAL_ITEMS.get(key, []):
                 TravelItem.objects.create(
                     travel_category=category,
                     item_name=item,

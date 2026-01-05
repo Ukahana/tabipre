@@ -35,7 +35,8 @@ def edit_item(request, item_id):
             item.item_name = new_name
             item.save()
 
-        return redirect("app:template_edit", travel_id=item.travel_category.template.travel_info_id)
+        return redirect("app:template_edit", template_id=item.travel_category.template.id)
+
 
     return render(request, "tabipre/edit_item_modal.html", {"item": item})
 
@@ -61,6 +62,7 @@ def add_item(request, category_id):
                 item_name=name
             )
 
-        return redirect("app:template_edit", travel_id=category.template.travel_info_id)
+        return redirect("app:template_edit", template_id=category.template.id)
+
 
     return render(request, "tabipre/add_item_modal.html", {"category": category})

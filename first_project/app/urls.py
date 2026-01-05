@@ -4,7 +4,7 @@ from .views import (
     HomeView,
     travel_detail, template_edit, edit_item, add_item, add_category_and_item,
       travel_create_step1, travel_step2,
-    TemplateCreateView, TravelCopyModalView, OldTravelCopyView
+    TemplateCreateView, TravelCopyModalView, OldTravelCopyView,template_edit2
 )
 
 
@@ -20,18 +20,24 @@ urlpatterns = [
     path('home/', HomeView.as_view(), name='home'),
     
     # 既存のテンプレート編集
+    # 旅行詳細
     path("travel/<int:travel_id>/",travel_detail, name="travel_detail"),
-    path("travel/<int:template_id>/edit/", template_edit, name="template_edit"),
+    # テンプレート編集
+    path("travel/<int:template_id>/edit/", template_edit, name="travel_edit"),
+    # 分類・項目編集
     path("category/<int:category_id>/item/add/", add_item, name="add_item"),
-    path("template/<int:template_id>/add_category_item/",add_category_and_item,name="add_category_item"),
+    
+  # path("template/<int:template_id>/add_category_item/",add_category_and_item,name="add_category_item"),
     
     # 新規テンプレート作成
     path('travel_step1/', travel_create_step1, name='travel_step1'),
     path('travel_step2/', travel_step2, name='travel_step2'), 
+    path("template/<int:template_id>/edit/", template_edit, name="template_edit"),
+    path("template/<int:template_id>/edit2/",template_edit2,name="template_edit2"),
+
+    # 過去テンプレート作成
     path('template/create/', TemplateCreateView, name='template_create'),
     path('travel/copy/modal/', TravelCopyModalView, name='travel_copy_modal'),
     path('travel/copy/<int:travel_id>/', OldTravelCopyView, name='old_travel_copy'),
-    path("template/<int:template_id>/edit/", template_edit, name="template_edit"),
-
 ]
 
