@@ -7,6 +7,21 @@ def template_edit2(request, template_id):
 
     if request.method == "POST":
 
+        # --- 分類削除処理 ---
+        delete_cat_id = request.POST.get("delete_category")
+        if delete_cat_id:
+           TravelItem.objects.filter(travel_category_id=delete_cat_id).delete()
+           TravelCategory.objects.filter(id=delete_cat_id).delete()
+
+           return redirect("app:template_edit2", template_id=template.id)
+
+        # --- 項目削除処理 ---
+        delete_id = request.POST.get("delete_item")
+        if delete_id:
+            TravelItem.objects.filter(id=delete_id).delete()
+            return redirect("app:template_edit2", template_id=template.id)
+
+
         # --- アイテム更新 ---
         for item in TravelItem.objects.filter(travel_category__template=template):
 
@@ -26,18 +41,16 @@ def template_edit2(request, template_id):
 
             item.save()
 
-        # --- 削除処理 ---
-        delete_id = request.POST.get("delete_item")
-        if delete_id:
-            TravelItem.objects.filter(id=delete_id).delete()
-
-        messages.success(request, "テンプレートを更新しました")
-        return redirect("app:template_edit", template_id=template_id)
+        return redirect("app:home")  # ← 保存時はホームへ
 
     # GET
     categories = TravelCategory.objects.filter(template=template)
 
-    return render(request, "new_travel/template_edit.html", {
+    for cat in categories:
+        cat.checked_count = cat.travelitem_set.filter(item_checked=1).count()
+        cat.total_count = cat.travelitem_set.count()
+
+    return render(request, "new_travel/template_edit2.html", {
         "template": template,
         "categories": categories,
     })

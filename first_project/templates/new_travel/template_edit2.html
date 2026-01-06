@@ -15,35 +15,51 @@
         {% for category in categories %}
             <div class="card mb-3 shadow-sm">
 
-                <!-- カテゴリヘッダー -->
-                <div class="card-header text-white"
+                <!-- カテゴリヘッダー（折りたたみトグル） -->
+                <div class="card-header text-white d-flex justify-content-between align-items-center"
                      style="background-color: {{ category.get_category_color_display }};">
-                    <strong>{{ category.category_name }}</strong>
 
-                    {% with total=category.travelitem_set.count checked=category.travelitem_set.filter(item_checked=1).count %}
-                        <span class="badge bg-light text-dark ms-2">
-                            {{ checked }} / {{ total }}
+                     <!-- 左側：カテゴリ名＋件数＋▼ -->
+                     <div class="d-flex align-items-center"
+                          data-bs-toggle="collapse"
+                          data-bs-target="#cat{{ category.id }}"
+                          style="cursor: pointer;">
+
+                         <strong>{{ category.category_name }}</strong>
+                         <span class="badge bg-light text-dark ms-2">
+                          {{ category.checked_count }} / {{ category.total_count }}
                         </span>
-                    {% endwith %}
+                        <span class="ms-2">▼</span>
+                  </div>
+
+                  <!-- 右側：分類削除ボタン -->
+                 <button type="submit"
+                        name="delete_category"
+                        value="{{ category.id }}"
+                        class="btn btn-link text-danger fs-4 p-0"
+                        style="text-decoration: none;">
+                        ×
+                  </button>
+
                 </div>
 
-                <ul class="list-group list-group-flush">
+
+
+                <!-- 折りたたみ部分 -->
+                <ul id="cat{{ category.id }}" class="list-group list-group-flush collapse show">
 
                     {% for item in category.travelitem_set.all|dictsort:"item_checked" %}
                         <li class="list-group-item">
 
                             <div class="d-flex justify-content-between align-items-center">
 
-                                <!-- 左側：チェック + 項目名 -->
                                 <div class="d-flex align-items-center">
 
-                                    <!-- チェックボックス -->
                                     <input type="checkbox"
                                            name="item_checked_{{ item.id }}"
                                            class="form-check-input me-2"
                                            {% if item.item_checked %}checked{% endif %}>
 
-                                    <!-- 項目名（長押しで編集） -->
                                     <span class="editable"
                                           data-id="{{ item.id }}"
                                           style="cursor: pointer;">
@@ -51,28 +67,13 @@
                                     </span>
                                 </div>
 
-                                <!-- 右側：カテゴリ変更 + 削除 -->
-                                <div class="d-flex align-items-center">
-
-                                    <!-- カテゴリ変更 -->
-                                    <select name="category_{{ item.id }}"
-                                            class="form-select form-select-sm me-2">
-                                        {% for cat in categories %}
-                                            <option value="{{ cat.id }}"
-                                                {% if cat.id == item.travel_category.id %}selected{% endif %}>
-                                                {{ cat.category_name }}
-                                            </option>
-                                        {% endfor %}
-                                    </select>
-
-                                    <!-- 削除ボタン -->
-                                    <button type="submit"
-                                            name="delete_item"
-                                            value="{{ item.id }}"
-                                            class="btn btn-danger btn-sm">
-                                        削除
-                                    </button>
-                                </div>
+                                <button type="submit"
+                                        name="delete_item"
+                                        value="{{ item.id }}"
+                                        class="btn btn-link text-danger fs-4 p-0"
+                                        style="text-decoration: none;">
+                                    ×
+                                </button>
 
                             </div>
 
@@ -86,33 +87,13 @@
             </div>
         {% endfor %}
 
-        <button type="submit" class="btn btn-primary w-100 mt-3">変更を保存</button>
+        <button type="submit" class="btn btn-primary w-100 mt-3">保存</button>
     </form>
 </div>
 
-<!-- 長押し編集用スクリプト -->
-<script>
-document.querySelectorAll('.editable').forEach(el => {
-    let timer;
+{% load static %}
 
-    el.addEventListener('mousedown', () => {
-        timer = setTimeout(() => {
-            const newName = prompt("項目名を編集", el.textContent);
-            if (newName) {
-                el.textContent = newName;
-
-                // hidden input に反映
-                const hidden = document.createElement("input");
-                hidden.type = "hidden";
-                hidden.name = "rename_" + el.dataset.id;
-                hidden.value = newName;
-                document.forms[0].appendChild(hidden);
-            }
-        }, 600); // 長押し判定
-    });
-
-    el.addEventListener('mouseup', () => clearTimeout(timer));
-});
-</script>
+<script src="{% static 'tabipre/js/template_edit2.js' %}"></script>
 
 {% endblock %}
+

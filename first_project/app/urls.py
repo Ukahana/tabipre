@@ -23,7 +23,7 @@ urlpatterns = [
     # 旅行詳細
     path("travel/<int:travel_id>/",travel_detail, name="travel_detail"),
     # テンプレート編集
-    path("travel/<int:template_id>/edit/", template_edit, name="travel_edit"),
+    path("travel/<int:template_id>/", template_edit, name="travel_edit"),
     # 分類・項目編集
     path("category/<int:category_id>/item/add/", add_item, name="add_item"),
     

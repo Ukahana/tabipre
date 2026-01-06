@@ -79,7 +79,7 @@ def travel_step2(request):
             # Step1 の session を削除
             del request.session["travel_step1"]
             messages.success(request, "テンプレートを作成しました")
-            return redirect("app:template_edit2", template_id=template.id)
+            return redirect("app:template_edit", template_id=template.id)
 
 
 
