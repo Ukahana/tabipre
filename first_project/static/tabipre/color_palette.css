@@ -1,0 +1,65 @@
+/* ================================
+   入力補完サジェスト（分類・項目）
+================================ */
+#category_suggestions,
+#item_suggestions {
+    z-index: 1050; /* モーダルより下、フォームより上 */
+    max-height: 200px;
+    overflow-y: auto;
+    border-radius: 0 0 6px 6px;
+}
+
+#category_suggestions .list-group-item,
+#item_suggestions .list-group-item {
+    cursor: pointer;
+}
+
+#category_suggestions .list-group-item:hover,
+#item_suggestions .list-group-item:hover {
+    background-color: #f0f0f0;
+}
+
+/* ================================
+   お気に入りスター
+================================ */
+#favorite_star {
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+
+#favorite_star.active {
+    color: #ffcc00;
+    transform: scale(1.2);
+}
+
+/* ================================
+   カラーパレット
+================================ */
+.color-box {
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    display: inline-block;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+input[type="radio"]:checked + .color-box {
+    transform: scale(1.15);
+    box-shadow: 0 0 4px rgba(0,0,0,0.3);
+}
+
+/* ================================
+   モーダル内お気に入りリスト
+================================ */
+.favorite-item {
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.favorite-item:hover {
+    background-color: #f7f7f7;
+}
+
+/* ================================
+   フォーム全体の微調整
+================================

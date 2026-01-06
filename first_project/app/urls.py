@@ -4,7 +4,8 @@ from .views import (
     HomeView,
     travel_detail, template_edit, edit_item, add_item, add_category_and_item,
       travel_create_step1, travel_step2,
-    TemplateCreateView, TravelCopyModalView, OldTravelCopyView,template_edit2
+    TemplateCreateView, TravelCopyModalView, OldTravelCopyView,template_edit2,
+    add_category_item,autocomplete_category,autocomplete_item
 )
 
 
@@ -34,6 +35,10 @@ urlpatterns = [
     path('travel_step2/', travel_step2, name='travel_step2'), 
     path("template/<int:template_id>/edit/", template_edit, name="template_edit"),
     path("template/<int:template_id>/edit2/",template_edit2,name="template_edit2"),
+    path("template/<int:template_id>/add/",add_category_item,name="add_category_item"),
+    path("autocomplete/category/", autocomplete_category, name="autocomplete_category"),
+    path("autocomplete/item/", autocomplete_item, name="autocomplete_item"),
+
 
     # 過去テンプレート作成
     path('template/create/', TemplateCreateView, name='template_create'),

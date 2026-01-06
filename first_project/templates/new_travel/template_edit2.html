@@ -86,14 +86,22 @@
 
             </div>
         {% endfor %}
+        <div class="d-flex justify-content-end mt-3">
+          <a href="{% url 'app:add_category_item' template.id %}" class="btn btn-success">
+          ＋分類・項目の追加
+          </a>
+       </div>
 
-        <button type="submit" class="btn btn-primary w-100 mt-3">保存</button>
+        <button type="button" id="saveBtn" class="btn btn-primary w-100 mt-3">保存</button>
+
     </form>
+
+
 </div>
 
 {% load static %}
 
-<script src="{% static 'tabipre/js/template_edit2.js' %}"></script>
+<script src="{% static 'tabipre/js/new_travel/template_edit2.js' %}"></script>
 
 {% endblock %}
 
