@@ -30,63 +30,36 @@
         並び替え
     </button>
 
-    <!-- 🔄 並び替えモーダル -->
-    <div class="modal fade" id="sortModal" tabindex="-1">
-        <div class="modal-dialog">
-            <div class="modal-content">
+    <!--  並び替えモーダル -->
+    {% include "home/modal/sort_home.html" %}
 
-                <div class="modal-header">
-                    <h5 class="modal-title">並び替え</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-
-            <div class="modal-body">
-                <a href="?keyword={{ keyword }}&transport={{ request.GET.transport }}&sort=title_asc"
-                   class="btn btn-light w-100 mb-2">タイトル昇順</a>
-
-                <a href="?keyword={{ keyword }}&transport={{ request.GET.transport }}&sort=title_desc"
-                   class="btn btn-light w-100 mb-2">タイトル降順</a>
-
-                <a href="?keyword={{ keyword }}&transport={{ request.GET.transport }}&sort=date_asc"
-                   class="btn btn-light w-100 mb-2">日付昇順</a>
-
-                <a href="?keyword={{ keyword }}&transport={{ request.GET.transport }}&sort=date_desc"
-                   class="btn btn-light w-100 mb-2">日付降順</a>
-            </div>
-
-
-            </div>
-        </div>
-    </div>
 
     <!-- 📄 旅行一覧（カード表示） -->
     {% for t in travels %}
+    <a href="{% url 'app:travel_detail' t.travel_info_id %}" class="text-decoration-none text-dark">
         <div class="card mb-3 shadow-sm">
-            <div class="card-body">
-
+            <div class="card-body d-flex">
+              <div class="me-3 d-flex align-items-start">
+                  {% if t.status == "未" %}
+                       <span class="badge bg-warning text-dark">未</span>
+                  {% elif t.status == "完" %}
+                       <span class="badge bg-success">完</span>
+                  {% elif t.status == "済" %}
+                       <span class="badge bg-secondary">済</span>
+                  {% endif %}
+              </div>
+              <div class="flex-grow-1">
                 <h5 class="card-title">{{ t.travel_title }}</h5>
 
                 <p class="card-text text-muted mb-1">
                     {{ t.start_date|date:"Y-m-d" }} 〜 {{ t.end_date|date:"Y-m-d" }}
                 </p>
 
-                <p class="card-text">
-                    場所：{{ t.get_location_display }}
-                </p>
-
-                <div class="d-flex gap-3">
-                    <a href="{% url 'app:template_preview' %}?copy={{ t.travel_info_id }}"
-                       class="btn btn-sm btn-outline-primary">
-                        コピー
-                    </a>
-
-                    <a href="#" class="btn btn-sm btn-outline-secondary">
-                        詳細
-                    </a>
-                </div>
+                </div>         
+               </div>
 
             </div>
-        </div>
+        </a>
     {% empty %}
         <p class="text-center text-muted">旅行がありません</p>
     {% endfor %}

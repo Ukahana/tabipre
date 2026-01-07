@@ -1,19 +1,22 @@
+// ⭐ お気に入りトグル（画像版）
 // ===============================
-// ⭐ お気に入りトグル
-// ===============================
-const star = document.getElementById("favorite_star");
-const favoriteFlag = document.getElementById("favorite_flag");
+let starImg;
+let favoriteFlag;
 
-star.addEventListener("click", () => {
-    if (favoriteFlag.value === "0") {
-        favoriteFlag.value = "1";
-        star.textContent = "★";  // ON
-        star.style.color = "#f5c518";
-    } else {
-        favoriteFlag.value = "0";
-        star.textContent = "☆";  // OFF
-        star.style.color = "";
-    }
+document.addEventListener("DOMContentLoaded", () => {
+    const star = document.getElementById("favorite_star");
+    starImg = document.getElementById("favorite_star_img");
+    favoriteFlag = document.getElementById("favorite_flag");
+
+    star.addEventListener("click", () => {
+        if (favoriteFlag.value === "0") {
+            favoriteFlag.value = "1";
+            starImg.src = "/static/tabipre/icons/star_on.png";
+        } else {
+            favoriteFlag.value = "0";
+            starImg.src = "/static/tabipre/icons/star_off.png";
+        }
+    });
 });
 
 
@@ -109,12 +112,9 @@ document.addEventListener("click", (e) => {
 // ===============================
 document.querySelectorAll(".color-option").forEach(option => {
     option.addEventListener("click", () => {
-        // すべての選択状態をリセット
         document.querySelectorAll(".color-circle").forEach(c => {
             c.classList.remove("selected");
         });
-
-        // クリックされた色に selected を付与
         option.querySelector(".color-circle").classList.add("selected");
     });
 });
@@ -128,22 +128,20 @@ document.addEventListener("DOMContentLoaded", () => {
     if (params.get("saved") === "1") {
         const modal = new bootstrap.Modal(document.getElementById("continueModal"));
         modal.show();
-    }
-});
-
+    }});
 
 // ===============================
 // ③ 「はい（続けて追加）」 → フォームをクリア
 // ===============================
-const continueBtn = document.getElementById("go_continue");
+const continueBtn = document.getElementById("continueBtn");
+
 if (continueBtn) {
     continueBtn.addEventListener("click", () => {
         // フォームをクリア
         document.getElementById("category_name").value = "";
         document.getElementById("item_name").value = "";
         favoriteFlag.value = "0";
-        star.textContent = "☆";
-        star.style.color = "";
+        starImg.src = "/static/tabipre/icons/star_off.png";
 
         // カラーパレットもリセット
         document.querySelectorAll(".color-radio").forEach(r => r.checked = false);

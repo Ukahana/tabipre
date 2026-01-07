@@ -6,7 +6,6 @@ from .travel_step import (
 from .step_template import TemplateCreateView
 from .step_copy import TravelCopyModalView,TravelCopyApplyView
 from .template_source import template_source
-from.travel_step3 import OldTravelCopyView
-from .template_edit2 import template_edit2
+from .template_edit2 import template_edit2,old_template_edit
 from .add_category_item import add_category_item
 from .autocomplete_category_item import autocomplete_category,autocomplete_item

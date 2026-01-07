@@ -16,11 +16,11 @@ from .new_travel import (
     TemplateCreateView,
     TravelCopyModalView,
     TravelCopyApplyView,
-    OldTravelCopyView,
     template_edit2,
     add_category_item,
     autocomplete_category,
-    autocomplete_item
+    autocomplete_item,
+    old_template_edit
 )
 
 

@@ -48,11 +48,15 @@
                        autocomplete="off"
                        placeholder="例：靴下">
 
-                <span class="input-group-text"
+                <span class="input-group-text p-1"
                       id="favorite_star"
-                      style="cursor:pointer; font-size: 1.4rem;">
-                    ☆
+                      style="cursor:pointer;">
+                  <img src="{% static 'tabipre/icons/star_off.png' %}"
+                       id="favorite_star_img"
+                       alt="favorite"
+                       style="width:24px; height:24px;">
                 </span>
+
             </div>
 
             <input type="hidden" name="favorite_flag" id="favorite_flag" value="0">

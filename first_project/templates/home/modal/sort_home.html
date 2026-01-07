@@ -1,0 +1,26 @@
+<div class="modal fade" id="sortModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h5 class="modal-title">並び替え</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body">
+                <a href="?keyword={{ keyword }}&transport={{ request.GET.transport }}&sort=title_asc"
+                   class="btn btn-light w-100 mb-2">タイトル昇順</a>
+
+                <a href="?keyword={{ keyword }}&transport={{ request.GET.transport }}&sort=title_desc"
+                   class="btn btn-light w-100 mb-2">タイトル降順</a>
+
+                <a href="?keyword={{ keyword }}&transport={{ request.GET.transport }}&sort=date_asc"
+                   class="btn btn-light w-100 mb-2">日付昇順</a>
+
+                <a href="?keyword={{ keyword }}&transport={{ request.GET.transport }}&sort=date_desc"
+                   class="btn btn-light w-100 mb-2">日付降順</a>
+            </div>
+
+        </div>
+    </div>
+</div>

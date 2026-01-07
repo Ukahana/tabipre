@@ -22,9 +22,11 @@
 /* ================================
    お気に入りスター
 ================================ */
-#favorite_star {
-    transition: color 0.2s ease, transform 0.2s ease;
+#favorite_star_img {
+    width: 40px !important;
+    height: 40px !important;
 }
+
 
 #favorite_star.active {
     color: #ffcc00;

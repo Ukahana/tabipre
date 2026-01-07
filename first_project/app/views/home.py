@@ -3,6 +3,8 @@ from django.views.generic import TemplateView
 from django.core.paginator import Paginator
 from ..models.travel import Travel_info, Transport
 from django.shortcuts import render
+from django.utils import timezone
+from..models .template import TravelItem
 
 class HomeView(LoginRequiredMixin, TemplateView):
     template_name = "home/home.html"
@@ -29,6 +31,23 @@ class HomeView(LoginRequiredMixin, TemplateView):
             travels = travels.order_by("start_date")
         elif sort == "date_desc":
             travels = travels.order_by("-start_date")
+            
+        today = timezone.now().date()
+        for t in travels:
+            if t.end_date < today:
+                t.status = "済"
+                continue
+
+            items = TravelItem.objects.filter(
+                travel_category__template__travel_info=t
+            )
+            total = items.count()
+            done = items.filter(item_checked=TravelItem.ItemChecked.YES).count()
+
+            if total > 0 and total == done:
+                t.status = "完"
+            else:
+                t.status = "未"
 
         paginator = Paginator(travels, 5)
         page = request.GET.get("page")

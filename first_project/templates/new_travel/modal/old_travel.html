@@ -10,16 +10,20 @@
       <div class="modal-body">
 
         {% if templates %}
-        <form method="POST">
+        <form method="POST" action="{% url 'app:travel_step2' %}">
           {% csrf_token %}
           <input type="hidden" name="action" value="copy">
 
           {% for template in templates %}
             <div class="border rounded p-2 mb-2">
-              <label class="d-flex align-items-center">
-                <!-- ★ここを修正：template_id → old_travel_id -->
-                <input type="radio" name="old_travel_id" value="{{ template.travel_info.id }}" class="me-2">
 
+              <input type="radio"
+                     id="t{{ template.id }}"
+                     name="old_travel_id"
+                     value="{{ template.travel_info.travel_info_id }}"
+                     class="me-2">
+
+              <label for="t{{ template.id }}" class="d-flex align-items-center">
                 <div>
                   <strong>{{ template.travel_info.travel_title }}</strong><br>
                   <small class="text-muted">
@@ -27,6 +31,7 @@
                   </small>
                 </div>
               </label>
+
             </div>
           {% endfor %}
 

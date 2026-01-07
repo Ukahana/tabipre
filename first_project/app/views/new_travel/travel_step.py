@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
-from ...models import Travel_info, Transport, Travelmode,Template
+from ...models import Travel_info, Transport, Travelmode,Template,TravelCategory,TravelItem
 from ...forms.travel import TravelStep1Form, TravelStep2Form
 from ...views.new_travel.template_source import template_source
 
@@ -38,6 +38,9 @@ def travel_step2(request):
         return redirect("app:travel_step1")
 
     if request.method == "POST":
+        print("=== POST 受信 ===")
+        print(request.POST)
+
         action = request.POST.get("action")
         form = TravelStep2Form(request.POST)
 
@@ -88,7 +91,7 @@ def travel_step2(request):
         # -----------------------------
         if action == "copy":
             old_travel_id = request.POST.get("old_travel_id")
-            old_travel = get_object_or_404(Travel_info, id=old_travel_id)
+            old_travel = get_object_or_404(Travel_info, travel_info_id=old_travel_id)
             old_template = Template.objects.get(travel_info=old_travel)
 
             travel = Travel_info.objects.create(
@@ -101,35 +104,59 @@ def travel_step2(request):
                 memo=old_travel.memo,
             )
 
-            # 交通手段コピー
-            travel.transport.set(old_travel.transport.all())
-
-            # Travelmode の custom_transport_text もコピー
+             # ★ Travelmode を手動でコピー（重複しない）
             for tm in old_travel.travelmode_set.all():
-                Travelmode.objects.create(
-                    travel_info=travel,
-                    transport=tm.transport,
-                    custom_transport_text=tm.custom_transport_text
+                Travelmode.objects.update_or_create(
+                  travel_info=travel,
+                  transport=tm.transport,
+                  defaults={"custom_transport_text": tm.custom_transport_text}
                 )
+
+
 
             # Template 作成
             new_template = Template.objects.create(
                 user=request.user,
                 travel_info=travel,
-                template_source=old_template.template_source
+                source_type=Template.SourceType.FROM_TEMPLATE,
+                template_source=old_template,
+
             )
+            # ★ カテゴリとアイテムをコピーする
+            old_categories = TravelCategory.objects.filter(template=old_template)
+
+            for old_cat in old_categories:
+            # カテゴリコピー
+                new_cat = TravelCategory.objects.create(
+                  template=new_template,
+                  category_name=old_cat.category_name,
+                  category_color=old_cat.category_color,
+                  travel_type=old_cat.travel_type,
+                )
+
+              # アイテムコピー
+                for old_item in old_cat.travelitem_set.all():
+                    TravelItem.objects.create(
+                      travel_category=new_cat,
+                      item_name=old_item.item_name,
+                      item_checked=old_item.item_checked,
+                    )
+
 
             del request.session["travel_step1"]
 
-            return redirect("app:travel_edit", template_id=travel.travel_info_id)
+            return redirect("app:old_template", template_id=new_template.id)
 
 
     else:
         form = TravelStep2Form()
-        
+    
+    templates = Template.objects.filter(user=request.user)
+
     return render(request, "new_travel/travel_step2.html", {
         "form": form,
         "step1": step1_data,
+        "templates": templates,
     })
 
 

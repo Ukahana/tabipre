@@ -110,11 +110,11 @@ class Travel_info(models.Model):
     )
 
 
-    created_at = models.DateField(
+    created_at = models.DateTimeField(
         auto_now_add=True,
         verbose_name=_("作成日")
     )
-    updated_at = models.DateField(
+    updated_at = models.DateTimeField(
        auto_now=True,
         verbose_name=_("更新日")
     )

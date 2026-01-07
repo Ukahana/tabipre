@@ -4,8 +4,9 @@ from .views import (
     HomeView,
     travel_detail, template_edit, edit_item, add_item, add_category_and_item,
       travel_create_step1, travel_step2,
-    TemplateCreateView, TravelCopyModalView, OldTravelCopyView,template_edit2,
-    add_category_item,autocomplete_category,autocomplete_item
+    TemplateCreateView, TravelCopyModalView, template_edit2,
+    add_category_item,autocomplete_category,autocomplete_item,
+    old_template_edit
 )
 
 
@@ -28,7 +29,6 @@ urlpatterns = [
     # 分類・項目編集
     path("category/<int:category_id>/item/add/", add_item, name="add_item"),
     
-  # path("template/<int:template_id>/add_category_item/",add_category_and_item,name="add_category_item"),
     
     # 新規テンプレート作成
     path('travel_step1/', travel_create_step1, name='travel_step1'),
@@ -38,11 +38,10 @@ urlpatterns = [
     path("template/<int:template_id>/add/",add_category_item,name="add_category_item"),
     path("autocomplete/category/", autocomplete_category, name="autocomplete_category"),
     path("autocomplete/item/", autocomplete_item, name="autocomplete_item"),
-
+    path('template/<int:template_id>/old_edit/',old_template_edit,name='old_template'),
 
     # 過去テンプレート作成
     path('template/create/', TemplateCreateView, name='template_create'),
     path('travel/copy/modal/', TravelCopyModalView, name='travel_copy_modal'),
-    path('travel/copy/<int:travel_id>/', OldTravelCopyView, name='old_travel_copy'),
 ]
 
