@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from app.models import Travel_info, Template
 from app.forms import TravelStep2Form, TravelStep1Form, TemplateEditForm
 
-def travel_detail_edit(request, travel_id):
+def old_travel_edit2(request, travel_id):
     travel = get_object_or_404(Travel_info, pk=travel_id)
     template = Template.objects.get(travel_info=travel)
 
@@ -43,7 +43,7 @@ def travel_detail_edit(request, travel_id):
             "memo": travel.memo,
         })
 
-    return render(request, "tabipre/travel_detail_edit.html", {
+    return render(request, "tabipre/travel_detail.html", {
         "travel": travel,
         "template": template,
         "form1": form1,

@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <!-- タイトル -->
+    <div class="d-flex align-items-center mb-1">
+
+      {% if travel.status_label == "未" %}
+        <span class="badge bg-warning text-dark me-2">未</span>
+      {% elif travel.status_label == "完" %}
+        <span class="badge bg-success me-2">完</span>
+      {% elif travel.status_label == "済" %}
+        <span class="badge bg-secondary me-2">済</span>
+      {% endif %}
+
+      <h2 class="mb-0">{{ travel.travel_title }}</h2>
+    </div>
+    <p class="text-muted">
+      {{ travel.start_date|date:"Y/m/d" }} 〜 {{ travel.end_date|date:"Y/m/d" }}
+      <span class="badge bg-light text-dark ms-3">
+        {{ checked_items }} / {{ total_items }}
+      </span>
+    </p>
+
+
+    <!-- ▼ メモ（折りたたみ可能） -->
+    {% if travel.memo %}
+        <div class="mb-3">
+            <div id="memoArea" class="collapse show">
+                <div class="card card-body">
+                    {{ travel.memo|linebreaksbr }}
+                </div>
+            </div>
+            <button class="btn btn-outline-secondary btn-sm mb-2"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#memoArea">
+                メモを表示 / 非表示
+            </button>
+        </div>
+    {% endif %}
+
+    <!-- ▼ 分類と項目 -->
+    {% for category in categories %}
+        <div class="card mb-3 shadow-sm">
+
+            <!-- カテゴリヘッダー -->
+            <div class="card-header text-white d-flex justify-content-between align-items-center"
+                 style="background-color: {{ category.get_category_color_display }};">
+
+                <div class="d-flex align-items-center"
+                     data-bs-toggle="collapse"
+                     data-bs-target="#cat{{ category.id }}"
+                     style="cursor: pointer;">
+
+                    <strong>{{ category.category_name }}</strong>
+
+                    <!-- 件数バッジ（checked_count / total_count） -->
+                    <span class="badge bg-light text-dark ms-2">
+                        {{ category.travelitem_set.all|dictsort:"item_checked"|length }} /
+                        {{ category.travelitem_set.count }}
+                    </span>
+
+                    <span class="ms-2">▼</span>
+                </div>
+            </div>
+
+            <!-- 項目一覧 -->
+            <ul id="cat{{ category.id }}" class="list-group list-group-flush collapse show">
+
+                {% for item in category.travelitem_set.all|dictsort:"item_checked" %}
+                    <li class="list-group-item">
+                        <div class="d-flex justify-content-between align-items-center">
+
+                            <div class="d-flex align-items-center">
+                                <input type="checkbox" 
+                                       class="form-check-input me-2"
+                                       onclick="location.href='{% url 'app:toggle_item_checked' item.id %}'"
+                                       {% if item.item_checked %}checked{% endif %}>
+                                <span>{{ item.item_name }}</span>
+                            </div>
+
+                        </div>
+                    </li>
+                {% empty %}
+                    <li class="list-group-item text-muted">項目がありません</li>
+                {% endfor %}
+
+            </ul>
+
+        </div>
+    {% endfor %}
+
+    <!-- ▼ すべてのチェックを外す -->
+    <div class="mt-3">
+        <a href="{% url 'app:travel_uncheck_all' travel.travel_info_id %}" class="text-danger">
+            すべてのチェックを外す
+        </a>
+    </div>
+
+    <!-- ▼ 編集ボタン & 共有リンクへ -->
+    <div class="mt-3 d-flex gap-2">
+      <!-- 編集画面（old_travel_edit1） -->
+      <a href="{% url 'app:old_travel_edit1' travel.travel_info_id %}" class="btn btn-primary">
+        編集する
+      </a>
+
+      <!-- 共有リンク（link.html） -->
+      <a href="{% url 'app:travel_link' travel.travel_info_id %}" class="btn btn-outline-secondary">
+         共有リンクへ
+      </a>
+   </div>
+
+
+</div>
+{% endblock %}
