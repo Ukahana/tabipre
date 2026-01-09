@@ -6,8 +6,10 @@ from ...models.template import Template, TravelCategory, TravelItem
 
 def travel_detail(request, travel_id):
     travel = get_object_or_404(Travel_info, pk=travel_id)
+    
+    # 最後に作られたテンプレートを探す
+    template = Template.objects.filter(travel_info=travel).order_by('-id').first()
 
-    template = Template.objects.filter(travel_info=travel).first()
 
     if template:
         categories = TravelCategory.objects.filter(template=template)
@@ -53,7 +55,6 @@ def travel_uncheck_all(request, travel_id):
     return redirect("app:travel_detail", travel_id=travel_id)
 
 
-# ★ これが無かったので追加！
 def toggle_item_checked(request, item_id):
     item = get_object_or_404(TravelItem, pk=item_id)
 

@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from ...models.template import Template, TravelCategory, TravelItem
 
-def template_edit2(request, template_id):
+def template_edit(request, template_id):
     template = get_object_or_404(Template, id=template_id)
 
     if request.method == "POST":
@@ -56,7 +56,7 @@ def template_edit2(request, template_id):
     })
  
 #  前回の旅行からコピー
-def old_template_edit(request, template_id):
+def old_template_copy(request, template_id):
     template = get_object_or_404(Template, id=template_id)
 
     if request.method == "POST":

@@ -43,7 +43,7 @@ def old_travel_edit2(request, travel_id):
             "memo": travel.memo,
         })
 
-    return render(request, "tabipre/travel_detail.html", {
+    return render(request, "old_travel/travel_detail.html", {
         "travel": travel,
         "template": template,
         "form1": form1,

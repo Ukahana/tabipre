@@ -4,25 +4,44 @@
 {% block content %}
 <div class="container mt-4">
 
-    <!-- タイトル -->
-    <div class="d-flex align-items-center mb-1">
+<!-- タイトル -->
+<!-- タイトル行（home と同じ構造） -->
+ <div class="card mb-3 shadow-sm">
+    <div class="card-body">
 
-      {% if travel.status_label == "未" %}
-        <span class="badge bg-warning text-dark me-2">未</span>
-      {% elif travel.status_label == "完" %}
-        <span class="badge bg-success me-2">完</span>
-      {% elif travel.status_label == "済" %}
-        <span class="badge bg-secondary me-2">済</span>
-      {% endif %}
+        <!-- 1行目：ステータス + タイトル -->
+        <div class="d-flex align-items-center mb-1">
 
-      <h2 class="mb-0">{{ travel.travel_title }}</h2>
+            {% if travel.status_label == "未" %}
+                <span class="badge bg-warning text-dark me-2">未</span>
+            {% elif travel.status_label == "完" %}
+                <span class="badge bg-success me-2">完</span>
+            {% elif travel.status_label == "済" %}
+                <span class="badge bg-secondary me-2">済</span>
+            {% endif %}
+
+            <h4 class="mb-0">{{ travel.travel_title }}</h4>
+        </div>
+
+        <!-- 2行目：日付 + 件数バッジ（右側） -->
+        <div class="d-flex justify-content-between align-items-center">
+
+            <!-- 日付 -->
+            <p class="text-muted mb-0">
+                {{ travel.start_date|date:"Y/m/d" }} 〜 {{ travel.end_date|date:"Y/m/d" }}
+            </p>
+
+            <!-- 件数バッジ（元の大きさ） -->
+            <span class="badge bg-light text-dark">
+                {{ checked_items }} / {{ total_items }}
+            </span>
+        </div>
+
     </div>
-    <p class="text-muted">
-      {{ travel.start_date|date:"Y/m/d" }} 〜 {{ travel.end_date|date:"Y/m/d" }}
-      <span class="badge bg-light text-dark ms-3">
-        {{ checked_items }} / {{ total_items }}
-      </span>
-    </p>
+ </div>
+
+
+
 
 
     <!-- ▼ メモ（折りたたみ可能） -->
@@ -101,8 +120,8 @@
 
     <!-- ▼ 編集ボタン & 共有リンクへ -->
     <div class="mt-3 d-flex gap-2">
-      <!-- 編集画面（old_travel_edit1） -->
-      <a href="{% url 'app:old_travel_edit1' travel.travel_info_id %}" class="btn btn-primary">
+      <!-- 編集画面（travel_edit1） -->
+      <a href="{% url 'app:old_template_editor' template.id %}" class="btn btn-primary">
         編集する
       </a>
 

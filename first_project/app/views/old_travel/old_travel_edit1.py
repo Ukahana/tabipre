@@ -20,7 +20,7 @@ def old_travel_edit1(request, travel_id):
         form = TravelEditForm(instance=travel)
         template_form = TemplateEditForm(instance=template)
 
-    return render(request, "tabipre/travel_detail.html", {
+    return render(request, "old_travel/travel_detail.html", {
         "travel": travel,
         "template": template,
         "form": form,
