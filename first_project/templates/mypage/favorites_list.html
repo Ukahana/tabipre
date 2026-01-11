@@ -1,6 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block body_class %}favorites_list{% endblock %}
+
+{% block extra_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'tabipre/css/favorites.css' %}">
+{% endblock %}
 {% block content %}
 <div class="container mt-4">
 
@@ -9,9 +15,7 @@
     {% if favorite and favorite.items.all %}
         <ul class="list-group mb-4">
             {% for item in favorite.items.all %}
-                <li class="list-group-item">
-                    {{ item.item_name }}
-                </li>
+                <li class="list-group-item">・　{{ item.item_name }}</li>
             {% endfor %}
         </ul>
     {% else %}
@@ -25,7 +29,7 @@
     </div>
 
     <div class="text-center mb-5">
-        <a href="{% url 'app:mypage' %}" class="text-decoration-none">
+        <a href="{% url 'app:mypage' %}" class="back-link">
             キャンセル
         </a>
     </div>

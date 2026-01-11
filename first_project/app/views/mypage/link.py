@@ -11,7 +11,7 @@ from app.models import Link
 @login_required
 def share_settings(request):
     links = Link.objects.filter(user=request.user).order_by('-created_at')
-    return render(request, 'tabipre/share_settings.html', {
+    return render(request, 'mypage/link_list.html', {
         'links': links
     })
 

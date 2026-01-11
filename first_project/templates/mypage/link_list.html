@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block extra_css %}
+{{ block.super }}
+{% endblock %}
 {% block content %}
 <div class="container mt-4">
 
@@ -28,14 +31,14 @@
 
     <div class="text-center mb-5">
         <a href="{% url 'app:mypage' %}" class="text-decoration-none">
-            ← マイページへ戻る
+            マイページへ戻る
         </a>
     </div>
 
 </div>
 
-{% include 'tabipre/modals/share_link_modal.html' %}
-{% load static %}
+{% include 'mypage/modal/share_link_modal.html' %}
+
 <script src="{% static 'tabipre/js/mypage/share_modal.js' %}"></script>
 
 {% endblock %}

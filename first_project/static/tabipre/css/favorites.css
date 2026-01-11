@@ -1,0 +1,62 @@
+/* 背景色 */
+body {
+    background-color: #fdf6f0ff;
+}
+
+/* タイトル */
+h2 {
+    color: #5c3a3a;
+    font-weight: bold;
+}
+
+/* リスト項目の装飾を消してシンプルに */
+.list-group-item {
+    background-color: transparent;
+    border: none;
+    padding-left: 0;
+    color: #e91e63;
+    font-size: 1rem;
+}
+
+/* 編集ボタン */
+.favorites_list .btn-primary {
+    background-color: #0b5394ff;
+    border-color: #0b5394ff;
+}
+
+.favorites_list .btn-primary:hover {
+    background-color: #09457a;
+    border-color: #09457a;
+}
+
+/* この画面ではフォームの枠を消す */
+input,
+textarea,
+select {
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+/* リンク（グレーで下線） */
+.back-link {
+    color: #6c757d;              /* 落ち着いたグレー */
+    text-decoration: underline;  /* 下線 */
+    font-weight: 500;
+}
+
+.back-link:hover {
+    color: #5a6268;              /* 少し濃くしてホバーを分かりやすく */
+}
+
+/* 保存ボタン */
+.favorites_edit .btn-primary {
+    background-color: #0097a7ff;
+    border-color: #0097a7ff;
+}
+
+.favorites_edit .btn-primary:hover {
+    background-color: #007c8aff;
+    border-color: #007c8aff;
+}
+/* 

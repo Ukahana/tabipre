@@ -1,6 +1,12 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block body_class %}favorites_edit{% endblock %}
+
+{% block extra_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'tabipre/css/favorites.css' %}">
+{% endblock %}
 {% block content %}
 <div class="container mt-4">
 
@@ -34,7 +40,7 @@
     </form>
 
     <div class="text-center mb-5">
-        <a href="{% url 'app:favorites_list' %}" class="text-decoration-none">
+        <a href="{% url 'app:favorites_list' %}" class="back-link">
             キャンセル
         </a>
     </div>

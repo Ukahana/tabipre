@@ -1,6 +1,9 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block extra_css %}
+{{ block.super }}
+{% endblock %}
 {% block content %}
 <div class="container mt-4">
 
@@ -9,21 +12,18 @@
     <div class="list-group">
 
         <a href="{% url 'app:favorites_list' %}" class="list-group-item list-group-item-action">
-            お気に入りリストを見る
+            お気に入りリストの表示
         </a>
 
         <a href="{% url 'app:share_settings' %}" class="list-group-item list-group-item-action">
             共有リンクの設定
         </a>
 
-        <a href="{% url 'app:account_edit' %}" class="list-group-item list-group-item-action">
-            アカウント情報の変更（メールアドレス）
-        </a>
+    </div>
 
-        <a href="{% url 'app:password_change' %}" class="list-group-item list-group-item-action">
-            パスワード変更
-        </a>
-
+    <div class="mt-3">
+        <p><a href="{% url 'app:account_edit' %}">アカウント情報変更</a></p>
+        <p><a href="{% url 'app:password_change' %}">パスワードのみ変更</a></p>
     </div>
 
 </div>
