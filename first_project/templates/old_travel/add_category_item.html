@@ -1,4 +1,4 @@
-{% extends "tabipre/base.html" %}
+{% extends "base.html" %}
 
 {% block content %}
 <div class="container mt-4">
@@ -21,8 +21,8 @@
         </datalist>
 
         <!-- カラーパレット -->
-        <label class="mt-3">分類カラー</label>
-        <div class="d-flex flex-wrap">
+        <label class="mt-3 fw-bold">分類の色を選択する</label>
+        <div class="d-flex flex-wrap mb-3">
             {% for value, label in template.travelcategory_set.model.CategoryColor.choices %}
                 <label class="me-3">
                     <input type="radio" name="category_color" value="{{ value }}" required>
@@ -31,26 +31,42 @@
             {% endfor %}
         </div>
 
-        <!-- お気に入りから追加 -->
-        <button type="button" class="btn btn-outline-primary mt-3" data-bs-toggle="modal" data-bs-target="#favoriteModal">
-            ⭐ お気に入りから追加
-        </button>
+        <!-- 項目名（横並び + 星アイコン） -->
+        <div class="mb-3">
+            <label class="form-label">項目名</label>
+            <div class="d-flex align-items-center">
 
-        <!-- 項目名 -->
-        <label class="mt-3">項目名</label>
-        <input type="text" name="item_name" id="itemNameInput" class="form-control" required>
+                <input type="text"
+                       name="item_name"
+                       id="itemNameInput"
+                       class="form-control w-50 me-2"
+                       placeholder="※ 未入力でも追加できます">
+
+                {% load static %}
+                <img id="favoriteStar"
+                     src="{% static 'tabipre/icons/star_off.png' %}"
+                     data-on="{% static 'tabipre/icons/star_on.png' %}"
+                     data-off="{% static 'tabipre/icons/star_off.png' %}"
+                     style="width:32px; cursor:pointer;">
+
+                <input type="hidden" name="favorite_flag" id="favoriteValue" value="0">
+            </div>
+        </div>
 
         <!-- 登録 -->
         <button type="submit" class="btn btn-primary w-100 mt-4">登録</button>
 
-        <!-- キャンセル -->
-        <a href="{% url 'app:template_edit' template.travel_info_id %}" class="btn btn-secondary w-100 mt-2">
-            キャンセル
-        </a>
+        <!-- キャンセル（リンク） -->
+        <div class="text-center mt-2">
+            <a href="{% url 'app:old_template_edit' template.id %}" class="text-decoration-none">
+                キャンセル
+            </a>
+        </div>
+
     </form>
 </div>
 
-<!-- お気に入りモーダル -->
+<!-- お気に入りモーダル（必要なら残す） -->
 <div class="modal fade" id="favoriteModal" tabindex="-1">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -73,26 +89,10 @@
 </div>
 
 <!-- 続けますか？モーダル -->
-{% if show_continue_modal %}
-<div class="modal fade show" style="display:block;background:rgba(0,0,0,0.5);">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-body text-center">
-        <p>処理を続けますか？</p>
-        <a href="{% url 'app:add_category_item' template.id %}" class="btn btn-primary w-100 mb-2">はい</a>
-        <a href="{% url 'app:template_edit' template.travel_info_id %}" class="btn btn-secondary w-100">いいえ</a>
-      </div>
-    </div>
-  </div>
-</div>
-{% endif %}
+{% include "old_travel/modal/add_continue_modal.html" %}
 
-<script>
-function selectFavorite(name) {
-    document.getElementById("itemNameInput").value = name;
-    var modal = bootstrap.Modal.getInstance(document.getElementById('favoriteModal'));
-    modal.hide();
-}
-</script>
+<!-- JS -->
+{% load static %}
+<script src="{% static 'old_travel/js/add_category_item.js' %}"></script>
 
 {% endblock %}

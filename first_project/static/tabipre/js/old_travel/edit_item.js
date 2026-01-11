@@ -1,17 +1,19 @@
-// 編集モーダルに値をセットする
 document.addEventListener("DOMContentLoaded", function () {
-    const editModal = document.getElementById("editItemModal");
+    const modal = document.getElementById("editItemModal");
+    if (!modal) return;
 
-    if (!editModal) return;
-
-    editModal.addEventListener("show.bs.modal", function (event) {
+    modal.addEventListener("show.bs.modal", function (event) {
         const button = event.relatedTarget;
 
         const itemId = button.getAttribute("data-item-id");
         const itemName = button.getAttribute("data-item-name");
 
-        // モーダル内の input に値をセット
-        document.getElementById("edit-item-id").value = itemId;
-        document.getElementById("edit-item-name").value = itemName;
+        const form = modal.querySelector("form");
+
+        // URL を直接セット
+        form.action = `/item/edit/${itemId}/`;
+
+        // 入力欄に値をセット
+        modal.querySelector("input[name='item_name']").value = itemName;
     });
 });

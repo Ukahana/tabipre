@@ -1,0 +1,17 @@
+{% if show_continue_modal %}
+<div class="modal fade show" style="display:block;background:rgba(0,0,0,0.5);">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body text-center">
+        <p>処理を続けますか？</p>
+
+        <!-- はい → 再度追加画面 -->
+        <a href="{% url 'app:category_item_add' template.id %}" class="btn btn-primary w-100 mb-2">はい</a>
+
+        <!-- いいえ → old_template_edit -->
+        <a href="{% url 'app:old_template_edit' template.id %}" class="btn btn-secondary w-100">いいえ</a>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %}

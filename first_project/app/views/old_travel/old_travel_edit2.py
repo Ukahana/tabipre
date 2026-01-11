@@ -1,52 +1,65 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from app.models import Travel_info, Template
-from app.forms import TravelStep2Form, TravelStep1Form, TemplateEditForm
+from app.models import Travel_info, Template, Transport, Travelmode
+from app.forms import TravelStep2Form
 
 def old_travel_edit2(request, travel_id):
     travel = get_object_or_404(Travel_info, pk=travel_id)
     template = Template.objects.get(travel_info=travel)
 
+    # OTHER の Transport を取得
+    other_transport = Transport.objects.get(
+        transport_type=Transport.TransportType.OTHER
+    )
+
     if request.method == "POST":
-        # Step1 の情報も一緒に保存したい場合
-        form1 = TravelStep1Form(request.POST, instance=travel)
-        form2 = TemplateEditForm(request.POST, instance=template)
+        form = TravelStep2Form(request.POST)
 
-        # Step2 のフォーム
-        form3 = TravelStep2Form(request.POST)
-
-        if form1.is_valid() and form2.is_valid() and form3.is_valid():
-            # Step1 保存
-            form1.save()
-            form2.save()
-
+        if form.is_valid():
             # Step2 保存
-            travel.location = form3.cleaned_data["location"]
-            travel.memo = form3.cleaned_data["memo"]
-            travel.transport_other = form3.cleaned_data["transport_other"]
-
-            # ManyToMany の保存
-            travel.transport.set(form3.cleaned_data["transport"])
-
+            travel.location = form.cleaned_data["location"]
+            travel.memo = form.cleaned_data["memo"]
             travel.save()
 
-            return redirect("app:travel_detail", travel_id=travel.id)
+            # ManyToMany 保存
+            travel.transport.set(form.cleaned_data["transport_types"])
+
+            # OTHER の入力処理
+            other_text = form.cleaned_data.get("transport_other", "").strip()
+
+            if other_text:
+                # OTHER を Travelmode に保存
+                Travelmode.objects.update_or_create(
+                    travel_info=travel,
+                    transport=other_transport,
+                    defaults={"custom_transport_text": other_text}
+                )
+            else:
+                # OTHER が空なら削除
+                Travelmode.objects.filter(
+                    travel_info=travel,
+                    transport=other_transport
+                ).delete()
+
+            return redirect("app:old_travel_edit2",travel.id)
 
     else:
-        # 初期値をセット
-        form1 = TravelStep1Form(instance=travel)
-        form2 = TemplateEditForm(instance=template)
+        # OTHER の初期値を取得
+        other_mode = Travelmode.objects.filter(
+            travel_info=travel,
+            transport=other_transport
+        ).first()
 
-        form3 = TravelStep2Form(initial={
+        other_text = other_mode.custom_transport_text if other_mode else ""
+
+        form = TravelStep2Form(initial={
             "location": travel.location,
             "transport_types": travel.transport.all(),
-            "transport_other": travel.transport_other,
+            "transport_other": other_text,
             "memo": travel.memo,
         })
 
-    return render(request, "old_travel/travel_detail.html", {
+    return render(request, "old_travel/travel_edit2.html", {
         "travel": travel,
         "template": template,
-        "form1": form1,
-        "form2": form2,
-        "form3": form3,
+        "form": form,
     })

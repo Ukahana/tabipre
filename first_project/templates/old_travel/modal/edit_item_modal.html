@@ -1,27 +1,30 @@
-{% extends "tabipre/base.html" %}
+<div class="modal fade" id="editItemModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
 
-{% block content %}
-<div class="container mt-4">
+      <div class="modal-header">
+        <h5 class="modal-title">項目を編集</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
 
-    <h3>項目を編集</h3>
-
-    <form method="POST">
+      <form method="POST" id="editItemForm">
         {% csrf_token %}
+        <div class="modal-body">
+          <label class="form-label">項目名</label>
+          <div class="d-flex align-items-center">
+            <input type="text" name="item_name" class="form-control me-2">
+            <button type="submit" name="delete" value="1"
+                    class="btn btn-outline-danger"
+                    style="font-weight:bold;">×</button>
+          </div>
+        </div>
 
-        <label>項目名</label>
-        <input type="text" name="item_name" class="form-control" value="{{ item.item_name }}">
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">保存</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+        </div>
+      </form>
 
-        <button type="submit" class="btn btn-primary w-100 mt-3">保存</button>
-
-        <button type="submit" name="delete" class="btn btn-danger w-100 mt-2">
-            削除
-        </button>
-
-        <a href="{% url 'app:template_edit' item.travel_category.template.travel_info_id %}"
-           class="btn btn-secondary w-100 mt-2">
-            キャンセル
-        </a>
-    </form>
-
+    </div>
+  </div>
 </div>
-{% endblock %}

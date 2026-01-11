@@ -120,10 +120,16 @@
 
     <!-- ▼ 編集ボタン & 共有リンクへ -->
     <div class="mt-3 d-flex gap-2">
-      <!-- 編集画面（travel_edit1） -->
-      <a href="{% url 'app:old_template_editor' template.id %}" class="btn btn-primary">
-        編集する
-      </a>
+      <!-- 編集画面（travel_edit1）templateは必ず作成す鶴設置にするからifは消す -->
+      {% if template %}
+          <a href="{% url 'app:old_template_edit' template.id %}" class="btn btn-primary">
+               編集する
+          </a>
+      {% else %}
+        <h1>テンプレートは作成されていません</h1>
+      {% endif %}
+      
+
 
       <!-- 共有リンク（link.html） -->
       <a href="{% url 'app:travel_link' travel.travel_info_id %}" class="btn btn-outline-secondary">

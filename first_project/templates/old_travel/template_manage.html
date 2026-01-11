@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+{% with template as current_template %}
+<div class="container mt-4">
+
+    <!-- タイトル + ステータス -->
+    <div class="card mb-3 shadow-sm">
+        <div class="card-body d-flex align-items-center">
+
+            {% if travel.status_label == "未" %}
+                <span class="badge bg-warning text-dark me-2">未</span>
+            {% elif travel.status_label == "完" %}
+                <span class="badge bg-success me-2">完</span>
+            {% elif travel.status_label == "済" %}
+                <span class="badge bg-secondary me-2">済</span>
+            {% endif %}
+
+            <h4 class="mb-0">{{ travel.travel_title }}</h4>
+        </div>
+    </div>
+
+    <!-- ★★★ 分類一覧 ★★★ -->
+    {% for category in categories %}
+    <div class="card mb-3 shadow-sm">
+
+        <!-- カテゴリヘッダー -->
+        <div class="card-header text-white d-flex justify-content-between align-items-center"
+             style="background-color: {{ category.get_category_color_display }};">
+
+            <div class="d-flex align-items-center"
+                 data-bs-toggle="collapse"
+                 data-bs-target="#cat{{ category.id }}"
+                 style="cursor: pointer;">
+
+                <strong>{{ category.category_name }}</strong>
+
+                <span class="badge bg-light text-dark ms-2">
+                    {{ category.checked_count }} / {{ category.total_count }}
+                </span>
+
+                <span class="ms-2">▼</span>
+            </div>
+
+            <!-- 分類削除 -->
+            <form method="post" action="{% url 'app:old_template_edit' current_template.id %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit"
+                        name="delete_category"
+                        value="{{ category.id }}"
+                        class="btn btn-link text-danger fs-4 p-0"
+                        style="text-decoration: none;">
+                    ×
+                </button>
+            </form>
+        </div>
+
+        <!-- ★★★ 項目一覧 ★★★ -->
+        <ul id="cat{{ category.id }}" class="list-group list-group-flush collapse show">
+
+            {% for item in category.travelitem_set.all %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+
+                <span>{{ item.item_name }}</span>
+
+                <img src="{% static 'tabipre/icons/edit.png' %}"
+                     width="20"
+                     style="cursor: pointer;"
+                     data-bs-toggle="modal"
+                     data-bs-target="#editItemModal"
+                     data-item-id="{{ item.id }}"
+                     data-item-name="{{ item.item_name }}">
+            </li>
+            {% empty %}
+            <li class="list-group-item text-muted">項目がありません</li>
+            {% endfor %}
+
+            <li class="list-group-item text-center">
+                <button
+                    class="btn btn-outline-primary btn-sm"
+                    data-bs-toggle="modal"
+                    data-bs-target="#addItemModal"
+                    data-category-id="{{ category.id }}">
+                    ＋ 項目を追加
+                </button>
+            </li>
+
+        </ul>
+
+    </div>
+    {% endfor %}
+
+    <!-- 画面下：分類・項目追加ボタン -->
+    <div class="text-center mt-4">
+        <a href="{% url 'app:category_item_add' current_template.id %}" class="btn btn-success mb-3">
+            ＋分類・項目の追加
+        </a>
+        <!-- 登録情報を変更する -->
+        <a href="{% url 'app:old_travel_edit1' current_template.id %}" class="btn btn-outline-primary mb-3">
+            登録情報を変更する
+        </a>
+        <!-- テンプレート・旅行情報の削除 -->
+        <a href="#" class="text-danger d-block" data-bs-toggle="modal" data-bs-target="#deleteTemplateModal">
+            テンプレート・旅行情報を削除
+        </a>
+
+    </div>
+
+</div>
+
+<!-- モーダル読込 -->
+{% include "old_travel/modal/add_item_modal.html" with current_template=current_template %}
+{% include "old_travel/modal/edit_item_modal.html" with current_template=current_template %}
+{% include "old_travel/modal/delete_modal.html" with current_template=current_template %}
+
+<!-- JS 読込 -->
+{% load static %}
+<script src="{% static 'old_travel/add_item.js' %}"></script>
+<script src="{% static 'old_travel/edit_item.js' %}"></script>
+
+{% endwith %}
+{% endblock %}

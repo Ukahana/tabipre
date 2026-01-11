@@ -6,57 +6,46 @@
 
     <h3 class="mb-3">旅行情報の編集</h3>
 
-    <!-- 旅行タイトル -->
-    <div class="mb-4">
-        <label class="form-label fw-bold">旅行タイトル</label>
-        <div class="d-flex justify-content-between align-items-center">
-            <span>{{ travel.title }}</span>
-            <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#titleModal">
-                編集
-            </button>
-        </div>
-    </div>
-
-    <!-- 開始日 -->
-    <div class="mb-4">
-        <label class="form-label fw-bold">開始日</label>
-        <div class="d-flex justify-content-between align-items-center">
-            <span>{{ travel.start_date }}</span>
-            <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#startModal">
-                編集
-            </button>
-        </div>
-    </div>
-
-    <!-- 終了日 -->
-    <div class="mb-4">
-        <label class="form-label fw-bold">終了日</label>
-        <div class="d-flex justify-content-between align-items-center">
-            <span>{{ travel.end_date }}</span>
-            <button type="button" class="btn btn-outline-primary btn-sm" data-bs-toggle="modal" data-bs-target="#endModal">
-                編集
-            </button>
-        </div>
-    </div>
-
-    <!-- 宿泊日数（ラジオボタン） -->
     <form method="post">
         {% csrf_token %}
-        <div class="mb-4">
-            <label class="form-label fw-bold">宿泊日数</label>
-            <div>
-                {% for value, label in template_form.stay_nights.field.choices %}
-                    <div class="form-check">
-                        <input class="form-check-input"
-                               type="radio"
-                               name="stay_nights"
-                               value="{{ value }}"
-                               id="stay_{{ value }}"
-                               {% if template_form.instance.stay_nights == value %}checked{% endif %}>
-                        <label class="form-check-label" for="stay_{{ value }}">{{ label }}</label>
-                    </div>
-                {% endfor %}
-            </div>
+        <input type="hidden" name="action" value="edit_all">
+
+        <!-- 旅行タイトル -->
+        <div class="mb-3">
+            <label class="form-label fw-bold">旅行タイトル</label>
+            {{ form.travel_title }}
+        </div>
+
+        <!-- 開始日 -->
+        <div class="mb-3">
+            <label class="form-label fw-bold">開始日</label>
+            {{ form.start_date }}
+        </div>
+
+        <!-- 終了日 -->
+        <div class="mb-3">
+            <label class="form-label fw-bold">終了日</label>
+            {{ form.end_date }}
+        </div>
+        <!-- エラー表示 -->
+        <div id="date_error" class="text-danger fw-bold mb-2"></div>
+
+
+        <!-- 宿泊タイプ（ラジオボタン） -->
+        <div class="mb-3">
+            <label class="form-label fw-bold">宿泊タイプ</label><br>
+            {% for radio in form.stay_type %}
+                <label class="me-3">
+                    {{ radio.tag }} {{ radio.choice_label }}
+                </label>
+            {% endfor %}
+        </div>
+
+        <!-- 宿泊日数（表示のみ） -->
+        <div class="mb-3">
+            <label class="form-label fw-bold">宿泊日数</label><br>
+            <span id="stay_nights">{{ stay_nights }}泊</span>
+            <span id="stay_days">{{ stay_days }}日</span>
         </div>
 
         <button type="submit" class="btn btn-primary w-100">次へ進む</button>
@@ -67,68 +56,6 @@
     </div>
 
 </div>
-
-<!-- ▼▼▼ モーダル：旅行タイトル ▼▼▼ -->
-<div class="modal fade" id="titleModal" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <form method="post">
-        {% csrf_token %}
-        <div class="modal-header">
-          <h5 class="modal-title">旅行タイトルの編集</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-          {{ form.title }}
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-primary w-100">保存</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-
-<!-- ▼▼▼ モーダル：開始日 ▼▼▼ -->
-<div class="modal fade" id="startModal" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <form method="post">
-        {% csrf_token %}
-        <div class="modal-header">
-          <h5 class="modal-title">開始日の編集</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-          {{ form.start_date }}
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-primary w-100">保存</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-
-<!-- ▼▼▼ モーダル：終了日 ▼▼▼ -->
-<div class="modal fade" id="endModal" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <form method="post">
-        {% csrf_token %}
-        <div class="modal-header">
-          <h5 class="modal-title">終了日の編集</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-          {{ form.end_date }}
-        </div>
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-primary w-100">保存</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-
+{% load static %}
+<script src="{% static 'tabipre/js/old_travel/travel_edit1.js' %}"></script>
 {% endblock %}

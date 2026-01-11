@@ -17,8 +17,9 @@ from app.views.old_travel.travel_detail import (
     travel_uncheck_all,
     toggle_item_checked,
 )
-from app.views.old_travel.old_template_editor import old_template_editor,edit_category_item
-from app.views.old_travel.add import add_category_and_item
+from app.views.old_travel.template_manage import old_template_edit,add_item_page,edit_item,delete_template
+
+from app.views.old_travel.add import category_item_add
 from app.views.old_travel.link import create_link
 from app.views.old_travel.old_travel_edit1 import old_travel_edit1
 from app.views.old_travel.old_travel_edit2 import old_travel_edit2
@@ -55,8 +56,6 @@ urlpatterns = [
     path('home/', HomeView.as_view(), name='home'),
     
 
-    # 分類・項目編集
-    path("category/<int:category_id>/add/", add_category_and_item, name="add_category_and_item"),
     
     
     # 新規テンプレート作成
@@ -71,8 +70,15 @@ urlpatterns = [
     # 過去テンプレート編集
     # 旅行詳細
     path("travel/<int:travel_id>/",travel_detail, name="travel_detail"),
-    path("old_template/<int:template_id>/edit/", old_template_editor, name="old_template_editor"),
-    path("category/<int:category_id>/edit/", edit_category_item, name="edit_category_item"),    path("item/<int:item_id>/toggle/", toggle_item_checked, name="toggle_item_checked"),
+    path("old_template/<int:template_id>/edit/", old_template_edit,name="old_template_edit"),
+    # 分類・項目の追加画面
+    path("old_template/<int:template_id>/add/", category_item_add, name="category_item_add"), 
+    path("item/add/<int:template_id>/", add_item_page, name="add_item_page"),
+    # 項目名を編集
+    path("item/edit/<int:item_id>/", edit_item, name="edit_item"),
+    # 旅行情報を削除
+    path('old_template/<int:template_id>/delete/',delete_template,name='delete_template'),
+    path("item/<int:item_id>/toggle/", toggle_item_checked, name="toggle_item_checked"),
     path("travel/<int:travel_id>/uncheck_all/", travel_uncheck_all, name="travel_uncheck_all"),
     path("travel/<int:travel_id>/link/", create_link, name="travel_link"),
     path("travel/<int:travel_id>/old_edit1/", old_travel_edit1, name="old_travel_edit1"),

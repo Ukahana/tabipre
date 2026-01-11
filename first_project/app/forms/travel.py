@@ -93,13 +93,31 @@ class TravelStep2Form(forms.Form):
    
 
 class TravelEditForm(forms.ModelForm):
+    stay_type = forms.TypedChoiceField(
+        choices=Travel_info.StayType.choices,
+        coerce=int,
+        widget=forms.RadioSelect,
+        label="宿泊タイプ",
+        required=True
+    )
+
     class Meta:
         model = Travel_info
-        fields = ["travel_title", "start_date", "end_date"]
+        fields = ["travel_title", "start_date", "end_date", "stay_type"]
         widgets = {
             "start_date": forms.DateInput(attrs={"type": "date"}),
             "end_date": forms.DateInput(attrs={"type": "date"}),
         }
+
+    def clean(self):
+        cleaned = super().clean()
+        start = cleaned.get("start_date")
+        end = cleaned.get("end_date")
+
+        if start and end and start > end:
+            self.add_error("end_date", "終了日は開始日より後の日付を選んでください。")
+
+        return cleaned
 
 class TemplateEditForm(forms.ModelForm):
     class Meta:
