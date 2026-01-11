@@ -44,6 +44,19 @@ from app.views.new_travel.step_copy import (
 )
 from app.views.new_travel.step_template import TemplateCreateView
 
+from app.views.mypage.mypage import mypage
+from app.views.mypage.favorites_list import favorites_list
+from app.views.mypage.link import (
+    share_settings,
+    update_share_link,
+    delete_share_link,
+)
+from app.views.mypage.account_edit import AccountEditView
+from app.views.mypage.password_change import CustomPasswordChangeView
+from app.views.mypage.favorites_edit import FavoritesEditView
+
+
+
 app_name = 'app'
 urlpatterns = [
     # ログイン
@@ -54,8 +67,6 @@ urlpatterns = [
     
     # ホーム
     path('home/', HomeView.as_view(), name='home'),
-    
-
     
     
     # 新規テンプレート作成
@@ -85,5 +96,22 @@ urlpatterns = [
     path("travel/<int:travel_id>/old_edit2/", old_travel_edit2, name="old_travel_edit2"),
     path('template/create/', TemplateCreateView, name='template_create'),
     path('travel/copy/modal/', TravelCopyModalView, name='travel_copy_modal'),
+    
+    # マイページ
+    path('mypage/', mypage, name='mypage'),
+    # お気に入り
+    path('favorites/',favorites_list, name='favorites_list'),
+    path('favorites/edit/', FavoritesEditView.as_view(), name='favorites_edit'),
+
+    # 共有リンク
+    path('share/settings/', share_settings, name='share_settings'),
+    path('share/<int:link_id>/update/', update_share_link, name='share_update'),
+    path('share/<int:link_id>/delete/', delete_share_link, name='share_delete'),
+    # アカウント情報変更
+    path('account/edit/', AccountEditView.as_view(),  name='account_edit'),
+    # パスワード変更
+    path('account/password_change/', CustomPasswordChangeView.as_view(), name='password_change'),
+
+
 ]
 

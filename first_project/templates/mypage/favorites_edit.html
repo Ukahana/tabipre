@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h2 class="mb-4 text-center">お気に入りリスト</h2>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div id="items-container">
+
+            {% for item in favorite.items.all %}
+                <div class="input-group mb-2 item-row">
+                    <input type="text" name="items" class="form-control"
+                           value="{{ item.item_name }}">
+                    <button type="button" class="btn btn-outline-danger remove-item">×</button>
+                </div>
+            {% endfor %}
+
+        </div>
+
+        <div class="mb-3">
+            <button type="button" id="add-item" class="btn btn-outline-secondary w-100">
+                ＋ 項目を追加
+            </button>
+        </div>
+
+        <div class="d-grid gap-2 mb-4">
+            <button type="submit" class="btn btn-primary">保存する</button>
+        </div>
+
+    </form>
+
+    <div class="text-center mb-5">
+        <a href="{% url 'app:favorites_list' %}" class="text-decoration-none">
+            キャンセル
+        </a>
+    </div>
+
+</div>
+
+<script src="{% static 'tabipre/js/mypage/favorites_edit.js' %}"></script>
+
+{% endblock %}

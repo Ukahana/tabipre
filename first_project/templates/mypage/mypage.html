@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h2 class="mb-4 text-center">マイページ</h2>
+
+    <div class="list-group">
+
+        <a href="{% url 'app:favorites_list' %}" class="list-group-item list-group-item-action">
+            お気に入りリストを見る
+        </a>
+
+        <a href="{% url 'app:share_settings' %}" class="list-group-item list-group-item-action">
+            共有リンクの設定
+        </a>
+
+        <a href="{% url 'app:account_edit' %}" class="list-group-item list-group-item-action">
+            アカウント情報の変更（メールアドレス）
+        </a>
+
+        <a href="{% url 'app:password_change' %}" class="list-group-item list-group-item-action">
+            パスワード変更
+        </a>
+
+    </div>
+
+</div>
+{% endblock %}

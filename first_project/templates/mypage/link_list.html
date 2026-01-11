@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h2 class="mb-4 text-center">共有リンクの設定</h2>
+
+    {% if links %}
+        <ul class="list-group mb-4">
+            {% for link in links %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <a href="#" 
+                       class="text-decoration-none"
+                       data-bs-toggle="modal"
+                       data-bs-target="#shareLinkModal"
+                       data-link-id="{{ link.id }}"
+                       data-url="{{ link.url }}"
+                       data-permission="{{ link.permission }}">
+                        {{ link.url }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-center text-muted mb-4">共有リンクはまだ登録されていません。</p>
+    {% endif %}
+
+    <div class="text-center mb-5">
+        <a href="{% url 'app:mypage' %}" class="text-decoration-none">
+            ← マイページへ戻る
+        </a>
+    </div>
+
+</div>
+
+{% include 'tabipre/modals/share_link_modal.html' %}
+{% load static %}
+<script src="{% static 'tabipre/js/mypage/share_modal.js' %}"></script>
+
+{% endblock %}

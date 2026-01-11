@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mt-4">
+
+    <h2 class="mb-4 text-center">アカウント情報変更</h2>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <!-- 名前 -->
+        <div class="mb-3">
+            <label class="form-label">名前 / ニックネーム</label>
+            <input type="text" name="user_name" class="form-control"
+                   value="{{ user.user_name }}">
+        </div>
+
+        <!-- 現在のメール -->
+        <div class="mb-3">
+            <label class="form-label">現在のメールアドレス</label>
+            <input type="email" name="current_email" class="form-control">
+        </div>
+
+
+
+        <!-- 新しいメール -->
+        <div class="mb-3">
+            <label class="form-label">新しいメールアドレス</label>
+            <input type="email" name="new_email" class="form-control">
+        </div>
+
+        <div class="d-grid gap-2 mb-4">
+            <button type="submit" class="btn btn-primary">変更を保存する</button>
+        </div>
+    </form>
+
+    <div class="text-center mb-3">
+        <a href="{% url 'app:mypage' %}" class="text-decoration-none">キャンセル</a>
+    </div>
+
+    <div class="text-center mb-5">
+        <a href="{% url 'app:password_change' %}" class="text-decoration-none">
+            パスワードを変更する
+        </a>
+    </div>
+
+</div>
+{% endblock %}
