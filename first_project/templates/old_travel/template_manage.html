@@ -114,10 +114,8 @@
 {% include "old_travel/modal/edit_item_modal.html" with current_template=current_template %}
 {% include "old_travel/modal/delete_modal.html" with current_template=current_template %}
 
-<!-- JS 読込 -->
-{% load static %}
-<script src="{% static 'old_travel/add_item.js' %}"></script>
-<script src="{% static 'old_travel/edit_item.js' %}"></script>
+<script src="{% static 'tabipre/js/old_travel/add_item.js' %}"></script>
+<script src="{% static 'tabipre/js/old_travel/edit_item.js' %}"></script>
 
 {% endwith %}
 {% endblock %}

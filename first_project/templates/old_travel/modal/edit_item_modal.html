@@ -3,14 +3,14 @@
     <div class="modal-content">
 
       <div class="modal-header">
-        <h5 class="modal-title">項目を編集</h5>
+        <h5 class="modal-title">編集</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
 
       <form method="POST" id="editItemForm">
         {% csrf_token %}
+
         <div class="modal-body">
-          <label class="form-label">項目名</label>
           <div class="d-flex align-items-center">
             <input type="text" name="item_name" class="form-control me-2">
             <button type="submit" name="delete" value="1"
@@ -19,10 +19,22 @@
           </div>
         </div>
 
-        <div class="modal-footer">
-          <button type="submit" class="btn btn-primary">保存</button>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+        <!-- ⭐ ここを縦並びに変更 -->
+        <div class="modal-footer d-flex flex-column align-items-start">
+
+          <!-- 登録ボタン -->
+          <button type="submit" class="btn btn-primary w-100 mb-2">
+            登録
+          </button>
+
+          <!-- キャンセルをリンクに変更 -->
+          <a href="#" class="text-secondary" data-bs-dismiss="modal"
+             style="text-decoration: underline;">
+            キャンセル
+          </a>
+
         </div>
+
       </form>
 
     </div>

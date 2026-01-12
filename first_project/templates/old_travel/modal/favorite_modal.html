@@ -1,0 +1,27 @@
+{% load static %}
+
+<div class="modal fade" id="favoriteModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">お気に入りから選択</h5>
+      </div>
+
+      <div class="modal-body">
+        {% for fav in favorite_items %}
+            <button type="button"
+                    class="btn btn-outline-secondary w-100 mb-2 favorite-select-btn"
+                    data-name="{{ fav.item_name }}">
+                {{ fav.item_name }}
+            </button>
+        {% endfor %}
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+      </div>
+
+    </div>
+  </div>
+</div>

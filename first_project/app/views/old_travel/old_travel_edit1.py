@@ -1,8 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from app.models import Travel_info, Template
-from app.forms import TravelEditForm, TemplateEditForm
-
+from app.forms import TravelStep1Form
 
 from datetime import datetime
 
@@ -10,13 +9,15 @@ def old_travel_edit1(request, travel_id):
     travel = get_object_or_404(Travel_info, pk=travel_id)
 
     if request.method == "POST":
-        form = TravelEditForm(request.POST, instance=travel)
+        form = TravelStep1Form(request.POST, instance=travel)
+
 
         if form.is_valid():
             data = form.cleaned_data
 
             start = data["start_date"]
             end = data["end_date"]
+
 
             # -----------------------------
             # ★ エラー処理（view側）
@@ -67,7 +68,7 @@ def old_travel_edit1(request, travel_id):
             return redirect("app:old_travel_edit2", travel_id=travel_id)
 
     else:
-        form = TravelEditForm(instance=travel)
+        form = TravelStep1Form(instance=travel)
 
     stay_nights = (travel.end_date - travel.start_date).days
     stay_days = stay_nights + 1

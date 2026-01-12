@@ -87,7 +87,7 @@ class Travel_info(models.Model):
 
     location = models.IntegerField(
         choices=LocationType.choices,
-        verbose_name=_("場所")
+        verbose_name=_("場所"),
     )
 
     memo = models.CharField(

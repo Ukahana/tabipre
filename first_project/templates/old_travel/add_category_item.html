@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
 <div class="container mt-4">
@@ -8,9 +9,11 @@
     <form method="POST">
         {% csrf_token %}
 
-        <!-- 分類名 -->
-        <label class="mt-3">分類名</label>
-        <input type="text" name="category_name" class="form-control" list="categorySuggestions">
+        <!-- ⭐ 分類名（横並び） -->
+        <div class="mt-3 d-flex align-items-center">
+            <label class="form-label me-3 mb-0" style="width:80px;">分類名</label>
+            <input type="text" name="category_name" class="form-control" list="categorySuggestions">
+        </div>
 
         <!-- 候補（datalist） -->
         <datalist id="categorySuggestions">
@@ -20,7 +23,7 @@
             <option value="宿泊">
         </datalist>
 
-        <!-- カラーパレット -->
+        <!-- ⭐ カラーパレット -->
         <label class="mt-3 fw-bold">分類の色を選択する</label>
         <div class="d-flex flex-wrap mb-3">
             {% for value, label in template.travelcategory_set.model.CategoryColor.choices %}
@@ -31,18 +34,25 @@
             {% endfor %}
         </div>
 
-        <!-- 項目名（横並び + 星アイコン） -->
-        <div class="mb-3">
-            <label class="form-label">項目名</label>
-            <div class="d-flex align-items-center">
+        <!-- ⭐ お気に入りから追加ボタン -->
+        <button type="button"
+                class="btn btn-outline-secondary w-100 mb-3"
+                data-bs-toggle="modal"
+                data-bs-target="#favoriteModal">
+            お気に入りから追加
+        </button>
 
+        <!-- ⭐ 項目名（横並び） -->
+        <div class="mt-3 d-flex align-items-center">
+            <label class="form-label me-3 mb-0" style="width:80px;">項目名</label>
+
+            <div class="d-flex align-items-center flex-grow-1">
                 <input type="text"
                        name="item_name"
                        id="itemNameInput"
-                       class="form-control w-50 me-2"
-                       placeholder="※ 未入力でも追加できます">
+                       class="form-control me-2"
+                       placeholder="未入力でも追加できます">
 
-                {% load static %}
                 <img id="favoriteStar"
                      src="{% static 'tabipre/icons/star_off.png' %}"
                      data-on="{% static 'tabipre/icons/star_on.png' %}"
@@ -53,7 +63,7 @@
             </div>
         </div>
 
-        <!-- 登録 -->
+        <!-- ⭐ 登録 -->
         <button type="submit" class="btn btn-primary w-100 mt-4">登録</button>
 
         <!-- キャンセル（リンク） -->
@@ -66,33 +76,11 @@
     </form>
 </div>
 
-<!-- お気に入りモーダル（必要なら残す） -->
-<div class="modal fade" id="favoriteModal" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">お気に入りから選択</h5>
-      </div>
-      <div class="modal-body">
-        {% for fav in favorite_items %}
-            <button type="button" class="btn btn-outline-secondary w-100 mb-2"
-                    onclick="selectFavorite('{{ fav.item_name }}')">
-                {{ fav.item_name }}
-            </button>
-        {% endfor %}
-      </div>
-      <div class="modal-footer">
-        <button class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- 続けますか？モーダル -->
+<!-- ⭐ モーダル読込（別ファイル） -->
+{% include "old_travel/modal/favorite_modal.html" %}
 {% include "old_travel/modal/add_continue_modal.html" %}
 
-<!-- JS -->
-{% load static %}
-<script src="{% static 'old_travel/js/add_category_item.js' %}"></script>
+<!-- ⭐ JS（別ファイル） -->
+<script src="{% static 'tabipre/js/old_travel/favorite_add.js' %}"></script>
 
 {% endblock %}

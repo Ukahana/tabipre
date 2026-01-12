@@ -1,27 +1,26 @@
+console.log("add_item.js 読み込まれた！");
 document.addEventListener("DOMContentLoaded", function () {
 
-    // ★ お気に入りスターの切り替え
-    const star = document.getElementById("favoriteStar");
-    const favValue = document.getElementById("favoriteValue");
-
-    if (star) {
-        star.addEventListener("click", function () {
-            const isOn = favValue.value === "1";
-
-            star.src = isOn ? star.dataset.off : star.dataset.on;
-            favValue.value = isOn ? "0" : "1";
-        });
-    }
-
-    // ★ 追加モーダルの categoryId セット
     const modal = document.getElementById("addItemModal");
 
-    if (modal) {
-        modal.addEventListener("show.bs.modal", function (event) {
-            const button = event.relatedTarget;
-            const categoryId = button.getAttribute("data-category-id");
+    modal.addEventListener("show.bs.modal", function (event) {
+        const button = event.relatedTarget;
+        const categoryId = button.getAttribute("data-category-id");
 
-            document.getElementById("modalCategoryId").value = categoryId;
-        });
-    }
+        // hidden input にセット
+        document.getElementById("modalCategoryId").value = categoryId;
+
+        // ⭐ 星の初期化とイベント付け直し
+        const star = document.getElementById("favoriteStar");
+        const favValue = document.getElementById("favoriteValue");
+
+        star.src = star.dataset.off;
+        favValue.value = "0";
+
+        star.onclick = function () {
+            const isOn = favValue.value === "1";
+            star.src = isOn ? star.dataset.off : star.dataset.on;
+            favValue.value = isOn ? "0" : "1";
+        };
+    });
 });

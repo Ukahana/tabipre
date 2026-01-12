@@ -6,57 +6,52 @@ def old_travel_edit2(request, travel_id):
     travel = get_object_or_404(Travel_info, pk=travel_id)
     template = Template.objects.get(travel_info=travel)
 
-    # OTHER の Transport を取得
-    other_transport = Transport.objects.get(
-        transport_type=Transport.TransportType.OTHER
-    )
-
     if request.method == "POST":
-        form = TravelStep2Form(request.POST)
+        form = TravelStep2Form(request.POST, instance=travel)
 
         if form.is_valid():
-            # Step2 保存
-            travel.location = form.cleaned_data["location"]
-            travel.memo = form.cleaned_data["memo"]
-            travel.save()
 
-            # ManyToMany 保存
-            travel.transport.set(form.cleaned_data["transport_types"])
+            # Step1 の編集内容を session から反映
+            session_data = request.session.get("edit_travel")
+            if session_data:
+                travel.travel_title = session_data["travel_title"]
+                travel.start_date = session_data["start_date"]
+                travel.end_date = session_data["end_date"]
+                travel.save()
 
-            # OTHER の入力処理
+            # Step2 の保存
+            updated_travel = form.save(commit=False)
+            updated_travel.save()
+
+            # 交通手段の保存
+            updated_travel.transport.set(form.cleaned_data["transport_types"])
+
+            # OTHER の保存
+            other_transport = Transport.objects.get(
+                transport_type=Transport.TransportType.OTHER
+            )
             other_text = form.cleaned_data.get("transport_other", "").strip()
 
             if other_text:
-                # OTHER を Travelmode に保存
                 Travelmode.objects.update_or_create(
                     travel_info=travel,
                     transport=other_transport,
                     defaults={"custom_transport_text": other_text}
                 )
             else:
-                # OTHER が空なら削除
                 Travelmode.objects.filter(
                     travel_info=travel,
                     transport=other_transport
                 ).delete()
 
-            return redirect("app:old_travel_edit2",travel.id)
+            # session の削除
+            if "edit_travel" in request.session:
+                del request.session["edit_travel"]
+
+            return redirect("app:old_travel_edit2", travel.travel_info_id)
 
     else:
-        # OTHER の初期値を取得
-        other_mode = Travelmode.objects.filter(
-            travel_info=travel,
-            transport=other_transport
-        ).first()
-
-        other_text = other_mode.custom_transport_text if other_mode else ""
-
-        form = TravelStep2Form(initial={
-            "location": travel.location,
-            "transport_types": travel.transport.all(),
-            "transport_other": other_text,
-            "memo": travel.memo,
-        })
+        form = TravelStep2Form(instance=travel)
 
     return render(request, "old_travel/travel_edit2.html", {
         "travel": travel,
