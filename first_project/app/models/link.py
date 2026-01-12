@@ -14,7 +14,6 @@ class Link(models.Model):
         AFTER_TRIP = 1, _("旅行終了日翌日")
         USER_INPUT = 2, _("ユーザー入力")
 
-# ここから自由記入の時はどうする？
 
     template = models.ForeignKey(
         Template,

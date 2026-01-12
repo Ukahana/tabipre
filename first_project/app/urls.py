@@ -54,7 +54,7 @@ from app.views.mypage.link import (
 from app.views.mypage.account_edit import AccountEditView
 from app.views.mypage.password_change import CustomPasswordChangeView
 from app.views.mypage.favorites_edit import FavoritesEditView
-
+from app.views.old_travel.link import create_link
 
 
 app_name = 'app'
@@ -89,9 +89,11 @@ urlpatterns = [
     path("item/edit/<int:item_id>/", edit_item, name="edit_item"),
     # 旅行情報を削除
     path('old_template/<int:template_id>/delete/',delete_template,name='delete_template'),
+    # リンクの作成
+    # 共有リンク
+    path("travel/<int:travel_id>/link/", create_link, name="travel_link"),
     path("item/<int:item_id>/toggle/", toggle_item_checked, name="toggle_item_checked"),
     path("travel/<int:travel_id>/uncheck_all/", travel_uncheck_all, name="travel_uncheck_all"),
-    path("travel/<int:travel_id>/link/", create_link, name="travel_link"),
     path("travel/<int:travel_id>/old_edit1/", old_travel_edit1, name="old_travel_edit1"),
     path("travel/<int:travel_id>/old_edit2/", old_travel_edit2, name="old_travel_edit2"),
     path('template/create/', TemplateCreateView, name='template_create'),

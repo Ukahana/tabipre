@@ -1,0 +1,26 @@
+<!-- モーダル -->
+<div class="modal fade" id="createdModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">共有リンクが作成されました</h5>
+      </div>
+
+      <div class="modal-body">
+        <p>以下のリンクをコピーして共有できます。</p>
+
+        <input type="text" id="share_url" value="{{ share_url }}" readonly class="form-control mb-2">
+
+        <button class="btn btn-primary w-100" id="copy_btn">コピー</button>
+      </div>
+
+      <div class="modal-footer">
+         <a href="{% url 'app:travel_detail' travel.id %}" class="btn btn-secondary">
+           旅行詳細へ戻る
+         </a>
+      </div>
+
+    </div>
+  </div>
+</div>

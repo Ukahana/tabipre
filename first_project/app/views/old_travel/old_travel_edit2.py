@@ -48,7 +48,7 @@ def old_travel_edit2(request, travel_id):
             if "edit_travel" in request.session:
                 del request.session["edit_travel"]
 
-            return redirect("app:old_travel_edit2", travel.travel_info_id)
+            return redirect("app:home")
 
     else:
         form = TravelStep2Form(instance=travel)

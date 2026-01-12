@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'tabipre/css/create_link.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+
+  <h3 class="mb-3">共有リンクの作成</h3>
+
+  <form method="post">
+    {% csrf_token %}
+
+    <!-- 権限設定 -->
+    <div class="mb-4">
+      <label class="form-label fw-bold">権限の設定</label>
+      {{ form.permission_type }}
+      <div class="form-text">
+        ・閲覧のみ：他の人は見るだけで編集できません<br>
+        ・編集可能：他の人も内容を変更できます
+      </div>
+    </div>
+
+    <!-- 有効期限設定 -->
+    <div class="mb-4">
+      <label class="form-label fw-bold">有効期限の設定</label>
+
+      <div class="form-check">
+        <label class="form-check-label">
+          <input type="radio" name="expiration_type" value="0" class="form-check-input" required>
+          1か月間有効：
+          <span id="label_one_month" class="text-muted"></span>
+        </label>
+      </div>
+
+      <div class="form-check">
+        <label class="form-check-label">
+          <input type="radio" name="expiration_type" value="1" class="form-check-input" required>
+          旅行終了翌日まで：
+          <span id="label_after_trip" class="text-muted"></span>
+        </label>
+      </div>
+
+      <div class="expire-row">
+         <label class="expire-label">
+           <input type="radio" name="expiration_type" value="2" class="form-check-input">
+         入力して設定する:
+         </label>
+
+         <div id="date_input_wrapper" class="mt-2" style="display:none;">
+          {{ form.expiration_date }}
+         </div>
+      </div>
+
+      <!-- 旅行終了日（JS用） -->
+      <input type="hidden" id="trip_end_date" value="{{ next_day|date:'Y-m-d' }}">
+    </div>
+
+    <button type="submit" class="btn btn-primary w-100">リンクを発行</button>
+  </form>
+
+  <div class="mt-3 text-center">
+    <a href="{% url 'app:travel_detail' template.travel_info.travel_info_id %}" class="text-secondary">
+      キャンセル
+    </a>
+  </div>
+
+</div>
+
+{% if link %}
+    {% include "old_travel/modal/link_modal.html" %}
+{% endif %}
+
+<script>
+  window.SHOW_MODAL = {{ show_modal|yesno:"true,false" }};
+</script>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'tabipre/js/old_travel/create_link.js' %}"></script>
+{% endblock %}
