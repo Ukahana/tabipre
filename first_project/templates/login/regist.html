@@ -3,11 +3,11 @@
 
 {% block extra_css %}
 {{ block.super }}
-<link rel="stylesheet" href="{% static 'tabipre/login.css' %}">
+<link rel="stylesheet" href="{% static 'tabipre/css/login.css' %}">
 {% endblock %}
 {% block content %}
   <div class="container mt-4">
-    <h1 class="mb-4">新規アカウント登録</h1>
+    <h1 class="mb-5">新規アカウント登録</h1>
 
     <form method="POST" novalidate>
         {% csrf_token %}
@@ -58,17 +58,16 @@
         </div>
 
         {% comment %} パスワード条件文 {% endcomment %}
-        <div class="mt-3">
+        <div class="statement mt-3">
             <p>・10文字以上</p>
             <p>・半角の英数字を含む</p>
             <p>・大文字小文字を含む</p>
         </div>
 
-    <input type="submit" value="ユーザー登録"class="btn btn-primary mt-3">
+    <input type="submit" value="登録"class="btn btn-primary mt-3">
    </form>
-    <p class="mt-2">
-        <a href="{% url 'app:user_login' %}">ログイン画面</a>
+    <p class="link mt-2">
+        <a href="{% url 'app:login' %}">ログイン画面はこちら</a>
     </p>
 </div>
 {% endblock%}
-{% comment %} 新規アカウント登録画面 {% endcomment %}

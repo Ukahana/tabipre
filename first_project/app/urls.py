@@ -1,12 +1,14 @@
 from django.urls import path
 
+from django.contrib.auth import logout
+from django.shortcuts import redirect
+
 # auth
 from app.views.auth import (
     RegistUserView,
     UserLoginView,
     PasswordResetMailView,
 )
-
 
 # home
 from app.views.home import HomeView
@@ -54,15 +56,18 @@ from app.views.mypage.link import (
 from app.views.mypage.account_edit import AccountEditView
 from app.views.mypage.password_change import CustomPasswordChangeView
 from app.views.mypage.favorites_edit import FavoritesEditView
-from app.views.old_travel.link import create_link
+from app.views.old_travel.link import create_link,share_view
 
+def user_logout(request):
+    logout(request)
+    return redirect('app:login')
 
 app_name = 'app'
 urlpatterns = [
     # ログイン
-    path('regist/',RegistUserView.as_view(),name='regist'),
-    path('',UserLoginView.as_view(),name='user_login'),
-    path('login/',UserLoginView.as_view(),name='user_login'),
+    path('logout/', user_logout, name='logout'),
+    path('', UserLoginView.as_view(), name='login'),
+    path('regist/', RegistUserView.as_view(), name='regist'),
     path('password_reset/',PasswordResetMailView.as_view(),name='password_reset'),
     
     # ホーム
@@ -92,6 +97,7 @@ urlpatterns = [
     # リンクの作成
     # 共有リンク
     path("travel/<int:travel_id>/link/", create_link, name="travel_link"),
+    path("share/<str:token>/", share_view, name="share_view"),
     path("item/<int:item_id>/toggle/", toggle_item_checked, name="toggle_item_checked"),
     path("travel/<int:travel_id>/uncheck_all/", travel_uncheck_all, name="travel_uncheck_all"),
     path("travel/<int:travel_id>/old_edit1/", old_travel_edit1, name="old_travel_edit1"),

@@ -1,4 +1,3 @@
-# forms.py
 from django import forms
 from ..models import Link
 
@@ -15,6 +14,10 @@ class LinkForm(forms.ModelForm):
             "expiration_type": forms.RadioSelect,
             "expiration_date": forms.DateInput(attrs={"type": "date"}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["expiration_date"].required = False
 
     def clean(self):
         cleaned_data = super().clean()

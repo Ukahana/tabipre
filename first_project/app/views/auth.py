@@ -38,7 +38,7 @@ class PasswordResetMailView(PasswordResetView):
     # ここから
     email_template_name = 'login/password_reset_email.html'
     subject_template_name = 'login/password_reset_subject.txt'
-    success_url = reverse_lazy('app:user_login')
+    success_url = reverse_lazy('app:login')
 
     def form_valid(self, form):
         # 成功時

@@ -16,7 +16,15 @@ window.onload = function () {
 
   function updateExpiration() {
     const type = document.querySelector('input[name="expiration_type"]:checked')?.value;
-    dateInputWrapper.style.display = type === "2" ? "block" : "none";
+    const dateInput = document.getElementById("id_expiration_date");
+
+    if (type === "2") {
+      dateInputWrapper.style.display = "block";
+      dateInput.required = true;
+    } else {
+      dateInputWrapper.style.display = "none";
+      dateInput.required = false;
+    }
   }
 
   document.querySelectorAll('input[name="expiration_type"]').forEach(r => {
@@ -26,20 +34,25 @@ window.onload = function () {
   updateLabels();
   updateExpiration();
 
-  // ★ モーダル処理（window.onload 内で直接実行）
+  // ★ モーダル処理
   if (window.SHOW_MODAL) {
-    const modal = new bootstrap.Modal(document.getElementById("createdModal"));
-    modal.show();
+    const modalEl = document.getElementById("createdModal");
+    if (modalEl) {
+      const modal = new bootstrap.Modal(modalEl);
+      modal.show();
 
-    const copyBtn = document.getElementById("copy_btn");
-    copyBtn.addEventListener("click", async function () {
-      const input = document.getElementById("share_url");
-      try {
-        await navigator.clipboard.writeText(input.value);
-        alert("コピーしました");
-      } catch (err) {
-        alert("コピーに失敗しました");
+      const copyBtn = document.getElementById("copy_btn");
+      if (copyBtn) {
+        copyBtn.addEventListener("click", async function () {
+          const input = document.getElementById("share_url");
+          try {
+            await navigator.clipboard.writeText(input.value);
+            alert("コピーしました");
+          } catch (err) {
+            alert("コピーに失敗しました");
+          }
+        });
       }
-    });
+    }
   }
 };

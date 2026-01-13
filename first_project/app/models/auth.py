@@ -76,4 +76,4 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     def get_absolute_url(self):
-        return reverse_lazy('app:user_login')
+        return reverse_lazy('app:login')

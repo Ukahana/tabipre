@@ -8,7 +8,7 @@ from..models .template import TravelItem
 
 class HomeView(LoginRequiredMixin, TemplateView):
     template_name = "home/home.html"
-    login_url = "/login/"  # ログインページのURLに合わせて変更
+    login_url = "/"  
 
     def get(self, request, *args, **kwargs):
         keyword = request.GET.get("keyword", "")

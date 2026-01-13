@@ -33,16 +33,18 @@ def create_link(request, travel_id):
             link.save()
 
             # モーダル用の共有URL
-            share_url = request.build_absolute_uri(f"/share/{link.share_token}/")
+            share_url = request.build_absolute_uri(
+                f"/share/{link.share_token}/"
+            )
 
-            # ★ redirect しない → モーダルを表示するため
+            # モーダルを表示するために redirect しない
             return render(request, "old_travel/create_link.html", {
-                "form": LinkForm(),          # 空フォームに戻す
+                "form": LinkForm(),          # 空フォーム
                 "template": template,
                 "travel": travel,
                 "next_day": next_day,
-                "link": link,                # ★ モーダル用
-                "share_url": share_url,      # ★ モーダル用
+                "link": link,
+                "share_url": share_url,
                 "show_modal": True,          # ★ モーダル表示フラグ
             })
 
@@ -55,5 +57,20 @@ def create_link(request, travel_id):
         "template": template,
         "travel": travel,
         "next_day": next_day,
-        "show_modal": False,   # ← ★ これが絶対必要！
+        "show_modal": False,
+    })
+
+
+# 共有リンクの閲覧ページ
+def share_view(request, token):
+    link = get_object_or_404(Link, share_token=token)
+
+    # 閲覧 or 編集の権限チェックなど
+    template = link.template
+    travel = template.travel_info
+
+    return render(request, "share/share_page.html", {
+        "link": link,
+        "template": template,
+        "travel": travel,
     })

@@ -1,0 +1,87 @@
+/* 全体の背景色・フォント */
+.app-frame {
+    background: #f5ebddff;
+    font-family: "Arial","Helvetica", "sans-serif";
+    color: #5c3a3a;
+}
+
+/* タイトル*/
+h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* フォームの文字サイズ */
+form p label {
+    font-size: 1.1rem;
+}
+
+/* ログインボタン */
+.btn-primary {
+    background-color: #4a90e2;
+    border: none;
+    font-size: 1.2rem;
+    padding: 10px;
+}
+
+.btn-primary:hover {
+    background-color: #3f7fbf;
+}
+
+/* エラー表示 */
+.errorlist {
+    color: red;
+    font-weight: bold;
+    margin-top: 5px;
+}
+
+/* 入力欄を揃える */
+form input {
+    border: 1px solid #ccc;
+    padding: 8px;
+    width: 100%;
+    background-color: #ffffff; 
+    box-sizing: border-box;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    color: #000;
+}
+
+/* フォーカス時 */
+form input:focus {
+    border-color: #4a90e2; 
+    box-shadow: 0 0 8px rgba(74, 144, 226, 0.55);
+    border-width: 1.5px;    
+    outline: none;
+}
+
+/* Chrome / Safari の autofill の青背景を消す */
+input:-webkit-autofill {
+    box-shadow: 0 0 0 1000px #fff inset !important; /* 入力後の背景を白のままに */
+    -webkit-text-fill-color: #5c3a3a !important;   /* 文字色をあなたのテーマに */
+}
+/* ラベルと入力欄の間隔 */
+form label {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 1.1rem;
+}
+/* リンクの色 */
+a {
+    color: #000;
+    text-decoration: underline;
+}
+
+a:hover {
+    color: #3e2a2a;
+}
+
+.link {
+    text-align: center;
+    font-size: 15px;
+}
+
+.statement {
+    color: #999999;
+    font-size: 15px;
+}
