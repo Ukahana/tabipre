@@ -3,25 +3,41 @@
 
 {% block extra_css %}
 {{ block.super }}
+<link rel="stylesheet" href="{% static 'tabipre/css/list_link.css' %}">
 {% endblock %}
 {% block content %}
 <div class="container mt-4">
 
-    <h2 class="mb-4 text-center">共有リンクの設定</h2>
+    <h2 class="mb-4 sub-title">共有リンクの設定</h2>
 
     {% if links %}
         <ul class="list-group mb-4">
             {% for link in links %}
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <a href="#" 
-                       class="text-decoration-none"
+                <li class="list-group-item">
+
+                    <a href="#"
+                       class="text-decoration-none d-block"
                        data-bs-toggle="modal"
                        data-bs-target="#shareLinkModal"
                        data-link-id="{{ link.id }}"
-                       data-url="{{ link.url }}"
-                       data-permission="{{ link.permission }}">
-                        {{ link.url }}
+                       data-url="/share/{{ link.share_token }}/"
+                       data-permission="{{ link.permission_type }}"
+                       data-expiration="{{ link.expiration_date }}"
+                       data-title="{{ link.template.travel_info.travel_title }}"
+                    >
+
+                        <!-- 旅行タイトル -->
+                        <div class="fw-bold fs-6">
+                            {{ link.template.travel_info.travel_title }}
+                        </div>
+
+                        <!-- 有効期限 -->
+                        <div class="text-muted small mt-1">
+                            有効期限：{{ link.expiration_date }}まで
+                        </div>
+
                     </a>
+
                 </li>
             {% endfor %}
         </ul>
@@ -30,7 +46,7 @@
     {% endif %}
 
     <div class="text-center mb-5">
-        <a href="{% url 'app:mypage' %}" class="text-decoration-none">
+        <a href="{% url 'app:mypage' %}" class="text-link">
             マイページへ戻る
         </a>
     </div>
@@ -38,7 +54,6 @@
 </div>
 
 {% include 'mypage/modal/share_link_modal.html' %}
-
 <script src="{% static 'tabipre/js/mypage/share_modal.js' %}"></script>
 
 {% endblock %}

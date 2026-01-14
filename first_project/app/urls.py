@@ -83,6 +83,22 @@ urlpatterns = [
     path("autocomplete/item/", autocomplete_item, name="autocomplete_item"),
     path('template/<int:template_id>/old_copy/',old_template_copy,name='old_template_copy'),
 
+    # マイページ
+    path('mypage/', mypage, name='mypage'),
+    # お気に入り
+    path('favorites/',favorites_list, name='favorites_list'),
+    path('favorites/edit/', FavoritesEditView.as_view(), name='favorites_edit'),
+
+    # 共有リンク
+    path('share/settings/', share_settings, name='share_settings'),
+    path('share/<int:link_id>/update/', update_share_link, name='share_update'),
+    path('share/<int:link_id>/delete/', delete_share_link, name='share_delete'),
+    # アカウント情報変更
+    path('account/edit/', AccountEditView.as_view(),  name='account_edit'),
+    # パスワード変更
+    path('account/password_change/', CustomPasswordChangeView.as_view(), name='password_change'),
+
+
     # 過去テンプレート編集
     # 旅行詳細
     path("travel/<int:travel_id>/",travel_detail, name="travel_detail"),
@@ -105,20 +121,6 @@ urlpatterns = [
     path('template/create/', TemplateCreateView, name='template_create'),
     path('travel/copy/modal/', TravelCopyModalView, name='travel_copy_modal'),
     
-    # マイページ
-    path('mypage/', mypage, name='mypage'),
-    # お気に入り
-    path('favorites/',favorites_list, name='favorites_list'),
-    path('favorites/edit/', FavoritesEditView.as_view(), name='favorites_edit'),
-
-    # 共有リンク
-    path('share/settings/', share_settings, name='share_settings'),
-    path('share/<int:link_id>/update/', update_share_link, name='share_update'),
-    path('share/<int:link_id>/delete/', delete_share_link, name='share_delete'),
-    # アカウント情報変更
-    path('account/edit/', AccountEditView.as_view(),  name='account_edit'),
-    # パスワード変更
-    path('account/password_change/', CustomPasswordChangeView.as_view(), name='password_change'),
 
 
 ]

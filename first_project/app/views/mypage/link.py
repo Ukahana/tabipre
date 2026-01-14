@@ -23,7 +23,7 @@ def update_share_link(request, link_id):
     link = get_object_or_404(Link, id=link_id, user=request.user)
 
     data = json.loads(request.body)
-    permission_type = data.get("permission_type")
+    permission_type = data.get("permission")
 
     # 0 or 1 のときだけ更新
     if permission_type in ["0", "1"]:

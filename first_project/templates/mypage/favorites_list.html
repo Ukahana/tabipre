@@ -10,7 +10,7 @@
 {% block content %}
 <div class="container mt-4">
 
-    <h2 class="mb-4 text-center">お気に入りリスト</h2>
+    <h2 class="mb-5 sub-title">お気に入りリスト</h2>
 
     {% if favorite and favorite.items.all %}
         <ul class="list-group mb-4">
@@ -30,7 +30,7 @@
 
     <div class="text-center mb-5">
         <a href="{% url 'app:mypage' %}" class="back-link">
-            キャンセル
+            戻る
         </a>
     </div>
 

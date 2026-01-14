@@ -1,13 +1,8 @@
 /* 背景色 */
-body {
+.app-frame {
     background-color: #fdf6f0ff;
 }
 
-/* タイトル */
-h2 {
-    color: #5c3a3a;
-    font-weight: bold;
-}
 
 /* リスト項目の装飾を消してシンプルに */
 .list-group-item {
@@ -18,7 +13,7 @@ h2 {
     font-size: 1rem;
 }
 
-/* 編集ボタン */
+/* お気に入りリストの編集ボタン */
 .favorites_list .btn-primary {
     background-color: #0b5394ff;
     border-color: #0b5394ff;
@@ -37,6 +32,19 @@ select {
     box-shadow: none !important;
     outline: none !important;
 }
+
+/* 共通ボタンスタイル */
+.app-btn {
+    display: block;
+    padding: 14px 20px;
+    font-size: 1.1rem;
+    text-align: center;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+}
+
 
 /* リンク（グレーで下線） */
 .back-link {
@@ -59,4 +67,13 @@ select {
     background-color: #007c8aff;
     border-color: #007c8aff;
 }
-/* 
+/* 追加ボタン */
+#add-item {
+    background-color: #5dade2; 
+    color: #fff;
+    border: none;
+}
+
+#add-item:hover {
+    background-color: #4a90c2; 
+}

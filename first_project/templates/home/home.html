@@ -3,7 +3,7 @@
 
 {% block extra_css %}
 {{ block.super }}
-{% comment %} <link rel="stylesheet" href="{% static 'tabipre/home.css' %}"> {% endcomment %}
+<link rel="stylesheet" href="{% static 'tabipre/css/home.css' %}">
 {% endblock %}
 {% block content %}
 <div class="container mt-4 mb-5">
@@ -17,12 +17,25 @@
 
     <!-- 🏷 交通手段タグ（横スクロール） -->
     <div class="d-flex overflow-auto mb-3" style="white-space: nowrap;">
+
+        <!-- 国内 / 海外タグ -->
+        <a href="?travel_type=0"
+                class="badge rounded-pill bg-primary text-white me-2 p-2">
+            国内
+        </a>
+
+        <a href="?travel_type=1"
+                class="badge rounded-pill bg-primary text-white me-2 p-2">
+            海外
+        </a>
+
         {% for tag in tags %}
             <a href="?transport={{ tag.transport_type }}"
                class="badge rounded-pill bg-secondary text-white me-2 p-2">
                 {{ tag.get_transport_type_display }}
             </a>
         {% endfor %}
+
     </div>
 
     <!-- 🔄 並び替えボタン -->
