@@ -47,6 +47,10 @@
     text-align: center;
 }
 
+.modal-title {
+    font-size: 18px;
+    text-align: center;
+}
 
 .link-text {
     display: block;
@@ -105,3 +109,14 @@
     background-color: #e89a3a; 
 }
 
+
+   /* 戻るリンク */
+.back-link {
+    color: #6c757d;
+    text-decoration: underline;
+    font-weight: 500;
+}
+
+.back-link:hover {
+    color: #5a6268;
+}

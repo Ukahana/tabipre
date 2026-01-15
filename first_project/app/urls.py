@@ -92,8 +92,7 @@ urlpatterns = [
     # 共有リンク
     path('share/settings/', share_settings, name='share_settings'),
     path('share/<int:link_id>/update/', update_share_link, name='share_update'),
-    path('share/<int:link_id>/delete/', delete_share_link, name='share_delete'),
-    # アカウント情報変更
+    path('share/<int:link_id>/delete/', delete_share_link, name='delete_share_link'),   
     path('account/edit/', AccountEditView.as_view(),  name='account_edit'),
     # パスワード変更
     path('account/password_change/', CustomPasswordChangeView.as_view(), name='password_change'),

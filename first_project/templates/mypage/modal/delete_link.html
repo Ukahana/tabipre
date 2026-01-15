@@ -1,0 +1,21 @@
+<!-- リンク削除確認モーダル -->
+<div class="modal fade" id="deleteLinkModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-body">
+        本当に削除しますか？
+      </div>
+
+      <div class="modal-footer d-flex justify-content-end gap-2">
+        <form method="POST" id="delete-link-form" class="m-0">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger">はい</button>
+        </form>
+
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">いいえ</button>
+      </div>
+
+    </div>
+  </div>
+</div>

@@ -2,45 +2,36 @@
   <div class="modal-dialog">
     <div class="modal-content">
 
-      <!-- モーダルヘッダー -->
-      <div class="modal-header">
-        <h5 class="modal-title">リンクの編集</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-      </div>
 
-      <!-- モーダル本文 -->
       <div class="modal-body">
 
-        <!-- コピー用フォーム -->
-        <label class="form-label">共有リンク</label>
+        <label class="form-label">リンクの編集</label>
         <div class="input-group mb-3">
           <input type="text" id="share-url" class="form-control" readonly>
           <button class="btn btn-outline-secondary" id="copy-btn">コピー</button>
         </div>
 
-        <!-- 権限設定 -->
+        <!-- 権限S設定 -->
         <label class="form-label">リンクの権限</label>
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="permission" value="0" id="perm-view">
-          <label class="form-check-label" for="perm-view">閲覧のみ</label>
+        <div class="permission-group">
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="permission" value="0" id="perm-view">
+            <label class="form-check-label" for="perm-view">閲覧のみ</label>
+          </div>
+
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="permission" value="1" id="perm-edit">
+            <label class="form-check-label" for="perm-edit">編集可能</label>
+          </div>
         </div>
 
-        <div class="form-check">
-          <input class="form-check-input" type="radio" name="permission" value="1" id="perm-edit">
-          <label class="form-check-label" for="perm-edit">編集可能</label>
-        </div>
-
-      </div>
-
-      <!-- モーダルフッター -->
       <div class="modal-footer d-flex justify-content-between">
-
-        <a href="#" id="delete-link" class="text-danger">リンクを削除</a>
 
         <button type="button" class="btn btn-primary" id="save-btn">
           登録
         </button>
-
+        
+        <a href="#" id="delete-link" class="text-danger">リンクを削除</a> 
       </div>
 
     </div>

@@ -22,7 +22,7 @@
                        data-link-id="{{ link.id }}"
                        data-url="/share/{{ link.share_token }}/"
                        data-permission="{{ link.permission_type }}"
-                       data-expiration="{{ link.expiration_date }}"
+                       data-expiration="{{ link.formatted_expiration }}"
                        data-title="{{ link.template.travel_info.travel_title }}"
                     >
 
@@ -33,7 +33,7 @@
 
                         <!-- 有効期限 -->
                         <div class="text-muted small mt-1">
-                            有効期限：{{ link.expiration_date }}まで
+                            有効期限：{{ link.formatted_expiration }}まで
                         </div>
 
                     </a>
@@ -46,7 +46,7 @@
     {% endif %}
 
     <div class="text-center mb-5">
-        <a href="{% url 'app:mypage' %}" class="text-link">
+        <a href="{% url 'app:mypage' %}" class="back-link">
             マイページへ戻る
         </a>
     </div>
@@ -54,6 +54,7 @@
 </div>
 
 {% include 'mypage/modal/share_link_modal.html' %}
+{% include 'mypage/modal/delete_link.html' %}
 <script src="{% static 'tabipre/js/mypage/share_modal.js' %}"></script>
 
 {% endblock %}
