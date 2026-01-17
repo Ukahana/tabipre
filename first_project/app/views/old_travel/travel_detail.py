@@ -5,40 +5,32 @@ from ...models.template import Template, TravelCategory, TravelItem
 
 
 def travel_detail(request, travel_id):
-    travel = get_object_or_404(Travel_info, pk=travel_id)
-    
-    # 最後に作られたテンプレートを探す
-    template = Template.objects.filter(travel_info=travel).order_by('-id').first()
+    travel_info = get_object_or_404(Travel_info, pk=travel_id)
 
+    template = Template.objects.filter(travel_info=travel_info).order_by('-id').first()
 
     if template:
         categories = TravelCategory.objects.filter(template=template)
-
-        # ★ カテゴリごとのチェック数
         for cat in categories:
             cat.checked_count = cat.travelitem_set.filter(item_checked=1).count()
             cat.total_count = cat.travelitem_set.count()
     else:
         categories = []
 
-    # 全体のチェック数
-    items = TravelItem.objects.filter(
-        travel_category__template__travel_info=travel
-    )
+    items = TravelItem.objects.filter(travel_category__template=template)
     total_items = items.count()
     checked_items = items.filter(item_checked=1).count()
 
-    # ステータス判定：home と同じ
     today = timezone.now().date()
-    if travel.end_date < today:
-        travel.status_label = "済"
+    if travel_info.end_date < today:
+        travel_info.status_label = "済"
     elif total_items > 0 and total_items == checked_items:
-        travel.status_label = "完"
+        travel_info.status_label = "完"
     else:
-        travel.status_label = "未"
+        travel_info.status_label = "未"
 
     context = {
-        "travel": travel,
+        "travel_info": travel_info,
         "categories": categories,
         "template": template,
         "total_items": total_items,
@@ -46,7 +38,6 @@ def travel_detail(request, travel_id):
     }
 
     return render(request, "old_travel/travel_detail.html", context)
-
 
 def travel_uncheck_all(request, travel_id):
     TravelItem.objects.filter(

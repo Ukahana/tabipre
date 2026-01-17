@@ -40,7 +40,7 @@
     <span id="label_after_trip" class="text-muted"></span>
 
     <!-- 旅行終了日（JS用） -->
-    <input type="hidden" id="trip_end_date" value="{{ next_day|date:'Y-m-d' }}">
+    <input type="hidden" id="trip_end_date" value="{{ next_day|date:'Y.n.j' }}">
 
     <button type="submit" class="btn btn-primary w-100 mt-3">リンクを発行</button>
   </form>

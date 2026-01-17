@@ -1,0 +1,37 @@
+/* --- すべてのチェックを外すをグレーに --- */
+.uncheck-link {
+    color: #6c757d !important;
+    font-size: 0.9rem;}
+.uncheck-link:hover {
+    color: #5a6268 !important;
+    text-decoration: underline;
+}
+
+/* --- 編集する & 共有リンクへ を両端に配置 --- */
+.edit-button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* --- 未 / 完 / 済 のバッジを大きく --- */
+.status-badge {
+    font-size: 1.1rem;
+    padding: 0.4em 0.7em;
+    border-radius: 0.5rem;
+    font-weight: bold;
+}
+
+/* 色分け */
+.status-m { background: #ffc107; color: #000; } /* 未 */
+.status-k { background: #198754; color: #fff; } /* 完 */
+.status-z { background: #6c757d; color: #fff; } /* 済 */
+
+/* --- 旅行期間の日付を小さく --- */
+.travel-date {
+    font-size: 0.85rem;
+    opacity: 0.8;
+    margin: 0;
+    color: #6c757d;
+}

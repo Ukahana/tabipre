@@ -1,24 +1,46 @@
 <div class="modal fade" id="sortModal" tabindex="-1">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-sm">
         <div class="modal-content">
 
-            <div class="modal-header">
-                <h5 class="modal-title">並び替え</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            <div class="modal-header p-2">
+                <button type="button" class="btn-close ms-auto" data-bs-dismiss="modal"></button>
             </div>
 
-            <div class="modal-body">
-                <a href="?keyword={{ keyword }}&transport={{ request.GET.transport }}&sort=title_asc"
-                   class="btn btn-light w-100 mb-2">タイトル昇順</a>
+            <div class="modal-body sort-modal-body">
+                <form method="get" action="">
+                    <input type="hidden" name="keyword" value="{{ keyword }}">
+                    <input type="hidden" name="transport" value="{{ request.GET.transport }}">
 
-                <a href="?keyword={{ keyword }}&transport={{ request.GET.transport }}&sort=title_desc"
-                   class="btn btn-light w-100 mb-2">タイトル降順</a>
+                    <div class="sort-section">
+                        <p class="sort-label">タイトル名</p>
+                        <div class="radio-group">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="sort" id="titleAsc" value="title_asc">
+                                <label class="form-check-label" for="titleAsc">昇順</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="sort" id="titleDesc" value="title_desc">
+                                <label class="form-check-label" for="titleDesc">降順</label>
+                            </div>
+                        </div>
+                    </div>
 
-                <a href="?keyword={{ keyword }}&transport={{ request.GET.transport }}&sort=date_asc"
-                   class="btn btn-light w-100 mb-2">日付昇順</a>
+                    <div class="sort-section">
+                        <p class="sort-label">日付</p>
+                        <div class="radio-group">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="sort" id="dateAsc" value="date_asc">
+                                <label class="form-check-label" for="dateAsc">昇順</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="sort" id="dateDesc" value="date_desc" checked>
+                                <label class="form-check-label" for="dateDesc">降順</label>
+                            </div>
+                        </div>
+                    </div>
 
-                <a href="?keyword={{ keyword }}&transport={{ request.GET.transport }}&sort=date_desc"
-                   class="btn btn-light w-100 mb-2">日付降順</a>
+                    <button type="submit" class="btn btn-primary sort-submit-btn">並び替え</button>
+                </form>
             </div>
 
         </div>

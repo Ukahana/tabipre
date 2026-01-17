@@ -1,13 +1,11 @@
-/* 全体の背景色・フォント */
+/* 全体の背景色・フォント */ 
 .app-frame {
     background: #ffffff;
-    font-family: "Arial","Helvetica","sans-serif";
+    font-family: "Arial", "Helvetica", "sans-serif";
     color: #5c3a3a;
 }
 
-.search-area {
-    margin-top: 0px; 
-}
+.search-area { margin-top: 0px; }
 
 /* ログインボタン */
 .btn-primary {
@@ -17,9 +15,7 @@
     padding: 10px;
 }
 
-.btn-primary:hover {
-    background-color: #3f7fbf;
-}
+.btn-primary:hover { background-color: #3f7fbf; }
 
 /* エラー表示 */
 .errorlist {
@@ -28,54 +24,212 @@
     margin-top: 5px;
 }
 
-/* 入力欄を揃える */
+/* 入力欄を揃える */ 
 form input {
     border: 1px solid #ccc;
     padding: 8px;
     width: 100%;
-    background-color: #ffffff; 
+    background-color: #ffffff;
     box-sizing: border-box;
     transition: border-color 0.25s ease, box-shadow 0.25s ease;
     color: #000;
 }
 
-/* フォーカス時 */
+/* フォーカス時 */ 
 form input:focus {
-    border-color: #4a90e2; 
+    border-color: #4a90e2;
     box-shadow: 0 0 8px rgba(74, 144, 226, 0.55);
-    border-width: 1.5px;    
+    border-width: 1.5px;
     outline: none;
 }
 
-/* Chrome / Safari の autofill の青背景を消す */
+/* Chrome/Safari autofill対策 */ 
 input:-webkit-autofill {
     background-color: #fff !important;
-    box-shadow: 0 0 0 1000px #fff inset !important; /* 入力後の背景を白のままに */
-    -webkit-text-fill-color: #000 !important;   
+    box-shadow: 0 0 0 1000px #fff inset !important;
+    -webkit-text-fill-color: #000 !important;
 }
-/* ラベルと入力欄の間隔 */
+
+/* ラベルと入力欄の間隔 */ 
 form label {
     display: block;
     margin-bottom: 4px;
     font-size: 1.1rem;
 }
 
-
-/* パスワードの注意 */
+/* パスワードの注意 */ 
 .statement {
     color: #999999;
     font-size: 15px;
 }
 
+/* リンク */ 
 .link {
     text-align: center;
     font-size: 15px;
 }
+
 .link a {
-    color: #5c3a3a; 
+    color: #5c3a3a;
     text-decoration: underline;
 }
 
-.link a:hover {
+.link a:hover { color: #000; }
+
+/* 検索フォーム */ 
+.search-input {
+    height: 35px;
+    width: 85%;
+    padding: 4px 8px;
+    border: 1px solid #ccc;
+}
+
+/* 検索ボタン */ 
+.search-btn {
+    font-size: 16px;
+    background-color: #4a90e2;
+    color: #fff;
+    height: 35px;
+    width: 50px;
+    padding: 4px 6px;
+    line-height: 1;
+    border: 1px solid #595959;
+}
+
+.search-btn:hover {
+    background-color: #3f7fbf;
+    border-color: #3f7fbf;
+}
+
+input[type="text"], button { border-radius: 0; }
+
+/* カード */ 
+.card-body { padding: 4px 25px !important; }
+
+.card-title {
+    margin: 2px 0;
+}
+
+.card-text {
+    margin: 0;
+    font-size: 14px;
+}
+
+/* 並び替えボタン */ 
+.sort-btn-wrapper {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.sort-btn {
+    padding: 4px 10px;
+    font-size: 16px;
+    color: #6c757d;
+}
+
+.sort-btn:hover { color: #5a6268; }
+
+/* ステータスバッジ */ 
+.badge-t {
+    display: inline-block;
+    min-width: 32px;
+    border-radius: 6px;
+    font-size: 20px;
+    padding: 6px 10px;
+    margin-right: -20px;
+    border: 1px solid #595959;
+}
+
+.badge-t.status-mi { background-color: #999999ff; color: #fff; }
+.badge-t.status-kan { background-color: #4285f4ff; color: #fff; }
+.badge-t.status-zumi { background-color: #b6d7a8ff; color: #000; }
+
+/* タグ（国内/海外/交通手段） */ 
+.tag-badge {
+    display: inline-block;
+    background-color: #eeeeeeff;
     color: #000;
+    padding: 2px 8px;
+    border-radius: 5px;
+    font-size: 14px;
+    text-decoration: none;
+    white-space: nowrap;
+    margin-right: 8px;
+    border: 1px solid #ccc;
+}
+
+.tag-badge:hover {
+    background-color: #e0e0e0ff;
+    color: #000;
+}
+
+/* ページネーション全体の中央寄せ */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 24px; /
+}
+
+/* ボタンの基本デザイン */
+.page-link {
+    background-color: #eeeeeeff !important; 
+    color: #000;         
+    border: 1px solid #000 !important; /* 枠線も黒 */
+    padding: 6px 16px;              /* スマホで押しやすいサイズ */
+    border-radius: 8px;              /* 少し丸み */
+    font-size: 16px;                 /* 見やすい文字サイズ */
+}
+
+/* 現在ページの表示（数字部分） */
+.page-item span.page-link {
+    background: #fff !important;  /* ← 白背景 */
+    color: #000 !important;
+    border: none !important;
+    padding: 6px 10px;  /* ← 数字部分も少し余白を広げて見やすく */
+    font-weight: bold;
+    font-size: 16px;
+}
+/* タグの選択状態 */
+.tag-badge.selected {
+    background-color: #ffffff;
+    color: #4a90e2;
+    border-color: #4a90e2;
+    position: relative;
+    padding-left: 22px; /* × のスペース確保 */
+}
+
+/* × マーク（疑似要素） */
+.tag-badge.selected::before {
+    content: "×";
+    position: absolute;
+    left: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-weight: bold;
+    color: #4a90e2;
+}
+
+.sort-modal-body {
+    text-align: center;
+}
+
+.radio-group {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.radio-group .form-check {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* 並び替えボタンの横幅を小さく */
+.sort-submit-btn {
+    width: 120px;   /* 好きな幅に調整できる */
+    margin: 0 auto;
+    display: block;
 }

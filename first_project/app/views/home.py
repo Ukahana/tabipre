@@ -12,8 +12,8 @@ class HomeView(LoginRequiredMixin, TemplateView):
 
     def get(self, request, *args, **kwargs):
         keyword = request.GET.get("keyword", "")
-        travel_type = request.GET.get("travel_type", "")
-        transport_filter = request.GET.get("transport", "")
+        travel_type = request.GET.getlist("travel_type")
+        transport_filter = [t for t in request.GET.getlist("transport") if t]
         sort = request.GET.get("sort", "")
         
         travels = Travel_info.objects.filter(user=request.user)
@@ -22,10 +22,10 @@ class HomeView(LoginRequiredMixin, TemplateView):
             travels = travels.filter(travel_title__icontains=keyword)
  
         if travel_type:                                     
-            travels = travels.filter(location=travel_type)
+            travels = travels.filter(location__in=travel_type)
 
         if transport_filter:
-            travels = travels.filter(transport__transport_type=transport_filter)
+            travels = travels.filter(transport__transport_type__in=transport_filter)
 
         if sort == "title_asc":
             travels = travels.order_by("travel_title")
@@ -64,6 +64,6 @@ class HomeView(LoginRequiredMixin, TemplateView):
             "keyword": keyword,
             "tags": tags,
             "travel_type": travel_type,  
-            "transport_filter": transport_filter,
+            "transport": transport_filter,
             "sort": sort,
         })

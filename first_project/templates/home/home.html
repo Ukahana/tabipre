@@ -5,98 +5,118 @@
 {{ block.super }}
 <link rel="stylesheet" href="{% static 'tabipre/css/home.css' %}">
 {% endblock %}
-{% block content %}
-<div class="container mt-4 mb-5">
 
-    <!-- 🔍 キーワード検索 -->
-    <form method="GET" class="d-flex mb-3">
-        <input type="text" name="keyword" value="{{ keyword }}" class="form-control me-2"
-               placeholder="キーワード検索">
-        <button class="btn btn-primary">検索</button>
+{% block content %}
+<div class="container mt-3">
+
+    <!-- 🔍 キーワード検索フォーム -->
+    <form method="GET" id="searchForm" class="d-flex mb-3">
+        <input type="text" name="keyword" value="{{ keyword }}"
+               class="form-control me-2 search-input"
+               placeholder="キーワードを検索">
+        <button class="search-btn">検索</button>
     </form>
 
-    <!-- 🏷 交通手段タグ（横スクロール） -->
-    <div class="d-flex overflow-auto mb-3" style="white-space: nowrap;">
+    <!-- 🏷 タグ（スマホ向け横スクロール） -->
+    <div class="d-flex flex-row flex-nowrap overflow-auto mb-2">
+        <!-- 国内 / 海外 -->
+        <a href="#"
+           class="tag-badge {% if '0' in travel_type %}selected{% endif %}"
+           data-type="travel_type" data-value="0">国内</a>
 
-        <!-- 国内 / 海外タグ -->
-        <a href="?travel_type=0"
-                class="badge rounded-pill bg-primary text-white me-2 p-2">
-            国内
-        </a>
+        <a href="#"
+           class="tag-badge {% if '1' in travel_type %}selected{% endif %}"
+           data-type="travel_type" data-value="1">海外</a>
 
-        <a href="?travel_type=1"
-                class="badge rounded-pill bg-primary text-white me-2 p-2">
-            海外
-        </a>
-
+        <!-- 交通手段タグ -->
         {% for tag in tags %}
-            <a href="?transport={{ tag.transport_type }}"
-               class="badge rounded-pill bg-secondary text-white me-2 p-2">
+            <a href="#"
+               class="tag-badge {% if tag.transport_type|stringformat:'s' in transport %}selected{% endif %}"
+               data-type="transport"
+               data-value="{{ tag.transport_type }}">
                 {{ tag.get_transport_type_display }}
             </a>
         {% endfor %}
-
     </div>
 
     <!-- 🔄 並び替えボタン -->
-    <button class="btn btn-outline-secondary mb-3" data-bs-toggle="modal" data-bs-target="#sortModal">
-        並び替え
-    </button>
+    <div class="sort-btn-wrapper mb-2">
+        <a href="#" class="sort-btn" data-bs-toggle="modal" data-bs-target="#sortModal">
+            並び替え
+        </a>
+    </div>
 
-    <!--  並び替えモーダル -->
     {% include "home/modal/sort_home.html" %}
 
-
-    <!-- 📄 旅行一覧（カード表示） -->
+    <!-- 📄 旅行一覧 -->
     {% for t in travels %}
-    <a href="{% url 'app:travel_detail' t.travel_info_id %}" class="text-decoration-none text-dark">
-        <div class="card mb-3 shadow-sm">
-            <div class="card-body d-flex">
-              <div class="me-3 d-flex align-items-start">
-                  {% if t.status == "未" %}
-                       <span class="badge bg-warning text-dark">未</span>
-                  {% elif t.status == "完" %}
-                       <span class="badge bg-success">完</span>
-                  {% elif t.status == "済" %}
-                       <span class="badge bg-secondary">済</span>
-                  {% endif %}
-              </div>
-              <div class="flex-grow-1">
-                <h5 class="card-title">{{ t.travel_title }}</h5>
+        <a href="{% url 'app:travel_detail' t.travel_info_id %}" class="text-decoration-none text-dark">
+            <div class="card mb-2 shadow-sm">
+                <div class="card-body d-flex align-items-center">
 
-                <p class="card-text text-muted mb-1">
-                    {{ t.start_date|date:"Y-m-d" }} 〜 {{ t.end_date|date:"Y-m-d" }}
-                </p>
+                    <div class="align-items-center">
+                        {% if t.status == "未" %}
+                            <span class="badge-t status-mi">未</span>
+                        {% elif t.status == "完" %}
+                            <span class="badge-t status-kan">完</span>
+                        {% elif t.status == "済" %}
+                            <span class="badge-t status-zumi">済</span>
+                        {% endif %}
+                    </div>
 
-                </div>         
-               </div>
+                    <div class="flex-grow-1 d-flex flex-column justify-content-center text-center">
+                        <h5 class="card-title">{{ t.travel_title }}</h5>
+                        <p class="card-text text-muted">
+                            {{ t.start_date|date:"Y.n.j" }} 〜 {{ t.end_date|date:"Y.n.j" }}
+                        </p>
+                    </div>
 
+                </div>
             </div>
         </a>
     {% empty %}
         <p class="text-center text-muted">旅行がありません</p>
     {% endfor %}
 
-    <!-- ⏭ ページネーション -->
+    <!-- ⏭ ページネーション（前へ・次へが不要でも位置がズレない完全版） -->
     <div class="d-flex justify-content-center mt-4">
         <nav>
             <ul class="pagination">
 
+                <!-- 前へ -->
                 {% if travels.has_previous %}
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ travels.previous_page_number }}">前へ</a>
+                        <a class="page-link"
+                           href="?page={{ travels.previous_page_number }}&keyword={{ keyword }}&sort={{ sort }}">
+                           前へ
+                        </a>
+                    </li>
+                {% else %}
+                    <!-- 枠だけ残す（透明） -->
+                    <li class="page-item disabled">
+                        <span class="page-link" style="visibility: hidden;">前へ</span>
                     </li>
                 {% endif %}
 
-                <li class="page-item disabled">
+                <!-- 現在ページ -->
+                <li class="page-item active">
                     <span class="page-link">
                         {{ travels.number }} / {{ travels.paginator.num_pages }}
                     </span>
                 </li>
 
+                <!-- 次へ -->
                 {% if travels.has_next %}
                     <li class="page-item">
-                        <a class="page-link" href="?page={{ travels.next_page_number }}">次へ</a>
+                        <a class="page-link"
+                           href="?page={{ travels.next_page_number }}&keyword={{ keyword }}&sort={{ sort }}">
+                           次へ
+                        </a>
+                    </li>
+                {% else %}
+                    <!-- 枠だけ残す（透明） -->
+                    <li class="page-item disabled">
+                        <span class="page-link" style="visibility: hidden;">次へ</span>
                     </li>
                 {% endif %}
 
@@ -105,7 +125,8 @@
     </div>
 
 </div>
+{% endblock %}
 
-
-
-{% endblock%}
+{% block extra_js %}
+<script src="{% static 'tabipre/js/home.js' %}"></script>
+{% endblock %}
