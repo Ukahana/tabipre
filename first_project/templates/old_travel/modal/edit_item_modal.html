@@ -1,38 +1,33 @@
 <div class="modal fade" id="editItemModal" tabindex="-1">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-sm">
     <div class="modal-content">
 
-      <div class="modal-header">
-        <h5 class="modal-title">編集</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      <!-- ヘッダー中央揃え＆右上に閉じるボタン -->
+      <div class="modal-header border-0 justify-content-center position-relative">
+        <h5 class="modal-title text-center w-100">編集</h5>
+        <button type="button" class="btn-close position-absolute end-0 me-3" data-bs-dismiss="modal"></button>
       </div>
 
       <form method="POST" id="editItemForm">
         {% csrf_token %}
 
         <div class="modal-body">
-          <div class="d-flex align-items-center">
-            <input type="text" name="item_name" class="form-control me-2">
-            <button type="submit" name="delete" value="1"
-                    class="btn btn-outline-danger"
-                    style="font-weight:bold;">×</button>
+
+          <!-- 入力欄＋クリアボタン -->
+          <div class="position-relative">
+            <input type="text" name="item_name" id="editItemInput" class="form-control border-0 border-bottom" placeholder="項目を入力">
+            <button type="button" class="btn position-absolute end-0 top-50 translate-middle-y px-2"
+                    onclick="document.getElementById('editItemInput').value = ''"
+                    style="font-size: 18px; color: #999;">
+              ×
+            </button>
           </div>
+
         </div>
 
-        <!-- ⭐ ここを縦並びに変更 -->
-        <div class="modal-footer d-flex flex-column align-items-start">
-
-          <!-- 登録ボタン -->
-          <button type="submit" class="btn btn-primary w-100 mb-2">
-            登録
-          </button>
-
-          <!-- キャンセルをリンクに変更 -->
-          <a href="#" class="text-secondary" data-bs-dismiss="modal"
-             style="text-decoration: underline;">
-            キャンセル
-          </a>
-
+        <div class="modal-footer d-flex flex-column align-items-center border-0">
+          <button type="submit" class="btn btn-primary mb-2">登録</button>
+          <a href="#" class="text-secondary" data-bs-dismiss="modal" style="text-decoration: underline;">キャンセル</a>
         </div>
 
       </form>

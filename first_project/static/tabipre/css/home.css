@@ -114,19 +114,7 @@ input[type="text"], button { border-radius: 0; }
 }
 .sort-btn:hover { color: #5a6268; }
 
-/* ステータスバッジ */
-.badge-t {
-    display: inline-block;
-    min-width: 32px;
-    border-radius: 6px;
-    font-size: 20px;
-    padding: 6px 10px;
-    margin-right: -20px;
-    border: 1px solid #595959;
-}
-.badge-t.status-mi { background-color: #999; color: #fff; }
-.badge-t.status-kan { background-color: #4285f4; color: #fff; }
-.badge-t.status-zumi { background-color: #b6d7a8; color: #000; }
+adge-t.status-zumi { background-color: #b6d7a8; color: #000; }
 
 /* タグ */
 .tag-badge {
@@ -139,10 +127,12 @@ input[type="text"], button { border-radius: 0; }
     white-space: nowrap;
     margin-right: 8px;
     border: 1px solid #ccc;
+    text-decoration: none;
 }
 .tag-badge:hover {
     background-color: #e0e0e0;
     color: #000;
+    text-decoration: none;
 }
 
 /* タグ選択状態 */

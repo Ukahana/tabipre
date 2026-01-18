@@ -1,0 +1,32 @@
+<div class="card mb-3 shadow-sm">
+    <div class="card-body">
+
+        <div class="d-flex align-items-start">
+
+            {% if travel_info.status_label == "未" %}
+                <span class="badge-t status-mi status-vertical">未</span>
+            {% elif travel_info.status_label == "完" %}
+                <span class="badge-t status-kan status-vertical">完</span>
+            {% elif travel_info.status_label == "済" %}
+                <span class="badge-t status-zumi status-vertical">済</span>
+            {% endif %}
+
+            <div class="ms-2 flex-grow-1">
+
+                <h4 class="mb-1">{{ travel_info.travel_title }}</h4>
+
+                <div class="d-flex justify-content-between align-items-center">
+                    <p class="travel-date mb-0">
+                        {{ travel_info.start_date|date:"Y.n.j" }} ～ {{ travel_info.end_date|date:"Y.n.j" }}
+                    </p>
+
+                    <span class="badge bg-light text-dark">
+                        {{ checked_items }} / {{ total_items }}
+                    </span>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>

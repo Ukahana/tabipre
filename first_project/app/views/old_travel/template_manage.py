@@ -33,14 +33,34 @@ def old_template_edit(request, template_id):
         cat.total_count = items.count()
         cat.checked_count = items.filter(item_checked=TravelItem.ItemChecked.YES).count()
 
+    # ★ 旅行全体のチェック数を追加
+    all_items = TravelItem.objects.filter(travel_category__template=template)
+    checked_items = all_items.filter(item_checked=TravelItem.ItemChecked.YES).count()
+    total_items = all_items.count()
+    
+    # ★ ステータス計算を追加（← これが重要）
+    today = timezone.now().date()
+    if travel.end_date < today:
+       status = "済"
+    elif total_items > 0 and total_items == checked_items:
+        status = "完"
+    else:
+        status = "未"
+
+    travel.status_label = status
+
     context = {
         "template": template,
         "travel": travel,
+        "travel_info": travel,
         "categories": categories,
         "favorite_items": favorite_items,
+        "checked_items": checked_items,   # ← 追加
+        "total_items": total_items,       # ← 追加
     }
 
     return render(request, "old_travel/template_manage.html", context)
+
 
 
 # -------------------------------

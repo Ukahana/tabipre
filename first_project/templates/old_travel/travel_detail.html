@@ -5,37 +5,12 @@
 {{ block.super }}
 <link rel="stylesheet" href="{% static 'tabipre/css/old_template.css' %}">
 {% endblock %}
+
 {% block content %}
 <div class="container mt-0">
 
     <!-- タイトル -->
-    <div class="card mb-3 shadow-sm">
-        <div class="card-body">
-
-            <div class="d-flex align-items-center mb-1">
-                {% if travel_info.status_label == "未" %}
-                    <span class="status-badge status-m">未</span>
-                {% elif travel_info.status_label == "完" %}
-                    <span class="status-badge status-k">完</span>
-                {% elif travel_info.status_label == "済" %}
-                    <span class="status-badge status-z">済</span>
-                {% endif %}
-
-                <h4 class="mb-0">{{ travel_info.travel_title }}</h4>
-            </div>
-
-            <div class="d-flex justify-content-between align-items-center">
-                <p class="travel-date">
-                    {{ travel_info.start_date|date:"Y/m/d" }} 〜 {{ travel_info.end_date|date:"Y/m/d" }}
-                </p>
-
-                <span class="badge bg-light text-dark">
-                    {{ checked_items }} / {{ total_items }}
-                </span>
-            </div>
-
-        </div>
-    </div>
+    {% include "old_travel/travel_card.html" %}
 
     <!-- メモ -->
     {% if travel_info.memo %}
@@ -45,10 +20,10 @@
                     {{ travel_info.memo|linebreaksbr }}
                 </div>
             </div>
-            <button class="btn btn-outline-secondary btn-sm mb-2"
+            <button class="memo-toggle-btn"
                     data-bs-toggle="collapse"
                     data-bs-target="#memoArea">
-                メモを表示 / 非表示
+                メモを非表示
             </button>
         </div>
     {% endif %}
@@ -60,22 +35,17 @@
             <div class="card-header text-white d-flex justify-content-between align-items-center"
                  style="background-color: {{ category.get_category_color_display }};">
 
-                <div class="d-flex align-items-center"
-                     data-bs-toggle="collapse"
-                     data-bs-target="#cat{{ category.id }}"
-                     style="cursor: pointer;">
+                <div class="d-flex align-items-center">
 
                     <strong>{{ category.category_name }}</strong>
 
                     <span class="badge bg-light text-dark ms-2">
                         {{ category.checked_count }} / {{ category.total_count }}
                     </span>
-
-                    <span class="ms-2">▼</span>
                 </div>
             </div>
 
-            <ul id="cat{{ category.id }}" class="list-group list-group-flush collapse show">
+            <ul id="cat{{ category.id }}" class="list-group list-group-flush">
 
                 {% for item in category.travelitem_set.all|dictsort:"item_checked" %}
                     <li class="list-group-item">
@@ -84,7 +54,7 @@
                             <div class="d-flex align-items-center">
                                 <input type="checkbox"
                                        class="form-check-input me-2"
-                                       onclick="location.href='{% url 'app:toggle_item_checked' item.id %}'"
+                                       onchange="toggleItem({{ item.id }})"
                                        {% if item.item_checked %}checked{% endif %}>
                                 <span>{{ item.item_name }}</span>
                             </div>
@@ -118,11 +88,14 @@
             <span class="text-muted align-self-center">テンプレートは作成されていません</span>
         {% endif %}
 
-        <a href="{% url 'app:travel_link' travel_info.travel_info_id %}" class="btn btn-outline-secondary">
+        <a href="{% url 'app:travel_link' travel_info.travel_info_id %}" class="btn btn-link">
             共有リンクへ
         </a>
 
     </div>
 
 </div>
+
+<script src="{% static 'tabipre/js/old_travel/travel_detail.js' %}"></script>
+
 {% endblock %}

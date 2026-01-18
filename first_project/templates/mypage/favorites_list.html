@@ -1,38 +1,31 @@
-{% extends 'base.html' %}
-{% load static %}
+<div class="modal fade" id="favoriteModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
 
-{% block body_class %}favorites_list{% endblock %}
+      <div class="modal-header">
+        <h5 class="modal-title">お気に入りから選択</h5>
+      </div>
 
-{% block extra_css %}
-{{ block.super }}
-<link rel="stylesheet" href="{% static 'tabipre/css/favorites.css' %}">
-{% endblock %}
-{% block content %}
-<div class="container mt-4">
+      <div class="modal-body">
+        <form id="favoriteForm">
+          {% for fav in favorite_items %}
+            <div class="form-check mb-2">
+              <input class="form-check-input" type="checkbox"
+                     name="favorite_items"
+                     value="{{ fav.item_name }}"
+                     id="fav_{{ forloop.counter }}">
+              <label class="form-check-label" for="fav_{{ forloop.counter }}">
+                {{ fav.item_name }}
+              </label>
+            </div>
+          {% endfor %}
+        </form>
+      </div>
 
-    <h2 class="mb-5 sub-title">お気に入りリスト</h2>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+      </div>
 
-    {% if favorite and favorite.items.all %}
-        <ul class="list-group mb-4">
-            {% for item in favorite.items.all %}
-                <li class="list-group-item">・　{{ item.item_name }}</li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p class="text-center text-muted mb-4">お気に入りはまだ登録されていません。</p>
-    {% endif %}
-
-    <div class="d-grid gap-2 mb-3">
-        <a href="{% url 'app:favorites_edit' %}" class="btn btn-primary">
-            編集する
-        </a>
     </div>
-
-    <div class="text-center mb-5">
-        <a href="{% url 'app:mypage' %}" class="back-link">
-            戻る
-        </a>
-    </div>
-
+  </div>
 </div>
-{% endblock %}

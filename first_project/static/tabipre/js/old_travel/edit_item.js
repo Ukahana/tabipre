@@ -9,11 +9,18 @@ document.addEventListener("DOMContentLoaded", function () {
         const itemName = button.getAttribute("data-item-name");
 
         const form = modal.querySelector("form");
-
-        // URL を直接セット
         form.action = `/item/edit/${itemId}/`;
 
-        // 入力欄に値をセット
-        modal.querySelector("input[name='item_name']").value = itemName;
+        const input = modal.querySelector("input[name='item_name']");
+        input.value = itemName;
+    });
+
+    // ⭐ モーダルが完全に表示された後にカーソル移動
+    modal.addEventListener("shown.bs.modal", function () {
+        const input = modal.querySelector("input[name='item_name']");
+        const len = input.value.length;
+
+        input.focus();
+        input.setSelectionRange(len, len);  // ← これが確実
     });
 });

@@ -1,0 +1,83 @@
+.add-item-btn {
+    background-color: #9fc5e8;          
+    border: 1px solid #595959;
+    color: #000;
+}
+
+.add-item-btn:hover {
+    background-color: #8bb8d8ff;
+    border-color: #8bb8d8ff;
+}
+/* ＋分類・項目の追加ボタン */
+.custom-add-btn {
+    background-color: #9fc5e8;    
+    color: #000;
+    font-size: 16px;
+    padding: 10px 0;
+    border-radius: 6px;
+    border: none;
+}
+.custom-add-btn:hover {
+    background-color:  #8bb8d8ff;
+}
+
+/* 登録情報を変更するボタン */
+.custom-edit-btn {
+    background-color: #1976d2;   /* 青 */
+    color: #fff;
+    font-size: 16px;
+    padding: 10px 0;
+    border-radius: 6px;
+    border: none;
+}
+.custom-edit-btn:hover {
+    color: #fff;
+    background-color: #1565c0;
+}
+
+/* 新しい追加モーダルーダル */
+.favorite-label {
+    font-size: 13px;
+    padding-bottom: 2px;
+}
+.favorite-star {
+    width: 30px; 
+    height: 30px;
+    cursor: pointer;
+    margin-top: 0;
+}
+/* 項目の編集 */
+.modal-title {
+    font-weight: normal;
+}
+
+#editItemInput {
+  border: none;
+  border-bottom: 2px solid #0097a7 !important;
+  border-radius: 0 !important;
+  box-shadow: none;
+}
+/* 分類・項目の追加モーダル */
+/* お気に入りから追加ボタン */
+.favorite-add-btn {
+    background-color: #ffe599ff;
+    border-color: #ffe599ff;
+    color: #000;
+}
+.favorite-add-btn:hover {
+    background-color: #f7d878;
+    border-color: #f7d878;
+}
+
+/* カラーパレット */
+.color-option {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.color-option.selected {
+    border: 3px solid #333;
+}

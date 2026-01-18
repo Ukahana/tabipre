@@ -1,8 +1,12 @@
 {% extends "base.html" %}
 {% load static %}
 
+{% block extra_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'tabipre/css/old_template/add_category_item.css' %}">
+{% endblock %}
 {% block content %}
-<div class="container mt-4">
+<div class="container mt-5">
 
     <h2>分類・項目の追加</h2>
 
@@ -10,7 +14,7 @@
         {% csrf_token %}
 
         <!-- ⭐ 分類名（横並び） -->
-        <div class="mt-3 d-flex align-items-center">
+        <div class="mt-4 d-flex align-items-center">
             <label class="form-label me-3 mb-0" style="width:80px;">分類名</label>
             <input type="text" name="category_name" class="form-control" list="categorySuggestions">
         </div>
@@ -24,19 +28,20 @@
         </datalist>
 
         <!-- ⭐ カラーパレット -->
-        <label class="mt-3 fw-bold">分類の色を選択する</label>
-        <div class="d-flex flex-wrap mb-3">
-            {% for value, label in template.travelcategory_set.model.CategoryColor.choices %}
-                <label class="me-3">
-                    <input type="radio" name="category_color" value="{{ value }}" required>
-                    <span style="display:inline-block;width:20px;height:20px;background:{{ label }};border-radius:50%;"></span>
-                </label>
+        <label class="mt-4">分類の色を選択する</label>
+        <div class="color-palette mb-3">
+            {% for c in color_list %}
+                <div class="color-option"
+                     data-value="{{ c.value }}"
+                     style="background: {{ c.code }}">
+                </div>
             {% endfor %}
         </div>
+        <input type="hidden" name="category_color" id="selectedColor" required>
 
         <!-- ⭐ お気に入りから追加ボタン -->
         <button type="button"
-                class="btn btn-outline-secondary w-100 mb-3"
+                class="btn favorite-add-btn w-100 mb-3"
                 data-bs-toggle="modal"
                 data-bs-target="#favoriteModal">
             お気に入りから追加
@@ -68,7 +73,7 @@
 
         <!-- キャンセル（リンク） -->
         <div class="text-center mt-2">
-            <a href="{% url 'app:old_template_edit' template.id %}" class="text-decoration-none">
+            <a href="{% url 'app:old_template_edit' template.id %}" class="text-center">
                 キャンセル
             </a>
         </div>

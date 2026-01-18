@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from ...models.travel import Travel_info
 from ...models.template import Template, TravelCategory, TravelItem
+from django.http import JsonResponse
 
 
 def travel_detail(request, travel_id):
@@ -17,17 +18,20 @@ def travel_detail(request, travel_id):
     else:
         categories = []
 
+    # --- ここだけスッキリまとめる ---
     items = TravelItem.objects.filter(travel_category__template=template)
     total_items = items.count()
     checked_items = items.filter(item_checked=1).count()
 
     today = timezone.now().date()
     if travel_info.end_date < today:
-        travel_info.status_label = "済"
+        status = "済"
     elif total_items > 0 and total_items == checked_items:
-        travel_info.status_label = "完"
+        status = "完"
     else:
-        travel_info.status_label = "未"
+        status = "未"
+
+    travel_info.status_label = status
 
     context = {
         "travel_info": travel_info,
@@ -46,15 +50,11 @@ def travel_uncheck_all(request, travel_id):
     return redirect("app:travel_detail", travel_id=travel_id)
 
 
+
 def toggle_item_checked(request, item_id):
     item = get_object_or_404(TravelItem, pk=item_id)
 
-    # チェック状態を反転
     item.item_checked = 0 if item.item_checked else 1
     item.save()
 
-    # travel_detail に戻る
-    return redirect(
-        "app:travel_detail",
-        travel_id=item.travel_category.template.travel_info_id
-    )
+    return JsonResponse({"success": True})
