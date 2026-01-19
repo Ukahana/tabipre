@@ -3,13 +3,13 @@
 
 {% block extra_css %}
 {{ block.super }}
-<link rel="stylesheet" href="{% static 'tabipre/css/create_link.css' %}">
+<link rel="stylesheet" href="{% static 'tabipre/css/old_template/create_link.css' %}">
 {% endblock %}
 
 {% block content %}
 <div class="container mt-4">
 
-  <h3 class="mb-3">共有リンクの作成</h3>
+  <h3 class="sub-title mb-3">リンクの共有</h3>
 
   <form method="post">
     {% csrf_token %}
@@ -18,29 +18,55 @@
     <div class="mb-4">
       <label class="form-label fw-bold">権限の設定</label>
       {{ form.permission_type }}
-      <div class="form-text">
-        ・閲覧のみ：他の人は見るだけで編集できません<br>
-        ・編集可能：他の人も内容を変更できます
-      </div>
     </div>
 
     <!-- 有効期限設定 -->
     <label class="form-label fw-bold">有効期限の設定</label>
 
-    <div class="mb-2">
-       {{ form.expiration_type }}
+    <div class="mb-3">
+
+      <!-- ONE_MONTH -->
+      <label class="d-block mt-2">
+        <input type="radio"
+               name="expiration_type"
+               value="0"
+               data-expiration-date="{{ one_month_later|date:'Y-m-d' }}"
+               {% if form.initial.expiration_type == 0 %}checked{% endif %}>
+        1か月間有効：
+        <span class="text-muted">（{{ one_month_later|date:"Y.n.j" }} まで）</span>
+      </label>
+
+      <!-- AFTER_TRIP -->
+      <label class="d-block mt-2">
+        <input type="radio"
+               name="expiration_type"
+               value="1"
+               data-expiration-date="{{ next_day|date:'Y-m-d' }}"
+               {% if form.initial.expiration_type == 1 %}checked{% endif %}>
+        旅行終了日の翌日まで：
+        <span class="text-muted">（{{ next_day|date:"Y.n.j" }} まで）</span>
+      </label>
+
+      <!-- USER_INPUT -->
+      <label class="d-block mt-2">
+        <input type="radio"
+               name="expiration_type"
+               value="2"
+               {% if form.initial.expiration_type == 2 %}checked{% endif %}>
+        日付を指定する
+      </label>
+
+      <!-- 日付入力欄 -->
+      <div id="date_input_wrapper" class="mt-2" style="display:flex; gap:8px; align-items:center;">
+        {{ form.expiration_date }}
+
+        <!-- カレンダーアイコン -->
+        <button type="button" id="open_calendar_btn" class="btn btn-outline-secondary">
+          📅
+        </button>
+      </div>
+
     </div>
-
-    <div id="date_input_wrapper" class="mt-2" style="display:none;">
-       {{ form.expiration_date }}
-    </div>
-
-    <!-- JS 用 -->
-    <span id="label_one_month" class="text-muted"></span>
-    <span id="label_after_trip" class="text-muted"></span>
-
-    <!-- 旅行終了日（JS用） -->
-    <input type="hidden" id="trip_end_date" value="{{ next_day|date:'Y.n.j' }}">
 
     <button type="submit" class="btn btn-primary w-100 mt-3">リンクを発行</button>
   </form>

@@ -1,58 +1,75 @@
-window.onload = function () {
-  const labelOneMonth = document.getElementById("label_one_month");
-  const labelAfterTrip = document.getElementById("label_after_trip");
-  const dateInputWrapper = document.getElementById("date_input_wrapper");
-
-  function updateLabels() {
-    const now = new Date();
-    const oneMonthLater = new Date(now);
-    oneMonthLater.setMonth(now.getMonth() + 1);
-    labelOneMonth.textContent =
-      `${oneMonthLater.getFullYear()}/${oneMonthLater.getMonth() + 1}/${oneMonthLater.getDate()}まで`;
-
-    const tripEnd = document.getElementById("trip_end_date")?.value;
-    labelAfterTrip.textContent = tripEnd ? `${tripEnd}まで` : "取得できません";
-  }
-
-  function updateExpiration() {
-    const type = document.querySelector('input[name="expiration_type"]:checked')?.value;
+document.addEventListener("DOMContentLoaded", function () {
     const dateInput = document.getElementById("id_expiration_date");
+    const openCalendarBtn = document.getElementById("open_calendar_btn");
 
-    if (type === "2") {
-      dateInputWrapper.style.display = "block";
-      dateInput.required = true;
-    } else {
-      dateInputWrapper.style.display = "none";
-      dateInput.required = false;
+    // ▼ USER_INPUT（= value "2"）のときだけ required にする
+    //    ＋ 自動計算タイプなら日付を自動セット
+    function updateExpiration() {
+        const selected = document.querySelector('input[name="expiration_type"]:checked');
+        if (!selected) return;
+
+        const isUserInput = selected.value === "2";
+        dateInput.required = isUserInput;
+
+        // ▼ 自動計算タイプなら日付を自動セット
+        const autoDate = selected.dataset.expirationDate;
+        if (!isUserInput && autoDate) {
+            dateInput.value = autoDate;
+        }
     }
-  }
 
-  document.querySelectorAll('input[name="expiration_type"]').forEach(r => {
-    r.addEventListener("change", updateExpiration);
-  });
+    document.querySelectorAll('input[name="expiration_type"]').forEach(r => {
+        r.addEventListener("change", updateExpiration);
+    });
 
-  updateLabels();
-  updateExpiration();
+    updateExpiration();  // 初期状態でも反映
 
-  // ★ モーダル処理
-  if (window.SHOW_MODAL) {
-    const modalEl = document.getElementById("createdModal");
-    if (modalEl) {
-      const modal = new bootstrap.Modal(modalEl);
-      modal.show();
 
-      const copyBtn = document.getElementById("copy_btn");
-      if (copyBtn) {
-        copyBtn.addEventListener("click", async function () {
-          const input = document.getElementById("share_url");
-          try {
-            await navigator.clipboard.writeText(input.value);
-            alert("コピーしました");
-          } catch (err) {
-            alert("コピーに失敗しました");
-          }
+    // ▼ カレンダーアイコン → 一時的に type="date" にして picker を開く
+    if (openCalendarBtn) {
+        openCalendarBtn.addEventListener("click", function () {
+            dateInput.type = "date";
+            dateInput.showPicker?.();
+
+            dateInput.addEventListener("blur", function handler() {
+                dateInput.type = "text";
+                dateInput.removeEventListener("blur", handler);
+            });
         });
-      }
     }
-  }
-};
+
+    // ▼ 手入力 or カレンダー選択後に YYYY-MM-DD に統一
+    dateInput.addEventListener("change", function () {
+        const raw = dateInput.value.trim();
+        if (!raw) return;
+
+        const normalized = raw.replace(/[\/\.]/g, "-");
+        const parts = normalized.split("-");
+
+        let year, month, day;
+
+        try {
+            if (parts.length === 3) {
+                [year, month, day] = parts;
+            } else if (parts.length === 2) {
+                year = new Date().getFullYear();
+                [month, day] = parts;
+            } else {
+                throw new Error("invalid");
+            }
+
+            const date = new Date(year, month - 1, day);
+            if (isNaN(date.getTime())) throw new Error("invalid");
+
+            const yyyy = date.getFullYear();
+            const mm = String(date.getMonth() + 1).padStart(2, "0");
+            const dd = String(date.getDate()).padStart(2, "0");
+
+            dateInput.value = `${yyyy}-${mm}-${dd}`;
+
+        } catch (e) {
+            alert("正しい日付を入力してください（例: 2/5）");
+            dateInput.value = "";
+        }
+    });
+});

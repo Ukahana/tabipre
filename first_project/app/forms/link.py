@@ -1,6 +1,7 @@
 from django import forms
 from ..models import Link
 
+
 class LinkForm(forms.ModelForm):
     class Meta:
         model = Link
@@ -12,20 +13,26 @@ class LinkForm(forms.ModelForm):
         widgets = {
             "permission_type": forms.RadioSelect,
             "expiration_type": forms.RadioSelect,
-            "expiration_date": forms.DateInput(attrs={"type": "date"}),
+            "expiration_date": forms.DateInput(
+                attrs={
+                    "type": "date",   # カレンダー入力
+                    "autocomplete": "off",
+                }
+            ),
         }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
         self.fields["expiration_date"].required = False
 
-    def clean(self):
-        cleaned_data = super().clean()
-        expiration_type = cleaned_data.get("expiration_type")
-        expiration_date = cleaned_data.get("expiration_date")
+        self.fields["permission_type"].choices = [
+            (Link.PermissionType.READ_ONLY, "閲覧のみ：他の人は見るだけで変更できません。"),
+            (Link.PermissionType.EDITABLE, "編集可能：他の人も内容を変更できます。"),
+        ]
 
-        # ユーザー入力のときだけ日付必須
-        if expiration_type == Link.ExpirationType.USER_INPUT and not expiration_date:
-            self.add_error("expiration_date", "ユーザー入力の場合、有効期限を入力してください。")
-
-        return cleaned_data
+        self.fields["expiration_type"].choices = [
+            (Link.ExpirationType.ONE_MONTH, "1か月間有効："),
+            (Link.ExpirationType.AFTER_TRIP, "旅行終了日の翌日まで："),
+            (Link.ExpirationType.USER_INPUT, "日付を指定する"),
+        ]
