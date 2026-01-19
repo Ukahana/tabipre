@@ -1,11 +1,14 @@
+/* ============================
+   カラーパレット
+============================ */
 .color-palette {
     display: grid;
     grid-template-columns: repeat(4, auto);
-    column-gap: 15px; /* 正の値のみ有効 */
+    column-gap: 15px;
     row-gap: 10px;
-    justify-content: center; /* 左寄せで詰める */
+    justify-content: center;
+    margin: 20px;
 }
-
 
 .color-option {
     width: 40px;
@@ -16,35 +19,108 @@
     transition: border 0.2s ease;
 }
 
-/* タイトルの太字を解除 */
+.color-option.selected {
+    border: 3px solid #595959;
+}
+
+/* ============================
+   タイトル
+============================ */
 .container h2 {
     font-weight: normal;
     text-align: center;
-    margin-bottom: 30px; /* 下の余白調整 */
+    margin-bottom: 30px;
 }
 
-/* カラーパレット周りの余白調整 */
-.color-palette {
-    margin: 20px
-}
-
-/* お気に入りから追加ボタンの色変更 */
+/* ============================
+   お気に入り追加ボタン
+============================ */
 .favorite-add-btn {
     background-color: #ffe599ff;
     color: #000;
     border: none;
-     margin: 20px
+    margin: 20px;
 }
 .favorite-add-btn:hover {
-    background-color: #ffd966ff; 
+    background-color: #ffd966ff;
     color: #000;
 }
 
-
-/* キャンセルリンクの見た目調整 */
-.text-center a {
-    color: #0d6efd;
+/* ============================
+   入力欄の幅
+============================ */
+.category-input,
+.item-input {
+    width: 230px;
 }
-.text-center a:hover {
-    text-decoration: underline;
+
+/* ============================
+   お気に入りモーダル
+============================ */
+#favoriteModal .modal-dialog {
+    max-width: 300px;
+    margin: 60px auto;
+}
+
+#favoriteModal .modal-content {
+    background-color: #fdf6f0ff;
+    color: #e91e63;
+}
+
+#favoriteModal .modal-header {
+    border-bottom: none;
+    position: relative;
+}
+
+/* タイトル中央寄せ */
+#favoriteModal .modal-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+    font-size: 16px;
+    font-weight: 400;
+    color: #595959;
+}
+
+/* ラジオボタン行 */
+#favoriteModal .form-check {
+    display: flex;
+    align-items: center;
+    margin-left: 15px;
+}
+
+#favoriteModal .form-check-input {
+    margin-top: 0;
+    margin-right: 10px;
+}
+
+#favoriteModal .form-check-label {
+    font-size: 18px;
+    line-height: 1.4;
+}
+
+/* ============================
+   追加を続けますかモーダル
+============================ */
+.continue-yes,
+.continue-no {
+    width: 120px;
+    border-radius: 0;
+    border: 1px solid #595959;
+}
+
+.continue-yes {
+    background: #6aa84f;
+    color: #fff;
+}
+
+.continue-no {
+    background: #eeeeee;
+    color: #000;
+}
+
+.continue-yes:hover,
+.continue-no:hover {
+    opacity: 0.9;
 }

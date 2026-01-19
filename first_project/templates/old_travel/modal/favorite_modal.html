@@ -5,21 +5,32 @@
     <div class="modal-content">
 
       <div class="modal-header">
-        <h5 class="modal-title">お気に入りから選択</h5>
+        <h5 class="modal-title">追加するものをチェック</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
 
       <div class="modal-body">
-        {% for fav in favorite_items %}
-            <button type="button"
-                    class="btn btn-outline-secondary w-100 mb-2 favorite-select-btn"
-                    data-name="{{ fav.item_name }}">
+
+        <form id="favoriteSelectForm">
+          {% for fav in favorite_items %}
+            <div class="form-check mb-2">
+              <input class="form-check-input favorite-radio"
+                     type="radio"
+                     name="favorite_choice"
+                     id="fav{{ forloop.counter }}"
+                     value="{{ fav.item_name }}">
+              <label class="form-check-label w-100"
+                     for="fav{{ forloop.counter }}">
                 {{ fav.item_name }}
-            </button>
-        {% endfor %}
+              </label>
+            </div>
+          {% endfor %}
+        </form>
+
       </div>
 
-      <div class="modal-footer">
-        <button class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+      <div class="modal-footer justify-content-center">
+        <button class="btn btn-primary" id="favoriteSelectBtn">登録</button>
       </div>
 
     </div>

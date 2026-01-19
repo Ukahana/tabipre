@@ -156,3 +156,17 @@
     padding: 8px 16px !important;
 }
 
+.app-submit {
+    background: #9fc5e8ff;
+    border: 1px solid #595959;
+    display: block;
+    margin: 0 auto;
+    width: 120px;
+    border-radius: 0;
+}
+
+
+.app-submit:hover {
+    background: #8ab6d8ff; 
+    border-color: #595959;
+}
