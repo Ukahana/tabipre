@@ -170,3 +170,25 @@
     background: #8ab6d8ff; 
     border-color: #595959;
 }
+
+/* ラベルの統一 */
+.form-label {
+  font-weight: 400;
+  font-size: 18px;
+  margin-bottom: 4px;
+  display: inline-block;
+}
+
+/* 入力欄の基本スタイル */
+input,
+select,
+textarea {
+  width: 100%;
+  padding: 8px 10px;
+  padding-left: 15px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 18px;
+  box-sizing: border-box; 
+}
+

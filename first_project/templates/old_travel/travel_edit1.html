@@ -1,21 +1,23 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% load static %}
 
+{% block extra_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'tabipre/css/old_template/travel_edit.css' %}">
+{% endblock %}
 {% block content %}
-<div class="container mt-4">
-
-    <h1 class="mb-4">旅行情報の編集</h1>
+<div class="container mt-5 mt-4">
 
     <form method="post" novalidate>
         {% csrf_token %}
         <input type="hidden" name="action" value="edit_all">
-
-        {% include "parts/travel_form_fields1.html" %}
-
-        <button type="submit" class="btn btn-primary mt-3 w-100">次へ</button>
+        <div class="travel-edit-fields">
+         {% include "parts/travel_form_fields1.html" %}
+        </div>
+        <button type="submit" class="btn btn-primary mt-3 w-100">次に進む</button>
 
         <p class="mt-2 text-center">
-            <a href="{% url 'app:home' %}" class="text-secondary">キャンセル（ホームへ戻る）</a>
+            <a href="{% url 'app:home' %}" class="text-secondary">キャンセル</a>
         </p>
     </form>
 </div>

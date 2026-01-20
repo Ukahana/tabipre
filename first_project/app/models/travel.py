@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 from django.conf import settings
+from django.core.exceptions import ValidationError
 
 class Transport(models.Model):
     
@@ -126,6 +127,25 @@ class Travel_info(models.Model):
   #旅行の管理
     def __str__(self):
         return f"{self.travel_title} ({self.user.user_name})"
+    
+    def clean(self):
+        errors = {}
+
+        if not self.start_date or not self.end_date:
+            errors["start_date"] = "開始日と終了日を入力してください。"
+
+        else:
+             # 終了日が開始日より前
+            if self.end_date < self.start_date:
+               errors["end_date"] = "終了日は開始日より後の日付を選択してください。"
+ 
+            # 旅行期間が長すぎる
+            if (self.end_date - self.start_date).days > 60:
+               errors["end_date"] = "旅行期間が長すぎます。60日以内にしてください。"
+
+            if errors:
+               raise ValidationError(errors)
+
  
 class Travelmode(models.Model):
     travel_info = models.ForeignKey(

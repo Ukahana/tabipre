@@ -19,9 +19,13 @@ document.addEventListener("DOMContentLoaded", function () {
             }
 
             errorBox.textContent = "";
-            const diff = (end - start) / (1000 * 60 * 60 * 24);
-            nightsSpan.textContent = diff + "泊";
-            daysSpan.textContent = (diff + 1) + "日";
+
+            // ★ 差分を整数に丸める
+            const diff = Math.round((end - start) / (1000 * 60 * 60 * 24));
+
+            // ★ 単位は HTML 側に任せる
+            nightsSpan.textContent = diff;
+            daysSpan.textContent = diff + 1;
         }
     }
 

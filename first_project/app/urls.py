@@ -22,9 +22,10 @@ from app.views.old_travel.travel_detail import (
 from app.views.old_travel.template_manage import old_template_edit,add_item_page,edit_item,delete_template
 
 from app.views.old_travel.add import category_item_add
-from app.views.old_travel.old_travel_edit1 import old_travel_edit1
-from app.views.old_travel.old_travel_edit2 import old_travel_edit2
-
+from app.views.old_travel.old_travel_edit import (
+    old_travel_edit1,
+    old_travel_edit2,
+)
 # new_travel
 from app.views.new_travel.travel_step import (
     travel_create_step1,

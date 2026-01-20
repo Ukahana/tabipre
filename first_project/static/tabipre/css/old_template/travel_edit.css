@@ -1,0 +1,54 @@
+/* --- 宿泊タイプ全体のブロック --- */
+.travel-edit-fields .stay-type {
+  margin: 20px 0 12px;
+}
+
+/* --- 見出し（宿泊日数）--- */
+.travel-edit-fields .stay-type-title {
+  font-weight: 400;
+  font-size: 18px;
+  margin-bottom: 10px;
+  display: block;
+  color: #333;
+}
+
+/* --- ラジオボタンを横並びにする部分 --- */
+.travel-edit-fields .stay-type-options {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+/* --- ラジオボタン（個別） --- */
+.travel-edit-fields .stay-option {
+  display: inline-flex;
+  align-items: center; /* ← これで縦位置が揃う */
+  font-size: 18px;
+  white-space: nowrap;
+}
+
+/* --- ラジオボタン本体の調整 --- */
+.travel-edit-fields .stay-option input[type="radio"] {
+  margin-right: 6px;
+  vertical-align: middle;
+  position: static; /* ← top の微調整を削除して安定 */
+}
+
+/* --- 宿泊日数表示 --- */
+.travel-edit-fields .stay-length {
+  font-size: 20px;
+  font-weight: 400;
+  text-align: right;
+  margin: 8px 30px 0 0;
+}
+
+.travel-edit-fields .stay-length span {
+  margin-right: 4px;
+}
+
+/* --- 入力フォームの下に余白をつける --- */
+.travel-edit-fields input,
+.travel-edit-fields select,
+.travel-edit-fields textarea {
+  margin-bottom: 12px;
+}
