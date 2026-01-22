@@ -1,0 +1,56 @@
+<!-- 場所の分類 -->
+<div class="location-type">
+  <div class="form-label d-block">【場所の分類】</div>
+
+  <div class="location-type-options">
+    {% for radio in form.location %}
+      <label class="form-item">
+        <span class="form-check">{{ radio.tag }}</span>
+        <span class="form-label-text">{{ radio.choice_label }}</span>
+      </label>
+    {% endfor %}
+    {{ form.location.errors }}
+  </div>
+</div>
+
+
+<!-- 交通手段 -->
+<div class="transport-type">
+  <label class="form-label d-block">【目的地までの交通手段】</label>
+
+  <!-- 通常のチェックボックス（3列） -->
+  <div class="transport-options">
+    {% for checkbox in form.transport_types %}
+      {% if checkbox.choice_label != "その他" %}
+        <label class="form-item">
+          <span class="form-check">{{ checkbox.tag }}</span>
+          <span class="form-label-text">{{ checkbox.choice_label }}</span>
+        </label>
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  <!-- その他だけ最後の行 -->
+  <div class="transport-other-row">
+    {% for checkbox in form.transport_types %}
+      {% if checkbox.choice_label == "その他" %}
+        <label class="form-item transport-other">
+          <span class="form-check">{{ checkbox.tag }}</span>
+          <span class="form-label-text">その他</span>
+
+          <span class="transport-other-box"
+                style="{% if form.transport_other.value %}display:inline{% else %}display:none{% endif %};">
+            {{ form.transport_other }}
+          </span>
+        </label>
+      {% endif %}
+    {% endfor %}
+  </div>
+</div>
+
+
+<!-- メモ -->
+<div class="field-block">
+  <label class="form-label d-block">【メモ】</label>
+  {{ form.memo }}
+</div>

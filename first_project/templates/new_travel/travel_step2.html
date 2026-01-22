@@ -3,70 +3,24 @@
 
 {% block extra_css %}
 {{ block.super }}
+<link rel="stylesheet" href="{% static 'tabipre/css/parts/travel_edit.css' %}">
 {% endblock %}
-
 {% block content %}
 <div class="container mt-4">
 
-    <h2 class="page-title mb-3">旅行の詳細設定</h2>
+    <div class="sub-title mb-3">詳細設定</div>
 
-    <!-- Step1 の内容を表示 -->
-    <div class="mb-4 p-3 border rounded bg-light">
-        <h5>Step1 の入力内容</h5>
-        <p><strong>タイトル：</strong> {{ step1.travel_title }}</p>
-        <p><strong>期間：</strong> {{ step1.start_date }} ～ {{ step1.end_date }}</p>
-    </div>
-
-    <form method="POST">
+    <form method="POST" class="travel_step2_form">
         {% csrf_token %}
 
-        <!-- 場所の分類 -->
-        <div class="page-radio mb-4">
-            <h5>【場所の分類】</h5>
+        {% include 'parts/travel_step2_form.html' %}
 
-            {% for radio in form.location %}
-              <label class="me-3">
-                {{ radio.tag|cut:radio.choice_label }}   {# ← input 部分だけ残す #}
-                {{ radio.choice_label }}
-              </label>
-            {% endfor %}
-        </div>
-
-        <!-- 交通手段 -->
-        <div class="mb-4">
-          <h5>【目的地までの交通手段】</h5>
-          <div class="d-flex flex-wrap gap-3 align-items-center">
-            {% for checkbox in form.transport_types %}
-              {% if checkbox.choice_label == "その他" %}
-                <label class="form-check-label d-flex align-items-center">
-                  {{ checkbox.tag }}
-                  <span class="ms-1 me-2">その他</span>
-                  <span class="transport-other-box" style="display:none;">
-                    {{ form.transport_other }}
-                  </span>
-                </label>
-              {% else %}
-                <label class="form-check-label me-3">
-                  {{ checkbox.tag }} {{ checkbox.choice_label }}
-                </label>
-              {% endif %}
-            {% endfor %}
-          </div>
-        </div>
-
-        <!-- メモ -->
-        <div class="mb-4">
-            <h5>【メモ】</h5>
-            {{ form.memo }}
-        </div>
-
-        <!-- ボタン -->
-        <div class="mt-4">
-            <button type="submit" name="action" value="template" class="btn btn-primary">
+        <div class="mt-4 d-flex flex-column gap-3">
+            <button type="submit" name="action" value="template" class="btn btn-create">
                 テンプレート作成
             </button>
 
-            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#copyModal">
+            <button type="button" class="btn btn-copy" data-bs-toggle="modal" data-bs-target="#copyModal">
                 前回の旅行からコピー
             </button>
         </div>
@@ -75,8 +29,5 @@
 </div>
 
 {% include 'new_travel/modal/old_travel.html' %}
-{% endblock %}
-
-{% block extra_js %}
 <script src="{% static 'tabipre/js/new_travel/travel_step2.js' %}"></script>
 {% endblock %}

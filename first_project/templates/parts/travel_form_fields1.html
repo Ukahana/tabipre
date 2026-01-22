@@ -17,19 +17,21 @@
 </div>
 
 <div class="stay-type">
-     <div class="stay-type-title d-block">宿泊日数</div>
-    <div class="stay-type-options">
-      {% for radio in form.stay_type %}
-        <label class="stay-option">
-             {{ radio.tag }}<span>{{ radio.choice_label }}</span>
-        </label>
-      {% endfor %}
-      {{ form.stay_type.errors }}
-</div>
+    <div class="stay-type-title d-block">宿泊日数</div>
 
-<div class="stay-length">
-    <span id="stay_nights">{{ stay_nights }}</span>泊
-    <span id="stay_days">{{ stay_days }}</span>日
+    <div class="stay-type-options">
+        {% for radio in form.stay_type %}
+            <label class="stay-option">
+                {{ radio.tag }}<span>{{ radio.choice_label }}</span>
+            </label>
+        {% endfor %}
+        {{ form.stay_type.errors }}
+    </div>
+</div>  
+
+<div id="stay_info" class="stay-length">
+    <span id="stay_nights"></span>泊
+    <span id="stay_days"></span>日
 </div>
 
 <div id="date_error" class="text-danger mt-1"></div>

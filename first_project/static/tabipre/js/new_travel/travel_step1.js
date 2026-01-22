@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const start = document.getElementById("start_date");
-    const end = document.getElementById("end_date");
+    const start = document.getElementById("id_start_date");
+    const end = document.getElementById("id_end_date");
     const stayInfo = document.getElementById("stay_info");
     const nights = document.getElementById("stay_nights");
     const days = document.getElementById("stay_days");
@@ -16,8 +16,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const diff = Math.round((e - s) / (1000 * 60 * 60 * 24));
 
         if (diff >= 0) {
-            nights.textContent = `${diff}泊`;
-            days.textContent = `${diff + 1}日`;
+            nights.textContent = diff;      // HTML 側に「泊」「日」があるので数字だけ
+            days.textContent = diff + 1;
         }
     }
 
@@ -51,8 +51,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 calcStay();
             } else if (radio.value === "1") {
                 stayInfo.style.display = "block";
-            calcStay();
+                calcStay();
             }
         });
     });
+
+    // 既存データ編集時に初期状態を反映したいなら
+    autoDetectStayType();
 });

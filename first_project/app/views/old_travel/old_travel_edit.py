@@ -40,6 +40,7 @@ def old_travel_edit1(request, travel_id):
         "travel": travel,
         "stay_nights": stay_nights,
         "stay_days": stay_days,
+        "stay_type": form.cleaned_data["stay_type"], 
     })
 
 
@@ -71,7 +72,8 @@ def old_travel_edit2(request, travel_id):
             travel.travel_title = session_data["travel_title"]
             travel.start_date = date.fromisoformat(session_data["start_date"])
             travel.end_date = date.fromisoformat(session_data["end_date"])
-
+            travel.stay_type = session_data["stay_type"] 
+            
         # Step2 の内容を反映
         travel = form.save(commit=False)
         travel.full_clean()  # モデルの clean() を呼ぶ

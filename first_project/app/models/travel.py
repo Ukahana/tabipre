@@ -7,12 +7,13 @@ class Transport(models.Model):
     
     # 選択肢 
     class TransportType(models.IntegerChoices):
-     SHINKANSEN = 0, _("新幹線")
-     AIRPLANE   = 1, _("飛行機")
+     AIRPLANE   = 0, _("飛行機")
+     SHINKANSEN = 1, _("新幹線")
      CAR        = 2, _("車")
-     TRAIN      = 3, _("電車")
-     BUS        = 4, _("バス")
+     BUS        = 3, _("バス")
+     TRAIN      = 4, _("電車")
      OTHER      = 5, _("その他")
+
 
         
     transport_id = models.AutoField(

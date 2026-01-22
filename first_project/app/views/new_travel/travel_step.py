@@ -174,3 +174,4 @@ def travel_detail(request, travel_id):
         "travel": travel,
         "transports": transports,
     })
+    

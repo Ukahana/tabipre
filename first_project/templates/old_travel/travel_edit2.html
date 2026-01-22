@@ -1,76 +1,20 @@
 {% extends 'base.html' %}
 {% load static %}
 
+{% block extra_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'tabipre/css/parts/travel_edit.css' %}">
+{% endblock %}
 {% block content %}
 <div class="container mt-4">
 
-    <h2 class="page-title mb-3">旅行の詳細設定</h2>
+    <div class="sub-title mb-3">旅行の詳細設定</div>
 
-    <!-- Step1 の内容を表示 -->
-    <div class="mb-4 p-3 border rounded bg-light">
-        <h5>Step1 の入力内容</h5>
-        <p><strong>タイトル：</strong> {{ travel.travel_title }}</p>
-        <p><strong>期間：</strong> {{ travel.start_date }} ～ {{ travel.end_date }}</p>
-        <p><strong>宿泊タイプ：</strong>
-            {% if travel.stay_type == 0 %}
-                日帰り
-            {% else %}
-                宿泊
-            {% endif %}
-        </p>
-    </div>
-
-    <form method="POST">
+    <form method="POST" class="travel_step2_form">
         {% csrf_token %}
 
-        <!-- 場所の分類 -->
-        <div class="page-radio mb-4">
-            <h5>【場所の分類】</h5>
-            {% for radio in form.location %}
-                <div class="form-check form-check-inline">
-                     {{ radio.tag }}
-                     <label class="form-check-label" for="{{ radio.id_for_label }}">
-                           {{ radio.choice_label }}
-                     </label>
-                </div>
-           {% endfor %}
-         </div>
+        {% include 'parts/travel_step2_form.html' %}
 
-
-        <!-- 交通手段 -->
-        <div class="mb-4">
-            <h5>【目的地までの交通手段】</h5>
-
-            <div class="d-flex flex-wrap gap-3 align-items-center">
-
-                {% for checkbox in form.transport_types %}
-                    {% if checkbox.choice_label == "その他" %}
-                        <label class="form-check-label d-flex align-items-center">
-                            {{ checkbox.tag }}
-                            <span class="ms-1 me-2">その他</span>
-
-                            <!-- OTHER 入力欄（初期表示は JS で制御） -->
-                            <span class="transport-other-box" style="display:none;">
-                                {{ form.transport_other }}
-                            </span>
-                        </label>
-                    {% else %}
-                        <label class="form-check-label me-3">
-                            {{ checkbox.tag }} {{ checkbox.choice_label }}
-                        </label>
-                    {% endif %}
-                {% endfor %}
-
-            </div>
-        </div>
-
-        <!-- メモ -->
-        <div class="mb-4">
-            <h5>【メモ】</h5>
-            {{ form.memo }}
-        </div>
-
-        <!-- ボタン -->
         <div class="mt-4">
             <button type="submit" class="btn btn-primary w-100">
                 保存する
@@ -79,8 +23,4 @@
     </form>
 
 </div>
-{% endblock %}
-
-{% block extra_js %}
-<script src="{% static 'tabipre/js/new_travel/travel_step2.js' %}"></script>
 {% endblock %}

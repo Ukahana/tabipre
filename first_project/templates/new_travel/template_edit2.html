@@ -5,103 +5,50 @@
 <div class="container mt-4">
 
     <h2 class="mb-3">
-        {{ template.travel_info.travel_title }}
-        <span class="text-muted fs-6">（テンプレート編集）</span>
+        {{ travel.travel_title }}
+        <span class="text-muted fs-6">（旅行詳細の編集）</span>
     </h2>
 
     <form method="post">
         {% csrf_token %}
 
-        {% for category in categories %}
-            <div class="card mb-3 shadow-sm">
+        <!-- Step2 のフォーム内容をそのまま表示 -->
+        <div class="card shadow-sm p-3 mb-4">
+            {{ form.non_field_errors }}
 
-                <!-- カテゴリヘッダー（折りたたみトグル） -->
-                <div class="card-header text-white d-flex justify-content-between align-items-center"
-                     style="background-color: {{ category.get_category_color_display }};">
-
-                     <!-- 左側：カテゴリ名＋件数＋▼ -->
-                     <div class="d-flex align-items-center"
-                          data-bs-toggle="collapse"
-                          data-bs-target="#cat{{ category.id }}"
-                          style="cursor: pointer;">
-
-                         <strong>{{ category.category_name }}</strong>
-                         <span class="badge bg-light text-dark ms-2">
-                          {{ category.checked_count }} / {{ category.total_count }}
-                        </span>
-                        <span class="ms-2">▼</span>
-                  </div>
-
-                  <!-- 右側：分類削除ボタン -->
-                 <button type="submit"
-                        name="delete_category"
-                        value="{{ category.id }}"
-                        class="btn btn-link text-danger fs-4 p-0"
-                        style="text-decoration: none;">
-                        ×
-                  </button>
-
-                </div>
-
-
-
-                <!-- 折りたたみ部分 -->
-                <ul id="cat{{ category.id }}" class="list-group list-group-flush collapse show">
-
-                    {% for item in category.travelitem_set.all|dictsort:"item_checked" %}
-                        <li class="list-group-item">
-
-                            <div class="d-flex justify-content-between align-items-center">
-
-                                <div class="d-flex align-items-center">
-
-                                    <input type="checkbox"
-                                           name="item_checked_{{ item.id }}"
-                                           class="form-check-input me-2"
-                                           {% if item.item_checked %}checked{% endif %}>
-
-                                    <span class="editable"
-                                          data-id="{{ item.id }}"
-                                          style="cursor: pointer;">
-                                        {{ item.item_name }}
-                                    </span>
-                                </div>
-
-                                <button type="submit"
-                                        name="delete_item"
-                                        value="{{ item.id }}"
-                                        class="btn btn-link text-danger fs-4 p-0"
-                                        style="text-decoration: none;">
-                                    ×
-                                </button>
-
-                            </div>
-
-                        </li>
-                    {% empty %}
-                        <li class="list-group-item text-muted">項目がありません</li>
-                    {% endfor %}
-
-                </ul>
-
+            <!-- 交通手段（チェックボックス） -->
+            <div class="mb-3">
+                <label class="form-label">交通手段</label>
+                {{ form.transport_types }}
+                {{ form.transport_types.errors }}
             </div>
-        {% endfor %}
-        <div class="d-flex justify-content-end mt-3">
-          <a href="{% url 'app:add_category_item' template.id %}" class="btn btn-success">
-          ＋分類・項目の追加
-          </a>
-       </div>
 
-        <button type="submit" class="btn btn-primary w-100 mt-3">保存</button>
+            <!-- OTHER の入力欄 -->
+            <div class="mb-3">
+                <label class="form-label">その他の交通手段</label>
+                {{ form.transport_other }}
+                {{ form.transport_other.errors }}
+            </div>
 
+            <!-- メモ -->
+            <div class="mb-3">
+                <label class="form-label">メモ</label>
+                {{ form.memo }}
+                {{ form.memo.errors }}
+            </div>
+
+            <!-- 場所 -->
+            <div class="mb-3">
+                <label class="form-label">場所</label>
+                {{ form.place }}
+                {{ form.place.errors }}
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">保存</button>
     </form>
-
 
 </div>
 
-{% load static %}
-
 <script src="{% static 'tabipre/js/new_travel/template_edit2.js' %}"></script>
-
 {% endblock %}
-

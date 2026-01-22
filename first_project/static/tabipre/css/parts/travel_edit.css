@@ -1,0 +1,173 @@
+/* ============================= */
+/* Step1：宿泊タイプ（既存）     */
+/* ============================= */
+
+.travel-edit-fields .stay-type {
+  margin: 20px 0 12px;
+}
+
+.travel-edit-fields .stay-type-title {
+  font-weight: 400;
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.travel-edit-fields .stay-type-options {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.travel-edit-fields .stay-option {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-size: 18px;
+  white-space: nowrap;
+}
+
+.travel-edit-fields .stay-option input[type="radio"] {
+  margin: 0;
+  transform: translateY(1px);
+}
+
+.travel-edit-fields .stay-length {
+  font-size: 20px;
+  font-weight: 400;
+  text-align: right;
+  margin: 8px 30px 0 0;
+}
+
+.travel-edit-fields .stay-length span {
+  margin-right: 4px;
+}
+
+.travel-edit-fields input,
+.travel-edit-fields select,
+.travel-edit-fields textarea {
+  margin-bottom: 12px;
+}
+
+
+/* ============================= */
+/* Step2：場所の分類・交通手段   */
+/* ============================= */
+
+/* 共通：ラジオ・チェックの1項目 */
+.travel_step2_form .form-item {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  white-space: nowrap;
+  font-size: 18px;
+  text-align: left;
+}
+
+/* input（□・○）の位置を揃える */
+.travel_step2_form .form-check {
+  display: inline-block;
+  transform: translateY(1px);
+}
+
+/* ラベル部分 */
+.travel_step2_form .form-label-text {
+  display: inline-block;
+}
+
+/* 場所の分類：横並び */
+.travel_step2_form .location-type-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 18px;
+  margin: 8px 0;
+}
+
+/* 交通手段：3列グリッド */
+.travel_step2_form .transport-options {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  gap: 12px 24px;
+  margin: 8px 0;
+  justify-items: start;
+}
+
+/* その他：1行に表示 */
+.travel_step2_form .transport-other-row {
+  margin-top: 12px;
+}
+
+/* その他の入力欄 */
+.travel_step2_form .transport-other-box input {
+  margin-left: 8px;
+}
+
+/* ラジオ・チェックの余白（統一） */
+.travel_step2_form .form-item input[type="radio"],
+.travel_step2_form .form-item input[type="checkbox"] {
+  margin: 0;
+  transform: translateY(1px);
+}
+
+/* Step2 各ブロックのラベル余白を統一 */
+.travel_step2_form .form-label {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 20px 0 8px; /* 上20px 下8px に統一 */
+}
+
+/* ブロック自体の余白は不要 */
+.travel_step2_form .location-type,
+.travel_step2_form .transport-type {
+  margin-top: 0;
+}
+
+/* メモ欄のサイズ調整 */
+.travel_step2_form .field-block textarea {
+  width: 100%;
+  height: 100px;     
+  font-size: 16px;
+  padding: 8px;
+  resize: vertical;
+  box-sizing: border-box;
+}
+/* 共通ボタンスタイル */
+.travel_step2_form .btn-create,
+.travel_step2_form .btn-copy {
+  padding: 10px 16px;
+  font-size: 16px;
+  border-radius: 0;       
+  border: 1px solid #595959; 
+  color: #000;
+  box-shadow: none;       
+}
+
+/* テンプレート作成ボタン */
+.travel_step2_form .btn-create {
+  background-color: #d9ead3;
+  border-color: #d9ead3;
+  color: #000;
+}
+
+/* 前回の旅行からコピー */
+.travel_step2_form .btn-copy {
+  background-color: #ffe599;
+  border-color: #ffe599;
+  color: #000;
+}
+
+/* ホバー時 */
+.travel_step2_form .btn-create:hover {
+  background-color: #c8dfc1;
+}
+
+.travel_step2_form .btn-copy:hover {
+  background-color: #ffd86b;
+}
+/* その他入力欄のデザイン調整 */
+.transport-other-input {
+    width: 200px;       
+    height: 38px;       
+    border-radius: 0;    
+    font-size: 16px;
+}

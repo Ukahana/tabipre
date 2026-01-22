@@ -1,177 +1,185 @@
+/* ============================= */
 /* アプリ全体の枠 */
+/* ============================= */
 .app-frame {
-    max-width: 420px;
-    margin: 0 auto;
-    min-height: 100vh;
-    background-color: #ffffff;
-    border: 1px solid #ccc;
-    padding: 16px;
-    padding-top: 10px; /* ← 上の余白を調整 */
-    box-sizing: border-box;
+  max-width: 420px;
+  margin: 0 auto;
+  min-height: 100vh;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  padding: 16px;
+  padding-top: 10px;
+  box-sizing: border-box;
 }
 
+/* ============================= */
 /* フッター */
+/* ============================= */
 .bottom-nav {
-    border-top: 1px solid #ddd;
-    padding: 5px 0;
-    background-color: #f5ebddff;
-    position: fixed;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 420px; 
-    z-index: 999;
+  border-top: 1px solid #ddd;
+  padding: 5px 0;
+  background-color: #f5ebddff;
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 420px;
+  z-index: 999;
 }
 
 .bottom-nav a {
-    color: #0097a7;
-    font-size: 14px;
-    text-decoration: none;
+  color: #0097a7;
+  font-size: 14px;
+  text-decoration: none;
 }
 
+/* ============================= */
 /* タイトル類 */
+/* ============================= */
 .title {
-    color: #5c3a3a;
-    font-size: 32px;
-    font-weight: bold;
-    text-align: center;
+  color: #5c3a3a;
+  font-size: 32px;
+  font-weight: bold;
+  text-align: center;
 }
 
 .sub-title {
-    color: #5c3a3a;
-    font-size: 28px;
-    font-weight: bold;
-    text-align: center;
+  color: #5c3a3a;
+  font-size: 28px;
+  font-weight: bold;
+  text-align: center;
 }
 
 .modal-title {
-    font-size: 18px;
-    text-align: center;
+  font-size: 18px;
+  text-align: center;
 }
 
+/* ============================= */
 /* リンク */
+/* ============================= */
 .link-text {
-    display: block;
-    text-align: center;
-    font-size: 15px;
-    color: #5c3a3a;
-    text-decoration: underline;
+  display: block;
+  text-align: center;
+  font-size: 15px;
+  color: #5c3a3a;
+  text-decoration: underline;
 }
 
 .link-text:hover {
-    color: #000;
+  color: #000;
 }
 
+/* ============================= */
 /* 共通ボタン */
+/* ============================= */
 .app-btn {
-    display: block;
-    padding: 14px 20px;
-    font-size: 1.1rem;
-    text-align: center;
-    border-radius: 8px;
-    font-weight: 600;
-    text-decoration: none;
-    border: none;
+  display: block;
+  padding: 14px 20px;
+  font-size: 1.1rem;
+  text-align: center;
+  border-radius: 8px;
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
 }
 
 /* メインボタン（青） */
 .app-btn-primary {
-    background-color: #4a90e2;
-    color: #fff;
+  background-color: #4a90e2;
+  color: #fff;
 }
-
 .app-btn-primary:hover {
-    background-color: #3f7fbf;
+  background-color: #3f7fbf;
 }
 
 /* サブボタン（グレー） */
 .app-btn-secondary {
-    background-color: #8a8a8a;
-    color: #fff;
+  background-color: #8a8a8a;
+  color: #fff;
 }
-
 .app-btn-secondary:hover {
-    background-color: #6f6f6f;
+  background-color: #6f6f6f;
 }
 
 /* 強調ボタン（黄色） */
 .app-btn-warning {
-    background-color: #ffab40;
-    color: #ffffff;
+  background-color: #ffab40;
+  color: #ffffff;
 }
-
 .app-btn-warning:hover {
-    background-color: #e89a3a;
+  background-color: #e89a3a;
 }
 
 /* 戻るリンク */
 .back-link {
-    color: #6c757d;
-    text-decoration: underline;
+  color: #6c757d;
+  text-decoration: underline;
 }
-
 .back-link:hover {
-    color: #5a6268;
+  color: #5a6268;
 }
 
-/* コンテンツ上部の余白をなくす */
+/* ============================= */
+/* コンテンツ余白 */
+/* ============================= */
 .content-wrapper {
-    margin-top: 0 !important;
-    padding-top: 0 !important;
-    padding-bottom: 80px;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 80px;
 }
 
+/* ============================= */
 /* 旅行カードのステータスバッジ */
+/* ============================= */
 .badge-t {
-    display: inline-block;
-    min-width: 32px;
-    border-radius: 6px;
-    font-size: 20px;
-    padding: 6px 10px;
-    margin-right: -20px;
-    border: 1px solid #595959;
+  display: inline-block;
+  min-width: 32px;
+  border-radius: 6px;
+  font-size: 20px;
+  padding: 6px 10px;
+  margin-right: 20px !important;
+  margin-top: 5px;
+  border: 1px solid #595959;
 }
+
 .badge-t.status-mi { background-color: #999; color: #fff; }
 .badge-t.status-kan { background-color: #4285f4; color: #fff; }
 .badge-t.status-zumi { background-color: #b6d7a8; color: #000; }
 
-/* --- 旅行カード --- */
+/* ============================= */
+/* カード */
+/* ============================= */
 .card .travel-date {
-    font-size: 0.85rem;
-    opacity: 0.8;
-    margin: 0;
-}
-
-.badge-t {
-    margin-right: 20px !important;
-    margin-top: 5px;
-}
-
-.badge-t.status-zumi {
-    background-color: #b6d7a8;
-    color: #000;
+  font-size: 0.85rem;
+  opacity: 0.8;
+  margin: 0;
 }
 
 .card-body {
-    padding: 8px 16px !important;
+  padding: 8px 16px !important;
 }
 
+/* ============================= */
+/* 送信ボタン */
+/* ============================= */
 .app-submit {
-    background: #9fc5e8ff;
-    border: 1px solid #595959;
-    display: block;
-    margin: 0 auto;
-    width: 120px;
-    border-radius: 0;
+  background: #9fc5e8ff;
+  border: 1px solid #595959;
+  display: block;
+  margin: 0 auto;
+  width: 120px;
+  border-radius: 0;
 }
-
 
 .app-submit:hover {
-    background: #8ab6d8ff; 
-    border-color: #595959;
+  background: #8ab6d8ff;
+  border-color: #595959;
 }
 
+/* ============================= */
 /* ラベルの統一 */
+/* ============================= */
 .form-label {
   font-weight: 400;
   font-size: 18px;
@@ -179,7 +187,9 @@
   display: inline-block;
 }
 
+/* ============================= */
 /* 入力欄の基本スタイル */
+/* ============================= */
 input,
 select,
 textarea {
@@ -189,6 +199,60 @@ textarea {
   border-radius: 6px;
   border: 1px solid #ccc;
   font-size: 18px;
-  box-sizing: border-box; 
+  box-sizing: border-box;
+}
+.travel-edit-fields .stay-type {
+  margin: 20px 0 12px;
 }
 
+.travel-edit-fields .stay-type-title {
+  font-weight: 400;
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.travel-edit-fields .stay-type-options {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.travel-edit-fields .stay-option {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 18px;
+  white-space: nowrap;
+}
+
+.travel-edit-fields .stay-option input[type="radio"] {
+  margin: 0;
+  transform: translateY(1px);
+}
+
+.travel-edit-fields .stay-length {
+  font-size: 20px;
+  font-weight: 400;
+  text-align: right;
+  margin: 8px 30px 0 0;
+}
+
+.travel-edit-fields .stay-length span {
+  margin-right: 4px;
+}
+
+.travel-edit-fields input,
+.travel-edit-fields select,
+.travel-edit-fields textarea {
+  margin-bottom: 12px;
+}
+
+/* その他入力欄のデザイン調整 */
+.transport-other-input {
+    width: 260px;        /* 好きな幅に変更 */
+    height: 38px;        /* 高さ */
+    border-radius: 0;    /* 角丸なし */
+    padding: 6px 10px;
+    font-size: 14px;
+}

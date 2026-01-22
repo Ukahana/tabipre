@@ -1,19 +1,24 @@
 {% extends 'base.html' %}
 {% load static %}
-{% comment %} login.css? {% endcomment %}
+
+{% block extra_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'tabipre/css/parts/travel_edit.css' %}">
+{% endblock %}
 {% block content %}
 <div class="container mt-4">
-    <h1 class="mb-4">新規旅行作成</h1>
+    <div class="sub-title mb-4">新規旅行作成</div>
 
     <form method="POST" novalidate>
         {% csrf_token %}
-
+        <input type="hidden" name="action" value="edit_all">
+        <div class="travel-edit-fields">
         {% include "parts/travel_form_fields1.html" %}
+        </div>
+        <button type="submit" class="btn btn-primary mt-3 w-100">次に進む</button>
 
-        <button type="submit" class="btn btn-primary mt-3">次へ</button>
-
-        <p class="mt-2">
-            <a href="{% url 'app:home' %}">キャンセル</a>
+        <p class="mt-2 text-center">
+            <a href="{% url 'app:home' %}" class="text-secondary">キャンセル</a>
         </p>
     </form>
 </div>

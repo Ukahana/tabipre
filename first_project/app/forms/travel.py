@@ -6,7 +6,7 @@ from ..models import Travel_info, Transport, Travelmode
 class TravelBaseForm(forms.ModelForm):
     class Meta:
         model = Travel_info
-        fields = "__all__"
+        fields = [] 
         widgets = {
             "start_date": forms.DateInput(attrs={"type": "date"}),
             "end_date": forms.DateInput(attrs={"type": "date"}),
@@ -43,13 +43,21 @@ class TravelStep2Form(TravelBaseForm):
         max_length=100,
         required=False,
         label="その他の交通手段",
+        widget=forms.TextInput(attrs={
+        "class": "transport-other-input",
+        "placeholder": "その他の交通手段を入力"
+        })
     )
 
     class Meta(TravelBaseForm.Meta):
         fields = ["location", "memo"]
         widgets = {
             "location": forms.RadioSelect(),
-        }
+            "memo": forms.Textarea(attrs={
+            "rows": 5,         
+            "class": "memo-box", 
+        }),
+    }
 
     def __init__(self, *args, **kwargs):
         travel = kwargs.get("instance")
