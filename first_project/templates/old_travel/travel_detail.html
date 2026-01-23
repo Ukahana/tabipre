@@ -36,7 +36,6 @@
                  style="background-color: {{ category.get_category_color_display }};">
 
                 <div class="d-flex align-items-center">
-
                     <strong>{{ category.category_name }}</strong>
 
                     <span class="badge bg-light text-dark ms-2">
@@ -47,7 +46,8 @@
 
             <ul id="cat{{ category.id }}" class="list-group list-group-flush">
 
-                {% include "parts/category_card_editable.html" with categories=categories %}
+                {# ★ 修正ポイント：category を渡す ★ #}
+                {% include "parts/category_card_editable.html" with category=category %}
 
             </ul>
 
