@@ -31,10 +31,9 @@ from app.views.new_travel.travel_step import (
     travel_create_step1,
     travel_step2 as new_travel_step2,
 )
-from app.views.new_travel.template_edit2 import (
-    template_edit,
-    old_template_copy,
-)
+from app.views.new_travel.template_edit import template_edit
+from app.views.new_travel.template_edit2 import template_edit2
+from app.views.new_travel.old_template_copy import old_template_copy
 from app.views.new_travel.add_category_item import add_category_item
 from app.views.new_travel.autocomplete_category_item import (
     autocomplete_category,
@@ -77,7 +76,8 @@ urlpatterns = [
     # 新規テンプレート作成
     path('travel_step1/', travel_create_step1, name='travel_step1'),
     path('travel_step2/', new_travel_step2, name='travel_step2'), 
-    path("template/<int:template_id>/edit/",template_edit,name="template_edit"),
+    path("template/<int:template_id>/edit/", template_edit, name="template_edit"),
+    path("template/<int:template_id>/edit2/", template_edit2, name="template_edit2"),
     path("template/<int:template_id>/add/",add_category_item,name="add_category_item"),
     path("autocomplete/category/", autocomplete_category, name="autocomplete_category"),
     path("autocomplete/item/", autocomplete_item, name="autocomplete_item"),

@@ -5,22 +5,74 @@
 {{ block.super }}
 <link rel="stylesheet" href="{% static 'tabipre/css/parts/travel_edit.css' %}">
 {% endblock %}
+
 {% block content %}
-<div class="container mt-4">
+<div class="container mt-5 mt-4">
 
-    <div class="sub-title mb-3">旅行の詳細設定</div>
+    <h2 class="mb-4">
+        {{ template.travel_info.travel_title }}
+        <span class="text-muted fs-6">（テンプレート編集）</span>
+    </h2>
 
-    <form method="POST" class="travel_step2_form">
+    <form method="post" novalidate>
         {% csrf_token %}
 
-        {% include 'parts/travel_step2_form.html' %}
+        <div class="travel-edit-fields">
 
-        <div class="mt-4">
-            <button type="submit" class="btn btn-primary w-100">
-                保存する
-            </button>
+            {% for category in categories %}
+            <div class="card shadow-sm p-3 mb-4">
+
+                <!-- カテゴリ名 + 削除ボタン -->
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h5 class="mb-0">{{ category.category_name }}</h5>
+
+                    <button type="submit"
+                            name="delete_category"
+                            value="{{ category.id }}"
+                            class="btn btn-sm btn-outline-danger">
+                        削除
+                    </button>
+                </div>
+
+                <!-- アイテム一覧 -->
+                {% for item in category.travelitem_set.all %}
+                <div class="d-flex align-items-center mb-2">
+
+                    <!-- チェック -->
+                    <input type="checkbox"
+                           name="item_checked_{{ item.id }}"
+                           class="form-check-input me-2"
+                           {% if item.item_checked %}checked{% endif %}>
+
+                    <!-- 名前変更 -->
+                    <input type="text"
+                           name="rename_{{ item.id }}"
+                           value="{{ item.item_name }}"
+                           class="form-control me-2">
+
+                    <!-- 削除 -->
+                    <button type="submit"
+                            name="delete_item"
+                            value="{{ item.id }}"
+                            class="btn btn-sm btn-outline-danger">
+                        ×
+                    </button>
+                </div>
+                {% endfor %}
+
+            </div>
+            {% endfor %}
+
         </div>
-    </form>
 
+        <button type="submit" class="btn btn-primary mt-3 w-100">保存する</button>
+
+        <p class="mt-2 text-center">
+            <a href="{% url 'app:home' %}" class="text-secondary">キャンセル</a>
+        </p>
+
+    </form>
 </div>
+
+<script src="{% static 'tabipre/js/new_travel/template_edit2.js' %}"></script>
 {% endblock %}

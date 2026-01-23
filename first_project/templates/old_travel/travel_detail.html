@@ -47,23 +47,7 @@
 
             <ul id="cat{{ category.id }}" class="list-group list-group-flush">
 
-                {% for item in category.travelitem_set.all|dictsort:"item_checked" %}
-                    <li class="list-group-item">
-                        <div class="d-flex justify-content-between align-items-center">
-
-                            <div class="d-flex align-items-center">
-                                <input type="checkbox"
-                                       class="form-check-input me-2"
-                                       onchange="toggleItem({{ item.id }})"
-                                       {% if item.item_checked %}checked{% endif %}>
-                                <span>{{ item.item_name }}</span>
-                            </div>
-
-                        </div>
-                    </li>
-                {% empty %}
-                    <li class="list-group-item text-muted">項目がありません</li>
-                {% endfor %}
+                {% include "parts/category_card_editable.html" with categories=categories %}
 
             </ul>
 

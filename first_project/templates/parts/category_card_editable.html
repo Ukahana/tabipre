@@ -1,0 +1,37 @@
+{% for category in categories %}
+<div class="card mb-3 shadow-sm">
+
+    <div class="card-header text-white d-flex justify-content-between align-items-center"
+         style="background-color: {{ category.get_category_color_display }};">
+        <div class="d-flex align-items-center">
+            <strong>{{ category.category_name }}</strong>
+            <span class="badge bg-light text-dark ms-2">
+                {{ category.checked_count }} / {{ category.total_count }}
+            </span>
+        </div>
+    </div>
+
+    <ul id="cat{{ category.id }}" class="list-group list-group-flush">
+
+        {% for item in category.travelitem_set.all|dictsort:"item_checked" %}
+            <li class="list-group-item">
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <div class="d-flex align-items-center">
+                        <input type="checkbox"
+                               class="form-check-input me-2"
+                               onchange="toggleItem({{ item.id }})"
+                               {% if item.item_checked %}checked{% endif %}>
+                        <span>{{ item.item_name }}</span>
+                    </div>
+
+                </div>
+            </li>
+        {% empty %}
+            <li class="list-group-item text-muted">項目がありません</li>
+        {% endfor %}
+
+    </ul>
+
+</div>
+{% endfor %}

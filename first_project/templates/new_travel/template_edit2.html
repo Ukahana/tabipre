@@ -5,50 +5,68 @@
 <div class="container mt-4">
 
     <h2 class="mb-3">
-        {{ travel.travel_title }}
-        <span class="text-muted fs-6">（旅行詳細の編集）</span>
+        {{ template.travel_info.travel_title }}
+        <span class="text-muted fs-6">（テンプレート編集）</span>
     </h2>
 
-    <form method="post">
+    <form method="POST">
         {% csrf_token %}
 
-        <!-- Step2 のフォーム内容をそのまま表示 -->
-        <div class="card shadow-sm p-3 mb-4">
-            {{ form.non_field_errors }}
+        {% for category in categories %}
+            <div class="card mb-3 shadow-sm">
 
-            <!-- 交通手段（チェックボックス） -->
-            <div class="mb-3">
-                <label class="form-label">交通手段</label>
-                {{ form.transport_types }}
-                {{ form.transport_types.errors }}
+                <!-- カテゴリヘッダー（old_template と同じ構造） -->
+                <div class="card-header text-white d-flex justify-content-between align-items-center"
+                     style="background-color: {{ category.get_category_color_display }};">
+                    <strong>{{ category.category_name }}</strong>
+
+                    <button type="submit"
+                            name="delete_category"
+                            value="{{ category.id }}"
+                            class="btn btn-sm btn-outline-light">
+                        ×
+                    </button>
+                </div>
+
+                <ul class="list-group list-group-flush">
+
+                    {% for item in category.travelitem_set.all %}
+                        <li class="list-group-item">
+
+                            <div class="d-flex align-items-center w-100">
+
+                                <!-- チェック（編集可能） -->
+                                <input type="checkbox"
+                                       name="item_checked_{{ item.id }}"
+                                       class="form-check-input me-2"
+                                       {% if item.item_checked %}checked{% endif %}>
+
+                                <!-- 名前変更（old_template の幅に合わせて調整） -->
+                                <input type="text"
+                                       name="rename_{{ item.id }}"
+                                       value="{{ item.item_name }}"
+                                       class="form-control me-2">
+
+                                <!-- 削除ボタン -->
+                                <button type="submit"
+                                        name="delete_item"
+                                        value="{{ item.id }}"
+                                        class="btn btn-sm btn-outline-danger">
+                                    ×
+                                </button>
+
+                            </div>
+
+                        </li>
+                    {% endfor %}
+
+                </ul>
+
             </div>
+        {% endfor %}
 
-            <!-- OTHER の入力欄 -->
-            <div class="mb-3">
-                <label class="form-label">その他の交通手段</label>
-                {{ form.transport_other }}
-                {{ form.transport_other.errors }}
-            </div>
-
-            <!-- メモ -->
-            <div class="mb-3">
-                <label class="form-label">メモ</label>
-                {{ form.memo }}
-                {{ form.memo.errors }}
-            </div>
-
-            <!-- 場所 -->
-            <div class="mb-3">
-                <label class="form-label">場所</label>
-                {{ form.place }}
-                {{ form.place.errors }}
-            </div>
-        </div>
-
-        <button type="submit" class="btn btn-primary w-100">保存</button>
+        <button type="submit" class="btn btn-primary w-100 mt-3">保存</button>
     </form>
 
 </div>
-
-<script src="{% static 'tabipre/js/new_travel/template_edit2.js' %}"></script>
 {% endblock %}
