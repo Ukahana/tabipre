@@ -15,29 +15,53 @@
           <input type="hidden" name="action" value="copy">
 
           {% for template in templates %}
-            <div class="border rounded p-2 mb-2">
+            <div class="border rounded p-3 mb-3 d-flex justify-content-between align-items-center">
 
-              <input type="radio"
-                     id="t{{ template.id }}"
-                     name="old_travel_id"
-                     value="{{ template.travel_info.travel_info_id }}"
-                     class="me-2">
+              <!-- 左側：ステータス + タイトル + 日付 -->
+              <label for="t{{ template.id }}" class="d-flex align-items-center w-100" style="cursor:pointer;">
 
-              <label for="t{{ template.id }}" class="d-flex align-items-center">
+                <!-- ラジオボタン -->
+                <input type="radio"
+                       id="t{{ template.id }}"
+                       name="old_travel_id"
+                       value="{{ template.travel_info.travel_info_id }}"
+                       class="form-check-input me-3">
+
                 <div>
+
+                  <!-- ステータス表示（例：完 / 未 / 済）-->
+                  <span class="badge bg-secondary me-2">
+                    {% if template.status == 1 %}完
+                    {% elif template.status == 2 %}未
+                    {% else %}済
+                    {% endif %}
+                  </span>
+
+                  <!-- タイトル -->
                   <strong>{{ template.travel_info.travel_title }}</strong><br>
+
+                  <!-- 日付 -->
                   <small class="text-muted">
-                    {{ template.travel_info.start_date }} ～ {{ template.travel_info.end_date }}
+                    {% if template.travel_info.end_date %}
+                      {{ template.travel_info.start_date }} ～ {{ template.travel_info.end_date }}
+                    {% else %}
+                      {{ template.travel_info.start_date }}
+                    {% endif %}
                   </small>
+
                 </div>
               </label>
+
+              <!-- 右側：選択ボタン -->
+              <button type="submit"
+                      class="btn btn-outline-primary btn-sm ms-2"
+                      onclick="document.getElementById('t{{ template.id }}').checked = true;">
+                選択
+              </button>
 
             </div>
           {% endfor %}
 
-          <button type="submit" class="btn btn-primary mt-2">
-            コピーして作成
-          </button>
         </form>
 
         {% else %}

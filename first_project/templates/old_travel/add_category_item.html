@@ -81,11 +81,11 @@
     </form>
 </div>
 
-<!-- ⭐ モーダル読込（別ファイル） -->
+<!--  モーダル読込（別ファイル） -->
 {% include "parts/favorite_modal.html" %}
 {% include "old_travel/modal/add_continue_modal.html" %}
 
-<!-- ⭐ JS（別ファイル） -->
+{% block extra_js %}
+{{ block.super }}
 <script src="{% static 'tabipre/js/parts/favorite_add.js' %}"></script>
-
 {% endblock %}

@@ -12,12 +12,11 @@ def template_edit2(request, template_id):
             TravelCategory.objects.filter(id=delete_cat_id).delete()
             return redirect("app:template_edit2", template_id=template.id)
 
-
         # --- 項目削除 ---
         delete_item_id = request.POST.get("delete_item")
         if delete_item_id and delete_item_id.isdigit():
-           TravelItem.objects.filter(id=delete_item_id).delete()
-           return redirect("app:template_edit2", template_id=template.id)
+            TravelItem.objects.filter(id=delete_item_id).delete()
+            return redirect("app:template_edit2", template_id=template.id)
 
         # --- アイテム更新 ---
         for item in TravelItem.objects.filter(travel_category__template=template):
@@ -33,10 +32,10 @@ def template_edit2(request, template_id):
 
             item.save()
 
-        # 保存後も同じ画面に戻る
-        return redirect("app:template_edit2", template_id=template.id)
+        # ★ 保存後はホーム画面へ遷移
+        return redirect("app:home")
 
-    # GET
+    # --- GET ---
     categories = TravelCategory.objects.filter(template=template).order_by("id")
 
     for cat in categories:

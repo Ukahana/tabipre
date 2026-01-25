@@ -81,9 +81,13 @@
 
 <!-- モーダル -->
 {% include "new_travel/modal/add_template.html" %}
-{% include "new_travel/modal/add_continue_modal.html" %}
 {% include "parts/favorite_modal.html" %}
+
+{% if show_continue_modal %}
+    {% include "new_travel/modal/add_continue_modal.html" %}
+{% endif %}
+
 <script src="{% static 'tabipre/js/parts/favorite_add.js' %}"></script>
-<script src="{% static 'tabipre/js/new_travel/template_continue.js' %}"></script>
+<script src="{% static 'tabipre/js/new_travel/add_category_item.js' %}"></script>
 
 {% endblock %}

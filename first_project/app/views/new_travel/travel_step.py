@@ -102,8 +102,8 @@ def travel_step2(request):
                 travel_title=step1_data["travel_title"],
                 start_date=start_date,
                 end_date=end_date,
-                location=step1_data["location"],
-                memo=step1_data.get("memo", "")
+                location=form.cleaned_data["location"],
+                memo=form.cleaned_data["memo"],
             )
 
             # Travelmode コピー

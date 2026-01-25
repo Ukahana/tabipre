@@ -1,40 +1,54 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    // すべてのチェックボックスにイベントを付与
+    // 並び替え関数（未チェック → チェック済み）
+    function reorderItems(ul) {
+        const allItems = Array.from(ul.querySelectorAll("li"));
+        const checkedItems = allItems.filter(li => li.querySelector('input[type="checkbox"]').checked);
+        const uncheckedItems = allItems.filter(li => !li.querySelector('input[type="checkbox"]').checked);
+
+        ul.innerHTML = "";
+        uncheckedItems.forEach(li => ul.appendChild(li));
+        checkedItems.forEach(li => ul.appendChild(li));
+    }
+
+    // チェックボックス処理
     document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+
+        const itemId = checkbox.name.replace("item_checked_", "");
+
+        // 保存された状態を復元
+        const saved = localStorage.getItem("checked_" + itemId);
+        if (saved !== null) {
+            checkbox.checked = saved === "1";
+        }
+
+        // 変更時に保存＋並び替え
         checkbox.addEventListener("change", () => {
-            const li = checkbox.closest("li");
-            const ul = li.parentElement;
+            localStorage.setItem("checked_" + itemId, checkbox.checked ? "1" : "0");
 
-            // ① チェック状態で並び替え
-            if (checkbox.checked) {
-                // チェック → 一番下へ
-                ul.appendChild(li);
-            } else {
-                // 未チェック → 最初の「未チェック項目の直後」に戻す
-                const firstChecked = ul.querySelector('input[type="checkbox"]:checked');
-                if (firstChecked) {
-                    ul.insertBefore(li, firstChecked.closest("li"));
-                } else {
-                    // 全部未チェックなら先頭へ
-                    ul.insertBefore(li, ul.firstElementChild);
-                }
-            }
-
-            // ② カテゴリのチェック数を更新
-            updateCategoryCount(ul);
+            const ul = checkbox.closest("ul");
+            reorderItems(ul);
         });
     });
 
-    // カテゴリのチェック数を更新する関数
-    function updateCategoryCount(ul) {
-        const items = ul.querySelectorAll("li");
-        const checked = ul.querySelectorAll('input[type="checkbox"]:checked').length;
+    // 名前編集の保存・復元
+    document.querySelectorAll('input[type="text"][name^="rename_"]').forEach(input => {
 
-        const card = ul.closest(".card");
-        const badge = card.querySelector(".badge");
+        const itemId = input.name.replace("rename_", "");
 
-        badge.textContent = `${checked} / ${items.length}`;
-    }
+        // 復元
+        const saved = localStorage.getItem("name_" + itemId);
+        if (saved !== null) {
+            input.value = saved;
+        }
+
+        // 入力時に保存
+        input.addEventListener("input", () => {
+            localStorage.setItem("name_" + itemId, input.value);
+        });
+    });
+
+    // ページ読み込み時に全カテゴリを並び替え
+    document.querySelectorAll("ul.list-group").forEach(ul => reorderItems(ul));
 
 });
