@@ -40,7 +40,8 @@
                         name="delete_category"
                         value="{{ category.id }}"
                         class="btn btn-link fs-4 p-0"
-                        style="text-decoration: none; color: white;">
+                        style="text-decoration: none; color: white;"
+                        onclick="event.stopPropagation();">
                     ×
                 </button>
             </div>
@@ -61,16 +62,20 @@
 
                         <!-- 名前編集 -->
                         <input type="text"
+                               id="item_{{ item.id }}"
                                name="rename_{{ item.id }}"
                                value="{{ item.item_name }}"
-                               class="form-control"
-                               style="flex-grow: 1; min-width: 0;">
+                               data-template-id="{{ template.id }}"
+                               class="form-control">
+
+
 
                         <!-- 削除 -->
                         <button type="submit"
                                 name="delete_item"
                                 value="{{ item.id }}"
-                                class="btn btn-sm btn-outline-danger ms-3">
+                                class="delete-x ms-3"
+                                onclick="event.stopPropagation();">
                             ×
                         </button>
 
@@ -89,13 +94,13 @@
         <!-- 下部ボタン -->
         <div class="mt-4">
 
-            <a href="{% url 'app:category_item_add' template.id %}"
+            <a href="{% url 'app:add_category_item' template.id %}?next={{ request.path }}"
                class="btn custom-add-btn mb-3 w-100">
                 ＋分類・項目の追加
             </a>
 
             <button type="submit" name="save_changes" class="btn btn-primary w-100">
-                変更を保存する
+                登録
             </button>
 
         </div>

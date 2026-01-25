@@ -2,33 +2,15 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib import messages
 from app.models.template import Template, TravelCategory, TravelItem
 from app.models.favorite import Favorite, FavoriteItem
-
-
-def get_or_create_category(template, user, category_name, color):
-    existing_category = TravelCategory.objects.filter(
-        template=template,
-        category_name=category_name
-    ).first()
-
-    if existing_category:
-        return existing_category
-
-    return TravelCategory.objects.create(
-        template=template,
-        category_name=category_name,
-        travel_type=TravelCategory.TravelType.CUSTOM,
-        category_color=color,
-    )
+from app.forms.template_add import CategoryItemForm
 
 
 def category_item_add(request, template_id):
     template = get_object_or_404(Template, pk=template_id)
 
-    # お気に入りリスト
     favorite, _ = Favorite.objects.get_or_create(user=request.user)
     favorite_items = FavoriteItem.objects.filter(favorite=favorite)
 
-    # ★ カラーパレット用
     color_map = {
         0: "#e91e63ff",
         1: "#ffb7b2fe",
@@ -49,52 +31,49 @@ def category_item_add(request, template_id):
     # POST
     # -------------------------
     if request.method == "POST":
-        category_name = (request.POST.get("category_name") or "").strip()
-        item_name = (request.POST.get("item_name") or "").strip()
-        color = request.POST.get("category_color")
+        form = CategoryItemForm(request.POST, template=template)
 
-        if not category_name or not color:
-            messages.error(request, "分類名とカラーは必須です。")
-            return redirect(request.path)
+        if form.is_valid():
+            category_name = form.cleaned_data["category_name"]
+            item_name = form.cleaned_data["item_name"]
+            color = form.cleaned_data["category_color"]
+            favorite_flag = form.cleaned_data["favorite_flag"]
 
-        if len(category_name) > 50:
-            messages.error(request, "分類名は50文字以内で入力してください。")
-            return redirect(request.path)
-
-        if item_name and len(item_name) > 50:
-            messages.error(request, "項目名は50文字以内で入力してください。")
-            return redirect(request.path)
-
-        try:
-            color = int(color)
-        except ValueError:
-            messages.error(request, "カラー選択が不正です。")
-            return redirect(request.path)
-
-        category = get_or_create_category(template, request.user, category_name, color)
-
-        if item_name:
-            if TravelItem.objects.filter(travel_category=category, item_name=item_name).exists():
-                messages.error(request, "同じ分類に同じ項目がすでに存在します。")
-                return redirect(request.path)
-
-        TravelItem.objects.create(
-            travel_category=category,
-            item_name=item_name,
-            item_checked=TravelItem.ItemChecked.NO
-        )
-
-        if item_name and request.POST.get("favorite_flag") == "1":
-            FavoriteItem.objects.get_or_create(
-                favorite=favorite,
-                item_name=item_name
+            # カテゴリ作成
+            category = TravelCategory.objects.create(
+                template=template,
+                category_name=category_name,
+                travel_type=TravelCategory.TravelType.CUSTOM,
+                category_color=color,
             )
 
-        return redirect(f"{request.path}?saved=1")
+            # TravelItem 作成
+            TravelItem.objects.create(
+                travel_category=category,
+                item_name=item_name,
+                item_checked=TravelItem.ItemChecked.NO
+            )
+
+            # お気に入り登録
+            if item_name and favorite_flag:
+                FavoriteItem.objects.get_or_create(
+                    favorite=favorite,
+                    item_name=item_name
+                )
+
+            return redirect(f"{request.path}?saved=1")
+
+        # フォームエラーをメッセージ化
+        for field, errors in form.errors.items():
+            for error in errors:
+                messages.error(request, error)
+
+        return redirect(request.path)
 
     # -------------------------
-    # GET（ここが POST の外に必要）
+    # GET
     # -------------------------
+    form = CategoryItemForm(template=template)
     show_continue_modal = request.GET.get("saved") == "1"
 
     return render(request, "old_travel/add_category_item.html", {
@@ -102,4 +81,6 @@ def category_item_add(request, template_id):
         "favorite_items": favorite_items,
         "show_continue_modal": show_continue_modal,
         "color_list": color_list,
+        "next_url": request.path,
+        "form": form,
     })

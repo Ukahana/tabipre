@@ -1,138 +1,89 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
 
 {% block extra_css %}
 {{ block.super }}
-<link rel="stylesheet" href="{% static 'tabipre/css/color_palette.css' %}">
+<link rel="stylesheet" href="{% static 'tabipre/css/old_template/add_category_item.css' %}">
 {% endblock %}
-{% block content %}
-<div class="container mt-4">
-    {% if messages %}
-    <div class="mt-3">
-        {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}">
-                {{ message }}
-            </div>
-        {% endfor %}
-    </div>
-{% endif %}
-    <h2 class="mb-3">
-        {{ template.travel_info.travel_title }}
-        <span class="text-muted fs-6">（新規分類・項目を追加）</span>
-    </h2>
 
-    <form method="post">
+{% block content %}
+<div class="container mt-5">
+
+    <div class= "sub-title">分類・項目の追加</div>
+
+
+    <form method="POST">
         {% csrf_token %}
 
-        <!-- 分類名 -->
-        <div class="mb-3">
-            <label class="form-label">分類名</label>
+        <!-- ⭐ 分類名（横並び） -->
+        <div class="mt-4 d-flex align-items-center">
+            <label class="form-label me-3 mb-0" style="width:80px;">分類名</label>
             <input type="text"
                    name="category_name"
                    id="category_name"
                    class="form-control"
                    autocomplete="off"
                    placeholder="例：衣類">
-            <div id="category_suggestions" class="list-group position-absolute w-50"></div>
         </div>
 
-        <!-- 項目名 + お気に入りスター -->
-        <div class="mb-3">
-            <label class="form-label">項目名</label>
-
-            <div class="input-group">
-                <input type="text"
-                       name="item_name"
-                       id="item_name"
-                       class="form-control"
-                       autocomplete="off"
-                       placeholder="例：靴下">
-
-                <span class="input-group-text p-1"
-                      id="favorite_star"
-                      style="cursor:pointer;">
-                  <img src="{% static 'tabipre/icons/star_off.png' %}"
-                       id="favorite_star_img"
-                       alt="favorite"
-                       style="width:24px; height:24px;">
-                </span>
-
-            </div>
-
-            <input type="hidden" name="favorite_flag" id="favorite_flag" value="0">
-            <div id="item_suggestions" class="list-group position-absolute w-50"></div>
+        <!-- ⭐ カラーパレット -->
+        <label class="category-text mt-4 w-100">分類の色を選択する</label>
+        <div class="color-palette mb-3">
+            {% for value, color in color_map.items %}
+                <div class="color-option"
+                     data-value="{{ value }}"
+                     style="background: {{ color }}">
+                </div>
+            {% endfor %}
         </div>
+        <input type="hidden" name="category_color" id="selectedColor" required>
 
-        <!-- お気に入りから追加 -->
+        <!-- ⭐ お気に入りから追加 -->
         <button type="button"
-                class="btn btn-outline-secondary mb-3"
+                class="btn favorite-add-btn w-100 mb-3"
                 data-bs-toggle="modal"
                 data-bs-target="#favoriteModal">
             お気に入りから追加
         </button>
 
-        <!-- モーダル -->
-        <div class="modal fade" id="favoriteModal" tabindex="-1">
-            <div class="modal-dialog">
-                <div class="modal-content">
+        <!-- ⭐ 項目名（横並び） -->
+        <div class="mt-3 d-flex align-items-center">
+            <label class="form-label me-2 mb-0" style="width:80px;">項目名</label>
+            <div class="d-flex align-items-center flex-grow-1">
+                <input type="text"
+                       name="item_name"
+                       id="itemNameInput"
+                       class="form-control me-2"
+                       autocomplete="off"
+                       placeholder="未入力でも追加できます">
 
-                    <div class="modal-header">
-                        <h5 class="modal-title">お気に入りリスト</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
+                <img id="favoriteStar"
+                     src="{% static 'tabipre/icons/star_off.png' %}"
+                     data-on="{% static 'tabipre/icons/star_on.png' %}"
+                     data-off="{% static 'tabipre/icons/star_off.png' %}"
+                     style="width:32px; cursor:pointer;">
 
-                    <div class="modal-body">
-                        {% for fav in favorites %}
-                            <button type="button"
-                                    class="list-group-item list-group-item-action favorite-item"
-                                    data-name="{{ fav.item_name }}">
-                                {{ fav.item_name }}
-                            </button>
-                        {% empty %}
-                            <p class="text-muted">お気に入りはありません</p>
-                        {% endfor %}
-                    </div>
-
-                </div>
+                <input type="hidden" name="favorite_flag" id="favoriteValue" value="0">
             </div>
         </div>
 
-        <!-- カラーパレット -->
-        <div class="mb-3">
-            <label class="form-label">分類カラー</label>
-
-            <div class="d-flex flex-wrap">
-                {% for value, color in colors %}
-                     <label class="me-3 mb-2 d-flex align-items-center" style="cursor:pointer;">
-                         <input type="radio"
-                                name="category_color"
-                                value="{{ value }}"
-                                class="form-check-input me-2">
-                          <span class="color-circle"
-                                style="width:24px; height:24px; border-radius:4px; display:inline-block; background-color:{{ color }}; border:1px solid #ccc;">
-                          </span>
-                     </label>
-                {% endfor %}
-            </div>
-        </div>
-
-        <!-- ボタン -->
-        <div class="d-flex justify-content-between mt-4">
-            <a href="{% url 'app:template_edit2' template.id %}" class="btn btn-secondary">
-                キャンセル
-            </a>
-
-            <button type="submit" class="btn btn-primary">
-                登録
-            </button>
+        <!-- ⭐ 登録 -->
+        <button type="submit" class="btn app-submit mt-4 w-100">
+             登録
+        </button>
+        <!-- ⭐ キャンセル（next を使って戻る） -->
+        <div class="text-center mt-2">
+           <a href="{% url 'app:template_edit2' template.id %}" class="back-link">キャンセル</a>
         </div>
 
     </form>
-    {% include "new_travel/modal/add_template.html" %}
-
 </div>
-{% endblock %}
 
-{% block extra_js %}
-<script src="{% static 'tabipre/js/new_travel/add_category_item.js' %}"></script>
+<!-- モーダル -->
+{% include "new_travel/modal/add_template.html" %}
+{% include "new_travel/modal/add_continue_modal.html" %}
+{% include "parts/favorite_modal.html" %}
+<script src="{% static 'tabipre/js/parts/favorite_add.js' %}"></script>
+<script src="{% static 'tabipre/js/new_travel/template_continue.js' %}"></script>
+
 {% endblock %}

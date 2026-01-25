@@ -1,6 +1,11 @@
 /* ============================
    カラーパレット
 ============================ */
+.category-text {
+    text-align: center;  
+    font-size: 18px;    
+}
+
 .color-palette {
     display: grid;
     grid-template-columns: repeat(4, auto);
@@ -90,6 +95,18 @@
     font-size: 18px;
     line-height: 1.4;
 }
+
+/* ラジオボタンを確実に丸くする */
+#favoriteModal .form-check-input[type="radio"] {
+    appearance: none;
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    border: 2px solid #666;
+    border-radius: 50% !important;
+    cursor: pointer;
+}
+
 
 /* ============================
    追加を続けますかモーダル

@@ -8,9 +8,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // ① チェック状態で並び替え
             if (checkbox.checked) {
-                ul.appendChild(li);  // 下へ移動
+                // チェック → 一番下へ
+                ul.appendChild(li);
             } else {
-                ul.insertBefore(li, ul.firstChild);  // 上へ戻す
+                // 未チェック → 最初の「未チェック項目の直後」に戻す
+                const firstChecked = ul.querySelector('input[type="checkbox"]:checked');
+                if (firstChecked) {
+                    ul.insertBefore(li, firstChecked.closest("li"));
+                } else {
+                    // 全部未チェックなら先頭へ
+                    ul.insertBefore(li, ul.firstElementChild);
+                }
             }
 
             // ② カテゴリのチェック数を更新

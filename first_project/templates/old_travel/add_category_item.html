@@ -28,7 +28,7 @@
         </datalist>
 
         <!-- ⭐ カラーパレット -->
-        <label class="mt-4">分類の色を選択する</label>
+        <label class="category-text mt-4 w-100">分類の色を選択する</label>
         <div class="color-palette mb-3">
             {% for c in color_list %}
                 <div class="color-option"
@@ -82,10 +82,10 @@
 </div>
 
 <!-- ⭐ モーダル読込（別ファイル） -->
-{% include "old_travel/modal/favorite_modal.html" %}
+{% include "parts/favorite_modal.html" %}
 {% include "old_travel/modal/add_continue_modal.html" %}
 
 <!-- ⭐ JS（別ファイル） -->
-<script src="{% static 'tabipre/js/old_travel/favorite_add.js' %}"></script>
+<script src="{% static 'tabipre/js/parts/favorite_add.js' %}"></script>
 
 {% endblock %}

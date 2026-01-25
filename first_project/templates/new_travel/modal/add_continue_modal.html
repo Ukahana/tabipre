@@ -1,0 +1,19 @@
+{% if show_continue_modal %}
+<div class="modal fade show" id="continueModal" tabindex="-1" style="display:block; background:rgba(0,0,0,0.5);">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-body text-center">
+        <p>処理を続けますか？</p>
+
+        <div class="d-flex gap-4 justify-content-center mt-3">
+          <a href="{% url 'app:add_category_item' template.id %}" class="continue-yes btn">はい</a>
+          <a href="{% url 'app:template_edit2' template.id %}" class="continue-no btn">いいえ</a>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+{% endif %}

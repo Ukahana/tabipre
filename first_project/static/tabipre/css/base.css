@@ -256,3 +256,7 @@ textarea {
     padding: 6px 10px;
     font-size: 14px;
 }
+.form-check-input {
+    width: 20px;
+    height: 20px;
+}
