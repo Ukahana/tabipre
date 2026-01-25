@@ -256,7 +256,26 @@ textarea {
     padding: 6px 10px;
     font-size: 14px;
 }
-.form-check-input {
-    width: 20px;
-    height: 20px;
+input[type="checkbox"] {
+    width: auto;
+    height: auto;
+}
+
+
+.custom-checkbox {
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    width: 10px !important;
+    height: 10px !important;
+}
+
+
+.custom-checkbox:checked::after {
+    content: "✔";
+    color: #000;
+    font-size: 26px;
+    position: absolute;
+    top: -6px;
+    left: 20px;
+    pointer-events: none;
 }
