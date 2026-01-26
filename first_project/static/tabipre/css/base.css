@@ -261,21 +261,24 @@ input[type="checkbox"] {
     height: auto;
 }
 
-
+/* チェックボックスの大きさが微妙 */
 .custom-checkbox {
     appearance: none !important;
     -webkit-appearance: none !important;
     width: 10px !important;
     height: 10px !important;
+    border: 1px solid #555;  
+    border-radius: 2px;
+    position: relative;
+    cursor: pointer;
 }
-
 
 .custom-checkbox:checked::after {
     content: "✔";
     color: #000;
-    font-size: 26px;
+    font-size: 26px; 
     position: absolute;
-    top: -6px;
-    left: 20px;
+    top: -12px;  
+    left: -2px;   
     pointer-events: none;
 }

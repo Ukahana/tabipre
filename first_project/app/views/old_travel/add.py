@@ -75,6 +75,8 @@ def category_item_add(request, template_id):
     # -------------------------
     form = CategoryItemForm(template=template)
     show_continue_modal = request.GET.get("saved") == "1"
+    
+    categories = TravelCategory.objects.filter(template=template)
 
     return render(request, "old_travel/add_category_item.html", {
         "template": template,
@@ -83,4 +85,5 @@ def category_item_add(request, template_id):
         "color_list": color_list,
         "next_url": request.path,
         "form": form,
+        "categories": categories,
     })

@@ -21,11 +21,11 @@
 
         <!-- 候補（datalist） -->
         <datalist id="categorySuggestions">
-            <option value="持ち物">
-            <option value="やること">
-            <option value="移動">
-            <option value="宿泊">
+          {% for cat in categories %}
+             <option value="{{ cat.category_name }}">
+          {% endfor %}
         </datalist>
+
 
         <!-- ⭐ カラーパレット -->
         <label class="category-text mt-4 w-100">分類の色を選択する</label>
@@ -81,11 +81,11 @@
     </form>
 </div>
 
+
 <!--  モーダル読込（別ファイル） -->
 {% include "parts/favorite_modal.html" %}
 {% include "old_travel/modal/add_continue_modal.html" %}
 
-{% block extra_js %}
-{{ block.super }}
 <script src="{% static 'tabipre/js/parts/favorite_add.js' %}"></script>
+<script src="{% static 'tabipre/js/old_travel/add_item.js' %}"></script>
 {% endblock %}
