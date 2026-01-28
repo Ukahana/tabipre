@@ -51,12 +51,14 @@ def old_template_edit(request, template_id):
 
     context = {
         "template": template,
+        "current_template": template,   
         "travel": travel,
         "travel_info": travel,
         "categories": categories,
         "favorite_items": favorite_items,
-        "checked_items": checked_items,   # ← 追加
-        "total_items": total_items,       # ← 追加
+        "checked_items": checked_items,   
+        "total_items": total_items, 
+        "card_travel_info": template.travel_info, 
     }
 
     return render(request, "old_travel/template_manage.html", context)

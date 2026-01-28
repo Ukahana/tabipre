@@ -1,21 +1,15 @@
 document.addEventListener("DOMContentLoaded", function () {
+
     const dateInput = document.getElementById("id_expiration_date");
     const openCalendarBtn = document.getElementById("open_calendar_btn");
 
     // ▼ USER_INPUT（= value "2"）のときだけ required にする
-    //    ＋ 自動計算タイプなら日付を自動セット
     function updateExpiration() {
         const selected = document.querySelector('input[name="expiration_type"]:checked');
         if (!selected) return;
 
         const isUserInput = selected.value === "2";
         dateInput.required = isUserInput;
-
-        // ▼ 自動計算タイプなら日付を自動セット
-        const autoDate = selected.dataset.expirationDate;
-        if (!isUserInput && autoDate) {
-            dateInput.value = autoDate;
-        }
     }
 
     document.querySelectorAll('input[name="expiration_type"]').forEach(r => {
@@ -25,25 +19,26 @@ document.addEventListener("DOMContentLoaded", function () {
     updateExpiration();  // 初期状態でも反映
 
 
-    // ▼ カレンダーアイコン → 一時的に type="date" にして picker を開く
+    // ▼ 📅 カレンダーアイコン
     if (openCalendarBtn) {
         openCalendarBtn.addEventListener("click", function () {
             dateInput.type = "date";
             dateInput.showPicker?.();
 
-            dateInput.addEventListener("blur", function handler() {
+            const revert = () => {
                 dateInput.type = "text";
-                dateInput.removeEventListener("blur", handler);
-            });
+                dateInput.removeEventListener("blur", revert);
+            };
+            dateInput.addEventListener("blur", revert);
         });
     }
 
-    // ▼ 手入力 or カレンダー選択後に YYYY-MM-DD に統一
+    // ▼ 日付フォーマット統一
     dateInput.addEventListener("change", function () {
         const raw = dateInput.value.trim();
         if (!raw) return;
 
-        const normalized = raw.replace(/[\/\.]/g, "-");
+        const normalized = raw.replace(/[\/\.]/g, "-").replace(/\s+/g, "");
         const parts = normalized.split("-");
 
         let year, month, day;
@@ -72,4 +67,15 @@ document.addEventListener("DOMContentLoaded", function () {
             dateInput.value = "";
         }
     });
+
+
+    // ▼ モーダル表示（成功時のみ）
+    if (window.SHOW_MODAL) {
+        const modalEl = document.getElementById("createdModal");
+        if (modalEl) {
+            const modal = new bootstrap.Modal(modalEl);
+            modal.show();
+        }
+    }
+
 });

@@ -7,12 +7,10 @@
 {% endblock %}
 
 {% block content %}
-{% with template as current_template %}
 <div class="container mt-4">
 
     <!-- タイトル -->
     {% include "old_travel/travel_card.html" %}
-
     <!-- ★★★ 分類一覧 ★★★ -->
     {% for category in categories %}
     <div class="card mb-3 shadow-sm">
@@ -42,7 +40,7 @@
                         name="delete_category"
                         value="{{ category.id }}"
                         class="btn btn-link fs-4 p-0"
-                        style="text-decoration: none;  color: white;">
+                        style="text-decoration: none; color: white;">
                     ×
                 </button>
             </form>
@@ -89,11 +87,18 @@
             class="btn custom-add-btn mb-3 d-block">
             ＋分類・項目の追加
         </a>
+
+        {% if card_travel_info %}
         <!-- 登録情報を変更する -->
-        <a href="{% url 'app:old_travel_edit1' current_template.id %}" 
-            class="btn custom-edit-btn mb-3 d-block">
-            登録情報を変更する
+        <a href="{% url 'app:old_travel_edit1' card_travel_info.travel_info_id %}"
+           class="btn custom-edit-btn mb-3 d-block">
+          登録情報を変更する
         </a>
+
+        {% else %}
+        <p class="text-muted">旅行情報がありません</p>
+        {% endif %}
+
         <!-- テンプレート・旅行情報の削除 -->
         <a href="#" class="back-link d-block" data-bs-toggle="modal" data-bs-target="#deleteTemplateModal">
             テンプレート・旅行情報を削除
@@ -111,5 +116,4 @@
 <script src="{% static 'tabipre/js/old_travel/add_item.js' %}"></script>
 <script src="{% static 'tabipre/js/old_travel/edit_item.js' %}"></script>
 
-{% endwith %}
 {% endblock %}

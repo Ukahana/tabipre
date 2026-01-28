@@ -1,5 +1,5 @@
 import secrets
-from datetime import timedelta, datetime
+from datetime import timedelta
 from django.utils import timezone
 from django.shortcuts import render, get_object_or_404
 from dateutil.relativedelta import relativedelta
@@ -14,12 +14,21 @@ def create_link(request, travel_id):
     next_day = travel.end_date + timedelta(days=1)
     one_month_later = timezone.now().date() + relativedelta(months=1)
 
-    # ▼ GET のとき：初期値をセット
+    expiration_choices = [
+    (0, "1か月間有効："),
+    (1, "旅行終了日の翌日まで："),
+    (2, "日付を指定する"),
+    ]
+
+    # ▼ GET：初期値セット
     if request.method == "GET":
         form = LinkForm(initial={
-            "expiration_type": Link.ExpirationType.ONE_MONTH,
+            "expiration_type": 0,
             "expiration_date": one_month_later,
         })
+
+        form.fields["expiration_type"].choices = expiration_choices
+
         return render(request, "old_travel/create_link.html", {
             "form": form,
             "template": template,
@@ -29,8 +38,10 @@ def create_link(request, travel_id):
             "show_modal": False,
         })
 
-    # ▼ POST のとき
+    # ▼ POST
     form = LinkForm(request.POST)
+    form.fields["expiration_type"].choices = expiration_choices
+
     if not form.is_valid():
         return render(request, "old_travel/create_link.html", {
             "form": form,
@@ -41,67 +52,34 @@ def create_link(request, travel_id):
             "show_modal": False,
         })
 
+    # ▼ 保存処理
     link = form.save(commit=False)
     link.user = request.user
     link.template = template
     link.share_token = secrets.token_hex(32)
 
-    expiration_type = link.expiration_type
-    raw_date = form.cleaned_data.get("expiration_date")
-
-    # ▼ expiration_type に応じて設定
-    if expiration_type == Link.ExpirationType.ONE_MONTH:
+    # expiration_type に応じて expiration_date を上書き
+    if link.expiration_type == Link.ExpirationType.ONE_MONTH:
         link.expiration_date = one_month_later
-
-    elif expiration_type == Link.ExpirationType.AFTER_TRIP:
+    elif link.expiration_type == Link.ExpirationType.AFTER_TRIP:
         link.expiration_date = next_day
-
-    else:  # USER_INPUT
-        if not raw_date:
-            form.add_error("expiration_date", "日付を入力してください")
-            return render(request, "old_travel/create_link.html", {
-                "form": form,
-                "template": template,
-                "travel": travel,
-                "next_day": next_day,
-                "one_month_later": one_month_later,
-                "show_modal": False,
-            })
-
-        # 区切り文字を統一
-        normalized = raw_date.replace("/", "-").replace(".", "-")
-        parts = normalized.split("-")
-
-        try:
-            if len(parts) == 3:
-                year, month, day = parts
-            elif len(parts) == 2:
-                year = str(timezone.now().year)
-                month, day = parts
-            else:
-                raise ValueError
-
-            parsed = datetime(int(year), int(month), int(day)).date()
-
-        except ValueError:
-            form.add_error("expiration_date", "正しい日付を入力してください（例: 2/5）")
-            return render(request, "old_travel/create_link.html", {
-                "form": form,
-                "template": template,
-                "travel": travel,
-                "next_day": next_day,
-                "one_month_later": one_month_later,
-                "show_modal": False,
-            })
-
-        link.expiration_date = parsed
+    # USER_INPUT の場合はフォーム側でパース済みの値をそのまま使う
 
     link.save()
 
     share_url = request.build_absolute_uri(f"/share/{link.share_token}/")
 
+    # 再表示用フォーム（choices 再設定）
+    new_form = LinkForm(initial={
+    "expiration_type": link.expiration_type,  
+    "expiration_date": link.expiration_date,
+    })
+    
+    new_form.fields["expiration_type"].choices = expiration_choices
+
+
     return render(request, "old_travel/create_link.html", {
-        "form": LinkForm(),
+        "form": new_form,
         "template": template,
         "travel": travel,
         "next_day": next_day,
@@ -129,4 +107,3 @@ def share_view(request, token):
         "template": template,
         "travel": travel,
     })
-    

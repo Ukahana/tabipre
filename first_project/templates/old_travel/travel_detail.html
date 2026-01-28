@@ -10,7 +10,7 @@
 <div class="container mt-0">
 
     <!-- タイトル -->
-    {% include "old_travel/travel_card.html" %}
+    {% include "old_travel/travel_card.html" with card_travel_info=travel_info %}
 
     <!-- メモ -->
     {% if travel_info.memo %}
