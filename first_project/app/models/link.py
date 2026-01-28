@@ -28,7 +28,8 @@ class Link(models.Model):
     )
 
     share_token = models.CharField(
-        max_length=64,
+        max_length=12,
+        unique=True,
         verbose_name=_("共有トークン")
     )
 

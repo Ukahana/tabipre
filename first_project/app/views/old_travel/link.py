@@ -56,7 +56,7 @@ def create_link(request, travel_id):
     link = form.save(commit=False)
     link.user = request.user
     link.template = template
-    link.share_token = secrets.token_hex(32)
+    link.share_token = secrets.token_urlsafe(9)[:12]
 
     # expiration_type に応じて expiration_date を上書き
     if link.expiration_type == Link.ExpirationType.ONE_MONTH:

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from datetime import date
+from datetime import date, datetime  
 from app.models import Travel_info, Template, Transport, Travelmode
 from app.forms import TravelStep1Form, TravelStep2Form
 
@@ -52,8 +52,15 @@ def old_travel_edit2(request, travel_id):
     travel = get_object_or_404(Travel_info, pk=travel_id)
     template = Template.objects.get(travel_info=travel)
 
-    # Step1 の編集内容を session から取得
+    # ★ カテゴリ取得（必須）
+    categories = template.travelcategory_set.all()
+
     session_data = request.session.get("edit_travel")
+    if not session_data:
+        return redirect("app:old_travel_edit1", travel_id=travel_id)
+
+    start_date = datetime.strptime(session_data["start_date"], "%Y-%m-%d").date()
+    end_date = datetime.strptime(session_data["end_date"], "%Y-%m-%d").date()
 
     if request.method == "GET":
         form = TravelStep2Form(instance=travel)
@@ -61,33 +68,27 @@ def old_travel_edit2(request, travel_id):
             "travel": travel,
             "template": template,
             "form": form,
+            "categories": categories,  
+            "step1": session_data,
         })
 
-    # POST
     form = TravelStep2Form(request.POST, instance=travel)
 
     if form.is_valid():
+        travel.travel_title = session_data["travel_title"]
+        travel.start_date = start_date
+        travel.end_date = end_date
+        travel.stay_type = session_data["stay_type"]
 
-        # Step1 の内容を反映（保存時のみ）
-        if session_data:
-            travel.travel_title = session_data["travel_title"]
-            travel.start_date = date.fromisoformat(session_data["start_date"])
-            travel.end_date = date.fromisoformat(session_data["end_date"])
-            travel.stay_type = session_data["stay_type"] 
-            
-        # Step2 の内容を反映
         travel = form.save(commit=False)
-        travel.full_clean()  # モデルの clean() を呼ぶ
+        travel.full_clean()
         travel.save()
 
-        # Template が外れないように再セット（安全策）
         template.travel_info = travel
         template.save()
 
-        # M2M（交通手段）
         travel.transport.set(form.cleaned_data["transport_types"])
 
-        # OTHER の保存
         other_transport = Transport.objects.get(
             transport_type=Transport.TransportType.OTHER
         )
@@ -105,14 +106,14 @@ def old_travel_edit2(request, travel_id):
                 transport=other_transport
             ).delete()
 
-        # Step1 のセッション削除
         request.session.pop("edit_travel", None)
 
         return redirect("app:home")
 
-    # バリデーションエラー時
     return render(request, "old_travel/travel_edit2.html", {
         "travel": travel,
         "template": template,
         "form": form,
+        "categories": categories,  
+        "step1": session_data,
     })

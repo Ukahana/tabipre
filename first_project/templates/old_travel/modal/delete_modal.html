@@ -1,23 +1,18 @@
 <div class="modal fade" id="deleteTemplateModal" tabindex="-1">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-sm">
     <div class="modal-content">
 
-      <div class="modal-header">
-        <h5 class="modal-title">削除の確認</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+
+      <div class="modal-body text-center mt-2">
+        本当に削除しますか？
       </div>
 
-      <div class="modal-body">
-        このテンプレートと旅行情報を削除します。<br>
-        本当に削除してもよろしいですか？
-      </div>
-
-      <div class="modal-footer">
+      <div class="modal-footer justify-content-center border-0">
         <form method="POST" action="{% url 'app:delete_template' current_template.id %}">
           {% csrf_token %}
-          <button type="submit" class="btn btn-danger">削除する</button>
+          <button type="submit" class="btn btn-danger">はい</button>
         </form>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">いいえ</button>
       </div>
 
     </div>
