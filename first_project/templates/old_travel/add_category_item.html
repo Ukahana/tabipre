@@ -69,7 +69,7 @@
         </div>
 
         <!-- ⭐ 登録 -->
-        <button type="submit"  class="btn app-submit mt-4 ">登録</button>
+        <button type="button" class="btn app-submit mt-4" id="openContinueModal">登録</button>
 
         <!-- キャンセル（リンク） -->
         <div class="text-center mt-2">
@@ -85,6 +85,9 @@
 <!--  モーダル読込（別ファイル） -->
 {% include "parts/favorite_modal.html" %}
 {% include "old_travel/modal/add_continue_modal.html" %}
+{% endblock %}
+{% block extra_js %}
+{{ block.super }}
 
 <script src="{% static 'tabipre/js/parts/favorite_add.js' %}"></script>
 <script src="{% static 'tabipre/js/old_travel/add_item.js' %}"></script>

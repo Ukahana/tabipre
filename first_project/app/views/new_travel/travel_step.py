@@ -90,8 +90,8 @@ def travel_step2(request):
         # -----------------------------
         if action == "copy":
             old_travel_id = request.POST.get("old_travel_id")
-            old_travel = get_object_or_404(Travel_info, travel_info_id=old_travel_id)
-            old_template = Template.objects.get(travel_info=old_travel)
+            old_travel = get_object_or_404(Travel_info, pk=old_travel_id)
+            old_template = Template.objects.get(travel_info=old_travel) 
 
             # ★ ここも session → date に変換
             start_date = datetime.strptime(step1_data["start_date"], "%Y-%m-%d").date()

@@ -1,0 +1,61 @@
+/* ============================= */
+/* Flatpickr カレンダー全体 */
+/* ============================= */
+.flatpickr-calendar {
+    background: #faf8f6; /* アイボリー */
+    border: 1px solid #ccc;
+    border-radius: 12px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.12);
+}
+
+/* ============================= */
+/* 月の部分（ヘッダー） */
+/* ============================= */
+.flatpickr-months {
+    background: #e6dfd6; /* ベージュ寄りのグレージュ */
+    color: #5c3a3a;      /* アプリのブラウン */
+    border-radius: 12px 12px 0 0;
+}
+
+.flatpickr-months .flatpickr-month {
+    color: #5c3a3a;
+}
+
+/* ============================= */
+/* 曜日 */
+/* ============================= */
+.flatpickr-weekday {
+    color: #6b6b6b;
+    font-weight: 600;
+}
+
+/* ============================= */
+/* 日付セル */
+/* ============================= */
+.flatpickr-day {
+    border-radius: 6px;
+    transition: 0.15s;
+}
+
+/* ホバー（淡いベージュ） */
+.flatpickr-day:hover {
+    background: #f0e8e0;
+}
+
+/* ============================= */
+/* 選択された日付 */
+/* ============================= */
+.flatpickr-day.selected,
+.flatpickr-day.startRange,
+.flatpickr-day.endRange {
+    background: #b89f8b; /* モカ */
+    border-color: #b89f8b;
+    color: white;
+}
+
+/* ============================= */
+/* 今日 */
+/* ============================= */
+.flatpickr-day.today {
+    border-color: #4a90e2; /* アプリの青をアクセントに */
+}

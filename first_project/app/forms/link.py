@@ -12,11 +12,11 @@ class LinkForm(forms.ModelForm):
         widgets = {
             "permission_type": forms.RadioSelect(attrs={"class": "permission-radio"}),
             "expiration_type": forms.RadioSelect(),
-            "expiration_date": forms.DateInput(
+            "expiration_date": forms.TextInput(
                 attrs={
-                    "type": "text",
-                    "autocomplete": "off",
-                    "placeholder": "例: 2026-02-27 または 2/5",
+                     "type": "text",
+                     "autocomplete": "off",
+                     "placeholder": "例: 2026.2.1 または 2/5",
                 }
             ),
         }
@@ -25,7 +25,7 @@ class LinkForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
         self.fields["expiration_date"].required = False
-
+        
    
         self.fields["permission_type"].choices = [
             (Link.PermissionType.READ_ONLY, "閲覧のみ：他の人は見るだけで変更できません。"),

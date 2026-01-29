@@ -8,15 +8,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let autoMode = true;
 
+    // ★ Flatpickr の "Y.m.d" を Date に変換する関数
+    function parseYmd(str) {
+        if (!str) return null;
+        const parts = str.split(".");
+        if (parts.length !== 3) return null;
+        return new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
+    }
+
     function calcStay() {
         if (!start.value || !end.value) return;
 
-        const s = new Date(start.value);
-        const e = new Date(end.value);
+        const s = parseYmd(start.value);
+        const e = parseYmd(end.value);
+        if (!s || !e) return;
+
         const diff = Math.round((e - s) / (1000 * 60 * 60 * 24));
 
         if (diff >= 0) {
-            nights.textContent = diff;      // HTML 側に「泊」「日」があるので数字だけ
+            nights.textContent = diff;
             days.textContent = diff + 1;
         }
     }
@@ -25,8 +35,10 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!autoMode) return;
         if (!start.value || !end.value) return;
 
-        const s = new Date(start.value);
-        const e = new Date(end.value);
+        const s = parseYmd(start.value);
+        const e = parseYmd(end.value);
+        if (!s || !e) return;
+
         const diff = Math.round((e - s) / (1000 * 60 * 60 * 24));
 
         if (diff === 0) {
@@ -56,6 +68,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // 既存データ編集時に初期状態を反映したいなら
+    // 初期状態反映
     autoDetectStayType();
 });

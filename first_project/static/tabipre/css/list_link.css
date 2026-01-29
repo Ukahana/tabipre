@@ -32,3 +32,12 @@
   font-weight: bold;
   margin-top: 20px;
 }
+/* Chrome, Safari, Edge のカレンダーアイコンを消す */
+input[type="text"]::-webkit-calendar-picker-indicator {
+    display: none !important;
+}
+
+/* Firefox のカレンダーアイコンを消す */
+input[type="text"]::-moz-calendar-picker-indicator {
+    display: none !important;
+}

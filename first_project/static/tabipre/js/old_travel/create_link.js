@@ -19,21 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
     updateExpiration();  // 初期状態でも反映
 
 
-    // ▼ 📅 カレンダーアイコン
-    if (openCalendarBtn) {
-        openCalendarBtn.addEventListener("click", function () {
-            dateInput.type = "date";
-            dateInput.showPicker?.();
-
-            const revert = () => {
-                dateInput.type = "text";
-                dateInput.removeEventListener("blur", revert);
-            };
-            dateInput.addEventListener("blur", revert);
-        });
-    }
-
-    // ▼ 日付フォーマット統一
+    // ▼ 手入力したときのフォーマット統一
     dateInput.addEventListener("change", function () {
         const raw = dateInput.value.trim();
         if (!raw) return;
@@ -56,26 +42,12 @@ document.addEventListener("DOMContentLoaded", function () {
             const date = new Date(year, month - 1, day);
             if (isNaN(date.getTime())) throw new Error("invalid");
 
-            const yyyy = date.getFullYear();
-            const mm = String(date.getMonth() + 1).padStart(2, "0");
-            const dd = String(date.getDate()).padStart(2, "0");
-
-            dateInput.value = `${yyyy}-${mm}-${dd}`;
+            dateInput.value = `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()}`;
 
         } catch (e) {
             alert("正しい日付を入力してください（例: 2/5）");
             dateInput.value = "";
         }
     });
-
-
-    // ▼ モーダル表示（成功時のみ）
-    if (window.SHOW_MODAL) {
-        const modalEl = document.getElementById("createdModal");
-        if (modalEl) {
-            const modal = new bootstrap.Modal(modalEl);
-            modal.show();
-        }
-    }
 
 });

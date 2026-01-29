@@ -1,8 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    // ============================
-    // ⭐ 通常画面の星アイコン
-    // ============================
+    // ⭐ 星アイコン（お気に入り）
     const star = document.getElementById("favoriteStar");
     const favValue = document.getElementById("favoriteValue");
 
@@ -17,9 +15,14 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // ============================
-    // ⭐ カラーパレット
-    // ============================
+    // ⭐ continueModal が存在するなら自動で開く（saved=1 用）
+    const modalEl = document.getElementById("continueModal");
+    if (modalEl && modalEl.dataset.auto === "true") {
+        const modal = new bootstrap.Modal(modalEl);
+        modal.show();
+    }
+
+    // ⭐ カラーパレットの選択処理
     const colorOptions = document.querySelectorAll(".color-option");
     const selectedColor = document.getElementById("selectedColor");
 
@@ -27,46 +30,22 @@ document.addEventListener("DOMContentLoaded", () => {
         colorOptions.forEach(option => {
             option.addEventListener("click", () => {
                 selectedColor.value = option.dataset.value;
-
                 colorOptions.forEach(o => o.classList.remove("selected"));
                 option.classList.add("selected");
             });
         });
     }
 
-    // ============================
-    // ⭐ continueModal があれば自動表示
-    // ============================
-    const modalEl = document.getElementById("continueModal");
-    if (modalEl) {
-        const modal = new bootstrap.Modal(modalEl);
-        modal.show();
+    // ⭐ 登録ボタン → continueModal を開く（今回必要な処理）
+    const openBtn = document.getElementById("openContinueModal");
+    if (openBtn) {
+        openBtn.addEventListener("click", () => {
+            const modalEl = document.getElementById("continueModal");
+            if (modalEl) {
+                const modal = new bootstrap.Modal(modalEl);
+                modal.show();
+            }
+        });
     }
 
 });
-// ============================
-// ⭐ モーダル内の星アイコン
-// ============================
-const addItemModal = document.getElementById("addItemModal");
-
-if (addItemModal) {
-    addItemModal.addEventListener("show.bs.modal", (event) => {
-
-        const button = event.relatedTarget;
-        const categoryId = button.getAttribute("data-category-id");
-
-        document.getElementById("modalCategoryId").value = categoryId;
-
-        const modalStar = document.getElementById("modalFavoriteStar");
-        const modalFavValue = document.getElementById("modalFavoriteValue");
-
-        modalStar.src = modalStar.dataset.off;
-        modalFavValue.value = "0";
-
-        modalStar.onclick = () => {
-            const isOn = modalFavValue.value === "1";
-            modalStar.src = isOn ? modalStar.dataset.off : modalStar.dataset.on;
-            modalFavValue.value = isOn ? "0" : "1";
-        };
-    });
-}
