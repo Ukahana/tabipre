@@ -8,22 +8,20 @@
         <div class="d-flex gap-4 justify-content-center mt-3">
 
           <!-- ⭐ はい：保存して add に戻る -->
-          <button type="submit"
-                  name="action"
-                  value="continue"
+          <button type="button"
                   class="continue-yes btn"
-                  form="categoryItemForm">
-              はい
+                  onclick="submitCategoryForm('continue')">
+                  はい
           </button>
 
+
           <!-- ⭐ いいえ：保存して edit に戻る -->
-          <button type="submit"
-                  name="action"
-                  value="finish"
+          <button type="button"
                   class="continue-no btn"
-                  form="categoryItemForm">
-              いいえ
+                  onclick="submitCategoryForm('finish')">
+           いいえ
           </button>
+
 
         </div>
 

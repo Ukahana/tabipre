@@ -48,18 +48,43 @@
 .travel-edit-fields textarea {
   margin-bottom: 12px;
 }
-.calendar-input-wrapper input {
-    width: 290px;
-    flex: 0 0 auto;
+
+/* ★ カレンダー入力欄とアイコンの横並び調整 */
+.calendar-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 12px; 
 }
+
+.calendar-input-wrapper input {
+  height: 38px;
+  padding: 6px 10px;
+  font-size: 16px;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.calendar-btn {
+  height: 38px;
+  padding: 6px 10px;
+  font-size: 18px;
+  line-height: 1;
+  background: #f0f0f0;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-5px); 
+}
+
 .travel-edit-fields input[type="date"]::-webkit-calendar-picker-indicator {
-    display: none;
+  display: none;
 }
 
 .travel-edit-fields input[type="date"] {
-    appearance: textfield;
+  appearance: textfield;
 }
-
 
 /* ============================= */
 /* Step2：場所の分類・交通手段   */

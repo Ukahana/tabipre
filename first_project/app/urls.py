@@ -43,6 +43,7 @@ from app.views.new_travel.step_copy import (
     TravelCopyModalView,
     TravelCopyApplyView,
 )
+
 from app.views.new_travel.step_template import TemplateCreateView
 
 from app.views.mypage.mypage import mypage
@@ -82,7 +83,6 @@ urlpatterns = [
     path("autocomplete/category/", autocomplete_category, name="autocomplete_category"),
     path("autocomplete/item/", autocomplete_item, name="autocomplete_item"),
     path('template/<int:template_id>/old_copy/',old_template_copy,name='old_template_copy'),
-
     # マイページ
     path('mypage/', mypage, name='mypage'),
     # お気に入り

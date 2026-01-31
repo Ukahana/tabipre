@@ -1,4 +1,3 @@
-{% if show_continue_modal %}
 <div class="modal fade" id="continueModal" tabindex="-1">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -7,8 +6,21 @@
         <p>処理を続けますか？</p>
 
         <div class="d-flex gap-4 justify-content-center mt-3">
-          <a href="{% url 'app:add_category_item' template.id %}" class="continue-yes btn">はい</a>
-          <a href="{% url 'app:template_edit2' template.id %}" class="continue-no btn">いいえ</a>
+
+          <!-- ⭐ はい：JS で form を submit -->
+          <button type="button"
+                  class="btn btn-success"
+                  onclick="submitCategoryForm('continue')">
+              はい
+          </button>
+
+          <!-- ⭐ いいえ：JS で form を submit -->
+          <button type="button"
+                  class="btn btn-secondary"
+                  onclick="submitCategoryForm('back')">
+              いいえ
+          </button>
+
         </div>
 
       </div>
@@ -16,4 +28,3 @@
     </div>
   </div>
 </div>
-{% endif %}

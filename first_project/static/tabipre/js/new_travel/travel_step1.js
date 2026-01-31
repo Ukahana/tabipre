@@ -1,73 +1,88 @@
-document.addEventListener("DOMContentLoaded", () => {
-    const start = document.getElementById("id_start_date");
-    const end = document.getElementById("id_end_date");
-    const stayInfo = document.getElementById("stay_info");
-    const nights = document.getElementById("stay_nights");
-    const days = document.getElementById("stay_days");
-    const stayTypeRadios = document.querySelectorAll("input[name='stay_type']");
+document.addEventListener("DOMContentLoaded", function () {
 
-    let autoMode = true;
+    // -----------------------------
+    // flatpickr 初期化（カレンダーアイコン対応）
+    // -----------------------------
+    document.querySelectorAll(".calendar-btn").forEach(btn => {
+        const targetId = btn.dataset.target;
+        const input = document.getElementById(targetId);
 
-    // ★ Flatpickr の "Y.m.d" を Date に変換する関数
-    function parseYmd(str) {
-        if (!str) return null;
-        const parts = str.split(".");
-        if (parts.length !== 3) return null;
-        return new Date(Number(parts[0]), Number(parts[1]) - 1, Number(parts[2]));
-    }
+        if (!input) return;
 
-    function calcStay() {
-        if (!start.value || !end.value) return;
+        const fp = flatpickr(input, {
+            dateFormat: "Y.m.d",
+            altInput: true,
+            altFormat: "Y/m/d",
+            allowInput: true,
+            locale: "ja",
+            clickOpens: false,
 
-        const s = parseYmd(start.value);
-        const e = parseYmd(end.value);
-        if (!s || !e) return;
+            // 手入力・カレンダー選択どちらでも泊数計算
+            onChange: calcStay,
 
-        const diff = Math.round((e - s) / (1000 * 60 * 60 * 24));
+            // 数字だけ入力されたときの補正
+            parseDate: (value, format) => {
+                if (!value) return null;
 
-        if (diff >= 0) {
-            nights.textContent = diff;
-            days.textContent = diff + 1;
-        }
-    }
+                const nums = value.replace(/[^\d]/g, "");
+                const currentYear = new Date().getFullYear();
 
-    function autoDetectStayType() {
-        if (!autoMode) return;
-        if (!start.value || !end.value) return;
+                if (nums.length === 2) {
+                    const m = nums[0];
+                    const d = nums[1];
+                    return new Date(currentYear, Number(m) - 1, Number(d));
+                }
 
-        const s = parseYmd(start.value);
-        const e = parseYmd(end.value);
-        if (!s || !e) return;
+                if (nums.length === 4) {
+                    const m = nums.slice(0, 2);
+                    const d = nums.slice(2, 4);
+                    return new Date(currentYear, Number(m) - 1, Number(d));
+                }
 
-        const diff = Math.round((e - s) / (1000 * 60 * 60 * 24));
-
-        if (diff === 0) {
-            document.querySelector("input[name='stay_type'][value='0']").checked = true;
-            stayInfo.style.display = "none";
-        } else if (diff > 0) {
-            document.querySelector("input[name='stay_type'][value='1']").checked = true;
-            stayInfo.style.display = "block";
-            calcStay();
-        }
-    }
-
-    start.addEventListener("change", autoDetectStayType);
-    end.addEventListener("change", autoDetectStayType);
-
-    stayTypeRadios.forEach(radio => {
-        radio.addEventListener("change", () => {
-            autoMode = false;
-
-            if (radio.value === "0") {
-                stayInfo.style.display = "none";
-                calcStay();
-            } else if (radio.value === "1") {
-                stayInfo.style.display = "block";
-                calcStay();
+                return flatpickr.parseDate(value, format);
             }
         });
+
+        // 📅 ボタンでカレンダーを開く
+        btn.addEventListener("click", () => fp.open());
     });
 
-    // 初期状態反映
-    autoDetectStayType();
+
+    // -----------------------------
+    // 何泊何日 計算
+    // -----------------------------
+    const startInput = document.getElementById("id_start_date");
+    const endInput = document.getElementById("id_end_date");
+
+    const nightsEl = document.getElementById("stay_nights");
+    const daysEl = document.getElementById("stay_days");
+    const errorEl = document.getElementById("date_error");
+
+    function calcStay() {
+        const start = startInput?._flatpickr?.selectedDates[0];
+        const end = endInput?._flatpickr?.selectedDates[0];
+
+        nightsEl.textContent = "";
+        daysEl.textContent = "";
+        errorEl.textContent = "";
+
+        if (!start || !end) return;
+
+        const diff = (end - start) / (1000 * 60 * 60 * 24);
+
+        if (diff < 0) {
+            errorEl.textContent = "終了日は開始日より後の日付を選択してください";
+            return;
+        }
+
+        nightsEl.textContent = diff;
+        daysEl.textContent = diff + 1;
+    }
+
+    // 入力変更時にも計算
+    startInput?.addEventListener("change", calcStay);
+    endInput?.addEventListener("change", calcStay);
+
+    // 初期表示でも泊数を計算
+    calcStay();
 });

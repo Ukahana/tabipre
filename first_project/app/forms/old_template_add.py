@@ -22,9 +22,5 @@ class OldCategoryItemForm(forms.Form):
 
     favorite_flag = forms.BooleanField(required=False)
 
-    # old_travel は重複チェックしない
-    def clean_category_name(self):
-        return self.cleaned_data["category_name"].strip()
-
     def clean_item_name(self):
         return (self.cleaned_data.get("item_name") or "").strip()

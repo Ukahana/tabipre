@@ -82,11 +82,11 @@
                 キャンセル
             </a>
         </div>
+        {% include "old_travel/modal/add_continue_modal.html" %}
 
     </form>
 
        
-    {% include "old_travel/modal/add_continue_modal.html" %}
     {% include "parts/favorite_modal.html" %}
 
 </div>
@@ -101,4 +101,6 @@ document.getElementById("categoryItemForm").addEventListener("submit", () => {
 </script>
 <script src="{% static 'tabipre/js/parts/favorite_add.js' %}"></script>
 <script src="{% static 'tabipre/js/old_travel/add_item_v2.js' %}"></script>
+<script src="{% static 'tabipre/js/new_travel/new_continue.js' %}"></script>
+
 {% endblock %}

@@ -1,5 +1,11 @@
 from django import forms
-from app.models.template import TravelCategory
+import unicodedata
+
+
+def normalize(text):
+    if not text:
+        return ""
+    return unicodedata.normalize("NFKC", text).strip()
 
 
 class CategoryItemForm(forms.Form):
@@ -28,24 +34,18 @@ class CategoryItemForm(forms.Form):
         }
     )
 
-    favorite_flag = forms.BooleanField(required=False)
+    favorite_flag = forms.TypedChoiceField(
+        choices=[("0", False), ("1", True)],
+        coerce=lambda x: x == "1",
+        required=False
+    )
 
     def __init__(self, *args, **kwargs):
         self.template = kwargs.pop("template", None)
         super().__init__(*args, **kwargs)
 
     def clean_category_name(self):
-        name = self.cleaned_data["category_name"].strip()
-
-        # 同一テンプレート内での重複チェック
-        if self.template:
-            if TravelCategory.objects.filter(
-                template=self.template,
-                category_name=name
-            ).exists():
-                raise forms.ValidationError("同じ分類名がすでに存在します。")
-
-        return name
+        return normalize(self.cleaned_data["category_name"])
 
     def clean_item_name(self):
-        return (self.cleaned_data.get("item_name") or "").strip()
+        return normalize(self.cleaned_data.get("item_name"))

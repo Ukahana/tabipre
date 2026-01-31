@@ -9,9 +9,9 @@
 {% block content %}
 <div class="container mt-5">
 
-    <div class="sub-title">分類・項目の追加</div>
+    <div class="sub-title">新規分類・項目の追加</div>
 
-    <!-- ⭐ フォーム（ID 必須） -->
+    <!-- ⭐ フォーム -->
     <form id="categoryItemForm" method="POST" action="{% url 'app:add_category_item' template.id %}">
         {% csrf_token %}
 
@@ -26,27 +26,7 @@
                    placeholder="例：衣類">
         </div>
 
-        <!-- ⭐ カラーパレット -->
-        <label class="category-text mt-4 w-100">分類の色を選択する</label>
-        <div class="color-palette mb-3">
-            {% for value, color in color_map.items %}
-                <div class="color-option"
-                     data-value="{{ value }}"
-                     style="background: {{ color }}">
-                </div>
-            {% endfor %}
-        </div>
-        <input type="hidden" name="category_color" id="selectedColor" required>
-
-        <!-- ⭐ お気に入りから追加 -->
-        <button type="button"
-                class="btn favorite-add-btn w-100 mb-3"
-                data-bs-toggle="modal"
-                data-bs-target="#favoriteModal">
-            お気に入りから追加
-        </button>
-
-        <!-- ⭐ 項目名 -->
+        <!-- ⭐ 項目名（順番を上へ移動） -->
         <div class="mt-3 d-flex align-items-center">
             <label class="form-label me-2 mb-0" style="width:80px;">項目名</label>
             <div class="d-flex align-items-center flex-grow-1">
@@ -67,6 +47,26 @@
             </div>
         </div>
 
+        <!-- ⭐ お気に入りから追加（位置を項目名の下へ） -->
+        <button type="button"
+                class="btn favorite-add-btn w-100 mb-3 mt-3"
+                data-bs-toggle="modal"
+                data-bs-target="#favoriteModal">
+            お気に入りから追加
+        </button>
+
+        <!-- ⭐ カラーパレット（位置を下へ移動） -->
+        <label class="category-text mt-4 w-100">分類の色を選択する</label>
+        <div class="color-palette mb-3">
+            {% for value, color in color_map.items %}
+                <div class="color-option"
+                     data-value="{{ value }}"
+                     style="background: {{ color }}">
+                </div>
+            {% endfor %}
+        </div>
+        <input type="hidden" name="category_color" id="selectedColor" required>
+
         <!-- ⭐ 登録（モーダルを開く） -->
         <button type="button"
                 class="btn app-submit mt-4 w-100"
@@ -83,12 +83,24 @@
     </form>
 </div>
 
-<!-- ⭐ モーダルは block の中に置く必要がある -->
+<!-- ⭐ モーダル -->
 {% include "new_travel/modal/add_template.html" %}
 {% include "parts/favorite_modal.html" %}
 {% include "new_travel/modal/add_continue_modal.html" %}
 
 <script src="{% static 'tabipre/js/parts/favorite_add.js' %}"></script>
 <script src="{% static 'tabipre/js/new_travel/add_category_item.js' %}"></script>
+<script src="{% static 'tabipre/js/new_travel/new_continue.js' %}"></script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const modal = document.getElementById("continueModal");
+
+    if (modal) {
+        modal.addEventListener("hidden.bs.modal", () => {
+            submitCategoryForm("back");
+        });
+    }
+});
+</script>
 
 {% endblock %}

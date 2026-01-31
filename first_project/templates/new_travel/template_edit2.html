@@ -11,13 +11,22 @@
 
     <h2 class="mb-3">{{ template.travel_info.travel_title }}</h2>
 
+    <!-- 親フォーム：保存・削除・チェック更新・分類追加 -->
     <form method="POST">
         {% csrf_token %}
+
+        <!-- ⭐⭐⭐ ここが最重要：hidden input を追加 ⭐⭐⭐ -->
+        {% for category in categories %}
+            {% for item in category.travelitem_set.all %}
+                <input type="hidden" name="hidden_checked_{{ item.id }}" value="{{ item.item_checked }}">
+                <input type="hidden" name="hidden_name_{{ item.id }}" value="{{ item.item_name }}">
+            {% endfor %}
+        {% endfor %}
+        <!-- ⭐⭐⭐ ここまで必須 ⭐⭐⭐ -->
 
         {% for category in categories %}
         <div class="card mb-3 shadow-sm">
 
-            <!-- カテゴリヘッダー -->
             <div class="card-header text-white d-flex justify-content-between align-items-center"
                  style="background-color: {{ category.get_category_color_display }};">
 
@@ -46,12 +55,10 @@
                 </button>
             </div>
 
-            <!-- 項目一覧（行内編集） -->
             <ul id="cat{{ category.id }}" class="list-group list-group-flush collapse show">
 
                 {% for item in category.travelitem_set.all %}
                 <li class="list-group-item">
-
                     <div class="d-flex align-items-center w-100">
 
                         <!-- チェック -->
@@ -62,13 +69,9 @@
 
                         <!-- 名前編集 -->
                         <input type="text"
-                               id="item_{{ item.id }}"
                                name="rename_{{ item.id }}"
                                value="{{ item.item_name }}"
-                               data-template-id="{{ template.id }}"
-                               data-item-id="{{ item.id }}"
                                class="form-control">
-
 
                         <!-- 削除 -->
                         <button type="submit"
@@ -80,7 +83,6 @@
                         </button>
 
                     </div>
-
                 </li>
                 {% empty %}
                 <li class="list-group-item text-muted">項目がありません</li>
@@ -91,19 +93,18 @@
         </div>
         {% endfor %}
 
-        <!-- 下部ボタン -->
-        <div class="mt-4">
+        <button type="submit"
+                name="go_add"
+                value="1"
+                class="btn custom-add-btn mb-3 w-100 mt-3">
+         ＋分類・項目の追加
+        </button>
 
-            <a href="{% url 'app:add_category_item' template.id %}?next={{ request.path }}"
-               class="btn custom-add-btn mb-3 w-100">
-                ＋分類・項目の追加
-            </a>
 
-            <button type="submit" name="save_changes" class="btn btn-primary w-100">
-                保存
-            </button>
-
-        </div>
+        <!-- ⭐ 保存ボタン -->
+        <button type="submit" name="save_changes" class="btn btn-primary w-100 mt-3">
+            保存
+        </button>
 
     </form>
 
