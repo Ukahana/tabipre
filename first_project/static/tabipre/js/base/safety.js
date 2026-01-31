@@ -1,23 +1,36 @@
-// ダブルタップ防止（スマホで collapse や submit が暴発するのを防ぐ）
+// ===============================
+// ダブルタップ防止（collapse のみ）
+// ===============================
 document.addEventListener('dblclick', function(e) {
-    e.stopPropagation();
-    e.preventDefault();
+    // collapse トリガーだけ防止
+    if (e.target.closest('[data-bs-toggle="collapse"]')) {
+        e.stopPropagation();
+        e.preventDefault();
+    }
 }, true);
 
-// collapse 暴発防止（入力欄や削除ボタンをタップしても collapse が閉じない）
+
+// ===============================
+// collapse 暴発防止
+// ===============================
 document.addEventListener('click', function(e) {
     const trigger = e.target.closest('[data-bs-toggle="collapse"]');
     if (trigger) {
-        // collapse トリガー以外の子要素のクリックは伝播させない
         if (!e.target.matches('[data-bs-toggle="collapse"]')) {
             e.stopPropagation();
         }
     }
 }, true);
 
-// Enter キー送信防止（スマホキーボードの Enter でフォーム送信されるのを防ぐ）
+
+// ===============================
+// Enter キー送信防止（input[type=text] のみ）
+// ===============================
 document.addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') {
+    const tag = e.target.tagName.toLowerCase();
+
+    // ⭐ テキスト入力欄だけ Enter を無効化
+    if (e.key === 'Enter' && tag === 'input' && e.target.type === 'text') {
         e.preventDefault();
     }
 }, true);

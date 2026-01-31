@@ -36,16 +36,4 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // ⭐ 登録ボタン → continueModal を開く（今回必要な処理）
-    const openBtn = document.getElementById("openContinueModal");
-    if (openBtn) {
-        openBtn.addEventListener("click", () => {
-            const modalEl = document.getElementById("continueModal");
-            if (modalEl) {
-                const modal = new bootstrap.Modal(modalEl);
-                modal.show();
-            }
-        });
-    }
-
 });

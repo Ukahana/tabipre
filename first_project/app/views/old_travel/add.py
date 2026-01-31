@@ -1,37 +1,15 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib import messages
 from app.models.template import Template, TravelCategory, TravelItem
 from app.models.favorite import Favorite, FavoriteItem
-from app.forms.template_add import CategoryItemForm
+from app.forms.old_template_add import OldCategoryItemForm
 
 
 def category_item_add(request, template_id):
-    template = get_object_or_404(Template, pk=template_id)
-
+    template = get_object_or_404(Template, id=template_id)
     favorite, _ = Favorite.objects.get_or_create(user=request.user)
-    favorite_items = FavoriteItem.objects.filter(favorite=favorite)
 
-    color_map = {
-        0: "#e91e63ff",
-        1: "#ffb7b2fe",
-        2: "#f57c00ff",
-        3: "#388e3cff",
-        4: "#0097a7ff",
-        5: "#303f9ffe",
-        6: "#795548ff",
-        7: "#7b1fa2ff",
-    }
-
-    color_list = [
-        {"value": value, "code": color_map[value]}
-        for value, _ in TravelCategory.CategoryColor.choices
-    ]
-
-    # -------------------------
-    # POST
-    # -------------------------
     if request.method == "POST":
-        form = CategoryItemForm(request.POST, template=template)
+        form = OldCategoryItemForm(request.POST)
 
         if form.is_valid():
             category_name = form.cleaned_data["category_name"]
@@ -39,51 +17,60 @@ def category_item_add(request, template_id):
             color = form.cleaned_data["category_color"]
             favorite_flag = form.cleaned_data["favorite_flag"]
 
-            # カテゴリ作成
-            category = TravelCategory.objects.create(
+            # ⭐ 既存分類があるかチェック
+            existing_category = TravelCategory.objects.filter(
                 template=template,
-                category_name=category_name,
-                travel_type=TravelCategory.TravelType.CUSTOM,
-                category_color=color,
-            )
+                category_name=category_name
+            ).first()
 
-            # TravelItem 作成
+            if existing_category:
+                category = existing_category
+            else:
+                category = TravelCategory.objects.create(
+                    template=template,
+                    category_name=category_name,
+                    travel_type=TravelCategory.TravelType.CUSTOM,
+                    category_color=color,
+                )
+
+            # ⭐ 項目追加
             TravelItem.objects.create(
                 travel_category=category,
-                item_name=item_name,
+                item_name=item_name or "",
                 item_checked=TravelItem.ItemChecked.NO
             )
 
-            # お気に入り登録
+            # ⭐ お気に入り登録
             if item_name and favorite_flag:
                 FavoriteItem.objects.get_or_create(
                     favorite=favorite,
                     item_name=item_name
                 )
 
-            return redirect(f"{request.path}?saved=1")
+            # ⭐ ボタン判定
+            action = request.POST.get("action")
 
-        # フォームエラーをメッセージ化
-        for field, errors in form.errors.items():
-            for error in errors:
-                messages.error(request, error)
+            if action == "continue":
+                return redirect("app:category_item_add", template_id=template.id)
+            else:
+                return redirect("app:old_template_edit", template_id=template.id)
 
-        return redirect(request.path)
+    else:
+        form = OldCategoryItemForm()
 
-    # -------------------------
-    # GET
-    # -------------------------
-    form = CategoryItemForm(template=template)
-    show_continue_modal = request.GET.get("saved") == "1"
-    
     categories = TravelCategory.objects.filter(template=template)
 
+    # ⭐ 色パレットをテンプレートが期待する形に整形
+    raw_colors = TravelCategory.CategoryColor.choices
+    color_list = [{"value": v, "code": code} for v, code in raw_colors]
+
+    # ⭐ お気に入り一覧
+    favorite_items = FavoriteItem.objects.filter(favorite=favorite)
+
     return render(request, "old_travel/add_category_item.html", {
-        "template": template,
-        "favorite_items": favorite_items,
-        "show_continue_modal": show_continue_modal,
-        "color_list": color_list,
-        "next_url": request.path,
         "form": form,
+        "template": template,
         "categories": categories,
+        "color_list": color_list,
+        "favorite_items": favorite_items,
     })

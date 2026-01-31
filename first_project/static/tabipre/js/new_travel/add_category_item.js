@@ -15,13 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // ⭐ continueModal が存在するなら自動で開く
-    const modalEl = document.getElementById("continueModal");
-    if (modalEl) {
-        const modal = new bootstrap.Modal(modalEl);
-        modal.show();
-    }
-
     // ⭐ カラーパレットの選択処理
     const colorOptions = document.querySelectorAll(".color-option");
     const selectedColor = document.getElementById("selectedColor");

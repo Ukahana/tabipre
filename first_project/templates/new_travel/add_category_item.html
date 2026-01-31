@@ -9,13 +9,13 @@
 {% block content %}
 <div class="container mt-5">
 
-    <div class= "sub-title">分類・項目の追加</div>
+    <div class="sub-title">分類・項目の追加</div>
 
-
-    <form method="POST">
+    <!-- ⭐ フォーム（ID 必須） -->
+    <form id="categoryItemForm" method="POST" action="{% url 'app:add_category_item' template.id %}">
         {% csrf_token %}
 
-        <!-- ⭐ 分類名（横並び） -->
+        <!-- ⭐ 分類名 -->
         <div class="mt-4 d-flex align-items-center">
             <label class="form-label me-3 mb-0" style="width:80px;">分類名</label>
             <input type="text"
@@ -46,7 +46,7 @@
             お気に入りから追加
         </button>
 
-        <!-- ⭐ 項目名（横並び） -->
+        <!-- ⭐ 項目名 -->
         <div class="mt-3 d-flex align-items-center">
             <label class="form-label me-2 mb-0" style="width:80px;">項目名</label>
             <div class="d-flex align-items-center flex-grow-1">
@@ -67,11 +67,15 @@
             </div>
         </div>
 
-        <!-- ⭐ 登録 -->
-        <button type="submit" class="btn app-submit mt-4 w-100">
+        <!-- ⭐ 登録（モーダルを開く） -->
+        <button type="button"
+                class="btn app-submit mt-4 w-100"
+                data-bs-toggle="modal"
+                data-bs-target="#continueModal">
              登録
         </button>
-        <!-- ⭐ キャンセル（next を使って戻る） -->
+
+        <!-- キャンセル -->
         <div class="text-center mt-2">
            <a href="{% url 'app:template_edit2' template.id %}" class="back-link">キャンセル</a>
         </div>
@@ -79,13 +83,10 @@
     </form>
 </div>
 
-<!-- モーダル -->
+<!-- ⭐ モーダルは block の中に置く必要がある -->
 {% include "new_travel/modal/add_template.html" %}
 {% include "parts/favorite_modal.html" %}
-
-{% if show_continue_modal %}
-    {% include "new_travel/modal/add_continue_modal.html" %}
-{% endif %}
+{% include "new_travel/modal/add_continue_modal.html" %}
 
 <script src="{% static 'tabipre/js/parts/favorite_add.js' %}"></script>
 <script src="{% static 'tabipre/js/new_travel/add_category_item.js' %}"></script>

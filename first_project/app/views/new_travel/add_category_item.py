@@ -36,7 +36,7 @@ def add_category_item(request, template_id):
             color = form.cleaned_data["category_color"]
             favorite_flag = form.cleaned_data["favorite_flag"]
 
-            # ★ カテゴリは get_or_create（重複防止）
+            # カテゴリ作成 or 取得
             category, created = TravelCategory.objects.get_or_create(
                 template=template,
                 category_name=category_name,
@@ -46,45 +46,27 @@ def add_category_item(request, template_id):
                 }
             )
 
-            # ★ 既存カテゴリを再利用した場合は色を更新（任意）
+            # 既存カテゴリなら色更新
             if not created:
                 category.category_color = color
                 category.save()
 
-            # ★ item_name が空でなければ TravelItem を作成
-            if item_name:
-                # 入力がある場合はそのまま作成
-                TravelItem.objects.create(
-                   travel_category=category,
-                   item_name=item_name,
-                   item_checked=TravelItem.ItemChecked.NO
-                )
-            else:
-                # 入力がない場合は空白の TravelItem を作成
-                TravelItem.objects.create(
-                   travel_category=category,
-                   item_name="",
-                   item_checked=TravelItem.ItemChecked.NO
-                )
-
-
-                # ★ お気に入り登録（item_name がある時だけ）
-                if favorite_flag:
-                    FavoriteItem.objects.get_or_create(
-                        favorite=favorite,
-                        item_name=item_name,
-                    )
-
-            # ★ PRGパターン：POST後は redirect
-            next_url = request.GET.get("next")
-            if next_url:
-                separator = "&" if "?" in next_url else "?"
-                return redirect(f"{next_url}{separator}show_continue_modal=1")
-
-
-            return redirect(
-                f"/template/{template.id}/add/?show_continue_modal=1"
+            # TravelItem 作成（空でも作る）
+            TravelItem.objects.create(
+                travel_category=category,
+                item_name=item_name or "",
+                item_checked=TravelItem.ItemChecked.NO
             )
+
+            # お気に入り登録
+            if item_name and favorite_flag:
+                FavoriteItem.objects.get_or_create(
+                    favorite=favorite,
+                    item_name=item_name,
+                )
+
+            # ⭐ old_travel と同じ：POST 後は編集画面へ戻る
+            return redirect("app:template_edit2", template_id=template.id)
 
         # フォームエラー
         for field, errors in form.errors.items():
@@ -94,7 +76,6 @@ def add_category_item(request, template_id):
         return redirect("app:add_category_item", template_id=template.id)
 
     # GET
-    show_continue_modal = request.GET.get("show_continue_modal") == "1"
     form = CategoryItemForm(template=template)
 
     return render(request, "new_travel/add_category_item.html", {
@@ -103,6 +84,4 @@ def add_category_item(request, template_id):
         "favorite_items": favorites,
         "color_map": color_map,
         "form": form,
-        "show_continue_modal": show_continue_modal,
     })
-    
