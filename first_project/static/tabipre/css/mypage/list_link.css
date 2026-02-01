@@ -1,7 +1,8 @@
+/* list-group の見た目 */
 .list-group-item {
-    margin-bottom: 12px;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+  margin-bottom: 12px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
 
 /* ラベル「リンクの編集」を中央寄せ */
@@ -9,6 +10,14 @@
   display: block;
   text-align: center;
   font-weight: bold;
+}
+
+/* ラベル「リンクの権限」を中央寄せ */
+.modal-body .form-label:nth-of-type(2) {
+  display: block;
+  text-align: center;
+  font-weight: bold;
+  margin-top: 20px;
 }
 
 /* 閲覧のみ・編集可能を横並び */
@@ -19,25 +28,42 @@
   margin-top: 10px;
 }
 
-/* フッターの縦並び */
-#deleteLinkModal .modal-footer {
-  flex-direction: row !important;
-  justify-content: flex-end;
-  gap: 10px;
-}
-
-.modal-body .form-label:nth-of-type(2) {
-  display: block;
-  text-align: center;
-  font-weight: bold;
-  margin-top: 20px;
-}
-/* Chrome, Safari, Edge のカレンダーアイコンを消す */
+/* カレンダーアイコンを消す（Chrome / Safari / Edge） */
 input[type="text"]::-webkit-calendar-picker-indicator {
-    display: none !important;
+  display: none !important;
 }
 
 /* Firefox のカレンダーアイコンを消す */
 input[type="text"]::-moz-calendar-picker-indicator {
-    display: none !important;
+  display: none !important;
+}
+
+/* shareLinkModal — ヘッダーの線を消す */
+#shareLinkModal .modal-header {
+  border-bottom: none;
+}
+
+/* shareLinkModal — input-group の見た目を少し柔らかく */
+#shareLinkModal .input-group input {
+  background-color: #f8f9fa;
+}
+
+/* shareLinkModal — フッターを縦並び（スマホ想定） */
+#shareLinkModal .modal-footer {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.75rem;
+}
+
+/* shareLinkModal — 削除リンクを中央寄せ */
+#shareLinkModal .modal-footer a {
+  text-align: center;
+}
+
+/* deleteLinkModal — フッターの線を消す */
+#deleteLinkModal .modal-footer {
+  border-top: none;
+  flex-direction: row;
+  justify-content: center;
+  gap: 10px;
 }

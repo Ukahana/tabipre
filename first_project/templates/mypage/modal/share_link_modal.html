@@ -2,6 +2,10 @@
   <div class="modal-dialog">
     <div class="modal-content">
 
+      <!-- ここを追加：モーダルヘッダー -->
+      <div class="modal-header">
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
 
       <div class="modal-body">
 
@@ -11,7 +15,7 @@
           <button class="btn btn-outline-secondary" id="copy-btn">コピー</button>
         </div>
 
-        <!-- 権限S設定 -->
+        <!-- 権限設定 -->
         <label class="form-label">リンクの権限</label>
         <div class="permission-group">
           <div class="form-check">
@@ -25,13 +29,13 @@
           </div>
         </div>
 
-      <div class="modal-footer d-flex justify-content-between">
+      </div>
 
+      <div class="modal-footer d-flex justify-content-between">
         <button type="button" class="btn btn-primary" id="save-btn">
           登録
         </button>
-        
-        <a href="#" id="delete-link" class="text-danger">リンクを削除</a> 
+        <a href="#" id="delete-link" class="text-danger">リンクを削除</a>
       </div>
 
     </div>
