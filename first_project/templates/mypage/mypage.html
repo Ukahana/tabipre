@@ -9,21 +9,22 @@
 
     <h2 class="mb-5 title">マイページ</h2>
 
-     <div class="d-grid gap-3">
+    <div class="d-grid gap-3">
 
         <a href="{% url 'app:favorites_list' %}" class="app-btn app-btn-warning">
             お気に入りリストの表示
         </a>
 
-       <a href="{% url 'app:share_settings' %}" class="app-btn app-btn-secondary">
+        <a href="{% url 'app:share_settings' %}" class="app-btn app-btn-secondary">
             共有リンクの設定
         </a>
 
     </div>
 
     <div class="mt-3 link-section">
-        <p><a href="{% url 'app:account_edit' %}"class="link-text">アカウント情報変更</a></p>
-        <p><a href="{% url 'app:password_change' %}"class="link-text">パスワードのみ変更</a></p>
+        <p><a href="{% url 'app:account_edit' %}" class="link-text">アカウント名変更</a></p>
+        <p><a href="{% url 'app:account_email' %}" class="link-text">メールアドレス変更</a></p>
+        <p><a href="{% url 'app:password_change' %}" class="link-text">パスワードのみ変更</a></p>
     </div>
 
 </div>
