@@ -1,21 +1,24 @@
 // 項目追加
-document.getElementById("add-item").addEventListener("click", function() {
-    const container = document.getElementById("items-container");
-    const div = document.createElement("div");
-    div.classList.add("input-group", "mb-2", "item-row");
+document.getElementById("add-item").addEventListener("click", function () {
+    const container = document.querySelector(".edit-list");
+    const li = document.createElement("li");
+    li.classList.add("item-row");
 
-    div.innerHTML = `
-        <input type="text" name="items" class="form-control" placeholder="新しい項目">
-        <button type="button" class="btn btn-outline-danger remove-item">×</button>
+    li.innerHTML = `
+        <span class="dot">・</span>
+        <input type="text" name="items" class="form-control item-input" placeholder="項目を入力">
+        <button type="button" class="remove-item">×</button>
     `;
 
-    container.appendChild(div);
+    container.appendChild(li);
+
+    // ★ 追加したら一番下までスクロール
+    container.scrollTop = container.scrollHeight;
 });
 
-// 削除ボタン
-document.addEventListener("click", function(e) {
+// 削除ボタン（動的追加にも対応）
+document.addEventListener("click", function (e) {
     if (e.target.classList.contains("remove-item")) {
         e.target.closest(".item-row").remove();
     }
 });
-

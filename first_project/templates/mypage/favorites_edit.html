@@ -5,48 +5,42 @@
 
 {% block extra_css %}
 {{ block.super }}
-<link rel="stylesheet" href="{% static 'tabipre/css/favorites.css' %}">
+<link rel="stylesheet" href="{% static 'tabipre/css/mypage/my_favorites.css' %}">
 {% endblock %}
+
 {% block content %}
 <div class="container mt-4">
 
-    <h2 class="mb-5 sub-title">お気に入りリスト</h2>
+  <h2 class="mb-4 sub-title">お気に入りリスト</h2>
 
-    <form method="post">
-        {% csrf_token %}
+  <form method="post">
+    {% csrf_token %}
 
-        <div id="items-container">
+    <ul class="edit-list">
+      {% for item in favorite.items.all %}
+        <li class="item-row">
+          <span class="dot">・</span>
+          <input type="text" name="items" class="form-control item-input"
+                 value="{{ item.item_name }}">
+          <button type="button" class="remove-item">×</button>
+        </li>
+      {% endfor %}
+    </ul>
 
-            {% for item in favorite.items.all %}
-                <div class="input-group mb-2 item-row">
-                    <input type="text" name="items" class="form-control"
-                           value="{{ item.item_name }}">
-                    <button type="button" class="btn btn-outline-danger remove-item">×</button>
-                </div>
-            {% endfor %}
-
-        </div>
-
-        <div class="mb-3">
-            <button type="button" id="add-item" class="btn btn-outline-secondary w-100">
-                ＋ 項目を追加
-            </button>
-        </div>
-
-        <div class="d-grid gap-2 mb-4">
-            <button type="submit" class="btn btn-primary">保存</button>
-        </div>
-
-    </form>
-
-    <div class="text-center mb-5">
-        <a href="{% url 'app:favorites_list' %}" class="back-link">
-            キャンセル
-        </a>
+    <div class="mb-3">
+      <button type="button" id="add-item" class="btn w-100">＋ 項目を追加</button>
     </div>
+
+    <div class="d-grid gap-2 mb-4">
+      <button type="submit" class="btn btn-primary">保存</button>
+    </div>
+  </form>
+
+  <div class="text-center mb-2">
+    <a href="{% url 'app:favorites_list' %}" class="back-link">キャンセル</a>
+  </div>
 
 </div>
 
 <script src="{% static 'tabipre/js/mypage/favorites_edit.js' %}"></script>
-
 {% endblock %}

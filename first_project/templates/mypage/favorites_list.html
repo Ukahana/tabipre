@@ -1,31 +1,32 @@
-<div class="modal fade" id="favoriteModal" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
+{% extends 'base.html' %}
+{% load static %}
 
-      <div class="modal-header">
-        <h5 class="modal-title">お気に入りから選択</h5>
-      </div>
+{% block extra_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'tabipre/css/mypage/my_favorites.css' %}">
+{% endblock %}
 
-      <div class="modal-body">
-        <form id="favoriteForm">
-          {% for fav in favorite_items %}
-            <div class="form-check mb-2">
-              <input class="form-check-input" type="checkbox"
-                     name="favorite_items"
-                     value="{{ fav.item_name }}"
-                     id="fav_{{ forloop.counter }}">
-              <label class="form-check-label" for="fav_{{ forloop.counter }}">
-                {{ fav.item_name }}
-              </label>
-            </div>
-          {% endfor %}
-        </form>
-      </div>
+{% block content %}
 
-      <div class="modal-footer">
-        <button class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
-      </div>
+<div class="sub-title mb-4">お気に入りリスト</div>
 
-    </div>
-  </div>
+<!-- シンプルな箇条書き -->
+<ul class="favorite-list">
+    {% for fav in favorite_items %}
+        <li>{{ fav.item_name }}</li>
+    {% empty %}
+        <li class="empty">お気に入りはまだ登録されていません。</li>
+    {% endfor %}
+</ul>
+
+<!-- 編集ボタン -->
+<div class="button-wrapper mt-4">
+    <a href="{% url 'app:favorites_edit' %}" class="btn btn-primary edit-button">編集する</a>
 </div>
+
+<!-- マイページへ戻る -->
+<div class="button-wrapper mt-3">
+    <a href="{% url 'app:mypage' %}" class="back-link">戻る</a>
+</div>
+
+{% endblock %}
