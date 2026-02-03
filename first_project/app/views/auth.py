@@ -6,14 +6,17 @@ from django.urls import reverse_lazy
 from django.contrib import messages
 from ..forms.auth import RegistForm, UserLoginForm
 
+
 class RegistUserView(CreateView):
     template_name = 'login/regist.html'
     form_class = RegistForm
     success_url = reverse_lazy('app:home')
-    
+
     def form_valid(self, form):
-        user = form.save(commit=True) 
-        return super().form_valid(form)
+        self.object = form.save()          # ← CreateView では必須
+        login(self.request, self.object)   # 自動ログイン
+        return redirect(self.get_success_url())
+
 
 class UserLoginView(FormView):
     template_name = 'login/user_login.html'
@@ -23,30 +26,35 @@ class UserLoginView(FormView):
     def form_valid(self, form):
         email = form.cleaned_data['email']
         password = form.cleaned_data['password']
-        user = authenticate(username=email, password=password)
 
-        if user:
-            login(self.request, user)
-            return redirect(self.get_success_url())
-        else:
+        user = authenticate(
+            request=self.request,
+            username=email,
+            password=password
+        )
+
+        if not user:
             form.add_error(None, "メールアドレスまたはパスワードが違います")
             return self.form_invalid(form)
+
+        if not user.is_active:
+            form.add_error(None, "このアカウントは現在ご利用いただけません。")
+            return self.form_invalid(form)
+
+        login(self.request, user)
+        return redirect(self.get_success_url())
 
 
 class PasswordResetMailView(PasswordResetView):
     template_name = 'login/password_reset.html'
-    # ここから
     email_template_name = 'login/password_reset_email.html'
     subject_template_name = 'login/password_reset_subject.txt'
     success_url = reverse_lazy('app:login')
 
     def form_valid(self, form):
-        # 成功時
-        try:
-            response = super().form_valid(form)
-            messages.success(self.request, "パスワード再設定用のリンクを送信しました")
-            return response
-        # エラー時
-        except Exception:
-            messages.error(self.request, "メール送信に失敗しました。時間をおいて再度お試しください。")
-            return self.form_invalid(form)
+        messages.success(self.request, "パスワード再設定用のメールを送信しました。")
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        messages.error(self.request, "メールアドレスを確認してください。")
+        return super().form_invalid(form)

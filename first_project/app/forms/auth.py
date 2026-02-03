@@ -1,57 +1,117 @@
 from django import forms
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
+from django.contrib.auth.base_user import BaseUserManager
 from ..models import User
+import re
 
 
 class RegistForm(forms.ModelForm):
-    password = forms.CharField(label='パスワード', widget=forms.PasswordInput)
-    password2 = forms.CharField(label='パスワード(確認用)', widget=forms.PasswordInput)
+    password = forms.CharField(
+        label='パスワード',
+        widget=forms.PasswordInput(attrs={'class': 'form-control'})
+    )
+    password2 = forms.CharField(
+        label='パスワード(確認用)',
+        widget=forms.PasswordInput(attrs={'class': 'form-control'})
+    )
 
     class Meta:
         model = User
-        fields = ['user_name','email']
-        widgets = {
-            'password': forms.PasswordInput(),
-        }
+        fields = ['user_name', 'email']
         labels = {
             'user_name': '名前/ニックネーム',
             'email': 'メールアドレス',
         }
+        widgets = {
+            'user_name': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+        }
+
+    # --- ユーザー名チェック ---
+    def clean_user_name(self):
+        name = self.cleaned_data.get("user_name", "").strip()
+
+        if not name:
+            raise ValidationError("名前を入力してください。")
+
+        if len(name) < 2:
+            raise ValidationError("ユーザー名は2文字以上で入力してください。")
+
+        # 絵文字OK。ただし「絵文字だけの名前」はNG
+        if not re.search(r"[A-Za-z0-9ぁ-んァ-ヶ一-龠々]", name):
+            raise ValidationError("ユーザー名に1文字以上の日本語・英字・数字を含めてください。")
+
+        return name
+
+    # --- メールアドレス正規化 + 重複チェック ---
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        if not email:
+            return email
+
+        email = email.strip().lower()
+
+        if User.objects.filter(email=email).exists():
+            raise ValidationError("このメールアドレスは既に登録されています。")
+
+        return email
+
+    # --- パスワードチェック ---
+    def validate_password_rules(self, pw):
+        rules = [
+            (len(pw) < 10, "パスワードは10文字以上で入力してください。"),
+            (not any(c.isdigit() for c in pw), "数字を1つ以上含めてください。"),
+            (not any(c.islower() for c in pw), "小文字を含めてください。"),
+            (not any(c.isupper() for c in pw), "大文字を含めてください。"),
+        ]
+        for condition, message in rules:
+            if condition:
+                self.add_error('password', message)
+
+        try:
+            validate_password(pw)
+        except ValidationError as e:
+            self.add_error('password', e)
 
     def clean(self):
-        cleaned_data = super().clean()
-        password = cleaned_data.get("password")
-        password2 = cleaned_data.get("password2")
+        cleaned = super().clean()
+        pw = cleaned.get("password")
+        pw2 = cleaned.get("password2")
 
-        if password and password2 and password != password2:
-            raise forms.ValidationError("パスワードが一致しません。")
-        # 大文字・小文字チェック
-        if password:
-            if not any(c.islower() for c in password):
-                self.add_error('password', "パスワードには小文字を含めてください。")
+        if pw and pw2 and pw != pw2:
+            self.add_error('password2', "パスワードが一致しません。")
 
-            if not any(c.isupper() for c in password):
-                self.add_error('password', "パスワードには大文字を含めてください。")
+        if pw:
+            self.validate_password_rules(pw)
 
-            try:
-                validate_password(password)
-            except ValidationError as e:
-                self.add_error('password', e)
+        return cleaned
 
-        return cleaned_data
-
-        #保存処理
-    def save(self, commit=False):
+    # --- 保存処理（commit=True が重要） ---
+    def save(self, commit=True):
         user = super().save(commit=False)
         user.set_password(self.cleaned_data['password'])
         if commit:
             user.save()
         return user
-
-
+    
 class UserLoginForm(forms.Form):
-    email = forms.EmailField(label='メールアドレス')
-    password = forms.CharField(label='パスワード', widget=forms.PasswordInput())
-    
-    
+    email = forms.EmailField(
+        label='メールアドレス',
+        widget=forms.EmailInput(attrs={'class': 'form-control'}),
+        error_messages={
+            'required': 'メールアドレスを入力してください。',
+            'invalid': '正しいメールアドレスを入力してください。',
+        }
+    )
+    password = forms.CharField(
+        label='パスワード',
+        widget=forms.PasswordInput(attrs={'class': 'form-control'}),
+        error_messages={'required': 'パスワードを入力してください。'}
+    )
+
+    def clean_email(self):
+        email = self.cleaned_data.get("email")
+        if email:
+            email = email.strip().lower()
+        return email
