@@ -88,6 +88,7 @@ DATABASES = {
 AUTH_USER_MODEL = 'app.User'
 
 AUTHENTICATION_BACKENDS = [
+    'app.backends.EmailBackend',  
     'django.contrib.auth.backends.ModelBackend',
 ]
 

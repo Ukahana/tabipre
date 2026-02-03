@@ -7,7 +7,7 @@
   min-height: 100vh;
   background: #fff;
   border: 1px solid #ccc;
-  padding: 10px 16px;
+  padding: 12px 18px;
   box-sizing: border-box;
 }
 
@@ -16,13 +16,14 @@
 /* ============================= */
 .bottom-nav {
   border-top: 1px solid #ddd;
-  padding: 5px 0;
+  padding: 6px 0;
   background: #f5ebddff;
   position: fixed;
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 420px;
+  width: 100%;
+  max-width: 420px;
   z-index: 999;
 }
 .bottom-nav a {
@@ -40,8 +41,8 @@
   font-weight: bold;
   text-align: center;
 }
-.title { font-size: 32px; }
-.sub-title { font-size: 28px; }
+.title { font-size: 30px; }
+.sub-title { font-size: 26px; }
 .modal-title { font-size: 18px; text-align: center; }
 
 /* ============================= */
@@ -53,6 +54,7 @@
   font-size: 15px;
   color: #5c3a3a;
   text-decoration: underline;
+  padding: 8px 0;
 }
 .link-text:hover { color: #000; }
 
@@ -68,7 +70,10 @@
   font-weight: 600;
   border: none;
   text-decoration: none;
+  width: 100%;
+  min-height: 46px;
 }
+
 .app-btn-primary { background: #4a90e2; color: #fff; }
 .app-btn-primary:hover { background: #3f7fbf; }
 
@@ -88,8 +93,7 @@
 /* コンテンツ余白 */
 /* ============================= */
 .content-wrapper {
-  margin-top: 0 !important;
-  padding: 0 0 80px !important;
+  padding-bottom: 90px !important;
 }
 
 /* ============================= */
@@ -99,7 +103,7 @@
   display: inline-block;
   min-width: 32px;
   border-radius: 6px;
-  font-size: 20px;
+  font-size: 18px;
   padding: 6px 10px;
   margin: 5px 20px 0 0 !important;
   border: 1px solid #595959;
@@ -126,7 +130,8 @@
   border: 1px solid #595959;
   display: block;
   margin: 0 auto;
-  width: 120px;
+  width: 140px;
+  min-height: 44px;
   border-radius: 0;
 }
 .app-submit:hover { background: #8ab6d8ff; }
@@ -148,11 +153,12 @@ input,
 select,
 textarea {
   width: 100%;
-  padding: 8px 10px 8px 15px;
+  padding: 10px 12px;
   border-radius: 6px;
   border: 1px solid #ccc;
   font-size: 18px;
   box-sizing: border-box;
+  min-height: 44px;
 }
 
 .travel-edit-fields input,
@@ -188,3 +194,110 @@ textarea {
   text-align: right;
   margin: 8px 30px 0 0;
 }
+
+/* ============================= */
+/* エラー表示 */
+/* ============================= */
+.app-error-box {
+  color: #b30000;
+  font-size: 15px;
+  margin-bottom: 12px;
+}
+
+.app-field-error {
+  margin-top: 4px;
+  color: #d9534f;
+  font-size: 14px;
+}
+.btn,
+.btn-primary,
+.app-btn,
+.app-btn-primary,
+.app-btn-secondary,
+.app-btn-warning {
+    border-radius: 0 !important;   /* ← 全ボタンの角丸をなくす */
+}
+
+.form-label {
+    border-radius: 0;   /* ← 角丸をなくす */
+}
+
+/* 入力欄（角丸なし） */
+input,
+select,
+textarea {
+
+    border-radius: 0;        /* ← 角丸なし */
+
+}
+input.form-control,
+select.form-control,
+textarea.form-control {
+    border-radius: 0 !important;
+}
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 6px 10px;   /* ← 余白を減らした */
+    border-radius: 0;
+    border: 1px solid #ccc;
+    font-size: 18px;
+    box-sizing: border-box;
+    min-height: 36px;    /* ← 高さも少し低くする */
+}
+/* ============================= */
+/* タイトル（上の余白広め） */
+/* ============================= */
+.title {
+    font-size: 30px;
+    margin-top: 80px;
+    color: #5c3a3a;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* ============================= */
+/* ラベル */
+/* ============================= */
+.form-label {
+    font-size: 18px;
+    margin-bottom: 4px;
+    display: inline-block;
+    border-radius: 0;
+}
+
+/* ============================= */
+/* 入力フォーム（角丸なし・スリム・枠線濃いめ） */
+/* ============================= */
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 6px 10px;
+    border-radius: 0;
+    border: 1px solid #595959;   /* ← 視認性の良い枠線 */
+    font-size: 18px;             /* ← スマホ向け大きめ文字 */
+    box-sizing: border-box;
+    min-height: 36px;
+}
+
+/* Bootstrap の form-control を強制上書き */
+input.form-control,
+select.form-control,
+textarea.form-control {
+    border: 1px solid #595959 !important;
+}
+
+/* ============================= */
+/* ボタン（角丸なし） */
+/* ============================= */
+.btn,
+.btn-primary,
+.app-btn,
+.app-btn-primary,
+.app-btn-secondary,
+.app-btn-warning {
+    border-radius: 0 !important;
+}
+

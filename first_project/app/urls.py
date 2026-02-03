@@ -8,6 +8,7 @@ from app.views.auth import (
     UserLoginView,
     PasswordResetMailView,
 )
+from django.contrib.auth.views import PasswordResetConfirmView, PasswordResetCompleteView
 
 # home
 from app.views.home import HomeView
@@ -77,7 +78,15 @@ urlpatterns = [
     path('logout/', user_logout, name='logout'),
     path('', UserLoginView.as_view(), name='login'),
     path('regist/', RegistUserView.as_view(), name='regist'),
+    # パスワード再設定（メール送信）
     path('password_reset/', PasswordResetMailView.as_view(), name='password_reset'),
+    # パスワード再設定リンクからの遷移
+    path('reset/<uidb64>/<token>/', PasswordResetConfirmView.as_view(
+        template_name='login/password_reset_confirm.html'), name='password_reset_confirm'),
+    # パスワード再設定完了
+    path('reset/done/', PasswordResetCompleteView.as_view(
+        template_name='login/password_reset_complete.html'), name='password_reset_complete'),
+
 
     # ホーム
     path('home/', HomeView.as_view(), name='home'),

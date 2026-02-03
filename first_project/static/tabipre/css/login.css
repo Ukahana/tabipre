@@ -5,37 +5,22 @@
     color: #5c3a3a;
 }
 
-/* タイトル*/
-h1 {
-    font-size: 2rem;
-    font-weight: bold;
-    text-align: center;
-}
-
-
 /* ログインボタン */
 .btn-primary {
-    background-color: #4a90e2;
+    background-color: #3f7fbfff;
     border: none;
     font-size: 1.2rem;
     padding: 10px;
 }
 
 .btn-primary:hover {
-    background-color: #3f7fbf;
+    background-color: #336a9f;
 }
 
-/* エラー表示 */
-.errorlist {
-    color: red;
-    font-weight: bold;
-    margin-top: 5px;
-}
 
 /* 入力欄を揃える */
 form input {
     border: 1px solid #ccc;
-    padding: 8px;
     width: 100%;
     background-color: #ffffff; 
     box-sizing: border-box;
@@ -69,6 +54,8 @@ form label {
 .statement {
     color: #999999;
     font-size: 15px;
+    margin: 2px 0;
+    line-height: 1.2;
 }
 
 .link {
@@ -86,4 +73,11 @@ form label {
 /* フッダー非表示 */
 .bottom-nav {
     display: none !important;
+}
+
+.title {
+    margin-top: 30%;   
+}
+.pass-reset .sub-title {
+    margin-top: 30%;   
 }

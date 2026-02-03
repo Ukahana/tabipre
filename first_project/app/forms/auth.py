@@ -1,18 +1,26 @@
 from django import forms
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
-from django.contrib.auth.base_user import BaseUserManager
+from django.contrib.auth.forms import PasswordResetForm
+from django.contrib.auth import get_user_model
 from ..models import User
 import re
 
+UserModel = get_user_model()
 
+
+# ============================
+#  登録フォーム
+# ============================
 class RegistForm(forms.ModelForm):
+    label_suffix = ""
+
     password = forms.CharField(
         label='パスワード',
         widget=forms.PasswordInput(attrs={'class': 'form-control'})
     )
     password2 = forms.CharField(
-        label='パスワード(確認用)',
+        label='パスワード(確認)',
         widget=forms.PasswordInput(attrs={'class': 'form-control'})
     )
 
@@ -25,7 +33,10 @@ class RegistForm(forms.ModelForm):
         }
         widgets = {
             'user_name': forms.TextInput(attrs={'class': 'form-control'}),
-            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={
+                'class': 'form-control',
+                'oninput': 'this.value = this.value.toLowerCase();'
+            }),
         }
 
     # --- ユーザー名チェック ---
@@ -87,18 +98,25 @@ class RegistForm(forms.ModelForm):
 
         return cleaned
 
-    # --- 保存処理（commit=True が重要） ---
+    # --- 保存処理 ---
     def save(self, commit=True):
         user = super().save(commit=False)
         user.set_password(self.cleaned_data['password'])
         if commit:
             user.save()
         return user
-    
+
+
+# ============================
+#  ログインフォーム
+# ============================
 class UserLoginForm(forms.Form):
     email = forms.EmailField(
         label='メールアドレス',
-        widget=forms.EmailInput(attrs={'class': 'form-control'}),
+        widget=forms.EmailInput(attrs={
+            'class': 'form-control',
+            'oninput': 'this.value = this.value.toLowerCase();'
+        }),
         error_messages={
             'required': 'メールアドレスを入力してください。',
             'invalid': '正しいメールアドレスを入力してください。',
@@ -114,4 +132,30 @@ class UserLoginForm(forms.Form):
         email = self.cleaned_data.get("email")
         if email:
             email = email.strip().lower()
+        return email
+
+
+# ============================
+#  パスワード再設定フォーム（カスタム）
+# ============================
+class CustomPasswordResetForm(PasswordResetForm):
+
+    email = forms.EmailField(
+        label="メールアドレス",
+        widget=forms.EmailInput(attrs={
+            'class': 'form-control',
+            'oninput': 'this.value = this.value.toLowerCase();'
+        }),
+        error_messages={
+            'required': 'メールアドレスを入力してください。',
+            'invalid': '正しいメールアドレスを入力してください。',
+        }
+    )
+
+    def clean_email(self):
+        email = self.cleaned_data.get("email", "").strip().lower()
+
+        if not UserModel.objects.filter(email=email).exists():
+            raise ValidationError("このメールアドレスは登録されていません。")
+
         return email
