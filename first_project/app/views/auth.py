@@ -62,14 +62,15 @@ class UserLoginView(FormView):
 class PasswordResetMailView(PasswordResetView):
     template_name = 'login/password_reset.html'
     form_class = CustomPasswordResetForm
+
+    # メールテンプレート（TXT + HTML）
     email_template_name = 'login/password_reset_email.txt'
     html_email_template_name = 'login/password_reset_email.html'
     subject_template_name = 'login/password_reset_subject.txt'
 
-    # 成功後は同じ画面に戻す（トースト通知が確実に見える）
+    # 成功後は同じ画面に戻す
     success_url = reverse_lazy('app:password_reset')
 
     def form_valid(self, form):
         messages.success(self.request, "パスワード再設定用のメールを送信しました。")
         return super().form_valid(form)
-
