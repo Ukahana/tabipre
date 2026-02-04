@@ -5,8 +5,9 @@
 {{ block.super }}
 <link rel="stylesheet" href="{% static 'tabipre/css/home.css' %}">
 {% endblock %}
+
 {% block content %}
-<div class="container mt-3">
+<div class="container mt-4">
 
     <!-- 🔍 キーワード検索フォーム -->
     <form method="GET" id="searchForm" class="d-flex mb-3">
@@ -54,11 +55,11 @@
                 <div class="card-body d-flex align-items-center">
 
                     <div class="align-items-center">
-                        {% if t.status == "未" %}
+                        {% if t.display_status == "未" %}
                             <span class="badge-t status-mi">未</span>
-                        {% elif t.status == "完" %}
+                        {% elif t.display_status == "完" %}
                             <span class="badge-t status-kan">完</span>
-                        {% elif t.status == "済" %}
+                        {% elif t.display_status == "済" %}
                             <span class="badge-t status-zumi">済</span>
                         {% endif %}
                     </div>
@@ -77,12 +78,11 @@
         <p class="text-center text-muted">旅行がありません</p>
     {% endfor %}
 
-    <!-- ⏭ ページネーション（前へ・次へが不要でも位置がズレない完全版） -->
+    <!-- ⏭ ページネーション -->
     <div class="d-flex justify-content-center mt-4">
         <nav>
             <ul class="pagination">
 
-                <!-- 前へ -->
                 {% if travels.has_previous %}
                     <li class="page-item">
                         <a class="page-link"
@@ -91,20 +91,17 @@
                         </a>
                     </li>
                 {% else %}
-                    <!-- 枠だけ残す（透明） -->
                     <li class="page-item disabled">
                         <span class="page-link" style="visibility: hidden;">前へ</span>
                     </li>
                 {% endif %}
 
-                <!-- 現在ページ -->
                 <li class="page-item active">
                     <span class="page-link">
                         {{ travels.number }} / {{ travels.paginator.num_pages }}
                     </span>
                 </li>
 
-                <!-- 次へ -->
                 {% if travels.has_next %}
                     <li class="page-item">
                         <a class="page-link"
@@ -113,7 +110,6 @@
                         </a>
                     </li>
                 {% else %}
-                    <!-- 枠だけ残す（透明） -->
                     <li class="page-item disabled">
                         <span class="page-link" style="visibility: hidden;">次へ</span>
                     </li>

@@ -1,13 +1,16 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
 {% load static %}
 
 {% block extra_css %}
 {{ block.super }}
+<link rel="stylesheet" href="{% static 'tabipre/css/mypage/mypage.css' %}">
 {% endblock %}
+{% block body_class %}mypage{% endblock %}
+
 {% block content %}
 <div class="container mt-4">
 
-    <h2 class="mb-5 title">マイページ</h2>
+    <div class="mb-5 sub-title">マイページ</div>
 
     <div class="d-grid gap-3">
 

@@ -27,3 +27,19 @@ document.querySelectorAll('.tag-badge').forEach(tag => {
         window.location.search = params.toString();
     });
 });
+document.addEventListener("DOMContentLoaded", function () {
+    const input = document.getElementById("keywordInput");
+
+    input.addEventListener("input", function () {
+        // 入力が空になったら絞り込み解除
+        if (input.value === "") {
+            const url = new URL(window.location.href);
+
+            // keyword と page を削除
+            url.searchParams.delete("keyword");
+            url.searchParams.delete("page");
+
+            window.location.href = url.toString();
+        }
+    });
+});

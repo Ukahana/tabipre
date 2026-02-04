@@ -1,8 +1,3 @@
-/* 背景色 */
-.app-frame {
-  background-color: #fdf6f0ff;
-}
-
 /* 共通：スクロールバー */
 .favorite-list::-webkit-scrollbar,
 .edit-list::-webkit-scrollbar {
@@ -124,4 +119,10 @@
 .favorites_edit .btn-primary:hover {
   background-color: #007c8a;
   border-color: #007c8a;
+}
+.favorites_edit .item-input {
+    border: none !important;
+    border-radius: 8px !important;
+    outline: none !important;
+    background-color: #fff;
 }

@@ -1,4 +1,4 @@
-<div class="modal fade" id="sortModal" tabindex="-1">
+<div class="modal fade clean-radio" id="sortModal" tabindex="-1">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
 
@@ -11,31 +11,35 @@
                     <input type="hidden" name="keyword" value="{{ keyword }}">
                     <input type="hidden" name="transport" value="{{ request.GET.transport }}">
 
+                    <!-- タイトル名 -->
                     <div class="sort-section">
                         <p class="sort-label">タイトル名</p>
-                        <div class="radio-group">
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="sort" id="titleAsc" value="title_asc">
-                                <label class="form-check-label" for="titleAsc">昇順</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="sort" id="titleDesc" value="title_desc">
-                                <label class="form-check-label" for="titleDesc">降順</label>
-                            </div>
+                        <div class="stay-type-options">
+                            <label class="stay-option">
+                                <input type="radio" name="sort" value="title_asc">
+                                <span>昇順</span>
+                            </label>
+
+                            <label class="stay-option">
+                                <input type="radio" name="sort" value="title_desc">
+                                <span>降順</span>
+                            </label>
                         </div>
                     </div>
 
+                    <!-- 日付 -->
                     <div class="sort-section">
                         <p class="sort-label">日付</p>
-                        <div class="radio-group">
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="sort" id="dateAsc" value="date_asc">
-                                <label class="form-check-label" for="dateAsc">昇順</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="radio" name="sort" id="dateDesc" value="date_desc" checked>
-                                <label class="form-check-label" for="dateDesc">降順</label>
-                            </div>
+                        <div class="stay-type-options">
+                            <label class="stay-option">
+                                <input type="radio" name="sort" value="date_asc">
+                                <span>昇順</span>
+                            </label>
+
+                            <label class="stay-option">
+                                <input type="radio" name="sort" value="date_desc" checked>
+                                <span>降順</span>
+                            </label>
                         </div>
                     </div>
 

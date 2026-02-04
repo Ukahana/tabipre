@@ -1,0 +1,12 @@
+.mypage .link-text {
+    font-size: 18px;   /* 好きな大きさに変更できる */
+}
+.mypage .link-section p {
+    margin: 15px 0;
+}
+.mypage .sub-title {
+    margin-top: 80px;   /* 好きな値に調整できる */
+}
+.app-frame {
+  background-color: #fdf6f0ff;
+}
