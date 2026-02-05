@@ -26,8 +26,9 @@ class AccountEditView(View):
         user.user_name = new_name
         user.save()
 
-        messages.success(request, "アカウント名を更新しました。")
-        return redirect('app:account_edit')
+        messages.success(request, "アカウント名を変更しました。")
+        return redirect('app:mypage')
+
     
     
 @method_decorator(login_required, name='dispatch')
@@ -39,7 +40,7 @@ class EmailChangeView(View):
 
     def post(self, request):
         user = request.user
-
+        
         current_email = request.POST.get("current_email")
         new_email = request.POST.get("new_email")
 
@@ -63,10 +64,10 @@ class EmailChangeView(View):
         if User.objects.filter(email=new_email).exists():
             messages.error(request, "このメールアドレスは既に使用されています。")
             return render(request, self.template_name)
-
+        
         # 更新
         user.email = new_email
         user.save()
-
+      
         messages.success(request, "メールアドレスを更新しました。")
-        return redirect('app:account_email')
+        return redirect('app:mypage')
