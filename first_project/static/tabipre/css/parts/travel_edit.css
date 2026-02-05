@@ -53,7 +53,7 @@
 .calendar-input-wrapper {
   display: flex;
   align-items: center;
-  gap: 12px; 
+  gap: 8px;
 }
 
 .calendar-input-wrapper input {
@@ -64,26 +64,26 @@
   width: 100%;
 }
 
+/* 📅 ボタンを枠なし・背景なしに変更 */
 .calendar-btn {
-  height: 38px;
-  padding: 6px 10px;
-  font-size: 18px;
-  line-height: 1;
-  background: #f0f0f0;
-  border: 1px solid #ccc;
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+  font-size: 22px;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transform: translateY(-5px); 
+  line-height: 1;
+  transform: translateY(-2px);
 }
 
+/* デフォルトのカレンダーアイコンを消す */
 .travel-edit-fields input[type="date"]::-webkit-calendar-picker-indicator {
-  display: none;
+  opacity: 0;
 }
 
+/* Safari 対策 */
 .travel-edit-fields input[type="date"] {
-  appearance: textfield;
+  appearance: none;
 }
 
 /* ============================= */
@@ -149,7 +149,6 @@
   resize: vertical;
   box-sizing: border-box;
 }
-
 
 /* ============================= */
 /* Step2：ボタン                 */
