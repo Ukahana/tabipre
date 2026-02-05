@@ -128,6 +128,7 @@ adge-t.status-zumi { background-color: #b6d7a8; color: #000; }
     margin-right: 8px;
     border: 1px solid #ccc;
     text-decoration: none;
+    margin-bottom: 4px;
 }
 .tag-badge:hover {
     background-color: #e0e0e0;
@@ -180,109 +181,41 @@ adge-t.status-zumi { background-color: #b6d7a8; color: #000; }
     font-size: 16px;
 }
 
-/* モーダル */
-.sort-modal-body {
-    text-align: center;
-    color: #000;
+/* sortモーダル */
+/* ラジオボタンとテキストを横並びに */
+.stay-type-options {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 15px;
 }
 
-/* ラジオボタン */
-.radio-group {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-bottom: 20px;
-}
-.radio-group .form-check {
+.stay-option {
     display: flex;
     align-items: center;
     gap: 6px;
 }
 
-
-/* ラベル位置調整（左寄せ＋開始位置揃え） */
-.sort-label {
-    text-align: left;
-    padding-left: 60px;
-}
-#sortModal .form-check-input[type="radio"] {
-    appearance: none;
-    -webkit-appearance: none;
+/* ラジオボタンの見た目を整える（Bootstrapのデフォルトを上書き） */
+.stay-option input[type="radio"] {
     width: 18px;
     height: 18px;
-    border-radius: 50%;
-    border: 2px solid #666;
-    background-color: #fff;
-    cursor: pointer;
-    position: relative;
     margin: 0;
-    transform: translateY(1px);
 }
-.sort-submit-btn {
-    font-size: 16px;
-    padding: 4px 10px;
-    width: auto;
-    height: auto;
-    margin: 0 auto;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 0;
-}
-.sort-submit-btn {
-    font-size: 13px;
-    width: 70px;
-    height: 28px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 0;
-
-    transform: scale(0.7); /* ← 全体を小さく */
-    transform-origin: center;
-}
-.sort-order {
-    display: flex;
-    gap: 8px; /* ← 昇順と降順の間の余白 */
-    align-items: center;
-}
-/* ラジオボタンを横並びに */
-.stay-type-options {
-    display: flex;
-    gap: 10px; /* 昇順と降順の間の余白 */
-    align-items: center;
-}
-
-/* ラベルとラジオボタンのセットを小さく */
-.stay-option {
-    font-size: 12px;
-    display: flex;
-    align-items: center;
-    gap: 3px;
-}
-
-/* セクション全体をコンパクトに */
-.sort-section {
-    margin-bottom: 10px;
-}
-
+/* タイトル名・日付の余白調整 */
 .sort-label {
-    font-size: 13px;
-    margin-bottom: 4px;
+    margin-left: 25%;
+    font-size: 18px;
 }
-
-/* ボタンを比率そのまま小さく */
+/* 並び替えボタン（モーダル内） */
 .sort-submit-btn {
-    font-size: 12px;
-    width: 60px;
-    height: 24px;
-    margin: 10px auto 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 4px;
-
-    transform: scale(0.8); /* ← 全体を縮小 */
-    transform-origin: center;
+    display: block;
+    margin: 20px auto 10px auto; /* 上20px 下10px で中央揃え */
+    width: 140px;               /* 適度な幅 */
+    padding: 8px 0;             /* 高さ調整 */
+    font-size: 16px;
+    border-radius: 6px;
+}
+#sortModal .modal-header {
+    border-bottom: none !important;
 }

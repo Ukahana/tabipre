@@ -71,7 +71,6 @@
   border: none;
   text-decoration: none;
   width: 100%;
-  min-height: 46px;
 }
 
 .app-btn-primary { background: #4a90e2; color: #fff; }
@@ -158,7 +157,6 @@ textarea {
   border: 1px solid #ccc;
   font-size: 18px;
   box-sizing: border-box;
-  min-height: 44px;
 }
 
 .travel-edit-fields input,
@@ -244,7 +242,6 @@ textarea {
     border: 1px solid #ccc;
     font-size: 18px;
     box-sizing: border-box;
-    min-height: 36px;    /* ← 高さも少し低くする */
 }
 /* ============================= */
 /* タイトル（上の余白広め） */
@@ -279,7 +276,6 @@ textarea {
     border: 1px solid #595959;   /* ← 視認性の良い枠線 */
     font-size: 18px;             /* ← スマホ向け大きめ文字 */
     box-sizing: border-box;
-    min-height: 36px;
 }
 
 /* Bootstrap の form-control を強制上書き */
@@ -301,3 +297,19 @@ textarea.form-control {
     border-radius: 0 !important;
 }
 
+.bottom-nav {
+  height: 60px; 
+  padding: 6px 0;
+}
+.content-wrapper {
+  padding-bottom: 60px !important; 
+}
+/* ============================= */
+/* モーダル（共通ベース） */
+/* ============================= */
+
+/* モーダル全体の位置（スマホ最適化） */
+.modal-dialog {
+    margin: 80px auto 40px auto;  
+    max-width: 360px;            
+}

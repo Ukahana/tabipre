@@ -35,7 +35,7 @@ class HomeView(LoginRequiredMixin, TemplateView):
         # 今日
         today = timezone.now().date()
 
-        # ⭐ TravelItem の完了状況を集計
+        # TravelItem の完了状況を集計
         completed_travel_ids = (
             TravelItem.objects
             .filter(travel_category__template__travel_info__user=request.user)
@@ -48,7 +48,7 @@ class HomeView(LoginRequiredMixin, TemplateView):
             .values_list("travel_category__template__travel_info", flat=True)
         )
 
-        # ⭐ display_status を annotate で付与（Paginator でも消えない）
+        # display_status を annotate
         travels = travels.annotate(
             display_status=Case(
                 When(end_date__lt=today, then=Value("済")),
@@ -58,7 +58,7 @@ class HomeView(LoginRequiredMixin, TemplateView):
             )
         )
 
-        # ⭐ 並び順：完 → 未 → 済 → 開始日順
+        # status_order を付与
         travels = travels.annotate(
             status_order=Case(
                 When(display_status="完", then=0),
@@ -67,8 +67,22 @@ class HomeView(LoginRequiredMixin, TemplateView):
                 default=3,
                 output_field=IntegerField(),
             )
-        ).order_by("status_order", "-start_date")
+        )
 
+        # ⭐ ソート処理（ここが重要）
+        if sort == "title_asc":
+            travels = travels.order_by("travel_title")
+        elif sort == "title_desc":
+            travels = travels.order_by("-travel_title")
+        elif sort == "date_asc":
+            travels = travels.order_by("start_date")
+        elif sort == "date_desc":
+            travels = travels.order_by("-start_date")
+        else:
+            # デフォルトの並び順（完 → 未 → 済 → 開始日）
+            travels = travels.order_by("status_order", "-start_date")
+
+        # Paginator はソート後に適用
         paginator = Paginator(travels, 5)
         page = request.GET.get("page")
         travels_page = paginator.get_page(page)

@@ -15,15 +15,19 @@
                     <div class="sort-section">
                         <p class="sort-label">タイトル名</p>
                         <div class="stay-type-options">
+
                             <label class="stay-option">
-                                <input type="radio" name="sort" value="title_asc">
+                                <input type="radio" name="sort" value="title_asc"
+                                       {% if sort == "title_asc" %}checked{% endif %}>
                                 <span>昇順</span>
                             </label>
 
                             <label class="stay-option">
-                                <input type="radio" name="sort" value="title_desc">
+                                <input type="radio" name="sort" value="title_desc"
+                                       {% if sort == "title_desc" %}checked{% endif %}>
                                 <span>降順</span>
                             </label>
+
                         </div>
                     </div>
 
@@ -31,15 +35,19 @@
                     <div class="sort-section">
                         <p class="sort-label">日付</p>
                         <div class="stay-type-options">
+
                             <label class="stay-option">
-                                <input type="radio" name="sort" value="date_asc">
+                                <input type="radio" name="sort" value="date_asc"
+                                       {% if sort == "date_asc" %}checked{% endif %}>
                                 <span>昇順</span>
                             </label>
 
                             <label class="stay-option">
-                                <input type="radio" name="sort" value="date_desc" checked>
+                                <input type="radio" name="sort" value="date_desc"
+                                       {% if sort == "date_desc" %}checked{% endif %}>
                                 <span>降順</span>
                             </label>
+
                         </div>
                     </div>
 
