@@ -2,7 +2,6 @@
 .app-frame {
     background: #ffffff;
     font-family: "Arial", "Helvetica", "sans-serif";
-    color: #5c3a3a;
 }
 
 .search-area { margin-top: 0; }
@@ -15,13 +14,6 @@
     padding: 10px;
 }
 .btn-primary:hover { background-color: #3f7fbf; }
-
-/* エラー表示 */
-.errorlist {
-    color: red;
-    font-weight: bold;
-    margin-top: 5px;
-}
 
 /* 入力欄 */
 form input {
@@ -114,8 +106,6 @@ input[type="text"], button { border-radius: 0; }
 }
 .sort-btn:hover { color: #5a6268; }
 
-adge-t.status-zumi { background-color: #b6d7a8; color: #000; }
-
 /* タグ */
 .tag-badge {
     display: inline-block;
@@ -182,40 +172,72 @@ adge-t.status-zumi { background-color: #b6d7a8; color: #000; }
 }
 
 /* sortモーダル */
-/* ラジオボタンとテキストを横並びに */
 .stay-type-options {
     display: flex;
     gap: 20px;
     justify-content: center;
     margin-bottom: 15px;
 }
-
 .stay-option {
     display: flex;
     align-items: center;
     gap: 6px;
 }
-
-/* ラジオボタンの見た目を整える（Bootstrapのデフォルトを上書き） */
 .stay-option input[type="radio"] {
     width: 18px;
     height: 18px;
     margin: 0;
 }
+
 /* タイトル名・日付の余白調整 */
 .sort-label {
     margin-left: 25%;
     font-size: 18px;
 }
+
 /* 並び替えボタン（モーダル内） */
 .sort-submit-btn {
     display: block;
-    margin: 20px auto 10px auto; /* 上20px 下10px で中央揃え */
-    width: 140px;               /* 適度な幅 */
-    padding: 8px 0;             /* 高さ調整 */
+    margin: 20px auto 10px auto;
+    width: 140px;
+    padding: 8px 0;
     font-size: 16px;
     border-radius: 6px;
 }
+
 #sortModal .modal-header {
     border-bottom: none !important;
+}
+#sortModal .modal-sm {
+    max-width: 300px; 
+}
+.sort-modal-body {
+    padding-top: 4px;
+    color: #595959;
+}
+/* 入力欄の右側に × を表示 */
+.clear-btn {
+    position: absolute;
+    right: 70px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: #aaa;
+    cursor: pointer;
+    padding: 5px;
+    background: transparent;
+    z-index: 10; 
+    display: block;
+}
+/* 入力欄に文字が入ったら × を表示 */
+.search-input:not(:placeholder-shown) ~ .clear-btn {
+    display: block;
+}
+
+/* 入力欄の右側にスペースを確保 */
+.search-input {
+    padding-right: 40px;
+}
+.search-input::placeholder {
+    padding-left: 10px; /* 好きな値に調整 */
 }
