@@ -1,9 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     const modal = document.getElementById("shareLinkModal");
-
     let currentLinkId = null;
 
+    // モーダル表示時の処理
     modal.addEventListener("show.bs.modal", function (event) {
         const trigger = event.relatedTarget;
 
@@ -12,25 +12,29 @@ document.addEventListener("DOMContentLoaded", () => {
         const permission = trigger.getAttribute("data-permission");
         const expiration = trigger.getAttribute("data-expiration");
 
+        // URL をセット
         document.getElementById("share-url").value = url;
+
+        // ラジオボタンを選択
         document.getElementById("perm-view").checked = permission === "0";
         document.getElementById("perm-edit").checked = permission === "1";
 
+        // 有効期限
         const expInput = document.getElementById("share-expiration");
         if (expInput) expInput.value = expiration;
     });
 
-    // 🔥 削除リンク（show.bs.modal の外で設定）
+    // 🔥 リンク削除
     document.getElementById("delete-link").onclick = (e) => {
         e.preventDefault();
 
         const form = document.getElementById("delete-link-form");
         form.action = `/share/${currentLinkId}/delete/`;
 
-        const shareModal = bootstrap.Modal.getInstance(document.getElementById("shareLinkModal"));
+        const shareModal = bootstrap.Modal.getInstance(modal);
         shareModal.hide();
 
-        document.getElementById("shareLinkModal").addEventListener(
+        modal.addEventListener(
             "hidden.bs.modal",
             () => {
                 const deleteModal = new bootstrap.Modal(document.getElementById("deleteLinkModal"));
@@ -40,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
         );
     };
 
-    // 保存
+    // 🔵 保存処理
     document.getElementById("save-btn").onclick = () => {
         const selected = document.querySelector("input[name='permission']:checked").value;
 
@@ -58,7 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     };
 
-    // コピー機能
+    // 📋 コピー機能
     document.getElementById("copy-btn").onclick = () => {
         const input = document.getElementById("share-url");
         input.select();

@@ -5,65 +5,179 @@
   box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
 
-/* ラベル「リンクの編集」を中央寄せ */
-.modal-body .form-label:first-of-type {
+/* ラベル中央寄せ（太字解除） */
+.modal-body .form-label {
   display: block;
   text-align: center;
-  font-weight: bold;
+  font-weight: normal;
 }
-
-/* ラベル「リンクの権限」を中央寄せ */
 .modal-body .form-label:nth-of-type(2) {
-  display: block;
-  text-align: center;
-  font-weight: bold;
   margin-top: 20px;
 }
 
-/* 閲覧のみ・編集可能を横並び */
-.permission-group {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  margin-top: 10px;
-}
-
-/* カレンダーアイコンを消す（Chrome / Safari / Edge） */
-input[type="text"]::-webkit-calendar-picker-indicator {
-  display: none !important;
-}
-
-/* Firefox のカレンダーアイコンを消す */
+/* カレンダーアイコンを消す */
+input[type="text"]::-webkit-calendar-picker-indicator,
 input[type="text"]::-moz-calendar-picker-indicator {
   display: none !important;
 }
 
-/* shareLinkModal — ヘッダーの線を消す */
+/* shareLinkModal — ヘッダー線削除 */
 #shareLinkModal .modal-header {
   border-bottom: none;
 }
 
-/* shareLinkModal — input-group の見た目を少し柔らかく */
+/* shareLinkModal — input-group の背景 */
 #shareLinkModal .input-group input {
   background-color: #f8f9fa;
 }
 
-/* shareLinkModal — フッターを縦並び（スマホ想定） */
+/* shareLinkModal — フッター縦並び（スマホ） */
 #shareLinkModal .modal-footer {
   flex-direction: column;
   align-items: stretch;
   gap: 0.75rem;
 }
-
-/* shareLinkModal — 削除リンクを中央寄せ */
 #shareLinkModal .modal-footer a {
   text-align: center;
 }
 
-/* deleteLinkModal — フッターの線を消す */
+/* deleteLinkModal — フッター調整 */
 #deleteLinkModal .modal-footer {
   border-top: none;
   flex-direction: row;
   justify-content: center;
   gap: 10px;
+}
+
+/* 検索エリア */
+.search-area { margin-top: 0; }
+
+/* ログインボタン */
+.btn-primary {
+  background-color: #4a90e2;
+  border: none;
+  font-size: 1.2rem;
+  padding: 10px;
+}
+.btn-primary:hover {
+  background-color: #3f7fbf;
+}
+
+/* エラー表示 */
+.errorlist {
+  color: red;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+/* 入力欄 */
+form input {
+  border: 1px solid #ccc;
+  padding: 8px;
+  width: 100%;
+  background-color: #fff;
+  box-sizing: border-box;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  color: #000;
+}
+form input:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 8px rgba(74,144,226,0.55);
+  border-width: 1.5px;
+  outline: none;
+}
+
+/* Chrome/Safari autofill対策 */
+input:-webkit-autofill {
+  background-color: #fff !important;
+  box-shadow: 0 0 0 1000px #fff inset !important;
+  -webkit-text-fill-color: #000 !important;
+}
+
+/* ラベル */
+form label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 1.1rem;
+}
+
+/* パスワード注意書き */
+.statement {
+  color: #999;
+  font-size: 15px;
+}
+
+/* リンク */
+.link {
+  text-align: center;
+  font-size: 15px;
+}
+
+/* --- shareLinkModal 専用 --- */
+
+/* 権限ラベル中央寄せ（上でまとめ済み） */
+
+/* ラジオボタンセット横並び */
+#shareLinkModal .permission-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+  margin-top: 10px;
+}
+
+/* ラジオボタン＋テキスト横並び */
+#shareLinkModal .form-check {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+}
+
+
+/* コピー ボタン */
+#copy-btn {
+  background-color: #ccc !important;
+  color: #fff !important;
+}
+#copy-btn:hover {
+  background-color: #b5b5b5 !important;
+}
+
+/* 削除リンク */
+#delete-link {
+  color: #5a6268;
+}
+/* ラジオボタンと文字を横並びにする */
+/* ラジオボタンセット全体を横並びに */
+#shareLinkModal .permission-group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 32px;
+    width: 100%;
+}
+
+/* ラジオボタン + テキストを横並びに（ズレ補正付き） */
+/* ラジオボタンセット横並び */
+#shareLinkModal .permission-group {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-top: 10px;
+}
+
+/* ラジオボタン + テキストを横並びに（sort モーダルと同じ方式） */
+#shareLinkModal .form-check {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+}
+
+/* ラジオボタンの大きさ（transform を使わない） */
+#shareLinkModal .my-radio {
+    width: 18px;
+    height: 18px;
+    margin: 0;
 }

@@ -3,6 +3,8 @@ from django.utils import timezone
 from ...models.travel import Travel_info
 from ...models.template import Template, TravelCategory, TravelItem
 from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+import json
 
 
 def travel_detail(request, travel_id):
@@ -12,7 +14,11 @@ def travel_detail(request, travel_id):
 
     if template:
         categories = TravelCategory.objects.filter(template=template)
+
         for cat in categories:
+            # ← TravelItem を item_checked の昇順で並べてセット
+            cat.items = cat.travelitem_set.order_by('item_checked', 'id')
+
             cat.checked_count = cat.travelitem_set.filter(item_checked=1).count()
             cat.total_count = cat.travelitem_set.count()
     else:
@@ -42,6 +48,7 @@ def travel_detail(request, travel_id):
 
     return render(request, "old_travel/travel_detail.html", context)
 
+
 def travel_uncheck_all(request, travel_id):
     TravelItem.objects.filter(
         travel_category__template__travel_info_id=travel_id
@@ -49,11 +56,20 @@ def travel_uncheck_all(request, travel_id):
     return redirect("app:travel_detail", travel_id=travel_id)
 
 
-
+@require_POST
 def toggle_item_checked(request, item_id):
-    item = get_object_or_404(TravelItem, pk=item_id)
+    print("★★ toggle_item_checked 呼ばれた！ item_id=", item_id)
 
-    item.item_checked = 0 if item.item_checked else 1
+    item = get_object_or_404(TravelItem, pk=item_id)
+    data = json.loads(request.body)
+
+    checked = data.get("checked", False)
+    print("★★ checked =", checked)
+
+    # ← Boolean → Integer に変換（これが超重要）
+    item.item_checked = 1 if checked else 0
     item.save()
+
+    print("★★ 保存完了 item.item_checked =", item.item_checked)
 
     return JsonResponse({"success": True})

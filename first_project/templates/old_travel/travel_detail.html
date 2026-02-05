@@ -8,6 +8,7 @@
 
 {% block content %}
 <div class="container mt-0">
+  <form style="display:none;">{% csrf_token %}</form>
 
     <!-- タイトル -->
     {% include "old_travel/travel_card.html" with card_travel_info=travel_info %}

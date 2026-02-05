@@ -16,16 +16,18 @@ function getCookie(name) {
 
 
 // チェック処理（画面を動かさない）
-function toggleItem(itemId) {
-    const currentPos = window.scrollY; // 現在のスクロール位置を保存
+function toggleItem(checkbox, itemId) {
+    const checked = checkbox.checked;
+    const currentPos = window.scrollY;
 
     fetch(`/toggle_item/${itemId}/`, {
         method: "POST",
         headers: {
+            "Content-Type": "application/json",
             "X-CSRFToken": getCookie("csrftoken"),
-        }
+        },
+        body: JSON.stringify({ checked: checked })
     }).then(() => {
-        // スクロール位置を維持
         window.scrollTo(0, currentPos);
     });
 }

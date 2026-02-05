@@ -58,7 +58,7 @@ from app.views.mypage.link import (
     update_share_link,
     delete_share_link,
 )
-from app.views.mypage.account_edit import AccountEditView,EmailChangeView
+from app.views.mypage.account_edit import AccountEditView, EmailChangeView
 from app.views.mypage.password_change import CustomPasswordChangeView
 from app.views.mypage.favorites_edit import FavoritesEditView
 
@@ -78,15 +78,13 @@ urlpatterns = [
     path('logout/', user_logout, name='logout'),
     path('', UserLoginView.as_view(), name='login'),
     path('regist/', RegistUserView.as_view(), name='regist'),
-    # パスワード再設定（メール送信）
+
+    # パスワード再設定
     path('password_reset/', PasswordResetMailView.as_view(), name='password_reset'),
-    # パスワード再設定リンクからの遷移
     path('reset/<uidb64>/<token>/', PasswordResetConfirmView.as_view(
         template_name='login/password_reset_confirm.html'), name='password_reset_confirm'),
-    # パスワード再設定完了
     path('reset/done/', PasswordResetCompleteView.as_view(
         template_name='login/password_reset_complete.html'), name='password_reset_complete'),
-
 
     # ホーム
     path('home/', HomeView.as_view(), name='home'),
@@ -111,13 +109,9 @@ urlpatterns = [
     path('share/<int:link_id>/update/', update_share_link, name='share_update'),
     path('share/<int:link_id>/delete/', delete_share_link, name='delete_share_link'),
 
-    # アカウント名変更
+    # アカウント
     path('account/edit/', AccountEditView.as_view(), name='account_edit'),
-
-    # メールアドレス変更
     path('account/email/', EmailChangeView.as_view(), name='account_email'),
-    
-    # パスワード変更
     path('account/password_change/', CustomPasswordChangeView.as_view(), name='password_change'),
 
     # 旅行詳細
@@ -128,12 +122,14 @@ urlpatterns = [
     path("item/edit/<int:item_id>/", edit_item, name="edit_item"),
     path('old_template/<int:template_id>/delete/', delete_template, name='delete_template'),
 
+    # ✅ チェック操作（JS と一致）
+    path("toggle_item/<int:item_id>/", toggle_item_checked, name="toggle_item"),
+
     # 共有リンク
     path("travel/<int:travel_id>/link/", create_link, name="travel_link"),
     path("share/<str:token>/", share_view, name="share_view"),
 
-    # チェック操作
-    path("item/<int:item_id>/toggle/", toggle_item_checked, name="toggle_item_checked"),
+    # すべてのチェック解除
     path("travel/<int:travel_id>/uncheck_all/", travel_uncheck_all, name="travel_uncheck_all"),
 
     # 過去旅行編集
