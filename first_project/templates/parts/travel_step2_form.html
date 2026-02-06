@@ -9,7 +9,10 @@
         <span class="form-label-text">{{ radio.choice_label }}</span>
       </label>
     {% endfor %}
-    {{ form.location.errors }}
+
+    <div class="errorlist">
+      {{ form.location.errors }}
+    </div>
   </div>
 </div>
 
@@ -18,7 +21,6 @@
 <div class="transport-type">
   <label class="form-label d-block">【目的地までの交通手段】</label>
 
-  <!-- 通常のチェックボックス（3列） -->
   <div class="transport-options">
     {% for checkbox in form.transport_types %}
       {% if checkbox.choice_label != "その他" %}
@@ -30,7 +32,10 @@
     {% endfor %}
   </div>
 
-  <!-- その他だけ最後の行 -->
+  <div class="errorlist">
+    {{ form.transport_types.errors }}
+  </div>
+
   <div class="transport-other-row">
     {% for checkbox in form.transport_types %}
       {% if checkbox.choice_label == "その他" %}
@@ -46,6 +51,10 @@
       {% endif %}
     {% endfor %}
   </div>
+
+  <div class="errorlist">
+    {{ form.transport_other.errors }}
+  </div>
 </div>
 
 
@@ -53,4 +62,8 @@
 <div class="field-block">
   <label class="form-label d-block">【メモ】</label>
   {{ form.memo }}
+
+  <div class="errorlist">
+    {{ form.memo.errors }}
+  </div>
 </div>

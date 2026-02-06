@@ -94,15 +94,14 @@ class TravelStep2Form(TravelBaseForm):
         travel = kwargs.get("instance")
         super().__init__(*args, **kwargs)
 
-        # location の choices
+        # location の設定
         self.fields["location"].choices = Travel_info.LocationType.choices
-        self.fields["location"].required = True
+        self.fields["location"].required = False   # ★ ここを False に変更
 
         # 編集時の初期値
         if travel:
             self.fields["transport_types"].initial = travel.transport.all()
 
-            # OTHER の Transport を1回だけ取得
             other_transport = Transport.objects.filter(
                 transport_type=Transport.TransportType.OTHER
             ).first()
@@ -119,6 +118,9 @@ class TravelStep2Form(TravelBaseForm):
 
     def clean(self):
         cleaned = super().clean()
+        
+        if cleaned.get("location") == "":
+            cleaned["location"] = None
 
         transports = cleaned.get("transport_types")
         other_text = cleaned.get("transport_other", "").strip()

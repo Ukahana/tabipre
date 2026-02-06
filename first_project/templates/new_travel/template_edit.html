@@ -10,10 +10,11 @@
 
     {% include 'includes/toast.html' %}
 
-    <h2 class="mb-3">{{ template.travel_info.travel_title }}</h2>
+    <h2 class="mb-3 text-center">{{ template.travel_info.travel_title }}</h2>
 
     {% for category in template.travelcategory_set.all %}
-        <div class="card mb-3 shadow-sm">
+        <div class="card mb-3 shadow-sm"
+             style="border: 1.5px solid {{ category.get_category_color_display }};">
 
             <!-- カテゴリヘッダー（背景色をモデルのカラーで反映） -->
             <div class="card-header text-white d-flex justify-content-between align-items-center"
@@ -26,18 +27,9 @@
                 {% for item in category.travelitem_set.all|dictsort:"item_checked" %}
                     <li class="list-group-item">
                         <div class="d-flex align-items-center">
-
-                            <!-- old_template と同じチェックボックス構造（済/未バッジなし） -->
-                            <input type="checkbox"
-                                   class="form-check-input me-2"
-                                   disabled
-                                   {% if item.item_checked %}checked{% endif %}>
-
-                            <span>{{ item.item_name }}</span>
+                            <span class="ms-3">{{ item.item_name }}</span>
                         </div>
                     </li>
-                {% empty %}
-                    <li class="list-group-item text-muted">アイテムがありません</li>
                 {% endfor %}
 
             </ul>

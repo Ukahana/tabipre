@@ -82,7 +82,7 @@ def travel_step2(request):
             template = template_source(travel, request.user)
 
             del request.session["travel_step1"]
-            messages.success(request, "テンプレートを作成しました")
+            messages.success(request, "テンプレートを自動作成しました")
             return redirect("app:template_edit", template_id=template.id)
 
         # -----------------------------

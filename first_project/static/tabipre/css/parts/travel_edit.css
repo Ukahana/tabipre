@@ -1,8 +1,10 @@
 /* ============================= */
-/* Step1：宿泊タイプ             */
+/* Step1：宿泊タイプ */
 /* ============================= */
 
-.travel-edit-fields .stay-type { margin: 20px 0 12px; }
+.travel-edit-fields .stay-type {
+  margin: 20px 0 12px;
+}
 
 .travel-edit-fields .stay-type-title {
   font-weight: 400;
@@ -76,11 +78,15 @@
   transform: translateY(-2px);
 }
 
-.travel-edit-fields input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0; }
-.travel-edit-fields input[type="date"] { appearance: none; }
+.travel-edit-fields input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0;
+}
+.travel-edit-fields input[type="date"] {
+  appearance: none;
+}
 
 /* ============================= */
-/* Step2：場所の分類・交通手段   */
+/* Step2：場所の分類・交通手段 */
 /* ============================= */
 
 .travel_step2_form .transport-options {
@@ -114,14 +120,13 @@
 }
 
 /* ============================= */
-/* Step2：ボタン                 */
+/* Step2：ボタン */
 /* ============================= */
 
 .travel_step2_form .btn-create,
 .travel_step2_form .btn-copy {
   padding: 10px 16px;
   font-size: 16px;
-  border-radius: 0;
   border: 1px solid #595959;
   color: #000;
   box-shadow: none;
@@ -131,15 +136,17 @@
   background-color: #d9ead3;
   border-color: #d9ead3;
 }
-
-.travel_step2_form .btn-create:hover { background-color: #c8dfc1; }
+.travel_step2_form .btn-create:hover {
+  background-color: #c8dfc1;
+}
 
 .travel_step2_form .btn-copy {
   background-color: #ffe599;
   border-color: #ffe599;
 }
-
-.travel_step2_form .btn-copy:hover { background-color: #ffd86b; }
+.travel_step2_form .btn-copy:hover {
+  background-color: #ffd86b;
+}
 
 /* ============================= */
 /* flatpickr：スマホ向けサイズ調整 */
@@ -181,186 +188,34 @@
 .flatpickr-day.inRange {
   background: #d9e8ff;
 }
+
 /* ============================= */
-/* Step1：宿泊タイプ             */
+/* Step1 / Step2：ラジオ・チェックボックス拡大 */
 /* ============================= */
-
-.travel-edit-fields .stay-type { margin: 20px 0 12px; }
-
-.travel-edit-fields .stay-type-title {
-  font-weight: 400;
-  font-size: 18px;
-  margin-bottom: 10px;
-  color: #333;
-}
-
-.travel-edit-fields .stay-type-options,
-.travel_step2_form .location-type-options {
-  display: flex;
-  gap: 20px;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-.travel-edit-fields .stay-option,
-.travel_step2_form .form-item {
-  display: flex;
-  align-items: baseline;
-  gap: 6px;
-  font-size: 18px;
-  white-space: nowrap;
-}
 
 .travel-edit-fields .stay-option input[type="radio"],
-.travel_step2_form .form-item input[type="radio"],
-.travel_step2_form .form-item input[type="checkbox"] {
-  margin: 0;
+.travel_step2_form .form-item input[type="radio"] {
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  accent-color: #7a8b6f;
   transform: translateY(1px);
 }
 
-.travel-edit-fields .stay-length {
-  font-size: 20px;
-  font-weight: 400;
-  text-align: right;
-  margin: 8px 30px 0 0;
-}
-
-.travel-edit-fields input,
-.travel-edit-fields select,
-.travel-edit-fields textarea {
-  margin-bottom: 12px;
-}
-
-/* カレンダー入力 */
-.calendar-input-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.calendar-input-wrapper input {
-  height: 38px;
-  padding: 6px 10px;
-  font-size: 16px;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.calendar-btn {
-  background: none;
-  border: none;
-  padding: 0;
-  margin-bottom: 10px;
-  width: 44px;
-  height: 44px;
-  font-size: 30px;
+.transport-type .form-item input[type="checkbox"] {
+  width: 22px;
+  height: 22px;
   cursor: pointer;
-  line-height: 1;
-  transform: translateY(-2px);
+  accent-color: #7a8b6f;
 }
 
-.travel-edit-fields input[type="date"]::-webkit-calendar-picker-indicator { opacity: 0; }
-.travel-edit-fields input[type="date"] { appearance: none; }
-
-/* ============================= */
-/* Step2：場所の分類・交通手段   */
-/* ============================= */
-
-.travel_step2_form .transport-options {
-  display: grid;
-  grid-template-columns: repeat(3, 100px);
-  gap: 12px 24px;
-  margin: 8px 0;
-  justify-items: start;
-}
-
-.transport-other-input {
-  width: 200px;
-  height: 38px;
-  font-size: 16px;
-  margin-left: 8px;
-}
-
-.travel_step2_form .form-label {
+/* ラベル文字の色 */
+.transport-type .form-item .form-label-text {
   font-size: 18px;
-  font-weight: 600;
-  margin: 20px 0 8px;
+  color: #4a4a4a;
 }
 
-.travel_step2_form .field-block textarea {
-  width: 100%;
-  height: 100px;
-  font-size: 16px;
-  padding: 8px;
-  resize: vertical;
-  box-sizing: border-box;
-}
-
-/* ============================= */
-/* Step2：ボタン                 */
-/* ============================= */
-
-.travel_step2_form .btn-create,
-.travel_step2_form .btn-copy {
-  padding: 10px 16px;
-  font-size: 16px;
-  border-radius: 0;
-  border: 1px solid #595959;
-  color: #000;
-  box-shadow: none;
-}
-
-.travel_step2_form .btn-create {
-  background-color: #d9ead3;
-  border-color: #d9ead3;
-}
-
-.travel_step2_form .btn-create:hover { background-color: #c8dfc1; }
-
-.travel_step2_form .btn-copy {
-  background-color: #ffe599;
-  border-color: #ffe599;
-}
-
-.travel_step2_form .btn-copy:hover { background-color: #ffd86b; }
-
-/* ============================= */
-/* flatpickr：スマホ向けサイズ調整 */
-/* ============================= */
-
-.flatpickr-calendar {
-  font-size: 18px;
-}
-
-.flatpickr-day {
-  width: 44px;
-  height: 44px;
-  line-height: 44px;
-  font-size: 16px;
-}
-
-.flatpickr-weekday {
-  font-size: 14px;
-}
-
-.flatpickr-months .flatpickr-month {
-  height: 52px;
-  font-size: 18px;
-}
-
-.flatpickr-prev-month,
-.flatpickr-next-month {
-  width: 42px;
-  height: 42px;
-  font-size: 22px;
-}
-
-.flatpickr-day.selected {
-  background: #4a90e2;
-  color: #fff;
-  border-radius: 6px;
-}
-
-.flatpickr-day.inRange {
-  background: #d9e8ff;
+/* タップ領域拡大 */
+.transport-type .form-item {
+  padding: 6px 0;
 }
