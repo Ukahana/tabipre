@@ -18,7 +18,7 @@ class TravelBaseForm(forms.ModelForm):
 
 
 # ---------------------------------------------------------
-# ★ Step1（タイトル・日付・宿泊タイプ）
+# ★ Step1（タイトル・日付・宿泊タイプ）【修正版】
 # ---------------------------------------------------------
 class TravelStep1Form(TravelBaseForm):
     start_date = forms.DateField(
@@ -44,17 +44,11 @@ class TravelStep1Form(TravelBaseForm):
     def clean(self):
         cleaned = super().clean()
 
-        title = cleaned.get("travel_title", "").strip()
         start = cleaned.get("start_date")
         end = cleaned.get("end_date")
 
-        # タイトル
-        if not title:
-            self.add_error("travel_title", "旅行タイトルを入力してください。")
-
-        # 日付未入力
+        # 日付未入力（Django の required が自動でエラーを出すので追加しない）
         if not start or not end:
-            self.add_error("start_date", "開始日と終了日を入力してください。")
             return cleaned
 
         # 日付逆転
