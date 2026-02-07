@@ -2,26 +2,30 @@
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
 
-      <!-- ヘッダー中央揃え＆右上に閉じるボタン -->
       <div class="modal-header border-0 justify-content-center position-relative">
         <h5 class="modal-title text-center w-100">編集</h5>
       </div>
 
-      <form method="POST" id="editItemForm">
+      <form method="POST">
         {% csrf_token %}
 
-        <div class="modal-body">
+        <!-- ★ どのアイテムを編集するか -->
+        <input type="hidden" name="edit_item_id" id="editItemId">
 
-          <!-- 入力欄＋クリアボタン -->
+        <div class="modal-body">
           <div class="position-relative">
-            <input type="text" name="item_name" id="editItemInput" class="form-control border-0 border-bottom" placeholder="項目を入力">
-            <button type="button" class="btn position-absolute end-0 top-50 translate-middle-y px-2"
-                    onclick="document.getElementById('editItemInput').value = ''"
-                    style="font-size: 18px; color: #999;">
+            <input type="text"
+                   name="item_name"
+                   id="editItemInput"
+                   class="form-control border-0 border-bottom"
+                   placeholder="項目を入力">
+
+            <button type="button"
+                    class="clear-btn position-absolute end-0 top-50 translate-middle-y"
+                    onclick="document.getElementById('editItemInput').value = ''">
               ×
             </button>
           </div>
-
         </div>
 
         <div class="modal-footer d-flex flex-column align-items-center border-0">

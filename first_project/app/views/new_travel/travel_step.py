@@ -141,7 +141,8 @@ def travel_step2(request):
                     )
 
             del request.session["travel_step1"]
-            return redirect("app:old_template_edit", template_id=new_template.id)
+            return redirect("app:old_template_copy", template_id=new_template.id)
+
 
     else:
         form = TravelStep2Form()

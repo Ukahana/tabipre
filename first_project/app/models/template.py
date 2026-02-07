@@ -105,6 +105,14 @@ class TravelCategory(models.Model):
       
     def __str__(self):  
      return f"Category {self.category_name} (Template {self.template_id})"
+    
+    @property
+    def checked_count(self):
+        return self.travelitem_set.filter(item_checked=1).count()
+
+    @property
+    def total_count(self):
+        return self.travelitem_set.count()
 
 class TravelItem(models.Model):
     # 選択肢
@@ -144,3 +152,4 @@ class TravelItem(models.Model):
       
     def __str__(self):
       return f"{self.item_name} ({self.travel_category})"
+

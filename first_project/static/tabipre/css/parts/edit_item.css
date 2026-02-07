@@ -1,0 +1,27 @@
+/* 項目編集モーダル：タイトル */
+.modal-title {
+    font-weight: normal;
+}
+
+/* 項目編集モーダル：入力欄（下線だけ残す） */
+#editItemInput {
+    border: none !important;              
+    border-bottom: 2px solid #0097a7 !important; 
+    border-radius: 0 !important;
+    box-shadow: none !important;          
+    outline: none !important;           
+}
+/* 項目編集モーダルの × ボタン */
+#editItemModal .clear-btn {
+    font-size: 25px;     /* ← ここが style の移植先 */
+    color: #999;
+    background: none;
+    border: none;
+    padding: 0 6px;
+    cursor: pointer;
+    line-height: 1;
+}
+
+#editItemModal .clear-btn:hover {
+    color: #666;
+}

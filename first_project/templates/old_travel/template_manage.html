@@ -4,6 +4,7 @@
 {% block extra_css %}
 {{ block.super }}
 <link rel="stylesheet" href="{% static 'tabipre/css/old_template/template_manage.css' %}">
+<link rel="stylesheet" href="{% static 'tabipre/css/parts/edit_item.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -110,10 +111,10 @@
 
 <!-- モーダル読込 -->
 {% include "old_travel/modal/add_item_modal.html" with current_template=current_template %}
-{% include "old_travel/modal/edit_item_modal.html" with current_template=current_template %}
+{% include "parts/edit_item_modal.html" with current_template=current_template %}
 {% include "old_travel/modal/delete_modal.html" with current_template=current_template %}
 
 <script src="{% static 'tabipre/js/old_travel/add_item_v2.js' %}"></script>
-<script src="{% static 'tabipre/js/old_travel/edit_item.js' %}"></script>
+<script src="{% static 'tabipre/js/parts/item_edit.js' %}"></script>
 
 {% endblock %}

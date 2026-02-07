@@ -30,8 +30,9 @@ def old_template_edit(request, template_id):
     categories = TravelCategory.objects.filter(template=template)
     for cat in categories:
         items = cat.travelitem_set.all()
-        cat.total_count = items.count()
-        cat.checked_count = items.filter(item_checked=TravelItem.ItemChecked.YES).count()
+        cat.total_count_display = cat.total_count
+        cat.checked_count_display = cat.checked_count
+
 
     # ★ 旅行全体のチェック数を追加
     all_items = TravelItem.objects.filter(travel_category__template=template)
@@ -84,7 +85,7 @@ def edit_item(request, item_id):
 
     return render(
         request,
-        "old_travel/modal/edit_item_modal.html",
+        "parts/edit_item_modal.html",
         {
             "item": item,
             "template_id": item.travel_category.template.id

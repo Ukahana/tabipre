@@ -1,0 +1,38 @@
+/* 白文字・背景なしボタン（分類の▼・× 共通） */
+.btn-transparent {
+    background: none !important;
+    border: none !important;
+    color: #fff !important;
+    padding: 2px 6px;
+    cursor: pointer;
+}
+
+/* 分類の × ボタンだけ大きく */
+.btn-category-delete {
+    font-size: 26px !important;
+    line-height: 1 !important;
+}
+
+/* 編集アイコン（枠線なし・少し大きく・余白揃え） */
+.edit-btn {
+    background: none;
+    border: none;
+    padding: 2px 6px;  
+    cursor: pointer;
+}
+
+.edit-btn img {
+    width: 20px;
+    height: 20px;
+    display: block;
+}
+.memo-toggle-btn {
+    background-color: #ccccccff !important;
+    color: #ffffff !important;
+    border: none !important;
+    padding: 4px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+

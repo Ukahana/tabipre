@@ -18,9 +18,9 @@ def travel_detail(request, travel_id):
         for cat in categories:
             # ← TravelItem を item_checked の昇順で並べてセット
             cat.items = cat.travelitem_set.order_by('item_checked', 'id')
+            cat.checked_count_display = cat.checked_count
+            cat.total_count_display = cat.total_count
 
-            cat.checked_count = cat.travelitem_set.filter(item_checked=1).count()
-            cat.total_count = cat.travelitem_set.count()
     else:
         categories = []
 
