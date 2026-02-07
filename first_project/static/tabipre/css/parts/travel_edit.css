@@ -30,13 +30,26 @@
   white-space: nowrap;
 }
 
-.travel-edit-fields .stay-option input[type="radio"],
+.travel-edit-fields input,
+.travel-edit-fields select,
+.travel-edit-fields textarea {
+  margin-bottom: 12px;
+}
+
+/* ラジオ・チェックボックス共通 */
+.travel-edit-fields input[type="radio"],
 .travel_step2_form .form-item input[type="radio"],
-.travel_step2_form .form-item input[type="checkbox"] {
+.travel_step2_form .form-item input[type="checkbox"],
+#copyModal input[type="radio"] {
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  accent-color: #7a8b6f;
   margin: 0;
   transform: translateY(1px);
 }
 
+/* 宿泊日数 */
 .travel-edit-fields .stay-length {
   font-size: 20px;
   font-weight: 400;
@@ -44,13 +57,10 @@
   margin: 8px 30px 0 0;
 }
 
-.travel-edit-fields input,
-.travel-edit-fields select,
-.travel-edit-fields textarea {
-  margin-bottom: 12px;
-}
-
+/* ============================= */
 /* カレンダー入力 */
+/* ============================= */
+
 .calendar-input-wrapper {
   display: flex;
   align-items: center;
@@ -68,21 +78,21 @@
 .calendar-btn {
   background: none;
   border: none;
-  padding: 0;
-  margin-bottom: 10px;
   width: 44px;
   height: 44px;
   font-size: 30px;
   cursor: pointer;
   line-height: 1;
+  margin-bottom: 10px;
   transform: translateY(-2px);
+}
+
+.travel-edit-fields input[type="date"] {
+  appearance: none;
 }
 
 .travel-edit-fields input[type="date"]::-webkit-calendar-picker-indicator {
   opacity: 0;
-}
-.travel-edit-fields input[type="date"] {
-  appearance: none;
 }
 
 /* ============================= */
@@ -94,7 +104,6 @@
   grid-template-columns: repeat(3, 100px);
   gap: 12px 24px;
   margin: 8px 0;
-  justify-items: start;
 }
 
 .transport-other-input {
@@ -119,6 +128,16 @@
   box-sizing: border-box;
 }
 
+/* ラベル文字 */
+.transport-type .form-item .form-label-text {
+  font-size: 18px;
+  color: #4a4a4a;
+}
+
+.transport-type .form-item {
+  padding: 6px 0;
+}
+
 /* ============================= */
 /* Step2：ボタン */
 /* ============================= */
@@ -136,6 +155,7 @@
   background-color: #d9ead3;
   border-color: #d9ead3;
 }
+
 .travel_step2_form .btn-create:hover {
   background-color: #c8dfc1;
 }
@@ -144,78 +164,123 @@
   background-color: #ffe599;
   border-color: #ffe599;
 }
+
 .travel_step2_form .btn-copy:hover {
   background-color: #ffd86b;
 }
 
 /* ============================= */
-/* flatpickr：スマホ向けサイズ調整 */
+/* flatpickr：スマホ向け */
 /* ============================= */
 
-.flatpickr-calendar {
-  font-size: 18px;
-}
-
+.flatpickr-calendar { font-size: 18px; }
 .flatpickr-day {
   width: 44px;
   height: 44px;
   line-height: 44px;
   font-size: 16px;
 }
-
-.flatpickr-weekday {
-  font-size: 14px;
-}
-
-.flatpickr-months .flatpickr-month {
-  height: 52px;
-  font-size: 18px;
-}
-
+.flatpickr-weekday { font-size: 14px; }
+.flatpickr-months .flatpickr-month { height: 52px; font-size: 18px; }
 .flatpickr-prev-month,
 .flatpickr-next-month {
   width: 42px;
   height: 42px;
   font-size: 22px;
 }
-
 .flatpickr-day.selected {
   background: #4a90e2;
   color: #fff;
   border-radius: 6px;
 }
-
-.flatpickr-day.inRange {
-  background: #d9e8ff;
-}
+.flatpickr-day.inRange { background: #d9e8ff; }
 
 /* ============================= */
-/* Step1 / Step2：ラジオ・チェックボックス拡大 */
+/* モーダル：テンプレート選択 */
 /* ============================= */
 
-.travel-edit-fields .stay-option input[type="radio"],
-.travel_step2_form .form-item input[type="radio"] {
-  width: 22px;
-  height: 22px;
+/* タイトル中央寄せ */
+#copyModal .modal-title {
+  text-align: center;
+}
+
+/* カード */
+#copyModal .template-card {
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 14px;
+  transition: 0.2s;
+}
+
+/* ラジオボタン（見た目だけ非表示） */
+#copyModal .radio-select {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* 選択時：カードをハイライト */
+#copyModal input[type="radio"]:checked + .template-card {
+  border-color: #4a90e2;
+  background-color: #f0f6ff;
+}
+
+/* 上部：選択エリア（クリック範囲） */
+#copyModal .template-select-area {
+  display: flex;
+  align-items: center;
+  gap: 20px;
   cursor: pointer;
-  accent-color: #7a8b6f;
-  transform: translateY(1px);
+  width: 100%;
 }
 
-.transport-type .form-item input[type="checkbox"] {
-  width: 22px;
-  height: 22px;
+/* ステータスバッジ */
+#copyModal .badge-t {
+  font-size: 14px;
+  padding: 4px 7px;
+  border-radius: 4px;
+  font-weight: 600;
+  margin-right: 10px !important;
+}
+
+/* タイトル＋日付 */
+#copyModal .template-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#copyModal .template-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.3;
+}
+
+#copyModal .template-text small {
+  font-size: 13px;
+  color: #666;
+}
+
+/* 下部：選択ボタン */
+#copyModal .btn-select {
+  width: 100%;
+  margin-top: 12px;
+  padding: 14px 0;
+  background-color: #4a90e2;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
-  accent-color: #7a8b6f;
 }
 
-/* ラベル文字の色 */
-.transport-type .form-item .form-label-text {
-  font-size: 18px;
-  color: #4a4a4a;
+#copyModal .btn-select:hover {
+  background-color: #3578c8;
 }
 
-/* タップ領域拡大 */
-.transport-type .form-item {
+/* モーダルヘッダーの余白調整 */
+#copyModal .modal-header {
   padding: 6px 0;
 }

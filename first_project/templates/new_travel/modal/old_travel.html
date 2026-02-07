@@ -15,51 +15,56 @@
           <input type="hidden" name="action" value="copy">
 
           {% for template in templates %}
-            <div class="border rounded p-3 mb-3 d-flex justify-content-between align-items-center">
 
-              <!-- 左側：ステータス + タイトル + 日付 -->
-              <label for="t{{ template.id }}" class="d-flex align-items-center w-100" style="cursor:pointer;">
+            <!-- ★ input をカードの直前に置くことで CSS が効く -->
+            <input type="radio"
+                   id="t{{ template.id }}"
+                   name="old_travel_id"
+                   value="{{ template.travel_info.travel_info_id }}"
+                   class="radio-select">
 
-                <!-- ラジオボタン -->
-                <input type="radio"
-                       id="t{{ template.id }}"
-                       name="old_travel_id"
-                       value="{{ template.travel_info.travel_info_id }}"
-                       class="form-check-input me-3">
+            <div class="template-card">
 
-                <div>
+              <!-- カード上部：選択エリア -->
+              <label for="t{{ template.id }}" class="template-select-area">
 
-                  <!-- ステータス表示（例：完 / 未 / 済）-->
-                  <span class="badge bg-secondary me-2">
-                    {% if template.status == 1 %}完
-                    {% elif template.status == 2 %}未
-                    {% else %}済
-                    {% endif %}
-                  </span>
+                <div class="template-item">
 
-                  <!-- タイトル -->
-                  <strong>{{ template.travel_info.travel_title }}</strong><br>
+                  {% if template.display_status %}
+                    <span class="badge-t
+                      {% if template.display_status == '未' %}status-mi
+                      {% elif template.display_status == '完' %}status-kan
+                      {% elif template.display_status == '済' %}status-zumi
+                      {% endif %}
+                    ">
+                      {{ template.display_status }}
+                    </span>
+                  {% endif %}
 
-                  <!-- 日付 -->
-                  <small class="text-muted">
-                    {% if template.travel_info.end_date %}
-                      {{ template.travel_info.start_date }} ～ {{ template.travel_info.end_date }}
-                    {% else %}
-                      {{ template.travel_info.start_date }}
-                    {% endif %}
-                  </small>
+                  <div class="template-text">
+                    <strong>{{ template.travel_info.travel_title }}</strong>
+                    <small class="text-muted">
+                      {% if template.travel_info.end_date %}
+                        {{ template.travel_info.start_date|date:"Y.n.j" }} ～ {{ template.travel_info.end_date|date:"Y.n.j" }}
+                      {% else %}
+                        {{ template.travel_info.start_date|date:"Y.n.j" }}
+                      {% endif %}
+                    </small>
+                  </div>
 
                 </div>
+
               </label>
 
-              <!-- 右側：選択ボタン -->
+              <!-- カード下部：押しやすい選択ボタン -->
               <button type="submit"
-                      class="btn btn-outline-primary btn-sm ms-2"
+                      class="btn-select"
                       onclick="document.getElementById('t{{ template.id }}').checked = true;">
                 選択
               </button>
 
             </div>
+
           {% endfor %}
 
         </form>
