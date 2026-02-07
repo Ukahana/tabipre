@@ -7,22 +7,20 @@
 {% endblock %}
 
 {% block content %}
-<div class="container mt-4">
+<div class="container mt-3">
 
-    <h2 class="mb-3">{{ template.travel_info.travel_title }}</h2>
+    <h2 class="text-center mb-3">{{ template.travel_info.travel_title }}</h2>
 
     <!-- 親フォーム：保存・削除・チェック更新・分類追加 -->
     <form method="POST">
         {% csrf_token %}
 
-        <!-- ⭐⭐⭐ ここが最重要：hidden input を追加 ⭐⭐⭐ -->
         {% for category in categories %}
             {% for item in category.travelitem_set.all %}
                 <input type="hidden" name="hidden_checked_{{ item.id }}" value="{{ item.item_checked }}">
                 <input type="hidden" name="hidden_name_{{ item.id }}" value="{{ item.item_name }}">
             {% endfor %}
         {% endfor %}
-        <!-- ⭐⭐⭐ ここまで必須 ⭐⭐⭐ -->
 
         {% for category in categories %}
         <div class="card mb-3 shadow-sm">
@@ -109,4 +107,7 @@
     </form>
 
 </div>
+{% block extra_js %}
+<script src="{% static 'tabipre/js/new_travel/template_edit2.js' %}"></script>
+{% endblock %}
 {% endblock %}
