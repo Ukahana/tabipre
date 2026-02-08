@@ -81,11 +81,6 @@ def template_edit2(request, template_id):
                 if name_key in hidden:
                     item.item_name = hidden.get(name_key)
 
-    # カウント更新
-    for cat in categories:
-        cat.checked_count = cat.travelitem_set.filter(item_checked=1).count()
-        cat.total_count = cat.travelitem_set.count()
-
     return render(request, "new_travel/template_edit2.html", {
         "template": template,
         "categories": categories,

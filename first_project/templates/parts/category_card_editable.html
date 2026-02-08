@@ -4,7 +4,7 @@
 
             <div class="d-flex align-items-center">
                 <input type="checkbox"
-                       class="custom-checkbox me-2"
+                       class="form-check-input me-3"
                        onchange="toggleItem(this, {{ item.id }})"
                        {% if item.item_checked %}checked{% endif %}>
                 <span>{{ item.item_name }}</span>

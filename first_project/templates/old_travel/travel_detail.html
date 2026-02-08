@@ -3,7 +3,7 @@
 
 {% block extra_css %}
 {{ block.super }}
-<link rel="stylesheet" href="{% static 'tabipre/css/template_base.css' %}">
+<link rel="stylesheet" href="{% static 'tabipre/css/old_template/template_base.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -46,10 +46,7 @@
             </div>
 
             <ul id="cat{{ category.id }}" class="list-group list-group-flush">
-
-                {# ★ 修正ポイント：category を渡す ★ #}
                 {% include "parts/category_card_editable.html" with category=category %}
-
             </ul>
 
         </div>
@@ -63,7 +60,7 @@
     </div>
 
     <!-- 編集ボタン & 共有リンク -->
-    <div class="mt-3 d-flex gap-2 edit-button">
+    <div class="mt-3 edit-button">
 
         {% if template %}
             <a href="{% url 'app:old_template_edit' template.id %}" class="btn btn-primary">
