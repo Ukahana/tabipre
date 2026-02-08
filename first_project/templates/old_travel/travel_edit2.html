@@ -14,10 +14,17 @@
     <form method="POST" class="travel_step2_form">
         {% csrf_token %}
 
-        <!-- 場所・交通手段・メモ（共通パーツ） -->
+        <!-- ★ フォーム全体のエラー（任意） -->
+        {% if form.non_field_errors %}
+            <div class="alert alert-danger">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
+        <!-- ★ 各フィールドのエラーを表示するための共通パーツ -->
         {% include "parts/travel_step2_form.html" %}
 
-        <!--  ボタン-->
+        <!-- ボタン -->
         <div class="mt-4 d-flex flex-column gap-3">
             <button type="submit" class="btn btn-create">保存</button>
         </div>
