@@ -23,27 +23,22 @@ def old_template_edit(request, template_id):
             category.delete()
             return redirect("app:old_template_edit", template_id=template.id)
 
-    # お気に入り
     favorite, _ = Favorite.objects.get_or_create(user=request.user)
     favorite_items = FavoriteItem.objects.filter(favorite=favorite)
 
-    # カテゴリ一覧
     categories = TravelCategory.objects.filter(template=template)
     for cat in categories:
         items = cat.travelitem_set.all()
         cat.total_count_display = cat.total_count
         cat.checked_count_display = cat.checked_count
 
-
-    # ★ 旅行全体のチェック数を追加
     all_items = TravelItem.objects.filter(travel_category__template=template)
     checked_items = all_items.filter(item_checked=TravelItem.ItemChecked.YES).count()
     total_items = all_items.count()
-    
-    # ★ ステータス計算を追加（← これが重要）
+
     today = timezone.now().date()
     if travel.end_date < today:
-       status = "済"
+        status = "済"
     elif total_items > 0 and total_items == checked_items:
         status = "完"
     else:
@@ -53,14 +48,17 @@ def old_template_edit(request, template_id):
 
     context = {
         "template": template,
-        "current_template": template,   
+        "current_template": template,
         "travel": travel,
         "travel_info": travel,
         "categories": categories,
         "favorite_items": favorite_items,
-        "checked_items": checked_items,   
-        "total_items": total_items, 
-        "card_travel_info": template.travel_info, 
+        "checked_items": checked_items,
+        "total_items": total_items,
+        "card_travel_info": template.travel_info,
+       "open_edit_modal": request.session.pop("open_edit_modal", None),
+       "edit_item_name": request.session.pop("edit_item_name", ""), 
+
     }
 
     return render(request, "old_travel/template_manage.html", context)
@@ -76,29 +74,40 @@ def edit_item(request, item_id):
     if request.method == "POST":
         new_name = request.POST.get("item_name", "").strip()
 
-        # ★ 空白なら削除扱い
-        if new_name == "":
+        # 削除処理
+        if "delete" in request.POST:
             item.delete()
             return redirect("app:old_template_edit", template_id=item.travel_category.template.id)
 
-        # ★ delete ボタンが押された場合
-        if "delete" in request.POST:
-            item.delete()
-        else:
-            item.item_name = new_name
-            item.save()
+        # ① 必須チェック
+        if not new_name:
+            messages.error(request, "項目名を入力してください。")
+            request.session["open_edit_modal"] = item.id
+            request.session["edit_item_name"] = new_name
+            return redirect("app:old_template_edit", template_id=item.travel_category.template.id)
+
+        # ② 文字数チェック
+        if len(new_name) > 50:
+            messages.error(request, "項目名は50文字以内で入力してください。")
+            request.session["open_edit_modal"] = item.id
+            request.session["edit_item_name"] = new_name
+            return redirect("app:old_template_edit", template_id=item.travel_category.template.id)
+
+        # ③ 重複チェック（同じカテゴリ内）
+        if TravelItem.objects.filter(
+            travel_category=item.travel_category,
+            item_name=new_name
+        ).exclude(id=item.id).exists():
+            messages.error(request, "同じ名前の項目がすでに存在します。")
+            request.session["open_edit_modal"] = item.id
+            request.session["edit_item_name"] = new_name
+            return redirect("app:old_template_edit", template_id=item.travel_category.template.id)
+
+        # 更新処理
+        item.item_name = new_name
+        item.save()
 
         return redirect("app:old_template_edit", template_id=item.travel_category.template.id)
-
-    return render(
-        request,
-        "parts/edit_item_modal.html",
-        {
-            "item": item,
-            "template_id": item.travel_category.template.id
-        }
-    )
-
 # -------------------------------
 # 項目追加（モーダル）
 # -------------------------------

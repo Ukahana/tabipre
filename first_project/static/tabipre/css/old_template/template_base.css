@@ -271,20 +271,3 @@ input[type="text"], button {
 #memoArea .card-body {
     color: #000;
 }
-/* 編集する & 共有リンクへ（常に縦並びで押しやすい） */
-.edit-button {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    width: 100%;
-}
-
-.edit-button a {
-    width: 100% !important;
-    height: 48px;
-    font-size: 1.1rem;
-    display: flex;             
-    align-items: center;       
-    justify-content: center;   
-    box-sizing: border-box;
-}

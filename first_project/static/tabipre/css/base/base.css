@@ -204,3 +204,10 @@ textarea.form-control {
   border: 2px solid #b30000 !important;
   background: #fff5f5;
 }
+/* 項目編集モーダル削除ボタン*/
+.delete-label {
+  white-space: nowrap;
+  display: inline-block;
+  min-width: 40px; 
+  text-align: center;
+}

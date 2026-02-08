@@ -82,3 +82,9 @@
     border: 3px solid #333;
 }
 
+.eddit_item_modal .delete-label {
+  white-space: nowrap;
+  display: inline-block;
+  min-width: 40px;
+  text-align: center;
+}

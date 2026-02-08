@@ -1,4 +1,10 @@
-<div class="modal fade" id="editItemModal" tabindex="-1">
+{% load static %}
+<div class="modal fade eddit_item_modal"
+     id="editItemModal"
+     tabindex="-1"
+     data-open="{% if open_edit_modal %}1{% else %}0{% endif %}"
+     data-item-id="{{ open_edit_modal }}"
+     data-item-name="{{ edit_item_name }}">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
 
@@ -6,25 +12,42 @@
         <h5 class="modal-title text-center w-100">編集</h5>
       </div>
 
+      <!-- ★ エラー表示（編集モーダル専用） -->
+      {% if open_edit_modal %}
+        {% if messages %}
+        <div class="px-3 pt-2">
+          {% for message in messages %}
+            <div class="alert alert-danger py-1 mb-2">{{ message }}</div>
+          {% endfor %}
+        </div>
+        {% endif %}
+      {% endif %}
+
       <form method="POST" id="editItemForm">
         {% csrf_token %}
 
-        <!-- ★ どのアイテムを編集するか -->
         <input type="hidden" name="edit_item_id" id="editItemId">
 
         <div class="modal-body">
-          <div class="position-relative">
+          <div class="d-flex align-items-center">
+
             <input type="text"
                    name="item_name"
                    id="editItemInput"
-                   class="form-control border-0 border-bottom"
+                   class="form-control border-0 border-bottom me-3"
                    placeholder="項目を入力">
 
-            <button type="button"
-                    class="clear-btn position-absolute end-0 top-50 translate-middle-y"
-                    onclick="document.getElementById('editItemInput').value = ''">
-              ×
-            </button>
+            <div class="text-center">
+              <div class="delete-label text-danger small mb-1">削除</div>
+              <button type="submit"
+                      name="delete"
+                      value="1"
+                      class="btn p-0"
+                      style="border: none; background: none;">
+                <img src="{% static 'tabipre/icons/trash.png' %}" width="22" alt="削除">
+              </button>
+            </div>
+
           </div>
         </div>
 
