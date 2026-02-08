@@ -15,9 +15,9 @@ def create_link(request, travel_id):
     one_month_later = timezone.now().date() + relativedelta(months=1)
 
     expiration_choices = [
-    (0, "1か月間有効："),
-    (1, "旅行終了日の翌日まで："),
-    (2, "日付を指定する"),
+        (0, "1か月間有効："),
+        (1, "旅行終了日の翌日まで："),
+        (2, "日付を指定する"),
     ]
 
     # ▼ GET：初期値セット
@@ -26,7 +26,6 @@ def create_link(request, travel_id):
             "expiration_type": 0,
             "expiration_date": one_month_later,
         })
-
         form.fields["expiration_type"].choices = expiration_choices
 
         return render(request, "old_travel/create_link.html", {
@@ -63,23 +62,14 @@ def create_link(request, travel_id):
         link.expiration_date = one_month_later
     elif link.expiration_type == Link.ExpirationType.AFTER_TRIP:
         link.expiration_date = next_day
-    # USER_INPUT の場合はフォーム側でパース済みの値をそのまま使う
 
     link.save()
 
     share_url = request.build_absolute_uri(f"/share/{link.share_token}/")
 
-    # 再表示用フォーム（choices 再設定）
-    new_form = LinkForm(initial={
-    "expiration_type": link.expiration_type,  
-    "expiration_date": link.expiration_date,
-    })
-    
-    new_form.fields["expiration_type"].choices = expiration_choices
-
-
+    # POST 成功後は form をそのまま使う（data が残るため）
     return render(request, "old_travel/create_link.html", {
-        "form": new_form,
+        "form": form,
         "template": template,
         "travel": travel,
         "next_day": next_day,

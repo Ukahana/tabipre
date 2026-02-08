@@ -1,53 +1,76 @@
 document.addEventListener("DOMContentLoaded", function () {
 
     const dateInput = document.getElementById("id_expiration_date");
-    const openCalendarBtn = document.getElementById("open_calendar_btn");
 
-    // ▼ USER_INPUT（= value "2"）のときだけ required にする
+    const fp = flatpickr(dateInput, {
+        dateFormat: "Y.m.d",
+        altInput: true,
+        altFormat: "Y/m/d",
+        allowInput: true,
+        locale: "ja",
+        clickOpens: false,
+
+        parseDate: (value, format) => {
+            if (!value) return null;
+
+            const nums = value.replace(/[^\d]/g, "");
+            const currentYear = new Date().getFullYear();
+
+            if (nums.length === 2) {
+                return new Date(currentYear, nums[0] - 1, nums[1]);
+            }
+            if (nums.length === 4) {
+                return new Date(currentYear, nums.slice(0, 2) - 1, nums.slice(2, 4));
+            }
+            if (nums.length === 6) {
+                return new Date(nums.slice(0, 4), nums.slice(4, 6) - 1, nums.slice(6, 8));
+            }
+            if (nums.length === 8) {
+                return new Date(nums.slice(0, 4), nums.slice(4, 6) - 1, nums.slice(6, 8));
+            }
+
+            return null;
+        }
+    });
+
+    const altInput = fp.altInput;
+
+    altInput.addEventListener("blur", function () {
+        const raw = altInput.value.trim();
+        if (!raw) {
+            dateInput.value = "";
+            return;
+        }
+        fp.setDate(raw, true);
+    });
+
+    document.querySelectorAll(".calendar-btn").forEach(btn => {
+        btn.addEventListener("click", () => fp.open());
+    });
+
     function updateExpiration() {
         const selected = document.querySelector('input[name="expiration_type"]:checked');
         if (!selected) return;
 
         const isUserInput = selected.value === "2";
         dateInput.required = isUserInput;
+
+        const wrapper = document.getElementById("date_input_wrapper");
+        wrapper.style.display = isUserInput ? "flex" : "none";
     }
 
     document.querySelectorAll('input[name="expiration_type"]').forEach(r => {
         r.addEventListener("change", updateExpiration);
     });
 
-    updateExpiration();  // 初期状態でも反映
+    updateExpiration();
 
-
-    // ▼ 手入力したときのフォーマット統一
-    dateInput.addEventListener("change", function () {
-        const raw = dateInput.value.trim();
-        if (!raw) return;
-
-        const normalized = raw.replace(/[\/\.]/g, "-").replace(/\s+/g, "");
-        const parts = normalized.split("-");
-
-        let year, month, day;
-
-        try {
-            if (parts.length === 3) {
-                [year, month, day] = parts;
-            } else if (parts.length === 2) {
-                year = new Date().getFullYear();
-                [month, day] = parts;
-            } else {
-                throw new Error("invalid");
-            }
-
-            const date = new Date(year, month - 1, day);
-            if (isNaN(date.getTime())) throw new Error("invalid");
-
-            dateInput.value = `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()}`;
-
-        } catch (e) {
-            alert("正しい日付を入力してください（例: 2/5）");
-            dateInput.value = "";
+    // ★ モーダルを開く処理（SHOW_MODAL がテンプレートから渡される）
+    if (window.SHOW_MODAL === true) {
+        const modalEl = document.getElementById("linkModal");
+        if (modalEl) {
+            const modal = new bootstrap.Modal(modalEl);
+            modal.show();
         }
-    });
-
+    }
 });

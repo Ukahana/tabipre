@@ -1,4 +1,7 @@
-/* 有効期限 */
+/* ============================= */
+/* ラジオボタン */
+/* ============================= */
+
 .radio-inline {
   display: flex;
   align-items: center;
@@ -14,13 +17,16 @@
   box-sizing: content-box;
 }
 
+/* ============================= */
 /* 権限設定 */
+/* ============================= */
+
 .permission-radio {
-  margin-bottom: 20px; /* 権限ブロックの下の余白 */
+  margin-bottom: 20px;
 }
 
 .permission-radio > div {
-  margin-bottom: 10px; /* 各行の余白 */
+  margin-bottom: 10px;
 }
 
 .permission-radio label {
@@ -33,4 +39,45 @@
   width: auto;
   margin: 0;
   padding: 0;
+}
+
+/* ============================= */
+/* カレンダー入力（flatpickr対応） */
+/* ============================= */
+
+.calendar-input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ★ これが最重要：flatpickr の altInput にスタイルを当てる */
+.flatpickr-input {
+  height: 38px !important;
+  padding: 6px 10px !important;
+  font-size: 16px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+}
+
+/* ★ 内部 input（hidden）にはスタイルを当てない */
+#id_expiration_date {
+  display: none !important;
+}
+
+/* カレンダーアイコン */
+.calendar-btn {
+  background: none;
+  border: none;
+  width: 44px;
+  height: 44px;
+  font-size: 30px;
+  cursor: pointer;
+  line-height: 1;
+  margin-bottom: 10px;
+  transform: translateY(4px);
+}
+#copy_btn {
+  background-color: #ccccccff !important;
+  border-color: #ccccccff !important;
 }

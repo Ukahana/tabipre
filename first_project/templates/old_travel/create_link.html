@@ -9,8 +9,7 @@
 {% block content %}
 <div class="container mt-5">
 
-  <h3 class="sub-title mb-5">リンクの共有</h3>
-
+  <div class="sub-title mb-5">リンクの共有</div>
   <form method="post">
     {% csrf_token %}
 
@@ -62,10 +61,14 @@
         <div class="text-danger small">{{ form.expiration_type.errors.0 }}</div>
       {% endif %}
 
-      <!-- 日付入力欄 -->
-      <div id="date_input_wrapper" class="mt-3" style="display:flex; gap:8px; align-items:center;">
+      <!-- 日付入力欄（travel_step1 と同じ構造） -->
+      <div id="date_input_wrapper" class="calendar-input-wrapper mt-3">
         {{ form.expiration_date }}
-        <button type="button" id="open_calendar_btn" class="btn btn-outline-secondary">📅</button>
+        <button type="button"
+                class="calendar-btn"
+                data-target="{{ form.expiration_date.auto_id }}">
+          📅
+        </button>
       </div>
 
       {% if form.expiration_date.errors %}
@@ -90,11 +93,9 @@
 {% endif %}
 
 {% endblock %}
-
 {% block extra_js %}
 <script>
-  window.SHOW_MODAL = {{ show_modal|yesno:"true,false" }};
+    window.SHOW_MODAL = {{ show_modal|yesno:"true,false" }};
 </script>
-
 <script src="{% static 'tabipre/js/old_travel/create_link.js' %}"></script>
 {% endblock %}
