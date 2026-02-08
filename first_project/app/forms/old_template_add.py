@@ -18,9 +18,10 @@ class OldCategoryItemForm(forms.Form):
         }
     )
 
-    category_color = forms.IntegerField(required=True)
-
-    favorite_flag = forms.BooleanField(required=False)
+    category_name = forms.CharField(required=False)
+    
+    # ★ BooleanField → IntegerField に変更
+    favorite_flag = forms.IntegerField(required=False)
 
     def clean_item_name(self):
         return (self.cleaned_data.get("item_name") or "").strip()

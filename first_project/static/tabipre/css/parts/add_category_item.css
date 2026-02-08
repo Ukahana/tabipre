@@ -136,3 +136,9 @@
 .continue-no:hover {
     opacity: 0.9;
 }
+.favorite-label {
+    font-size: 8px;
+    color: #555;
+    margin-bottom: 2px;
+    text-align: center;
+}

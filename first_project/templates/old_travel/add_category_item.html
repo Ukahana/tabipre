@@ -11,6 +11,17 @@
 
     <div class="sub-title">分類・項目の追加</div>
 
+    <!-- ⭐ エラーメッセージ -->
+    {% if messages %}
+    <div class="alert alert-danger mt-3">
+        <ul class="mb-0">
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
     <!-- ⭐ フォーム -->
     <form id="categoryItemForm" method="POST" action="{% url 'app:category_item_add' template.id %}">
         {% csrf_token %}
@@ -18,7 +29,12 @@
         <!-- ⭐ 分類名 -->
         <div class="mt-4 d-flex align-items-center">
             <label class="form-label me-3 mb-0" style="width:80px;">分類名</label>
-            <input type="text" name="category_name" class="form-control" list="categorySuggestions">
+            <input type="text"
+                   name="category_name"
+                   class="form-control"
+                   list="categorySuggestions"
+                   placeholder="例：衣類"
+                   value="{{ form.category_name.value|default:'' }}">
         </div>
 
         <datalist id="categorySuggestions">
@@ -31,13 +47,19 @@
         <label class="category-text mt-4 w-100">分類の色を選択する</label>
         <div class="color-palette mb-3">
             {% for c in color_list %}
-                <div class="color-option"
+                <div class="color-option
+                    {% if form.category_color.value == c.value|stringformat:'s' %} selected {% endif %}"
                      data-value="{{ c.value }}"
                      style="background: {{ c.code }}">
                 </div>
             {% endfor %}
         </div>
-        <input type="hidden" name="category_color" id="selectedColor" required>
+
+        <input type="hidden"
+               name="category_color"
+               id="selectedColor"
+               value="{{ form.category_color.value|default:'' }}"
+               required>
 
         <!-- ⭐ お気に入りから追加 -->
         <button type="button"
@@ -52,19 +74,32 @@
             <label class="form-label me-2 mb-0" style="width:80px;">項目名</label>
 
             <div class="d-flex align-items-center flex-grow-1">
+
+                <!-- 入力欄 -->
                 <input type="text"
                        name="item_name"
                        id="itemNameInput"
                        class="form-control me-2"
-                       placeholder="未入力でも追加できます">
+                       placeholder="未入力でも追加できます"
+                       value="{{ form.item_name.value|default:'' }}">
 
-                <img id="favoriteStar"
-                     src="{% static 'tabipre/icons/star_off.png' %}"
-                     data-on="{% static 'tabipre/icons/star_on.png' %}"
-                     data-off="{% static 'tabipre/icons/star_off.png' %}"
-                     style="width:32px; cursor:pointer;">
+                <!-- お気に入り（文字＋アイコン） -->
+                <div class="text-center me-2">
+                    <div class="favorite-label">お気に入り</div>
 
-                <input type="hidden" name="favorite_flag" id="favoriteValue" value="0">
+                    <img id="favoriteStar"
+                         src="{% static 'tabipre/icons/star_off.png' %}"
+                         data-on="{% static 'tabipre/icons/star_on.png' %}"
+                         data-off="{% static 'tabipre/icons/star_off.png' %}"
+                         style="width:32px; cursor:pointer;">
+                </div>
+
+                <!-- hidden -->
+                <input type="hidden"
+                       name="favorite_flag"
+                       id="favoriteValue"
+                       value="{{ form.favorite_flag.value|default:'0' }}">
+
             </div>
         </div>
 
@@ -82,11 +117,11 @@
                 キャンセル
             </a>
         </div>
+
         {% include "old_travel/modal/add_continue_modal.html" %}
 
     </form>
 
-       
     {% include "parts/favorite_modal.html" %}
 
 </div>
@@ -94,13 +129,10 @@
 
 {% block extra_js %}
 {{ block.super }}
-<script>
-document.getElementById("categoryItemForm").addEventListener("submit", () => {
-    console.log("FORM SUBMITTED");
-});
-</script>
-<script src="{% static 'tabipre/js/parts/favorite_add.js' %}"></script>
+
+{% comment %} <script src="{% static 'tabipre/js/parts/favorite_add.js' %}"></script>
 <script src="{% static 'tabipre/js/old_travel/add_item_v2.js' %}"></script>
-<script src="{% static 'tabipre/js/new_travel/new_continue.js' %}"></script>
+<script src="{% static 'tabipre/js/new_travel/new_continue.js' %}"></script> {% endcomment %}
+<script src="{% static 'tabipre/js/old_travel/add_category_item.js' %}"></script>
 
 {% endblock %}
