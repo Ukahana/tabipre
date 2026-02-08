@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    // ⭐ 星アイコン（お気に入り）
+    //  星アイコン（お気に入り）
     const star = document.getElementById("favoriteStar");
     const favValue = document.getElementById("favoriteValue");
 
@@ -15,14 +15,14 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // ⭐ continueModal が存在するなら自動で開く（saved=1 用）
+    //  continueModal が存在するなら自動で開く（saved=1 用）
     const modalEl = document.getElementById("continueModal");
     if (modalEl && modalEl.dataset.auto === "true") {
         const modal = new bootstrap.Modal(modalEl);
         modal.show();
     }
 
-    // ⭐ カラーパレットの選択処理
+    //  カラーパレットの選択処理
     const colorOptions = document.querySelectorAll(".color-option");
     const selectedColor = document.getElementById("selectedColor");
 
@@ -34,6 +34,28 @@ document.addEventListener("DOMContentLoaded", () => {
                 option.classList.add("selected");
             });
         });
+    }
+
+    // ★★★ 項目追加モーダルに category_id をセットする処理 ★★★
+    const addItemButtons = document.querySelectorAll(".add-item-btn");
+    const categoryInput = document.getElementById("modalCategoryId");
+
+    if (categoryInput && addItemButtons.length > 0) {
+        addItemButtons.forEach(btn => {
+            btn.addEventListener("click", () => {
+                const categoryId = btn.dataset.categoryId;
+                categoryInput.value = categoryId;
+            });
+        });
+    }
+
+    // ★★★ エラーがある場合は addItemModal を自動で開く ★★★
+    const hasError = document.querySelector(".alert-danger");
+    const addItemModal = document.getElementById("addItemModal");
+
+    if (hasError && addItemModal) {
+        const modal = new bootstrap.Modal(addItemModal);
+        modal.show();
     }
 
 });
