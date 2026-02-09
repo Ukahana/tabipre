@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const favValue = document.getElementById("favoriteValue");
 
     if (star && favValue) {
-        // 初期状態を hidden の値から反映
         const isOn = favValue.value === "1";
         star.src = isOn ? star.dataset.on : star.dataset.off;
 
@@ -49,10 +48,33 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // ⭐ continueModal の自動オープン（必要な場合のみ）
-    const modalEl = document.getElementById("continueModal");
-    if (modalEl && modalEl.dataset.auto === "true") {
-        const modal = new bootstrap.Modal(modalEl);
+    // ⭐ 登録ボタン → 最小限のバリデーション（分類名だけチェック）
+    const openModalButton = document.getElementById("openModalButton");
+
+    if (openModalButton) {
+        openModalButton.addEventListener("click", () => {
+
+            const categoryNameInput = document.querySelector("input[name='category_name']");
+            const categoryName = categoryNameInput.value.trim();
+
+            // 赤枠リセット
+            categoryNameInput.classList.remove("is-invalid");
+
+            // ⭐ 分類名チェック（空なら submit しない）
+            if (!categoryName) {
+                categoryNameInput.classList.add("is-invalid");
+                return;
+            }
+
+            // OKならフォーム送信（Django が残りをチェック）
+            document.getElementById("categoryItemForm").submit();
+        });
+    }
+
+    // ⭐ Django success=1 のときだけモーダルを開く
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get("success") === "1") {
+        const modal = new bootstrap.Modal(document.getElementById("continueModal"));
         modal.show();
     }
 

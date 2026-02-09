@@ -12,19 +12,17 @@
       <div class="modal-body">
 
         <form id="favoriteSelectForm">
+
           {% for fav in favorite_items %}
-            <div class="form-check mb-2">
-              <input class="form-check-input favorite-radio"
+            <label class="stay-option d-flex align-items-center mb-2">
+              <input class="favorite-radio"
                      type="radio"
                      name="favorite_choice"
-                     id="fav{{ forloop.counter }}"
                      value="{{ fav.item_name }}">
-              <label class="form-check-label w-100"
-                     for="fav{{ forloop.counter }}">
-                {{ fav.item_name }}
-              </label>
-            </div>
+              <span class="ms-2">{{ fav.item_name }}</span>
+            </label>
           {% endfor %}
+
         </form>
 
       </div>

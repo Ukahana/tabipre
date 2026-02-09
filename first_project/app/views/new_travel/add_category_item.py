@@ -1,16 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib import messages
 from ...models.template import Template, TravelCategory, TravelItem
 from ...models.favorite import Favorite, FavoriteItem
 from app.forms.template_add import CategoryItemForm
-import unicodedata
-
-
-# 入力を正規化（全角→半角、前後の空白除去）
-def normalize(text):
-    if not text:
-        return ""
-    return unicodedata.normalize("NFKC", text).strip()
 
 
 def add_category_item(request, template_id):
@@ -31,17 +22,12 @@ def add_category_item(request, template_id):
     }
 
     if request.method == "POST":
-        print("=== add_category_item POST ===")
-        print(request.POST)
-
-        # ⭐ edit2 の hidden を維持
         request.session["edit_hidden"] = request.POST
-
         form = CategoryItemForm(request.POST, template=template)
 
         if form.is_valid():
-            category_name = normalize(form.cleaned_data["category_name"])
-            item_name = normalize(form.cleaned_data["item_name"])
+            category_name = form.cleaned_data["category_name"]
+            item_name = form.cleaned_data["item_name"]
             color = form.cleaned_data["category_color"]
             favorite_flag = form.cleaned_data["favorite_flag"]
 
@@ -68,11 +54,19 @@ def add_category_item(request, template_id):
 
             if "continue" in request.POST:
                 return redirect("app:add_category_item", template_id=template.id)
-            else:
-                return redirect("app:template_edit2", template_id=template.id)
 
-        return redirect("app:add_category_item", template_id=template.id)
+            return redirect("app:template_edit2", template_id=template.id)
 
+        # エラー時はそのまま返す
+        return render(request, "new_travel/add_category_item.html", {
+            "template": template,
+            "past_categories": past_categories,
+            "favorite_items": favorites,
+            "color_map": color_map,
+            "form": form,
+        })
+
+    # GET
     form = CategoryItemForm(template=template)
 
     return render(request, "new_travel/add_category_item.html", {
