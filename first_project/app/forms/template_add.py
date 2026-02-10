@@ -35,12 +35,6 @@ class CategoryItemForm(forms.Form):
         }
     )
 
-    favorite_flag = forms.TypedChoiceField(
-        choices=[("0", 0), ("1", 1)],
-        coerce=int,
-        required=False
-    )
-
     def __init__(self, *args, **kwargs):
         self.template = kwargs.pop("template", None)
         super().__init__(*args, **kwargs)
@@ -53,24 +47,31 @@ class CategoryItemForm(forms.Form):
 
     def clean(self):
         cleaned_data = super().clean()
+
         category_name = cleaned_data.get("category_name")
         item_name = cleaned_data.get("item_name")
+        category_color = cleaned_data.get("category_color")
 
-        if not item_name:
-            return cleaned_data
+        # カラー値チェック
+        valid_colors = dict(TravelCategory.CategoryColor.choices).keys()
+        if category_color not in valid_colors:
+            self.add_error("category_color", "不正なカラーが選択されました。")
 
-        # 分類を取得
-        category = TravelCategory.objects.filter(
-            template=self.template,
-            category_name=category_name
-        ).first()
+        # ★★★ 重複チェック（同じ分類内に同じ項目名があるか）★★★
+        if self.template and category_name and item_name:
+            try:
+                category = TravelCategory.objects.get(
+                    template=self.template,
+                    category_name=category_name
+                )
 
-        if category:
-            # TravelItem で重複チェック
-            if TravelItem.objects.filter(
-                travel_category=category,
-                item_name=item_name
-            ).exists():
-                self.add_error("item_name", "同じ分類内に同じ項目名が既に存在します。")
+                if TravelItem.objects.filter(
+                    travel_category=category,
+                    item_name=item_name
+                ).exists():
+                    self.add_error("item_name", "この分類には同じ項目がすでに存在します。")
+
+            except TravelCategory.DoesNotExist:
+                pass  # 分類がまだ存在しない場合は重複チェック不要
 
         return cleaned_data

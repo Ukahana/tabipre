@@ -7,19 +7,16 @@
 
         <div class="d-flex gap-4 justify-content-center mt-3">
 
-          <!-- ⭐ はい：JS で form を submit -->
           <button type="button"
                   class="btn btn-success"
-                  onclick="submitCategoryForm('continue')">
+                  onclick="submitCategoryForm('continue', event)">
               はい
           </button>
 
-          <!-- ⭐ いいえ：JS で form を submit -->
-          <button type="button"
-                  class="btn btn-secondary"
-                  onclick="submitCategoryForm('back')">
+          <a href="{% url 'app:template_edit2' template.id %}"
+             class="btn btn-secondary">
               いいえ
-          </button>
+          </a>
 
         </div>
 

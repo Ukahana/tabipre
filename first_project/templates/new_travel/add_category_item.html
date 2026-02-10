@@ -15,6 +15,9 @@
     <form id="categoryItemForm" method="POST" action="{% url 'app:add_category_item' template.id %}">
         {% csrf_token %}
 
+        <!-- ★ continue フラグ -->
+        <input type="hidden" name="continue" id="continueFlag" value="0">
+
         <!-- 分類名 -->
         <div class="mt-4 d-flex align-items-center">
             <label class="form-label me-3 mb-0" style="width:80px;">分類名</label>
@@ -24,8 +27,16 @@
                    class="form-control"
                    autocomplete="off"
                    placeholder="例：衣類"
+                   list="categoryList"
                    value="{{ form.category_name.value|default:'' }}">
         </div>
+
+        <datalist id="categoryList">
+            {% for name in past_categories %}
+                <option value="{{ name }}"></option>
+            {% endfor %}
+        </datalist>
+
         {% if form.category_name.errors %}
         <div class="text-danger small mt-1">{{ form.category_name.errors.0 }}</div>
         {% endif %}
@@ -68,27 +79,6 @@
                        autocomplete="off"
                        placeholder="未入力でも追加できます"
                        value="{{ form.item_name.value|default:'' }}">
-
-                <div class="favorite-wrapper text-center ms-2">
-                 <span class="favorite-label">お気に入り</span>
-
-                  {% if form.favorite_flag.value == "1" %}
-                    <img id="favoriteStar"
-                         src="{% static 'tabipre/icons/star_on.png' %}"
-                         data-on="{% static 'tabipre/icons/star_on.png' %}"
-                         data-off="{% static 'tabipre/icons/star_off.png' %}"
-                         style="width:32px; cursor:pointer;">
-                  {% else %}
-                    <img id="favoriteStar"
-                         src="{% static 'tabipre/icons/star_off.png' %}"
-                         data-on="{% static 'tabipre/icons/star_on.png' %}"
-                         data-off="{% static 'tabipre/icons/star_off.png' %}"
-                         style="width:32px; cursor:pointer;">
-                  {% endif %}
-                </div>
-
-                <input type="hidden" name="favorite_flag" id="favoriteValue"
-                       value="{{ form.favorite_flag.value|default:'0' }}">
             </div>
         </div>
 
@@ -96,14 +86,13 @@
         <div class="text-danger small mt-1">{{ form.item_name.errors.0 }}</div>
         {% endif %}
 
-        <!-- 登録（モーダルは JS で開く） -->
+        <!-- 登録（★ここが最重要） -->
         <button type="button"
                 class="btn app-submit mt-4 w-100"
-                id="validateBeforeModal">
+                onclick="submitCategoryForm('first', event)">
              登録
         </button>
 
-        <!-- キャンセル -->
         <div class="text-center mt-2">
            <a href="{% url 'app:template_edit2' template.id %}" class="back-link">キャンセル</a>
         </div>
@@ -120,22 +109,13 @@
 <script src="{% static 'tabipre/js/new_travel/add_category_item.js' %}"></script>
 <script src="{% static 'tabipre/js/new_travel/new_continue.js' %}"></script>
 
+{% if open_continue_modal %}
 <script>
 document.addEventListener("DOMContentLoaded", () => {
-
-    // ▼ 登録ボタン → まずフォーム送信（エラーがあればモーダルは開かない）
-    document.getElementById("validateBeforeModal").addEventListener("click", () => {
-        document.getElementById("categoryItemForm").submit();
-    });
-
-    // モーダル閉じたときの処理（既存）
-    const modal = document.getElementById("continueModal");
-    if (modal) {
-        modal.addEventListener("hidden.bs.modal", () => {
-            submitCategoryForm("back");
-        });
-    }
+    const modal = new bootstrap.Modal(document.getElementById("continueModal"));
+    modal.show();
 });
 </script>
+{% endif %}
 
 {% endblock %}

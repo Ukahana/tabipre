@@ -5,17 +5,26 @@
 {{ block.super }}
 <link rel="stylesheet" href="{% static 'tabipre/css/parts/travel_edit.css' %}">
 {% endblock %}
+
 {% block content %}
 <div class="container mt-4">
     <div class="sub-title mb-4">新規旅行作成</div>
 
-    <form method="POST" novalidate>
+    <form id="travelForm" method="POST" novalidate>
         {% csrf_token %}
         <input type="hidden" name="action" value="edit_all">
+
+        <!-- ★ continue フラグ -->
+        <input type="hidden" name="continue" id="continueFlag" value="0">
+
         <div class="travel-edit-fields">
-        {% include "parts/travel_form_fields1.html" %}
+            {% include "parts/travel_form_fields1.html" %}
         </div>
-        <button type="submit" class="btn btn-primary mt-3 w-100">次に進む</button>
+
+        <!-- 次に進む -->
+        <button type="button" class="btn btn-primary mt-3 w-100" id="nextButton">
+            次に進む
+        </button>
 
         <p class="mt-2 text-center">
             <a href="{% url 'app:home' %}" class="text-secondary">キャンセル</a>
@@ -23,5 +32,31 @@
     </form>
 </div>
 
+<!-- ★ continueModal を読み込む -->
+{% include "new_travel/modal/add_continue_modal.html" %}
+
 <script src="{% static 'tabipre/js/new_travel/travel_step1.js' %}"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+
+    // ▼ 次に進む → continue=1 をセットして送信
+    document.getElementById("nextButton").addEventListener("click", () => {
+        document.getElementById("continueFlag").value = "1";
+        document.getElementById("travelForm").submit();
+    });
+
+});
+</script>
+
+<!-- ▼ エラーなしで戻ってきたときだけ continueModal を開く -->
+{% if open_continue_modal %}
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const modal = new bootstrap.Modal(document.getElementById("continueModal"));
+    modal.show();
+});
+</script>
+{% endif %}
+
 {% endblock %}
