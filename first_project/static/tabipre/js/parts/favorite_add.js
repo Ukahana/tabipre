@@ -1,13 +1,30 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     // ================================
+    // ★ モーダルが開いたときに選択をクリア
+    // ================================
+    const favoriteModal = document.getElementById("favoriteModal");
+    if (favoriteModal) {
+        favoriteModal.addEventListener("show.bs.modal", () => {
+            const checked = document.querySelector(".favorite-radio:checked");
+            if (checked) {
+                checked.checked = false;
+            }
+        });
+    }
+
+    // ================================
     // ★ お気に入りモーダルの「登録」ボタン
     // ================================
     document.addEventListener("click", (e) => {
         if (e.target.id === "favoriteSelectBtn") {
 
             const selected = document.querySelector(".favorite-radio:checked");
-            if (!selected) return;
+
+            // ★ 選択されていない場合は item_name を変更しない
+            if (!selected) {
+                return;
+            }
 
             const itemInput = document.getElementById("itemNameInput");
             if (itemInput) {
@@ -20,14 +37,12 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-
     // ================================
     // ★ 星アイコン（favoriteStar）の ON/OFF 切り替え
     // ================================
     const star = document.getElementById("favoriteStar");
     const hidden = document.getElementById("favoriteValue");
 
-    // 星がない画面では何もしない（共通 JS でも安全）
     if (star && hidden) {
         star.addEventListener("click", () => {
             const isOn = hidden.value === "1";

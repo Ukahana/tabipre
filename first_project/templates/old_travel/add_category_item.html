@@ -14,12 +14,16 @@
     <form id="categoryItemForm" method="POST" action="{% url 'app:category_item_add' template.id %}">
         {% csrf_token %}
 
+        <input type="hidden" name="continue" id="continueFlag" value="0">
+
         <!-- ⭐ 分類名 -->
         <div class="mt-4">
             <label class="form-label">分類名</label>
 
             {{ form.category_name }}
-            {{ form.category_name.errors }}
+            {% if form.category_name.errors %}
+                <div class="text-danger small mt-1">{{ form.category_name.errors.0 }}</div>
+            {% endif %}
         </div>
 
         <datalist id="categorySuggestions">
@@ -32,17 +36,19 @@
         <label class="category-text mt-4 w-100">分類の色を選択する</label>
 
         <div class="color-palette mb-1">
-            {% for c in color_list %}
+            {% for value, code in color_list %}
                 <div class="color-option
-                    {% if form.category_color.value == c.value|stringformat:'s' %} selected {% endif %}"
-                     data-value="{{ c.value|stringformat:'s' }}"
-                     style="background: {{ c.code }}">
+                    {% if form.category_color.value == value|stringformat:'s' %} selected {% endif %}"
+                     data-value="{{ value }}"
+                     style="background: {{ code }}">
                 </div>
             {% endfor %}
         </div>
 
         {{ form.category_color }}
-        {{ form.category_color.errors }}
+        {% if form.category_color.errors %}
+            <div class="text-danger small mt-1">{{ form.category_color.errors.0 }}</div>
+        {% endif %}
 
         <!-- ⭐ お気に入りから追加 -->
         <button type="button"
@@ -59,7 +65,6 @@
             <div class="d-flex align-items-center flex-grow-1">
 
                 {{ form.item_name }}
-                {{ form.item_name.errors }}
 
                 <div class="text-center me-2">
                     <div class="favorite-label">お気に入り</div>
@@ -72,14 +77,17 @@
                 </div>
 
                 {{ form.favorite_flag }}
-
             </div>
+
+            {% if form.item_name.errors %}
+                <div class="text-danger small mt-1">{{ form.item_name.errors.0 }}</div>
+            {% endif %}
         </div>
 
-        <!-- ⭐ 登録 -->
         <button type="button"
-                id="openModalButton"
-                class="btn app-submit mt-4">
+                id="validateBeforeModal"
+                class="btn app-submit mt-4 w-100"
+                onclick="submitCategoryForm('first')">
             登録
         </button>
 
@@ -99,15 +107,17 @@
 
 {% block extra_js %}
 {{ block.super }}
+<script src="{% static 'tabipre/js/old_travel/old_continue.js' %}"></script>
 <script src="{% static 'tabipre/js/old_travel/add_category_item.js' %}"></script>
 <script src="{% static 'tabipre/js/parts/favorite_add.js' %}"></script>
 
-{% if request.GET.success == "1" %}
+{% if open_continue_modal %}
 <script>
-document.addEventListener("DOMContentLoaded", () => {
-    const modal = new bootstrap.Modal(document.getElementById("continueModal"));
+const modalEl = document.getElementById("continueModal");
+if (modalEl) {
+    const modal = new bootstrap.Modal(modalEl);
     modal.show();
-});
+}
 </script>
 {% endif %}
 
