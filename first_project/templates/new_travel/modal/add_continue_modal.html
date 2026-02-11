@@ -7,16 +7,21 @@
 
         <div class="d-flex gap-4 justify-content-center mt-3">
 
+          {% if template %}
+          <!-- はい -->
           <button type="button"
                   class="btn btn-success"
-                  onclick="submitCategoryForm('continue', event)">
+                  onclick="window.location.href='{% url 'app:add_category_item' template.id %}'">
               はい
           </button>
 
-          <a href="{% url 'app:template_edit2' template.id %}"
-             class="btn btn-secondary">
+          <!-- いいえ -->
+          <button type="button"
+                  class="btn btn-secondary"
+                  onclick="window.location.href='{% url 'app:template_edit2' template.id %}'">
               いいえ
-          </a>
+          </button>
+          {% endif %}
 
         </div>
 

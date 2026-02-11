@@ -14,6 +14,9 @@ from ...views.new_travel.template_source import template_source
 # -----------------------------
 @login_required
 def travel_create_step1(request):
+    
+    Template.objects.filter(user=request.user, is_draft=1).delete()
+
     if request.method == "POST":
         form = TravelStep1Form(request.POST)
         if form.is_valid():
@@ -76,6 +79,7 @@ def travel_step2(request):
                     defaults={"custom_transport_text": other_text}
                 )
 
+            # ⭐ template_source() 内で作られる Template は is_draft=1 のままでOK
             template = template_source(travel, request.user)
 
             del request.session["travel_step1"]
@@ -86,8 +90,7 @@ def travel_step2(request):
         # コピー作成（旧旅行からコピー）
         # -----------------------------
         if action == "copy":
-            # ★ Step2 のバリデーションを通さない
-            form = TravelStep2Form()  # 空フォームにしておく
+            form = TravelStep2Form()  # 空フォーム
 
             old_travel_id = request.POST.get("old_travel_id")
             old_travel = get_object_or_404(Travel_info, pk=old_travel_id)
@@ -96,7 +99,6 @@ def travel_step2(request):
             start_date = datetime.strptime(step1_data["start_date"], "%Y-%m-%d").date()
             end_date = datetime.strptime(step1_data["end_date"], "%Y-%m-%d").date()
 
-            # ★ Step2 の入力を使わず old_travel の値をコピー
             travel = Travel_info.objects.create(
                 user=request.user,
                 travel_title=step1_data["travel_title"],
@@ -115,12 +117,13 @@ def travel_step2(request):
                     defaults={"custom_transport_text": tm.custom_transport_text}
                 )
 
-            # テンプレートコピー
+            # ⭐ is_draft=1 を追加
             new_template = Template.objects.create(
                 user=request.user,
                 travel_info=travel,
                 source_type=Template.SourceType.FROM_TEMPLATE,
                 template_source=old_template,
+                is_draft=1,
             )
 
             old_categories = TravelCategory.objects.filter(template=old_template)
@@ -143,12 +146,11 @@ def travel_step2(request):
             del request.session["travel_step1"]
             return redirect("app:old_template_copy", template_id=new_template.id)
 
-
     else:
         form = TravelStep2Form()
 
     # -----------------------------
-    # Home と同じステータスロジックを適用
+    # Home と同じステータスロジック
     # -----------------------------
     templates = Template.objects.filter(travel_info__user=request.user)
     today = date.today()

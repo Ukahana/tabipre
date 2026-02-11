@@ -1,18 +1,15 @@
 from django import forms
-import unicodedata
 from ..models.template import TravelCategory, TravelItem
-
-
-def normalize(text):
-    if not text:
-        return ""
-    return unicodedata.normalize("NFKC", text).strip()
-
 
 class CategoryItemForm(forms.Form):
     category_name = forms.CharField(
         max_length=50,
         required=True,
+        widget=forms.TextInput(attrs={
+            "class": "form-control",
+            "placeholder": "例：衣類",
+            "autocomplete": "off",
+        }),
         error_messages={
             "required": "分類名は必須です。",
             "max_length": "分類名は50文字以内で入力してください。",
@@ -22,43 +19,52 @@ class CategoryItemForm(forms.Form):
     item_name = forms.CharField(
         max_length=50,
         required=False,
+        widget=forms.TextInput(attrs={
+            "class": "form-control",
+            "placeholder": "未入力でも追加できます",
+            "id": "itemNameInput",
+            "autocomplete": "off",
+        }),
         error_messages={
             "max_length": "項目名は50文字以内で入力してください。",
         }
     )
 
-    category_color = forms.IntegerField(
+    category_color = forms.CharField(
         required=True,
+        widget=forms.HiddenInput(),
         error_messages={
             "required": "カラーは必須です。",
-            "invalid": "カラー選択が不正です。",
         }
+    )
+
+    favorite_flag = forms.IntegerField(
+        required=False,
+        widget=forms.HiddenInput(attrs={"id": "favoriteValue"}),
+        initial=0
     )
 
     def __init__(self, *args, **kwargs):
         self.template = kwargs.pop("template", None)
         super().__init__(*args, **kwargs)
 
-    def clean_category_name(self):
-        return normalize(self.cleaned_data["category_name"])
-
     def clean_item_name(self):
-        return normalize(self.cleaned_data.get("item_name", ""))
+        return (self.cleaned_data.get("item_name") or "").strip()
+
+    def clean_favorite_flag(self):
+        value = self.cleaned_data.get("favorite_flag")
+        return 1 if str(value) == "1" else 0
 
     def clean(self):
         cleaned_data = super().clean()
 
         category_name = cleaned_data.get("category_name")
         item_name = cleaned_data.get("item_name")
-        category_color = cleaned_data.get("category_color")
 
-        # カラー値チェック
-        valid_colors = dict(TravelCategory.CategoryColor.choices).keys()
-        if category_color not in valid_colors:
-            self.add_error("category_color", "不正なカラーが選択されました。")
+        if not item_name:
+            return cleaned_data
 
-        # ★★★ 重複チェック（同じ分類内に同じ項目名があるか）★★★
-        if self.template and category_name and item_name:
+        if self.template and category_name:
             try:
                 category = TravelCategory.objects.get(
                     template=self.template,
@@ -72,6 +78,6 @@ class CategoryItemForm(forms.Form):
                     self.add_error("item_name", "この分類には同じ項目がすでに存在します。")
 
             except TravelCategory.DoesNotExist:
-                pass  # 分類がまだ存在しない場合は重複チェック不要
+                pass
 
         return cleaned_data

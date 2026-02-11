@@ -37,6 +37,11 @@ class Template(models.Model):
         related_name="derived_templates"
     )
     
+    is_draft = models.IntegerField(
+        default=1,
+        verbose_name=_("下書きフラグ（0: 完成 / 1: 下書き）")
+    )
+
     created_at = models.DateTimeField(
          auto_now_add=True,
          verbose_name=_("作成日")
