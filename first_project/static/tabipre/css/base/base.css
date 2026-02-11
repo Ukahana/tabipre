@@ -211,3 +211,12 @@ textarea.form-control {
   min-width: 40px; 
   text-align: center;
 }
+/* モーダル開閉時のスクロールバー補正を無効化 */
+body.modal-open {
+  padding-right: 0 !important;
+}
+
+/* スクロールバーの幅を常に確保してズレを防ぐ（推奨） */
+html {
+  scrollbar-gutter: stable;
+}

@@ -16,11 +16,16 @@
 
         <input type="hidden" name="continue" id="continueFlag" value="0">
 
-        <!-- ⭐ 分類名 -->
+        <!-- ⭐ 分類名（横並び） -->
         <div class="mt-4">
-            <label class="form-label">分類名</label>
+            <div class="d-flex align-items-center">
+                <label class="form-label mb-0 me-2" style="width: 80px;">分類名</label>
 
-            {{ form.category_name }}
+                <div class="flex-grow-1">
+                    {{ form.category_name }}
+                </div>
+            </div>
+
             {% if form.category_name.errors %}
                 <div class="text-danger small mt-1">{{ form.category_name.errors.0 }}</div>
             {% endif %}
@@ -58,16 +63,19 @@
             お気に入りから追加
         </button>
 
-        <!-- ⭐ 項目名 -->
+        <!-- ⭐ 項目名（横並び） -->
         <div class="mt-3">
-            <label class="form-label">項目名</label>
+            <div class="d-flex align-items-center">
+                <label class="form-label mb-0 me-2" style="width: 80px;">項目名</label>
 
-            <div class="d-flex align-items-center flex-grow-1">
+                <!-- 入力欄 -->
+                <div class="flex-grow-1 me-2">
+                    {{ form.item_name }}
+                </div>
 
-                {{ form.item_name }}
-
-                <div class="text-center me-2">
-                    <div class="favorite-label">お気に入り</div>
+                <!-- 星 -->
+                <div class="text-center" style="width: 48px;">
+                    <div class="favorite-label" style="font-size: 10px; line-height: 1;">お気に入り</div>
 
                     <img id="favoriteStar"
                          src="{% static 'tabipre/icons/star_off.png' %}"

@@ -20,61 +20,62 @@ def category_item_add(request, template_id):
         form = OldCategoryItemForm(request.POST, template=template)
         continue_flag = request.POST.get("continue")
 
-        if form.is_valid():
-
-            cd = form.cleaned_data
-
-            # ★ 分類を取得 or 作成
-            category, _ = TravelCategory.objects.get_or_create(
-                template=template,
-                category_name=cd["category_name"],
-                defaults={
-                    "category_color": cd["category_color"],
-                    "travel_type": TravelCategory.TravelType.CUSTOM,
-                }
-            )
-
-            # ★ 項目名があれば TravelItem を作成
-            if cd["item_name"]:
-                TravelItem.objects.create(
-                    travel_category=category,
-                    item_name=cd["item_name"],
-                    item_checked=0,
-                )
-
-            # ★ はい → 続けて追加
-            if continue_flag == "1":
-                return redirect("app:category_item_add", template_id)
-
-            # ★ いいえ → 戻る
-            if continue_flag == "2":
-                return redirect("app:old_template_edit", template_id)
-
-            # ★ モーダル表示（←ここが重要）
-            #     → form を “空” にすることで前回の入力が残らない
+        # ★ form.is_valid() が False → 重複含む全エラー
+        #    → モーダルは出さずにエラー表示
+        if not form.is_valid():
             return render(
                 request,
                 "old_travel/add_category_item.html",
                 {
-                    "form": OldCategoryItemForm(template=template),  # ← 空フォーム
+                    "form": form,
                     "template": template,
                     "categories": categories,
                     "color_list": color_list,
                     "favorite_items": favorite_items,
-                    "open_continue_modal": True,
+                    "open_continue_modal": False,  # ← モーダルを出さない
                 }
             )
 
-        # ★ バリデーションエラー時（form をそのまま返す）
+        # ★ form.is_valid() が True（重複なし）
+        cd = form.cleaned_data
+
+        # 分類を取得 or 作成
+        category, _ = TravelCategory.objects.get_or_create(
+            template=template,
+            category_name=cd["category_name"],
+            defaults={
+                "category_color": cd["category_color"],
+                "travel_type": TravelCategory.TravelType.CUSTOM,
+            }
+        )
+
+        # 項目名があれば TravelItem を作成
+        if cd["item_name"]:
+            TravelItem.objects.create(
+                travel_category=category,
+                item_name=cd["item_name"],
+                item_checked=0,
+            )
+
+        # ★ はい → 続けて追加
+        if continue_flag == "1":
+            return redirect("app:category_item_add", template_id)
+
+        # ★ いいえ → 戻る
+        if continue_flag == "2":
+            return redirect("app:old_template_edit", template_id)
+
+        # ★ モーダル表示（重複なし）
         return render(
             request,
             "old_travel/add_category_item.html",
             {
-                "form": form,
+                "form": OldCategoryItemForm(template=template),  # 空フォーム
                 "template": template,
                 "categories": categories,
                 "color_list": color_list,
                 "favorite_items": favorite_items,
+                "open_continue_modal": True,  # ← モーダルを出す
             }
         )
 

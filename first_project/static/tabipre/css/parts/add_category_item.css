@@ -149,3 +149,21 @@
     width: 32px;
     cursor: pointer;
 }
+/* 分類名の横並び用 */
+.form-label {
+    white-space: nowrap;
+}
+
+.category-name-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.category-name-wrapper label {
+    width: 80px; /* ラベル幅を固定 */
+    margin-bottom: 0;
+}
+
+.category-name-wrapper .form-control {
+    flex-grow: 1;
+}

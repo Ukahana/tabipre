@@ -31,8 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (submitBtn && form && continueFlag) {
         submitBtn.addEventListener("click", (event) => {
 
-            continueFlag.value = "0";  // ← これが正しい
-            form.submit();
+            continueFlag.value = "0"; 
         });
     }
 
