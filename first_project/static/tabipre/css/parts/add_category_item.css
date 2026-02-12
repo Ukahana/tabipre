@@ -97,27 +97,6 @@
 /* ============================
    追加を続けますかモーダル
 ============================ */
-.continue-yes,
-.continue-no {
-    width: 120px;
-    border-radius: 0;
-    border: 1px solid #595959;
-}
-
-.continue-yes {
-    background: #6aa84f;
-    color: #fff;
-}
-
-.continue-no {
-    background: #eee;
-    color: #000;
-}
-
-.continue-yes:hover,
-.continue-no:hover {
-    opacity: 0.9;
-}
 
 .favorite-label {
     font-size: 8px;
@@ -166,4 +145,34 @@
 
 .category-name-wrapper .form-control {
     flex-grow: 1;
+}
+
+/* add_category_item.css に追加 */
+#continueModal .modal-yes,
+#continueModal .modal-no {
+  all: unset;              /* ← Bootstrap のスタイルを全部リセット */
+  display: inline-block;
+  text-align: center;
+  cursor: pointer;
+
+  width: 120px;
+  padding: 14px 0;
+  font-size: 1.1rem;
+  border-radius: 0;
+  border: 1px solid #595959;
+}
+
+#continueModal .modal-yes {
+  background-color: #6aa84f;
+  color: #fff;
+}
+
+#continueModal .modal-no {
+  background-color: #eee;
+  color: #000;
+}
+
+#continueModal .modal-yes:hover,
+#continueModal .modal-no:hover {
+  opacity: 0.9;
 }

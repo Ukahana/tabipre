@@ -10,6 +10,15 @@
   padding: 12px 18px;
   box-sizing: border-box;
   color: #595959;
+  justify-content: center;
+}
+/* 画面が小さいときはスクロールを許可する */
+@media (max-height: 600px) {
+  .app-frame {
+    justify-content: flex-start; /* 上から配置 */
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
 }
 
 /* ============================= */
@@ -96,11 +105,6 @@
 .app-btn-primary { background: #4a90e2; color: #fff; }
 .app-btn-primary:hover { background: #3f7fbf; }
 
-.app-btn-secondary { background: #8a8a8a; color: #fff; }
-.app-btn-secondary:hover { background: #6f6f6f; }
-
-.app-btn-warning { background: #ffab40; color: #fff; }
-.app-btn-warning:hover { background: #e89a3a; }
 
 /* ============================= */
 /* コンテンツ余白 */

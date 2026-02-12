@@ -10,14 +10,14 @@
           {% if template %}
           <!-- はい -->
           <button type="button"
-                  class="btn btn-success"
+                  class="yes-btn"
                   onclick="window.location.href='{% url 'app:add_category_item' template.id %}'">
               はい
           </button>
 
           <!-- いいえ -->
           <button type="button"
-                  class="btn btn-secondary"
+                  class="no-btn"
                   onclick="window.location.href='{% url 'app:template_edit2' template.id %}'">
               いいえ
           </button>

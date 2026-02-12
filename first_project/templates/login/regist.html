@@ -7,68 +7,65 @@
 {% endblock %}
 
 {% block content %}
-<div class="container mt-4">
-    <div class="sub-title mb-4">新規アカウント登録</div>
+<div class="login-center">
+    <div class="container">
+        <div class="sub-title mb-4">新規アカウント登録</div>
 
-    <form method="POST" novalidate>
-        {% csrf_token %}
+        <form method="POST" novalidate>
+            {% csrf_token %}
 
-        {% if form.non_field_errors %}
-            <div class="alert alert-danger">
-                {% for error in form.non_field_errors %}
-                    <div>{{ error }}</div>
+            {% if form.non_field_errors %}
+                <div class="alert alert-danger">
+                    {% for error in form.non_field_errors %}
+                        <div>{{ error }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <div class="mb-3">
+                <label for="{{ form.user_name.id_for_label }}" class="form-label">名前/ニックネーム</label>
+                {{ form.user_name }}
+                {% for error in form.user_name.errors %}
+                    <div class="text-danger">{{ error }}</div>
                 {% endfor %}
             </div>
-        {% endif %}
 
-        <!-- ユーザー名 -->
-        <div class="mb-3">
-            <label for="{{ form.user_name.id_for_label }}" class="form-label">名前/ニックネーム</label>
-            {{ form.user_name }}
-            {% for error in form.user_name.errors %}
-                <div class="text-danger">{{ error }}</div>
-            {% endfor %}
-        </div>
+            <div class="mb-3">
+                <label for="{{ form.email.id_for_label }}" class="form-label">メールアドレス</label>
+                {{ form.email }}
+                {% for error in form.email.errors %}
+                    <div class="text-danger">{{ error }}</div>
+                {% endfor %}
+            </div>
 
-        <!-- メールアドレス -->
-        <div class="mb-3">
-            <label for="{{ form.email.id_for_label }}" class="form-label">メールアドレス</label>
-            {{ form.email }}
-            {% for error in form.email.errors %}
-                <div class="text-danger">{{ error }}</div>
-            {% endfor %}
-        </div>
+            <div class="mb-3">
+                <label for="{{ form.password.id_for_label }}" class="form-label">パスワード</label>
+                {{ form.password }}
+                {% for error in form.password.errors %}
+                    <div class="text-danger">{{ error }}</div>
+                {% endfor %}
+            </div>
 
-        <!-- パスワード -->
-        <div class="mb-3">
-            <label for="{{ form.password.id_for_label }}" class="form-label">パスワード</label>
-            {{ form.password }}
-            {% for error in form.password.errors %}
-                <div class="text-danger">{{ error }}</div>
-            {% endfor %}
-        </div>
+            <div class="mb-3">
+                <label for="{{ form.password2.id_for_label }}" class="form-label">パスワード(確認)</label>
+                {{ form.password2 }}
+                {% for error in form.password2.errors %}
+                    <div class="text-danger">{{ error }}</div>
+                {% endfor %}
+            </div>
 
-        <!-- パスワード確認 -->
-        <div class="mb-3">
-            <label for="{{ form.password2.id_for_label }}" class="form-label">パスワード(確認)</label>
-            {{ form.password2 }}
-            {% for error in form.password2.errors %}
-                <div class="text-danger">{{ error }}</div>
-            {% endfor %}
-        </div>
+            <div class="statement mt-3">
+                <p>・10文字以上</p>
+                <p>・半角の英数字を含む</p>
+                <p>・大文字小文字を含む</p>
+            </div>
 
-        <!-- パスワード条件 -->
-        <div class="statement mt-3">
-            <p>・10文字以上</p>
-            <p>・半角の英数字を含む</p>
-            <p>・大文字小文字を含む</p>
-        </div>
+            <input type="submit" value="登録" class="btn btn-primary mt-2">
+        </form>
 
-        <input type="submit" value="登録" class="btn btn-primary mt-2">
-    </form>
-
-    <p class="link mt-3">
-        <a href="{% url 'app:login' %}">ログイン画面はこちら</a>
-    </p>
+        <p class="link mt-3">
+            <a href="{% url 'app:login' %}">ログイン画面はこちら</a>
+        </p>
+    </div>
 </div>
 {% endblock %}

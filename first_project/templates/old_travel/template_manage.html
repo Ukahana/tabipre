@@ -3,7 +3,7 @@
 
 {% block extra_css %}
 {{ block.super }}
-<link rel="stylesheet" href="{% static 'tabipre/css/old_template/template_manage.css' %}">
+<link rel="stylesheet" href="{% static 'tabipre/css/template_manage.css' %}">
 <link rel="stylesheet" href="{% static 'tabipre/css/parts/edit_item.css' %}">
 {% endblock %}
 
@@ -11,7 +11,7 @@
 <div class="container mt-4">
 
     <!-- タイトル -->
-    {% include "old_travel/travel_card.html" %}
+    {% include "parts/travel_card.html" %}
     <!-- ★★★ 分類一覧 ★★★ -->
     {% for category in categories %}
     <div class="card mb-3 shadow-sm">
@@ -40,8 +40,7 @@
                 <button type="submit"
                         name="delete_category"
                         value="{{ category.id }}"
-                        class="btn btn-link fs-4 p-0"
-                        style="text-decoration: none; color: white;">
+                        class="delete-category-btn">
                     ×
                 </button>
             </form>
@@ -101,9 +100,12 @@
         {% endif %}
 
         <!-- テンプレート・旅行情報の削除 -->
-        <a href="#" class="back-link d-block" data-bs-toggle="modal" data-bs-target="#deleteTemplateModal">
-            テンプレート・旅行情報を削除
-        </a>
+        <form method="post" action="{% url 'app:delete_template' current_template.id %}">
+            {% csrf_token %}
+            <button type="submit" class="btn">
+              テンプレート・旅行情報を削除
+            </button>
+        </form>
 
     </div>
 

@@ -51,7 +51,7 @@ class RegistForm(forms.ModelForm):
 
         # 絵文字OK。ただし「絵文字だけの名前」はNG
         if not re.search(r"[A-Za-z0-9ぁ-んァ-ヶ一-龠々]", name):
-            raise ValidationError("ユーザー名に1文字以上の日本語・英字・数字を含めてください。")
+            raise ValidationError("日本語・英字・数字を1文字以上含めてください。")
 
         return name
 
@@ -69,21 +69,25 @@ class RegistForm(forms.ModelForm):
         return email
 
     # --- パスワードチェック ---
+    # 独自ルールは複数行でOK（あなたの希望どおり）
+    # Django標準バリデーションだけ1行にまとめる
     def validate_password_rules(self, pw):
-        rules = [
-            (len(pw) < 10, "パスワードは10文字以上で入力してください。"),
-            (not any(c.isdigit() for c in pw), "数字を1つ以上含めてください。"),
-            (not any(c.islower() for c in pw), "小文字を含めてください。"),
-            (not any(c.isupper() for c in pw), "大文字を含めてください。"),
-        ]
-        for condition, message in rules:
-            if condition:
-                self.add_error('password', message)
+        # 独自ルール（複数行OK）
+        if len(pw) < 10:
+            self.add_error('password', "10文字以上必要です。")
+        if not any(c.isdigit() for c in pw):
+            self.add_error('password', "数字を入れてください。")
+        if not any(c.islower() for c in pw):
+            self.add_error('password', "小文字を入れてください。")
+        if not any(c.isupper() for c in pw):
+            self.add_error('password', "大文字を入れてください。")
 
+        # Django標準バリデーション（1行にまとめる）
         try:
             validate_password(pw)
         except ValidationError as e:
-            self.add_error('password', e)
+            combined = " / ".join(e.messages)
+            self.add_error('password', combined)
 
     def clean(self):
         cleaned = super().clean()

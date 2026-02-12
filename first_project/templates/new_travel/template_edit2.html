@@ -3,13 +3,13 @@
 
 {% block extra_css %}
 {{ block.super }}
-<link rel="stylesheet" href="{% static 'tabipre/css/old_template/template_manage.css' %}">
+<link rel="stylesheet" href="{% static 'tabipre/css/parts/template_manage.css' %}">
 {% endblock %}
 
 {% block content %}
 <div class="container mt-3">
 
-    <h2 class="text-center mb-3">{{ template.travel_info.travel_title }}</h2>
+    <h3 class="text-center mb-3">{{ template.travel_info.travel_title }}</h3>
 
     <!-- 親フォーム：保存・削除・チェック更新・分類追加 -->
     <form method="POST">
@@ -46,8 +46,7 @@
                 <button type="submit"
                         name="delete_category"
                         value="{{ category.id }}"
-                        class="btn btn-link fs-4 p-0"
-                        style="text-decoration: none; color: white;"
+                        class="delete-category-btn"
                         onclick="event.stopPropagation();">
                     ×
                 </button>
@@ -100,7 +99,7 @@
 
 
         <!-- ⭐ 保存ボタン -->
-        <button type="submit" name="save_changes" class="btn btn-primary w-100 mt-3">
+        <button type="submit" name="save_changes" class="btn btn-primary w-100 mt-2 mb-2">
             保存
         </button>
 

@@ -25,7 +25,7 @@ function toggleItem(checkbox, itemId) {
         window.scrollTo(0, pos);
         updateCategoryCount(checkbox);
         updateTotalCount();
-        updateStatus();
+        updateStatus();   // ← ここが確実に動くようにする
     });
 }
 
@@ -38,7 +38,7 @@ function updateCategoryCount(checkbox) {
     const all = ul.querySelectorAll('.form-check-input');
     const checked = ul.querySelectorAll('.form-check-input:checked');
 
-    const badge = ul.closest('.card').querySelector('.badge');
+    const badge = ul.closest('.card').querySelector('.category-badge');
     if (badge) badge.textContent = `${checked.length} / ${all.length}`;
 }
 
@@ -55,11 +55,21 @@ function updateTotalCount() {
 
 // ステータス更新（未 / 完 / 済）
 function updateStatus() {
+    console.log("updateStatus called");  // ← デバッグ
+
     const statusEl = document.getElementById('travelStatus');
-    if (!statusEl) return;
+    if (!statusEl) {
+        console.log("statusEl not found");
+        return;
+    }
 
     const endDate = new Date(statusEl.dataset.endDate);
     const today = new Date();
+
+    const all = document.querySelectorAll('.form-check-input');
+    const checked = document.querySelectorAll('.form-check-input:checked');
+
+    console.log("all:", all.length, "checked:", checked.length);  // ← デバッグ
 
     // 旅行終了日が過ぎていたら常に「済」
     if (today > endDate) {
@@ -68,15 +78,15 @@ function updateStatus() {
     }
 
     // 終了日前 → 未 or 完
-    const all = document.querySelectorAll('.form-check-input');
-    const checked = document.querySelectorAll('.form-check-input:checked');
-
-    setStatus(statusEl, (checked.length === all.length && all.length > 0) ? "完" : "未");
+    const isAllChecked = (checked.length === all.length && all.length > 0);
+    setStatus(statusEl, isAllChecked ? "完" : "未");
 }
 
 
 // ステータス表示の共通処理
 function setStatus(el, status) {
+    console.log("setStatus:", status);  // ← デバッグ
+
     el.textContent = status;
     el.classList.remove("status-mi", "status-kan", "status-zumi");
 
@@ -84,3 +94,10 @@ function setStatus(el, status) {
     if (status === "完") el.classList.add("status-kan");
     if (status === "済") el.classList.add("status-zumi");
 }
+
+
+// ページ読み込み時にも実行
+document.addEventListener("DOMContentLoaded", () => {
+    updateTotalCount();
+    updateStatus();
+});

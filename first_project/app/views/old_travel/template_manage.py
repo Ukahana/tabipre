@@ -18,7 +18,11 @@ def old_template_edit(request, template_id):
     if request.method == "POST":
         delete_cat_id = request.POST.get("delete_category")
         if delete_cat_id:
-            category = get_object_or_404(TravelCategory, id=delete_cat_id)
+            category = get_object_or_404(
+                TravelCategory, 
+                id=delete_cat_id,
+                template=template
+            )
             TravelItem.objects.filter(travel_category=category).delete()
             category.delete()
             return redirect("app:old_template_edit", template_id=template.id)
@@ -158,12 +162,15 @@ def add_item_page(request, template_id):
 # 分類削除（個別）
 # -------------------------------
 def delete_category(request, category_id):
-    category = get_object_or_404(TravelCategory, id=category_id)
+    category = get_object_or_404(
+        TravelCategory,
+        id=category_id,
+        template__user=request.user  
+    )
 
     TravelItem.objects.filter(travel_category=category).delete()
     category.delete()
     return redirect("app:old_template_edit", template_id=category.template.id)
-
 
 # -------------------------------
 # 分類名編集（モーダル）

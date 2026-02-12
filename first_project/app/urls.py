@@ -24,6 +24,7 @@ from app.views.old_travel.template_manage import (
     add_item_page,
     edit_item,
     delete_template,
+    delete_category
 )
 from app.views.old_travel.add import category_item_add
 from app.views.old_travel.old_travel_edit import (
@@ -121,7 +122,7 @@ urlpatterns = [
     path("item/add/<int:template_id>/", add_item_page, name="add_item_page"),
     path("item/edit/<int:item_id>/", edit_item, name="edit_item"),
     path('old_template/<int:template_id>/delete/', delete_template, name='delete_template'),
-
+    path("category/<int:category_id>/delete/", delete_category, name="delete_category"),  
     # ✅ チェック操作（JS と一致）
     path("toggle_item/<int:item_id>/", toggle_item_checked, name="toggle_item"),
 

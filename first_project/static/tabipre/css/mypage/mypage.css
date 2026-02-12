@@ -11,3 +11,19 @@
   background-color: #fdf6f0ff;
 }
 
+
+.app-btn-secondary {
+    text-decoration: none !important;
+    background: #8a8a8a;
+    color: #fff; }
+.app-btn-secondary:hover {
+    background: #6f6f6f;
+    text-decoration: none !important; }
+
+.app-btn-warning {
+    background: #ffab40;
+    color: #fff;
+    text-decoration: none !important; }
+.app-btn-warning:hover {
+    background: #e89a3a;
+    text-decoration: none !important; }

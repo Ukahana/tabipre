@@ -49,7 +49,7 @@ def travel_step2(request):
         form = TravelStep2Form(request.POST)
 
         # -----------------------------
-        # テンプレート作成
+        # 新規テンプレート作成
         # -----------------------------
         if action == "template" and form.is_valid():
 
@@ -79,7 +79,7 @@ def travel_step2(request):
                     defaults={"custom_transport_text": other_text}
                 )
 
-            # ⭐ template_source() 内で作られる Template は is_draft=1 のままでOK
+            # ⭐ template_source 内で get_or_create → テンプレートは1つだけ
             template = template_source(travel, request.user)
 
             del request.session["travel_step1"]
@@ -117,31 +117,35 @@ def travel_step2(request):
                     defaults={"custom_transport_text": tm.custom_transport_text}
                 )
 
-            # ⭐ is_draft=1 を追加
-            new_template = Template.objects.create(
-                user=request.user,
+            # ⭐ テンプレートは1つだけ
+            new_template, created = Template.objects.get_or_create(
                 travel_info=travel,
-                source_type=Template.SourceType.FROM_TEMPLATE,
-                template_source=old_template,
-                is_draft=1,
+                defaults={
+                    "user": request.user,
+                    "source_type": Template.SourceType.FROM_TEMPLATE,
+                    "template_source": old_template,
+                    "is_draft": 1,
+                }
             )
 
-            old_categories = TravelCategory.objects.filter(template=old_template)
+            # ⭐ 初回作成時だけカテゴリ・アイテムをコピー
+            if created:
+                old_categories = TravelCategory.objects.filter(template=old_template)
 
-            for old_cat in old_categories:
-                new_cat = TravelCategory.objects.create(
-                    template=new_template,
-                    category_name=old_cat.category_name,
-                    category_color=old_cat.category_color,
-                    travel_type=old_cat.travel_type,
-                )
-
-                for old_item in old_cat.travelitem_set.all():
-                    TravelItem.objects.create(
-                        travel_category=new_cat,
-                        item_name=old_item.item_name,
-                        item_checked=old_item.item_checked,
+                for old_cat in old_categories:
+                    new_cat = TravelCategory.objects.create(
+                        template=new_template,
+                        category_name=old_cat.category_name,
+                        category_color=old_cat.category_color,
+                        travel_type=old_cat.travel_type,
                     )
+
+                    for old_item in old_cat.travelitem_set.all():
+                        TravelItem.objects.create(
+                            travel_category=new_cat,
+                            item_name=old_item.item_name,
+                            item_checked=old_item.item_checked,
+                        )
 
             del request.session["travel_step1"]
             return redirect("app:old_template_copy", template_id=new_template.id)

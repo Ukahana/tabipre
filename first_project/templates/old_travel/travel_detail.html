@@ -11,13 +11,13 @@
   <form style="display:none;">{% csrf_token %}</form>
 
     <!-- タイトル -->
-    {% include "old_travel/travel_card.html" with card_travel_info=travel_info %}
+    {% include "parts/travel_card.html" with card_travel_info=travel_info %}
 
     <!-- メモ -->
     {% if travel_info.memo %}
         <div class="mb-3">
             <div id="memoArea" class="collapse show">
-                <div class="card card-body">
+                <div class="card card-body text-start">
                     {{ travel_info.memo|linebreaksbr }}
                 </div>
             </div>
@@ -39,7 +39,7 @@
                 <div class="d-flex align-items-center">
                     <strong>{{ category.category_name }}</strong>
 
-                    <span class="badge bg-light text-dark ms-2">
+                    <span class="badge category-badge bg-light text-dark ms-2">
                         {{ category.checked_count }} / {{ category.total_count }}
                     </span>
                 </div>

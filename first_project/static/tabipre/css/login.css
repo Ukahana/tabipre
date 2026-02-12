@@ -3,81 +3,109 @@
     background: #f5ebdd;
     font-family: "Arial","Helvetica","sans-serif";
     color: #5c3a3a;
+    max-height: 100%;
 }
 
 /* ログインボタン */
 .btn-primary {
-    background-color: #3f7fbfff;
+    background-color: #3f7fbf;
     border: none;
     font-size: 1.2rem;
     padding: 10px;
 }
-
 .btn-primary:hover {
     background-color: #336a9f;
 }
 
-
-/* 入力欄を揃える */
+/* 入力欄 */
 form input {
     border: 1px solid #ccc;
     width: 100%;
-    background-color: #ffffff; 
+    background-color: #ffffff;
     box-sizing: border-box;
     transition: border-color 0.25s ease, box-shadow 0.25s ease;
     color: #000;
 }
-
-/* フォーカス時 */
 form input:focus {
-    border-color: #4a90e2; 
+    border-color: #4a90e2;
     box-shadow: 0 0 8px rgba(74, 144, 226, 0.55);
-    border-width: 1.5px;    
+    border-width: 1.5px;
     outline: none;
 }
 
-/* Chrome / Safari の autofill の青背景を消す */
-input:-webkit-autofill {
-    background-color: #fff !important;
-    box-shadow: 0 0 0 1000px #fff inset !important; /* 入力後の背景を白のままに */
-    -webkit-text-fill-color: #000 !important;   
-}
-/* ラベルと入力欄の間隔 */
+/* ラベル */
 form label {
     display: block;
     margin-bottom: 4px;
     font-size: 1.1rem;
 }
 
-
-/* パスワードの注意 */
+/* パスワード条件 */
 .statement {
     color: #999999;
     font-size: 15px;
     margin: 2px 0;
     line-height: 1.2;
 }
+.statement p {
+    line-height: 1.1;
+    margin: 2px 0;
+}
 
+/* リンク */
 .link {
     text-align: center;
     font-size: 15px;
+    margin-bottom: 0; /* ← 下余白を削る */
 }
 .link a {
-    color: #5c3a3a; 
+    color: #5c3a3a;
     text-decoration: underline;
 }
-
 .link a:hover {
     color: #000;
 }
-/* フッダー非表示 */
+
+/* フッター非表示 */
 .bottom-nav {
     display: none !important;
 }
 
-.title {
-    margin-top: 30%;   
+/* エラー */
+.app-error-box {
+    color: #c45a5a;
+    margin-bottom: 10px;
 }
+/* エラーメッセージを1行にする */
+.text-danger {
+    display: block;           /* ブロック化（安定表示） */
+}
+/* ★ 中央寄せ（高さは画面いっぱい） */
+.login-center {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    padding-bottom: 0 !important; /* ← 下の余白を削る */
+}
+
+/* タイトルだけ下げる（高さは変えない） */
+.login-center .sub-title {
+    padding-top: 40px;
+}
+
+/* 画面が小さいときだけスクロールを許可 */
+@media (max-height: 600px) {
+    .login-center {
+        height: auto;
+        min-height: 100vh;
+        justify-content: flex-start;
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+}
+/* パスワード再設定画面のタイトルだけ下げる（余白は増やさない） */
 .pass-reset .sub-title {
-    margin-top: 30%;   
+    padding-top: 20%;   /* ← 好きな数値に調整してOK */
 }

@@ -271,3 +271,10 @@ input[type="text"], button {
 #memoArea .card-body {
     color: #000;
 }
+/* メモが長いときスクロールさせる */
+#memoArea .card-body {
+  max-height: 100px; 
+  overflow-y: auto;    
+  white-space: pre-wrap;
+  text-align: left !important;
+}
