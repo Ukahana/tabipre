@@ -126,6 +126,8 @@ class TravelStep2Form(TravelBaseForm):
         other_text = cleaned.get("transport_other", "").strip()
         location = cleaned.get("location")
         memo = cleaned.get("memo", "")
+        
+        cleaned["memo"] = memo.strip()
 
         # 交通手段が 0 個
         if not transports:

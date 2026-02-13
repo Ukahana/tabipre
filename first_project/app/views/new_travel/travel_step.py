@@ -14,8 +14,13 @@ from ...views.new_travel.template_source import template_source
 # -----------------------------
 @login_required
 def travel_create_step1(request):
-    
-    Template.objects.filter(user=request.user, is_draft=1).delete()
+
+    # 新規旅行作成開始フラグ ON
+    request.session["creating_travel"] = True
+
+    # creating_travel=True のときだけ下書きを削除
+    # ※ is_draft を廃止したので travel_info が紐づいていないテンプレートだけ削除
+    Template.objects.filter(travel_info__isnull=True, user=request.user).delete()
 
     if request.method == "POST":
         form = TravelStep1Form(request.POST)
@@ -32,7 +37,6 @@ def travel_create_step1(request):
         form = TravelStep1Form()
 
     return render(request, "new_travel/travel_step1.html", {"form": form})
-
 
 # -----------------------------
 # Step2：場所・交通手段・メモ
@@ -63,7 +67,7 @@ def travel_step2(request):
                 end_date=end_date,
                 stay_type=step1_data["stay_type"],
                 location=form.cleaned_data["location"],
-                memo=form.cleaned_data["memo"],
+                memo=form.cleaned_data["memo"].strip(),
             )
 
             travel.transport.set(form.cleaned_data["transport_types"])
@@ -79,8 +83,11 @@ def travel_step2(request):
                     defaults={"custom_transport_text": other_text}
                 )
 
-            # ⭐ template_source 内で get_or_create → テンプレートは1つだけ
+            # ⭐ テンプレート作成（1つだけ）
             template = template_source(travel, request.user)
+
+            # 新規作成完了 → フラグ OFF
+            request.session["creating_travel"] = False
 
             del request.session["travel_step1"]
             messages.success(request, "テンプレートを自動作成しました")
@@ -124,7 +131,6 @@ def travel_step2(request):
                     "user": request.user,
                     "source_type": Template.SourceType.FROM_TEMPLATE,
                     "template_source": old_template,
-                    "is_draft": 1,
                 }
             )
 
@@ -146,6 +152,9 @@ def travel_step2(request):
                             item_name=old_item.item_name,
                             item_checked=old_item.item_checked,
                         )
+
+            # コピー完了 → フラグ OFF
+            request.session["creating_travel"] = False
 
             del request.session["travel_step1"]
             return redirect("app:old_template_copy", template_id=new_template.id)

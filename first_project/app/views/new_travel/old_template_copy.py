@@ -9,8 +9,7 @@ def old_template_copy(request, template_id):
         # ★ 保存ボタンが押されたときだけ home へ（最優先で判定）
         if "save_changes" in request.POST:
 
-            # ⭐ 完成扱いにする（下書き → 正式テンプレート）
-            template.is_draft = 0
+
             template.save()
 
             return redirect("app:home")

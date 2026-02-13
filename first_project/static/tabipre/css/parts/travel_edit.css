@@ -284,3 +284,7 @@
 #copyModal .modal-header {
   padding: 6px 0;
 }
+/* 開始日・終了日の input の角丸をなくす */
+.calendar-input-wrapper input {
+    border-radius: 0 !important;
+}

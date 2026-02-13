@@ -28,7 +28,6 @@ def template_source(travel, user):
         defaults={
             "user": user,
             "source_type": Template.SourceType.FROM_TRAVEL,
-            "is_draft": 1,
         }
     )
 

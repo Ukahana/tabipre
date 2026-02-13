@@ -53,7 +53,6 @@
 .app-frame {
     background: #ffffff;
     font-family: "Arial", "Helvetica", "sans-serif";
-    color: #5c3a3a;
 }
 
 .search-area { margin-top: 0; }
@@ -155,7 +154,6 @@ input[type="text"], button {
 }
 
 /* カード */
-.card-body { padding: 4px 25px !important; }
 .card-title { margin: 2px 0; }
 .card-text { margin: 0; font-size: 14px; }
 
@@ -268,13 +266,24 @@ input[type="text"], button {
 }
 
 /* メモ */
-#memoArea .card-body {
-    color: #000;
+/* メモカード全体 */
+/* メモカード全体 */
+.memo-card {
+    border: 1px solid #6c757d;
+    border-radius: 0;
+    margin: 0;
+    padding: 0;
 }
-/* メモが長いときスクロールさせる */
-#memoArea .card-body {
-  max-height: 100px; 
-  overflow-y: auto;    
-  white-space: pre-wrap;
-  text-align: left !important;
+
+/* メモ本文（ここが一番重要） */
+.memo-inner {
+    padding: 8px 12px;      /* ← 自然で綺麗な余白 */
+    margin: 0;
+    white-space: pre-line;
+    text-align: left;
+
+    max-height: 120px;      /* ← 多いときはスクロール */
+    overflow-y: auto;
+
+    line-height: 1.5;       /* ← 読みやすさUP */
 }
