@@ -5,15 +5,16 @@
 
 /* 項目編集モーダル：入力欄（下線だけ残す） */
 #editItemInput {
-    border: none !important;              
-    border-bottom: 2px solid #0097a7 !important; 
+    border: none !important;
+    border-bottom: 2px solid #0097a7 !important;
     border-radius: 0 !important;
-    box-shadow: none !important;          
-    outline: none !important;           
+    box-shadow: none !important;
+    outline: none !important;
 }
+
 /* 項目編集モーダルの × ボタン */
 #editItemModal .clear-btn {
-    font-size: 25px;     /* ← ここが style の移植先 */
+    font-size: 25px;
     color: #999;
     background: none;
     border: none;
@@ -24,4 +25,21 @@
 
 #editItemModal .clear-btn:hover {
     color: #666;
+}
+
+/* 登録ボタン（スマホでも押しやすく） */
+.edit-submit-btn {
+    width: 100%;
+    padding: 12px 0;
+    font-size: 16px;
+    border-radius: 8px;
+}
+
+/* キャンセル（タップ領域を広げて押しやすく） */
+.back-link {
+    display: inline-block;
+    padding: 10px 0;
+    font-size: 15px;
+    color: #595959;
+    text-decoration: underline;
 }

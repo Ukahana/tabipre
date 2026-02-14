@@ -3,8 +3,7 @@
 
 {% block extra_css %}
 {{ block.super }}
-<link rel="stylesheet" href="{% static 'tabipre/css/template_manage.css' %}">
-<link rel="stylesheet" href="{% static 'tabipre/css/parts/edit_item.css' %}">
+<link rel="stylesheet" href="{% static 'tabipre/css/parts/template_manage.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -68,7 +67,7 @@
 
             <li class="list-group-item text-center">
                 <button
-                    class="btn btn-sm add-item-btn"
+                    class="btn btn add-item-btn"
                     data-bs-toggle="modal"
                     data-bs-target="#addItemModal"
                     data-category-id="{{ category.id }}">
@@ -102,7 +101,7 @@
         <!-- テンプレート・旅行情報の削除 -->
         <form method="post" action="{% url 'app:delete_template' current_template.id %}">
             {% csrf_token %}
-            <button type="submit" class="btn">
+            <button type="submit" class="delete-template-btn">
               テンプレート・旅行情報を削除
             </button>
         </form>

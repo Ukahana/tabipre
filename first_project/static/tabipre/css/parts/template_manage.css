@@ -1,69 +1,83 @@
+/* 項目を追加ボタン（カテゴリ内） */
 .add-item-btn {
-    background-color: #9fc5e8;          
+    background-color: #9fc5e8;
     border: 1px solid #595959;
     color: #000;
+    font-size: 14px;
+    width: 50%;
+    padding: 8px 0;
+    margin: 4px auto;
+    border-radius: 8px !important;
+    display: block;
 }
 
 .add-item-btn:hover {
     background-color: #8bb8d8ff;
     border-color: #8bb8d8ff;
 }
-/* ＋分類・項目の追加ボタン */
+
+/* ＋分類・項目の追加ボタン（画面下） */
 .custom-add-btn {
-    background-color: #9fc5e8;    
+    background-color: #9fc5e8;
     color: #000;
     font-size: 16px;
     padding: 10px 0;
     border-radius: 6px;
     border: none;
 }
+
 .custom-add-btn:hover {
-    background-color:  #8bb8d8ff;
+    background-color: #8bb8d8ff;
 }
 
 /* 登録情報を変更するボタン */
 .custom-edit-btn {
-    background-color: #1976d2;   /* 青 */
+    background-color: #1976d2;
     color: #fff;
     font-size: 16px;
     padding: 10px 0;
     border-radius: 6px;
     border: none;
 }
+
 .custom-edit-btn:hover {
-    color: #fff;
     background-color: #1565c0;
+    color: #fff;
 }
 
-/* 新しい追加モーダルーダル */
+/* お気に入りスター */
 .favorite-label {
     font-size: 13px;
     padding-bottom: 2px;
 }
+
 .favorite-star {
-    width: 30px; 
+    width: 30px;
     height: 30px;
     cursor: pointer;
-    margin-top: 0;
 }
-/* 項目の編集 */
+
+/* 編集モーダル */
 .modal-title {
     font-weight: normal;
 }
 
 #editItemInput {
-  border: none;
-  border-bottom: 2px solid #0097a7 !important;
-  border-radius: 0 !important;
-  box-shadow: none;
+    border: none;
+    border-bottom: 2px solid #0097a7 !important;
+    border-radius: 0 !important;
+    box-shadow: none;
 }
-/* 分類・項目の追加モーダル */
+#addItemModal .modal-footer {
+  border-top: none !important;
+}
 /* お気に入りから追加ボタン */
 .favorite-add-btn {
     background-color: #ffe599ff;
     border-color: #ffe599ff;
     color: #000;
 }
+
 .favorite-add-btn:hover {
     background-color: #f7d878;
     border-color: #f7d878;
@@ -82,33 +96,33 @@
     border: 3px solid #333;
 }
 
-.eddit_item_modal .delete-label {
-  white-space: nowrap;
-  display: inline-block;
-  min-width: 40px;
-  text-align: center;
-}
-/* 項目削除ボタン（×） */
+/* 項目削除（×） */
 .delete-x {
     background: none;
     border: none;
-    padding: 0;
-    margin: 0;
-    font-size: 24px;   /* ← 好きな大きさに調整 */
-    color: #555;    /* ← 赤系の色 */
+    font-size: 24px;
+    color: #555;
     cursor: pointer;
     line-height: 1;
 }
 
-/* 分類削除ボタン（×） */
+/* 分類削除（×） */
 .delete-category-btn {
     background: none;
     border: none;
     color: white;
-    font-size: 26px; 
+    font-size: 26px;
     font-weight: bold;
-    padding: 0;
-    margin: 0;
     cursor: pointer;
     line-height: 1;
+}
+
+/* テンプレート削除（リンク風） */
+.delete-template-btn {
+    background: none;
+    border: none;
+    color: #595959;
+    text-decoration: underline;
+    font-size: 14px;
+    cursor: pointer;
 }

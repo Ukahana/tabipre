@@ -4,21 +4,23 @@ window.submitCategoryForm = function(action) {
     const flag = document.getElementById("continueFlag");
 
     if (action === "first") {
-        // ここでは送信しない
+        // まずバリデーションのために送信する（モーダルは開かない）
         flag.value = "0";
-
-        // モーダルを開くだけ
-        const modalEl = document.getElementById("continueModal");
-        const modal = new bootstrap.Modal(modalEl);
-        modal.show();
-        return;  // ← これが超重要
+        form.submit();
+        return;
     }
 
     if (action === "continue") {
-        flag.value = "1";   // はい（保存して続ける）
-    } else if (action === "cancel") {
-        flag.value = "2";   // いいえ（保存して戻る）
+        // はい → 続けて追加（GET遷移）
+        const url = form.getAttribute("action");  // /category_item_add/<id>/
+        window.location.href = url;
+        return;
     }
 
-    form.submit();
+    if (action === "cancel") {
+        // いいえ → 編集画面へ戻る（GET遷移）
+        const editUrl = document.getElementById("continueModal").dataset.editUrl;
+        window.location.href = editUrl;
+        return;
+    }
 };

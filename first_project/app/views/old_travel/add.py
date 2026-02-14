@@ -20,8 +20,7 @@ def category_item_add(request, template_id):
         form = OldCategoryItemForm(request.POST, template=template)
         continue_flag = request.POST.get("continue")
 
-        # ★ form.is_valid() が False → 重複含む全エラー
-        #    → モーダルは出さずにエラー表示
+        # ★ エラー → エラーメッセージ表示、モーダルは出さない
         if not form.is_valid():
             return render(
                 request,
@@ -32,11 +31,11 @@ def category_item_add(request, template_id):
                     "categories": categories,
                     "color_list": color_list,
                     "favorite_items": favorite_items,
-                    "open_continue_modal": False,  # ← モーダルを出さない
+                    "open_continue_modal": False,  # ← エラー時はモーダル出さない
                 }
             )
 
-        # ★ form.is_valid() が True（重複なし）
+        # ★ バリデーション OK
         cd = form.cleaned_data
 
         # 分類を取得 or 作成
@@ -65,17 +64,17 @@ def category_item_add(request, template_id):
         if continue_flag == "2":
             return redirect("app:old_template_edit", template_id)
 
-        # ★ モーダル表示（重複なし）
+        # ★ 成功 → モーダル表示
         return render(
             request,
             "old_travel/add_category_item.html",
             {
-                "form": OldCategoryItemForm(template=template),  # 空フォーム
+                "form": form,
                 "template": template,
                 "categories": categories,
                 "color_list": color_list,
                 "favorite_items": favorite_items,
-                "open_continue_modal": True,  # ← モーダルを出す
+                "open_continue_modal": True,  # ← 成功時だけモーダルを出す
             }
         )
 
