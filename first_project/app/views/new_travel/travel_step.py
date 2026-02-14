@@ -160,8 +160,15 @@ def travel_step2(request):
             return redirect("app:old_template_copy", template_id=new_template.id)
 
     else:
-        form = TravelStep2Form()
-
+        step2_data = request.session.get("travel_step2")
+        if step2_data:
+            form = TravelStep2Form(initial={
+               "location": step2_data.get("location", ""),
+               "transport_types": step2_data.get("transport", []),
+               "memo": step2_data.get("memo", ""),
+            })
+        else:
+            form = TravelStep2Form()
     # -----------------------------
     # Home と同じステータスロジック
     # -----------------------------

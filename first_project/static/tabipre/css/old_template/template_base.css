@@ -10,14 +10,13 @@
     text-decoration: underline;
 }
 
-/* 編集する & 共有リンクへ（常に縦並びで押しやすい） */
+/* 編集する & 共有リンクへ（縦並び） */
 .edit-button {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
     width: 100%;
 }
-
 .edit-button a {
     width: 100%;
     text-align: center;
@@ -25,11 +24,19 @@
     font-size: 1.1rem;
 }
 
-
-/* メモ欄の枠線 */
-#memoArea .card {
-    border-radius: 0 !important;
-    border-color: #6c757d !important;
+/* メモ欄 */
+#memoArea .card,
+.memo-card {
+    border: 1px solid #6c757d;
+    border-radius: 0;
+}
+.memo-inner {
+    padding: 8px 12px;
+    white-space: pre-line;
+    text-align: left;
+    max-height: 120px;
+    overflow-y: auto;
+    line-height: 1.5;
 }
 
 /* メモ表示/非表示ボタン */
@@ -37,7 +44,7 @@
     display: block;
     margin: 8px auto 0;
     padding: 4px 12px;
-    background-color: #ccccccff;
+    background: #ccc;
     color: #fff;
     border: none;
     border-radius: 0;
@@ -45,27 +52,43 @@
     cursor: pointer;
 }
 .memo-toggle-btn:hover {
-    background-color: #bfbfbf;
-    color: #fff;
+    background: #bfbfbf;
 }
 
-/* 全体の背景・フォント */
+/* 全体 */
 .app-frame {
-    background: #ffffff;
-    font-family: "Arial", "Helvetica", "sans-serif";
+    background: #fff;
+    font-family: Arial, Helvetica, sans-serif;
 }
-
 .search-area { margin-top: 0; }
 
-/* ログインボタン（全体用） */
+/* ボタン */
 .btn-primary {
-    background-color: #4a90e2;
+    background: #4a90e2;
     border: none;
     font-size: 1.2rem;
     padding: 10px;
 }
-.btn-primary:hover {
-    background-color: #3f7fbf;
+.btn-primary:hover { background: #3f7fbf; }
+
+.edit-button .btn-primary {
+    background: #0b5394;
+}
+.edit-button .btn-primary:hover {
+    background: #09457a;
+}
+
+/* 共有リンクボタン */
+.edit-button .btn-link {
+    background: #eeff41;
+    color: #000 !important;
+    border: 1.5px solid #595959;
+    padding: 6px 12px;
+    border-radius: 4px;
+    text-decoration: none;
+}
+.edit-button .btn-link:hover {
+    background: #d4e63a;
 }
 
 /* エラー表示 */
@@ -80,21 +103,21 @@ form input {
     border: 1px solid #ccc;
     padding: 8px;
     width: 100%;
-    background-color: #ffffff;
+    background: #fff;
     box-sizing: border-box;
-    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    transition: border-color 0.25s, box-shadow 0.25s;
     color: #000;
 }
 form input:focus {
     border-color: #4a90e2;
-    box-shadow: 0 0 8px rgba(74, 144, 226, 0.55);
+    box-shadow: 0 0 8px rgba(74,144,226,0.55);
     border-width: 1.5px;
     outline: none;
 }
 
-/* Chrome/Safari autofill対策 */
+/* Chrome/Safari autofill */
 input:-webkit-autofill {
-    background-color: #fff !important;
+    background: #fff !important;
     box-shadow: 0 0 0 1000px #fff inset !important;
     -webkit-text-fill-color: #000 !important;
 }
@@ -107,23 +130,15 @@ form label {
 }
 
 /* パスワード注意書き */
-.statement {
-    color: #999;
-    font-size: 15px;
-}
+.statement { color: #999; font-size: 15px; }
 
 /* リンク */
-.link {
-    text-align: center;
-    font-size: 15px;
-}
+.link { text-align: center; font-size: 15px; }
 .link a {
     color: #5c3a3a;
     text-decoration: underline;
 }
-.link a:hover {
-    color: #000;
-}
+.link a:hover { color: #000; }
 
 /* 検索フォーム */
 .search-input {
@@ -132,11 +147,9 @@ form label {
     padding: 4px 8px;
     border: 1px solid #ccc;
 }
-
-/* 検索ボタン */
 .search-btn {
     font-size: 16px;
-    background-color: #4a90e2;
+    background: #4a90e2;
     color: #fff;
     height: 35px;
     width: 50px;
@@ -145,36 +158,29 @@ form label {
     border: 1px solid #595959;
 }
 .search-btn:hover {
-    background-color: #3f7fbf;
+    background: #3f7fbf;
     border-color: #3f7fbf;
 }
 
-input[type="text"], button {
-    border-radius: 0;
-}
+input[type="text"], button { border-radius: 0; }
 
 /* カード */
 .card-title { margin: 2px 0; }
 .card-text { margin: 0; font-size: 14px; }
 
 /* 並び替えボタン */
-.sort-btn-wrapper {
-    display: flex;
-    justify-content: flex-end;
-}
+.sort-btn-wrapper { display: flex; justify-content: flex-end; }
 .sort-btn {
     padding: 4px 10px;
     font-size: 16px;
     color: #6c757d;
 }
-.sort-btn:hover {
-    color: #5a6268;
-}
+.sort-btn:hover { color: #5a6268; }
 
 /* タグ */
 .tag-badge {
     display: inline-block;
-    background-color: #eee;
+    background: #eee;
     color: #000;
     padding: 2px 8px;
     border-radius: 5px;
@@ -184,14 +190,10 @@ input[type="text"], button {
     border: 1px solid #ccc;
     text-decoration: none;
 }
-.tag-badge:hover {
-    background-color: #e0e0e0;
-    color: #000;
-}
+.tag-badge:hover { background: #e0e0e0; }
 
-/* タグ選択状態 */
 .tag-badge.selected {
-    background-color: #fff;
+    background: #fff;
     color: #4a90e2;
     border-color: #4a90e2;
     position: relative;
@@ -214,18 +216,14 @@ input[type="text"], button {
     align-items: center;
     gap: 24px;
 }
-
-/* ページリンク */
 .page-link {
-    background-color: #eee !important;
+    background: #eee !important;
     color: #000;
     border: 1px solid #000 !important;
     padding: 6px 16px;
     border-radius: 8px;
     font-size: 16px;
 }
-
-/* 現在ページ */
 .page-item span.page-link {
     background: #fff !important;
     color: #000 !important;
@@ -238,52 +236,4 @@ input[type="text"], button {
 .sort-modal-body {
     text-align: center;
     color: #000;
-}
-
-/* 編集ボタン（個別） */
-.edit-button .btn-primary {
-    background-color: #0b5394ff;
-    color: white;
-}
-.edit-button .btn-primary:hover {
-    background-color: #09457aff;
-    color: white;
-}
-
-/* 共有リンクボタン */
-.edit-button .btn-link {
-    background-color: #eeff41ff;
-    color: #000 !important;
-    border: 1.5px solid #595959;
-    padding: 6px 12px;
-    border-radius: 4px;
-    text-decoration: none;
-}
-.edit-button .btn-link:hover {
-    background-color: #d4e63aff;
-    border-color: #595959;
-    color: #000 !important;
-}
-
-/* メモ */
-/* メモカード全体 */
-/* メモカード全体 */
-.memo-card {
-    border: 1px solid #6c757d;
-    border-radius: 0;
-    margin: 0;
-    padding: 0;
-}
-
-/* メモ本文（ここが一番重要） */
-.memo-inner {
-    padding: 8px 12px;      /* ← 自然で綺麗な余白 */
-    margin: 0;
-    white-space: pre-line;
-    text-align: left;
-
-    max-height: 120px;      /* ← 多いときはスクロール */
-    overflow-y: auto;
-
-    line-height: 1.5;       /* ← 読みやすさUP */
 }

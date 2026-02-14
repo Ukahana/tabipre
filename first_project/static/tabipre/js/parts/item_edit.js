@@ -4,10 +4,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const modal = new bootstrap.Modal(modalEl);
 
-    // ① 通常の「編集ボタンを押して開く」処理
+    // ① 編集ボタンを押してモーダルを開く
     modalEl.addEventListener("show.bs.modal", function (event) {
         const button = event.relatedTarget;
-        if (!button) return;  // ★ エラー時は relatedTarget が null
+        if (!button) return;
 
         const itemId = button.dataset.itemId;
         const itemName = button.dataset.itemName;
@@ -15,8 +15,6 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("editItemId").value = itemId;
         document.getElementById("editItemInput").value = itemName;
 
-        const form = document.getElementById("editItemForm");
-        form.action = `/item/edit/${itemId}/`;
     });
 
     // ② モーダルが開いたら入力欄にフォーカス
@@ -27,18 +25,13 @@ document.addEventListener("DOMContentLoaded", function () {
         input.setSelectionRange(len, len);
     });
 
-    // ③ ★ エラー時に自動でモーダルを開く（＋値セット）
+    // ③ エラー時に自動でモーダルを開く
     if (modalEl.dataset.open === "1") {
-        const itemId = modalEl.dataset.itemId;  // ← Django から渡す
+        const itemId = modalEl.dataset.itemId;
         const itemName = modalEl.dataset.itemName;
 
-        // 値をセット
         document.getElementById("editItemId").value = itemId;
         document.getElementById("editItemInput").value = itemName;
-
-        // form.action をセット
-        const form = document.getElementById("editItemForm");
-        form.action = `/item/edit/${itemId}/`;
 
         modal.show();
     }

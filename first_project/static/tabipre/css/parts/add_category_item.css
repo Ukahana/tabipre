@@ -147,32 +147,43 @@
     flex-grow: 1;
 }
 
-/* add_category_item.css に追加 */
+/* continueModal ボタン共通 */
+/* continueModal ボタン共通 */
 #continueModal .modal-yes,
 #continueModal .modal-no {
-  all: unset;              /* ← Bootstrap のスタイルを全部リセット */
+  all: unset;               /* Bootstrapリセット */
   display: inline-block;
   text-align: center;
   cursor: pointer;
-
-  width: 120px;
-  padding: 14px 0;
-  font-size: 1.1rem;
+  padding: 10px 20px;            /* ← このサイズも維持 */
+  font-size: 16px;        /* ← この文字サイズも維持 */
   border-radius: 0;
   border: 1px solid #595959;
 }
 
+/* はい（緑） */
 #continueModal .modal-yes {
   background-color: #6aa84f;
   color: #fff;
+  border: none;
 }
 
+/* いいえ（薄グレー） */
 #continueModal .modal-no {
   background-color: #eee;
   color: #000;
+  border: #595959;
 }
 
+/* ホバー */
 #continueModal .modal-yes:hover,
 #continueModal .modal-no:hover {
   opacity: 0.9;
+}
+
+/* ボタン間の余白 */
+#continueModal .modal-body .d-flex {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
 }

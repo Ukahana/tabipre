@@ -3,21 +3,21 @@
     <div class="modal-content">
 
       <div class="modal-body text-center">
-        <p>処理を続けますか？</p>
+        <p>追加を続けますか？</p>
 
         <div class="d-flex gap-4 justify-content-center mt-3">
 
           {% if template %}
           <!-- はい -->
           <button type="button"
-                  class="yes-btn"
+                  class="modal-yes"
                   onclick="window.location.href='{% url 'app:add_category_item' template.id %}'">
               はい
           </button>
 
           <!-- いいえ -->
           <button type="button"
-                  class="no-btn"
+                  class="modal-no"
                   onclick="window.location.href='{% url 'app:template_edit2' template.id %}'">
               いいえ
           </button>

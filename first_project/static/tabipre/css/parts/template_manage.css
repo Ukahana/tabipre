@@ -121,8 +121,24 @@
 .delete-template-btn {
     background: none;
     border: none;
-    color: #595959;
+    color: #000;
     text-decoration: underline;
     font-size: 14px;
     cursor: pointer;
+}
+
+#deleteTemplateModal .btn-no {
+    background-color: #e0e0e0;   /* 好きな色に変更 */
+    color: #333;
+    border: 1px solid #595959;
+}
+
+
+.btn-no,
+.btn-danger {
+    padding: 10px 20px;     /* ボタンを大きく */
+    font-size: 16px;      /* 文字を少し大きく */
+}
+.modal-footer {
+    gap: 20px;
 }

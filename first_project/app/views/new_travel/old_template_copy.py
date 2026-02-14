@@ -6,14 +6,6 @@ def old_template_copy(request, template_id):
 
     if request.method == "POST":
 
-        # ★ 保存ボタンが押されたときだけ home へ（最優先で判定）
-        if "save_changes" in request.POST:
-
-
-            template.save()
-
-            return redirect("app:home")
-
         # --- メモ更新 ---
         new_memo = request.POST.get("memo")
         if new_memo is not None:
@@ -25,13 +17,13 @@ def old_template_copy(request, template_id):
         if delete_cat_id and delete_cat_id.isdigit():
             TravelItem.objects.filter(travel_category_id=delete_cat_id).delete()
             TravelCategory.objects.filter(id=delete_cat_id).delete()
-            return redirect("app:old_template_copy", template_id=template.id)
+            return redirect(request.path)
 
         # --- 項目削除 ---
         delete_id = request.POST.get("delete_item")
         if delete_id and delete_id.isdigit():
             TravelItem.objects.filter(id=delete_id).delete()
-            return redirect("app:old_template_copy", template_id=template.id)
+            return redirect(request.path)
 
         # --- 名前編集 ---
         edit_item_id = request.POST.get("edit_item_id")
@@ -41,7 +33,7 @@ def old_template_copy(request, template_id):
             if new_name:
                 item.item_name = new_name
                 item.save()
-            return redirect("app:old_template_copy", template_id=template.id)
+            return redirect(request.path)
 
         # --- チェック更新 ---
         for item in TravelItem.objects.filter(travel_category__template=template):
@@ -49,8 +41,12 @@ def old_template_copy(request, template_id):
             item.item_checked = 1 if checked else 0
             item.save()
 
-        # ★ その他の POST は同じ画面へ戻る
-        return redirect("app:old_template_copy", template_id=template.id)
+        # ★ 保存ボタン → home（最後に判定）
+        if "save_changes" in request.POST:
+            return redirect("app:home")
+
+        # その他の POST は同じ画面へ
+        return redirect(request.path)
 
     # GET
     categories = TravelCategory.objects.filter(template=template)

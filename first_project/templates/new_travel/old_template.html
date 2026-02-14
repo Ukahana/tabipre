@@ -10,51 +10,56 @@
 {% block content %}
 <div class="container mt-2">
 
-    <h2 class="mb-3 text-center">{{ template.travel_info.travel_title }}</h2>
+    <!-- タイトル -->
+    <h2 class="mb-1 text-center">{{ template.travel_info.travel_title }}</h2>
+    <p class="text-center text-secondary small">テンプレート編集モード</p>
 
-    <div class="mb-3">
-        <div id="memoArea" class="collapse show">
-            <textarea name="memo" class="form-control" rows="4">{{ template.memo }}</textarea>
-        </div>
-
-        <div class="text-center mt-2">
-            <button class="memo-toggle-btn"
-                    data-bs-toggle="collapse"
-                    data-bs-target="#memoArea">
-                メモを非表示
-            </button>
-        </div>
-    </div>
-
+    <!-- ★★★ フォーム開始（メモも含める） -->
     <form method="POST">
         {% csrf_token %}
 
+        <!-- メモ欄 -->
+        <div class="mb-3">
+
+            <!-- ラベルは collapse の外に置く -->
+            <label class="form-label fw-bold">メモ（編集可）</label>
+
+            <div id="memoArea" class="collapse show">
+                <textarea name="memo" class="form-control" rows="4">{{ template.travel_info.memo }}</textarea>
+            </div>
+
+            <div class="text-center mt-2">
+                <button id="memoToggleBtn"
+                        type="button"
+                        class="memo-toggle-btn"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#memoArea">
+                    メモを非表示
+                </button>
+            </div>
+        </div>
+
+        <!-- ★ カテゴリ一覧 -->
         {% for cat in categories %}
         <div class="card mb-3 shadow-sm">
 
-            <!-- ★ 分類ヘッダー -->
+            <!-- 分類ヘッダー -->
             <div class="card-header d-flex justify-content-between align-items-center"
                  style="background-color: {{ cat.get_category_color_display }}; color: white;">
 
-                <!-- 左側：分類名 + 項目数 + プルダウン -->
                 <div class="d-flex align-items-center">
-
-                    <!-- 分類名 -->
                     <strong>{{ cat.category_name }}</strong>
 
-                    <!-- 項目数（チェック済み / 総数） -->
                     <span class="badge bg-light text-dark ms-2">
                         {{ cat.checked_count }} / {{ cat.total_count }}
                     </span>
 
-                    <!-- プルダウン -->
                     <button type="button"
                             class="btn-transparent ms-2"
                             data-bs-toggle="collapse"
                             data-bs-target="#cat{{ cat.id }}">
                         ▼
                     </button>
-
                 </div>
 
                 <!-- 分類削除 -->
@@ -64,10 +69,9 @@
                         class="btn-transparent btn-category-delete">
                     ×
                 </button>
-
             </div>
 
-            <!-- ★ 項目リスト -->
+            <!-- 項目リスト -->
             <ul id="cat{{ cat.id }}" class="list-group collapse show">
 
                 {% for item in cat.travelitem_set.all %}
@@ -82,17 +86,15 @@
                     </div>
 
                     <div class="d-flex gap-1">
-
                         <!-- 編集モーダル -->
                         <button type="button"
                                 class="edit-btn"
-                                data-id="{{ item.id }}"
-                                data-name="{{ item.item_name }}"
+                                data-item-id="{{ item.id }}"
+                                data-item-name="{{ item.item_name }}"
                                 data-bs-toggle="modal"
                                 data-bs-target="#editItemModal">
                             <img src="{% static 'tabipre/icons/edit.png' %}" alt="編集" style="width:16px; height:16px;">
                         </button>
-
                     </div>
                 </li>
                 {% endfor %}
@@ -102,17 +104,15 @@
         </div>
         {% endfor %}
 
+        <!-- 保存ボタン -->
         <div class="text-center mt-4">
             <button type="submit" name="save_changes" class="btn btn-success btn-lg w-100">
-            保存
+                編集内容を保存
             </button>
         </div>
 
-        <div class="text-center mt-2">
-            <a href="{% url 'app:home' %}" class="text-muted">キャンセル</a>
-        </div>
-
     </form>
+    <!-- ★★★ フォーム終了 -->
 
 </div>
 
