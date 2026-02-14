@@ -3,51 +3,41 @@ document.addEventListener("DOMContentLoaded", function () {
     const dateInput = document.getElementById("id_expiration_date");
 
     const fp = flatpickr(dateInput, {
-        dateFormat: "Y.m.d",
+        dateFormat: "Y-m-d",          // Django に送る形式
         altInput: true,
-        altFormat: "Y/m/d",
+        altFormat: "Y/m/d",           // 表示用
+        altInputClass: "flatpickr-alt-input",
         allowInput: true,
         locale: "ja",
         clickOpens: false,
-
-        parseDate: (value, format) => {
-            if (!value) return null;
-
-            const nums = value.replace(/[^\d]/g, "");
-            const currentYear = new Date().getFullYear();
-
-            if (nums.length === 2) {
-                return new Date(currentYear, nums[0] - 1, nums[1]);
-            }
-            if (nums.length === 4) {
-                return new Date(currentYear, nums.slice(0, 2) - 1, nums.slice(2, 4));
-            }
-            if (nums.length === 6) {
-                return new Date(nums.slice(0, 4), nums.slice(4, 6) - 1, nums.slice(6, 8));
-            }
-            if (nums.length === 8) {
-                return new Date(nums.slice(0, 4), nums.slice(4, 6) - 1, nums.slice(6, 8));
-            }
-
-            return null;
-        }
     });
 
     const altInput = fp.altInput;
 
+    // ★ 手入力 → 本体 input を確実に同期
     altInput.addEventListener("blur", function () {
         const raw = altInput.value.trim();
+
         if (!raw) {
             dateInput.value = "";
             return;
         }
+
+        // flatpickr 標準パーサーに任せる
         fp.setDate(raw, true);
+
+        // 本体 input を YYYY-MM-DD で更新
+        if (fp.selectedDates.length > 0) {
+            dateInput.value = fp.formatDate(fp.selectedDates[0], "Y-m-d");
+        }
     });
 
+    // カレンダーボタン
     document.querySelectorAll(".calendar-btn").forEach(btn => {
         btn.addEventListener("click", () => fp.open());
     });
 
+    // expiration_type による表示切り替え
     function updateExpiration() {
         const selected = document.querySelector('input[name="expiration_type"]:checked');
         if (!selected) return;
@@ -65,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     updateExpiration();
 
-    // ★ モーダルを開く処理（SHOW_MODAL がテンプレートから渡される）
+    // モーダル
     if (window.SHOW_MODAL === true) {
         const modalEl = document.getElementById("linkModal");
         if (modalEl) {

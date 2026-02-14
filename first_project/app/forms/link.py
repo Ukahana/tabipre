@@ -16,7 +16,7 @@ class LinkForm(forms.ModelForm):
                 attrs={
                     "type": "text",
                     "autocomplete": "off",
-                    "placeholder": "例: 2026.2.1 または 2/5",
+                    "placeholder": "例: 2026-3-1 , 2026/3/1 , 2026.3.1",
                 }
             ),
         }
@@ -25,7 +25,7 @@ class LinkForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields["expiration_date"].required = False
 
-    # 手入力パース
+    # ▼ 年あり形式のみ許可
     def clean_expiration_date(self):
         value = self.cleaned_data.get("expiration_date")
         if not value:
@@ -35,29 +35,32 @@ class LinkForm(forms.ModelForm):
             return value
 
         normalized = (
-            str(value).strip()
+            str(value)
+            .strip()
             .replace(" ", "")
             .replace("/", "-")
             .replace(".", "-")
         )
+
         parts = normalized.split("-")
 
         try:
-            if len(parts) == 3:
-                year, month, day = parts
-            elif len(parts) == 2:
-                year = timezone.now().year
-                month, day = parts
-            else:
+            # ★ 年なし（2/1 など）は不許可
+            if len(parts) != 3:
                 raise ValueError
+
+            year, month, day = parts
+
+            month = month.zfill(2)
+            day = day.zfill(2)
 
             parsed = date(int(year), int(month), int(day))
             return parsed
 
         except Exception:
-            raise ValidationError("正しい日付を入力してください（例: 2/5）")
+            raise ValidationError("正しい日付を入力してください（例: 2026-3-1）")
 
-    # expiration_type=2 のときだけ日付チェック
+    # ▼ expiration_type=2 のときだけ日付必須
     def clean(self):
         cleaned = super().clean()
         exp_type = cleaned.get("expiration_type")
@@ -69,7 +72,6 @@ class LinkForm(forms.ModelForm):
             elif exp_date < timezone.now().date():
                 self.add_error("expiration_date", "過去の日付は指定できません。")
         else:
-            # ★ 0・1 のときは日付エラーを消す
             if "expiration_date" in self._errors:
                 del self._errors["expiration_date"]
 
