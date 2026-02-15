@@ -62,7 +62,9 @@ def old_template_edit(request, template_id):
         "card_travel_info": template.travel_info,
        "open_edit_modal": request.session.pop("open_edit_modal", None),
        "edit_item_name": request.session.pop("edit_item_name", ""), 
-
+       "add_item_error": request.session.pop("add_item_error", False),  
+       "old_value": request.session.pop("old_value", ""),
+       "error_category_id": request.session.pop("error_category_id", None),
     }
 
     return render(request, "old_travel/template_manage.html", context)
@@ -116,47 +118,60 @@ def edit_item(request, item_id):
 # 項目追加（モーダル）
 # -------------------------------
 def add_item_page(request, template_id):
+    template = get_object_or_404(Template, id=template_id)
+
     if request.method == "POST":
         category_id = request.POST.get("category_id")
-        category = get_object_or_404(TravelCategory, pk=category_id)
-
         name = request.POST.get("item_name", "").strip()
         add_favorite = request.POST.get("favorite") == "1"
 
-        # ① 空白チェック
+        # ★ category_id が空でも落ちないようにする
+        try:
+            category = TravelCategory.objects.get(pk=category_id, template=template)
+        except (TravelCategory.DoesNotExist, ValueError, TypeError):
+            messages.error(request, "項目を追加できませんでした。もう一度お試しください。")
+            request.session["add_item_error"] = True
+            request.session["old_value"] = name
+            request.session["error_category_id"] = category_id
+            return redirect("app:old_template_edit", template_id=template_id)
+
+        # --- バリデーション ---
         if not name:
             messages.error(request, "項目名を入力してください。")
+            request.session["add_item_error"] = True
+            request.session["old_value"] = name
+            request.session["error_category_id"] = category_id
             return redirect("app:old_template_edit", template_id=template_id)
 
-        # ② 文字数チェック
         if len(name) > 50:
             messages.error(request, "項目名は50文字以内で入力してください。")
+            request.session["add_item_error"] = True
+            request.session["old_value"] = name
+            request.session["error_category_id"] = category_id
             return redirect("app:old_template_edit", template_id=template_id)
 
-        # ③ 重複チェック
+        # ★★★ 分類内で重複チェック ★★★
         if TravelItem.objects.filter(travel_category=category, item_name=name).exists():
-            messages.error(request, "同じ名前の項目がすでに存在します。")
+            messages.error(request, "同じ分類内に同じ名前の項目があります。")
+            request.session["add_item_error"] = True
+            request.session["old_value"] = name
+            request.session["error_category_id"] = category_id
             return redirect("app:old_template_edit", template_id=template_id)
 
-        # ④ 登録処理
+        # --- 正常登録 ---
         TravelItem.objects.create(
             travel_category=category,
             item_name=name,
             item_checked=0
         )
 
-        # ⑤ お気に入り登録
         if add_favorite:
             favorite, _ = Favorite.objects.get_or_create(user=request.user)
-            FavoriteItem.objects.get_or_create(
-                favorite=favorite,
-                item_name=name
-            )
+            FavoriteItem.objects.get_or_create(favorite=favorite, item_name=name)
 
         return redirect("app:old_template_edit", template_id=template_id)
 
     return redirect("app:old_template_edit", template_id=template_id)
-
 
 # -------------------------------
 # 分類削除（個別）

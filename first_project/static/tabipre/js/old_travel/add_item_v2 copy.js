@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    // ★★★ お気に入りスターの ON/OFF ★★★
+    //  星アイコン（お気に入り）
     const star = document.getElementById("favoriteStar");
     const favValue = document.getElementById("favoriteValue");
 
@@ -12,6 +12,27 @@ document.addEventListener("DOMContentLoaded", () => {
             const isOn = favValue.value === "1";
             star.src = isOn ? star.dataset.off : star.dataset.on;
             favValue.value = isOn ? "0" : "1";
+        });
+    }
+
+    //  continueModal が存在するなら自動で開く
+    const modalEl = document.getElementById("continueModal");
+    if (modalEl && modalEl.dataset.auto === "true") {
+        const modal = new bootstrap.Modal(modalEl);
+        modal.show();
+    }
+
+    //  カラーパレット
+    const colorOptions = document.querySelectorAll(".color-option");
+    const selectedColor = document.getElementById("selectedColor");
+
+    if (selectedColor && colorOptions.length > 0) {
+        colorOptions.forEach(option => {
+            option.addEventListener("click", () => {
+                selectedColor.value = option.dataset.value;
+                colorOptions.forEach(o => o.classList.remove("selected"));
+                option.classList.add("selected");
+            });
         });
     }
 

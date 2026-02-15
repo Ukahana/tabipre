@@ -12,6 +12,13 @@
   color: #595959;
   justify-content: center;
 }
+/* 全体 */
+.app-frame {
+    background: #fff;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.search-area { margin-top: 0; }
+
 /* 画面が小さいときはスクロールを許可する */
 @media (max-height: 600px) {
   .app-frame {
