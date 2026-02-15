@@ -7,24 +7,31 @@
 {% endblock %}
 
 {% block content %}
-<div class="container mt-4">
+<div class="container mt-5">
 
-    <h2 class="mb-4 sub-title">アカウント名変更</h2>
+    <div class="mb-4 sub-title">アカウント名変更</div>
 
     <form method="post" novalidate>
         {% csrf_token %}
 
         <!-- 名前 -->
-        <div class="mb-3">
+        <div class="mb-4">
             <label for="user_name" class="form-label">名前 / ニックネーム</label>
+
             <input
                 type="text"
                 id="user_name"
                 name="user_name"
-                class="form-control"
-                value="{{ user.user_name }}"
+                class="form-control {% if error_message %}is-invalid{% endif %}"
+                value="{{ current_name }}"
                 required
             >
+
+            {% if error_message %}
+                <div class="invalid-feedback">
+                    {{ error_message }}
+                </div>
+            {% endif %}
         </div>
 
         <div class="d-grid gap-2 mb-4">

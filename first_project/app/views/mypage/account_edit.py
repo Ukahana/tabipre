@@ -3,71 +3,106 @@ from django.utils.decorators import method_decorator
 from django.views import View
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.core.exceptions import ValidationError
+
+from ...forms.auth import (
+    validate_user_name_common,
+    validate_email_common,
+    validate_email_not_used,
+)
+
+
 
 @method_decorator(login_required, name='dispatch')
 class AccountEditView(View):
     template_name = 'mypage/name_change.html'
 
     def get(self, request):
-        return render(request, self.template_name)
+        return render(request, self.template_name, {
+            "current_name": request.user.user_name,
+            "error_message": None,
+        })
 
     def post(self, request):
         user = request.user
+        new_name = request.POST.get("user_name", "").strip()
 
-        # 入力値を取得
-        new_name = request.POST.get("user_name")
+        # --- バリデーション ---
+        try:
+            validate_user_name_common(new_name)
+        except ValidationError as e:
+            return render(request, self.template_name, {
+                "current_name": new_name,
+                "error_message": e.message,
+            })
 
-        # 名前が空の場合
-        if not new_name:
-            messages.error(request, "名前 / ニックネームを入力してください。")
-            return render(request, self.template_name)
+        if new_name == user.user_name:
+            return render(request, self.template_name, {
+                "current_name": new_name,
+                "error_message": "現在の名前と同じです。変更がありません。",
+            })
 
-        # 更新処理
+        # --- 更新処理 ---
         user.user_name = new_name
         user.save()
 
         messages.success(request, "アカウント名を変更しました。")
         return redirect('app:mypage')
 
-    
-    
 @method_decorator(login_required, name='dispatch')
 class EmailChangeView(View):
     template_name = 'mypage/email_change.html'
 
     def get(self, request):
-        return render(request, self.template_name)
+        return render(request, self.template_name, {
+            "current_email": request.user.email,
+            "error_current": None,
+            "error_new": None,
+        })
 
     def post(self, request):
         user = request.user
-        
-        current_email = request.POST.get("current_email")
-        new_email = request.POST.get("new_email")
 
-        # 現在のメール確認
-        if current_email != user.email:
-            messages.error(request, "現在のメールアドレスが正しくありません。")
-            return render(request, self.template_name)
+        current = request.POST.get("current_email", "").strip().lower()
+        new = request.POST.get("new_email", "").strip().lower()
 
-        # 新しいメール必須
-        if not new_email:
-            messages.error(request, "新しいメールアドレスを入力してください。")
-            return render(request, self.template_name)
+        error_current = None
+        error_new = None
 
-        # 同じメールアドレスなら更新不要
-        if new_email == user.email:
-            messages.info(request, "現在のメールアドレスと同じです。変更はありません。")
-            return redirect('app:account_email')
+        # --- 現在のメールチェック ---
+        try:
+            validate_email_common(current)
+        except ValidationError as e:
+            error_current = e.message
 
-        # 重複チェック
-        from app.models import User
-        if User.objects.filter(email=new_email).exists():
-            messages.error(request, "このメールアドレスは既に使用されています。")
-            return render(request, self.template_name)
-        
-        # 更新
-        user.email = new_email
+        if current != user.email:
+            error_current = "現在のメールアドレスが正しくありません。"
+
+        # --- 新しいメールチェック ---
+        try:
+            validate_email_common(new)
+        except ValidationError as e:
+            error_new = e.message
+
+        if new == user.email:
+            error_new = "現在のメールアドレスと同じです。変更はありません。"
+
+        try:
+            validate_email_not_used(new, user=user)
+        except ValidationError as e:
+            error_new = e.message
+
+        # --- エラーがあれば戻す ---
+        if error_current or error_new:
+            return render(request, self.template_name, {
+                "current_email": current,
+                "error_current": error_current,
+                "error_new": error_new,
+            })
+
+        # --- 更新処理 ---
+        user.email = new
         user.save()
-      
+
         messages.success(request, "メールアドレスを更新しました。")
-        return redirect('app:mypage')
+        return redirect("app:mypage")

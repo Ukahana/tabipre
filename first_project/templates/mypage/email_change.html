@@ -14,26 +14,44 @@
     <form method="post" novalidate>
         {% csrf_token %}
 
+        <!-- 現在のメール -->
         <div class="mb-3">
-            <label for="current_email" class="form-label">現在のメールアドレス</label>
+            <label class="form-label">現在のメールアドレス</label>
+
             <input
                 type="email"
-                id="current_email"
                 name="current_email"
-                class="form-control"
+                class="form-control {% if error_current %}is-invalid{% endif %}"
+                value="{{ current_email }}"
+                oninput="this.value = this.value.toLowerCase();"
                 required
             >
+
+            {% if error_current %}
+                <div class="invalid-feedback">
+                    {{ error_current }}
+                </div>
+            {% endif %}
         </div>
 
+        <!-- 新しいメール -->
         <div class="mb-3">
-            <label for="new_email" class="form-label">新しいメールアドレス</label>
+            <label class="form-label">新しいメールアドレス</label>
+
             <input
                 type="email"
-                id="new_email"
                 name="new_email"
-                class="form-control"
+                class="form-control {% if error_new %}is-invalid{% endif %}"
+                value="{{ new_email }}"
+                oninput="this.value = this.value.toLowerCase();"
                 required
             >
+
+            {% if error_new %}
+                <div class="invalid-feedback">
+                    {{ error_new }}
+                </div>
+            {% endif %}
         </div>
 
         <div class="d-grid gap-2 mb-4">

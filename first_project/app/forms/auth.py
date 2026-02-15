@@ -8,7 +8,46 @@ import re
 
 UserModel = get_user_model()
 
+# ============================
+#  共通ユーザー名バリデーション
+# ============================
+def validate_user_name_common(name):
+    name = name.strip()
 
+    if not name:
+        raise ValidationError("名前を入力してください。")
+
+    if len(name) < 2:
+        raise ValidationError("ユーザー名は2文字以上で入力してください。")
+
+    # 絵文字OK。ただし「絵文字だけの名前」はNG
+    if not re.search(r"[A-Za-z0-9ぁ-んァ-ヶ一-龠々]", name):
+        raise ValidationError("日本語・英字・数字を1文字以上含めてください。")
+
+    return name
+
+def validate_email_common(email):
+    email = email.strip().lower()
+
+    if not email:
+        raise ValidationError("メールアドレスを入力してください。")
+
+    # 形式チェック（Django の EmailField に任せてもOK）
+    if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
+        raise ValidationError("正しいメールアドレスを入力してください。")
+
+    return email
+
+def validate_email_not_used(email, user=None):
+    """
+    user が指定されている場合は「自分以外が使っているか」をチェック
+    """
+    qs = User.objects.filter(email=email)
+    if user:
+        qs = qs.exclude(pk=user.pk)
+
+    if qs.exists():
+        raise ValidationError("このメールアドレスは既に使用されています。")
 # ============================
 #  登録フォーム
 # ============================
@@ -39,21 +78,10 @@ class RegistForm(forms.ModelForm):
             }),
         }
 
-    # --- ユーザー名チェック ---
+    # --- ユーザー名チェック（共通関数を使用） ---
     def clean_user_name(self):
-        name = self.cleaned_data.get("user_name", "").strip()
-
-        if not name:
-            raise ValidationError("名前を入力してください。")
-
-        if len(name) < 2:
-            raise ValidationError("ユーザー名は2文字以上で入力してください。")
-
-        # 絵文字OK。ただし「絵文字だけの名前」はNG
-        if not re.search(r"[A-Za-z0-9ぁ-んァ-ヶ一-龠々]", name):
-            raise ValidationError("日本語・英字・数字を1文字以上含めてください。")
-
-        return name
+        name = self.cleaned_data.get("user_name", "")
+        return validate_user_name_common(name)
 
     # --- メールアドレス正規化 + 重複チェック ---
     def clean_email(self):
@@ -69,10 +97,7 @@ class RegistForm(forms.ModelForm):
         return email
 
     # --- パスワードチェック ---
-    # 独自ルールは複数行でOK（あなたの希望どおり）
-    # Django標準バリデーションだけ1行にまとめる
     def validate_password_rules(self, pw):
-        # 独自ルール（複数行OK）
         if len(pw) < 10:
             self.add_error('password', "10文字以上必要です。")
         if not any(c.isdigit() for c in pw):
@@ -82,7 +107,6 @@ class RegistForm(forms.ModelForm):
         if not any(c.isupper() for c in pw):
             self.add_error('password', "大文字を入れてください。")
 
-        # Django標準バリデーション（1行にまとめる）
         try:
             validate_password(pw)
         except ValidationError as e:
@@ -102,7 +126,6 @@ class RegistForm(forms.ModelForm):
 
         return cleaned
 
-    # --- 保存処理 ---
     def save(self, commit=True):
         user = super().save(commit=False)
         user.set_password(self.cleaned_data['password'])
@@ -140,7 +163,7 @@ class UserLoginForm(forms.Form):
 
 
 # ============================
-#  パスワード再設定フォーム（カスタム）
+#  パスワード再設定フォーム
 # ============================
 class CustomPasswordResetForm(PasswordResetForm):
 
