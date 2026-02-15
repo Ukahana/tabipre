@@ -5,6 +5,8 @@ from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth import get_user_model
 from ..models import User
 import re
+from django.contrib.auth.forms import PasswordChangeForm
+from django.core.exceptions import ValidationError
 
 UserModel = get_user_model()
 
@@ -48,6 +50,34 @@ def validate_email_not_used(email, user=None):
 
     if qs.exists():
         raise ValidationError("このメールアドレスは既に使用されています。")
+    
+class CustomPasswordChangeForm(PasswordChangeForm):
+
+    def validate_password_rules(self, pw):
+        if len(pw) < 10:
+            self.add_error('new_password1', "10文字以上必要です。")
+        if not any(c.isdigit() for c in pw):
+            self.add_error('new_password1', "数字を入れてください。")
+        if not any(c.islower() for c in pw):
+            self.add_error('new_password1', "小文字を入れてください。")
+        if not any(c.isupper() for c in pw):
+            self.add_error('new_password1', "大文字を入れてください。")
+
+    def clean(self):
+        pw1 = self.cleaned_data.get("new_password1")
+        pw2 = self.cleaned_data.get("new_password2")
+
+        # パスワード一致チェック
+        if pw1 and pw2 and pw1 != pw2:
+            self.add_error('new_password2', "パスワードが一致しません。")
+
+        # 独自ルールチェック
+        if pw1:
+            self.validate_password_rules(pw1)
+
+        # 最後に Django 標準チェック
+        return super().clean()
+    
 # ============================
 #  登録フォーム
 # ============================

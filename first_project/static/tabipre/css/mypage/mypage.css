@@ -27,3 +27,8 @@
 .app-btn-warning:hover {
     background: #e89a3a;
     text-decoration: none !important; }
+
+.statement p {
+    margin-bottom: 2px;  
+    font-size: 16px;      
+}

@@ -6,4 +6,3 @@ from .travel import (Travel_info,
                    )
 from .link import LinkForm
 from .old_template_add import OldCategoryItemForm
-from .けすかもmypage import EmailChangeForm

@@ -9,6 +9,7 @@ from ...forms.auth import (
     validate_user_name_common,
     validate_email_common,
     validate_email_not_used,
+    CustomPasswordChangeForm,
 )
 
 
@@ -106,3 +107,4 @@ class EmailChangeView(View):
 
         messages.success(request, "メールアドレスを更新しました。")
         return redirect("app:mypage")
+    

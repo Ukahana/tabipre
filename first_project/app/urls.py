@@ -59,8 +59,8 @@ from app.views.mypage.link import (
     update_share_link,
     delete_share_link,
 )
-from app.views.mypage.account_edit import AccountEditView, EmailChangeView
 from app.views.mypage.password_change import CustomPasswordChangeView
+from app.views.mypage.account_edit import AccountEditView, EmailChangeView
 from app.views.mypage.favorites_edit import FavoritesEditView
 
 # old_travel link
@@ -104,7 +104,7 @@ urlpatterns = [
     path('mypage/', mypage, name='mypage'),
     path('favorites/', favorites_list, name='favorites_list'),
     path('favorites/edit/', FavoritesEditView.as_view(), name='favorites_edit'),
-
+    path('account/password_change/', CustomPasswordChangeView.as_view(), name='password_change'),
     # 共有リンク
     path('share/settings/', share_settings, name='share_settings'),
     path('share/<int:link_id>/update/', update_share_link, name='share_update'),
@@ -113,8 +113,7 @@ urlpatterns = [
     # アカウント
     path('account/edit/', AccountEditView.as_view(), name='account_edit'),
     path('account/email/', EmailChangeView.as_view(), name='account_email'),
-    path('account/password_change/', CustomPasswordChangeView.as_view(), name='password_change'),
-
+    
     # 旅行詳細
     path("travel/<int:travel_id>/", travel_detail, name="travel_detail"),
     path("old_template/<int:template_id>/edit/", old_template_edit, name="old_template_edit"),
