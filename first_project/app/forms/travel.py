@@ -79,7 +79,7 @@ class TravelStep2Form(TravelBaseForm):
         label="その他の交通手段",
         widget=forms.TextInput(attrs={
             "class": "transport-other-input",
-            "placeholder": "その他の交通手段を入力"
+            "placeholder": "交通手段を入力"
         })
     )
 

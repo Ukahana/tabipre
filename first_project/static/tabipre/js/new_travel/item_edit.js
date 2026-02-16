@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         document.getElementById("editItemId").value = itemId;
         document.getElementById("editItemInput").value = itemName;
-
+        document.getElementById("deleteItemId").value = itemId;
     });
 
     // ② モーダルが開いたら入力欄にフォーカス

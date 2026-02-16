@@ -7,16 +7,41 @@
 {% endblock %}
 
 {% block content %}
-<div class="container mt-5">
+<div class="container mt-3">
 
-  <div class="sub-title mb-5">リンクの共有</div>
+  <div class="sub-title mb-4">リンクの共有</div>
   <form method="post">
     {% csrf_token %}
 
     <!-- 権限設定 -->
     <div class="mb-4">
       <label class="form-label fw-bold">権限の設定</label>
-      {{ form.permission_type }}
+
+      <div class="permission-radio">
+
+        <!-- 閲覧のみ -->
+        <label>
+          <input type="radio" name="permission_type" value="0"
+                 {% if form.data.permission_type == "0" or form.initial.permission_type == "0" %}checked{% endif %}>
+
+          <span class="permission-label">
+            閲覧のみ:
+            <span class="permission-note">他の人は見るだけで変更できません。</span>
+          </span>
+        </label>
+
+        <!-- 編集可能 -->
+        <label>
+          <input type="radio" name="permission_type" value="1"
+                 {% if form.data.permission_type == "1" or form.initial.permission_type == "1" %}checked{% endif %}>
+
+          <span class="permission-label">
+            編集可能:
+            <span class="permission-note">他の人も内容を変更できます。</span>
+          </span>
+        </label>
+
+      </div>
 
       {% if form.permission_type.errors %}
         <div class="text-danger small">{{ form.permission_type.errors.0 }}</div>
@@ -26,10 +51,10 @@
     <!-- 有効期限設定 -->
     <label class="form-label fw-bold">有効期限の設定</label>
 
-    <div class="mb-3">
+    <div class="mb-2">
 
       <!-- 0: 1か月間有効 -->
-      <div class="radio-inline mt-2">
+      <div class="radio-inline mt-3 expire-radio">
         <label>
           <input type="radio" name="expiration_type" value="0"
                  {% if form.data.expiration_type == "0" or form.initial.expiration_type == 0 %}checked{% endif %}>
@@ -39,17 +64,21 @@
       </div>
 
       <!-- 1: 旅行終了日の翌日まで -->
-      <div class="radio-inline mt-2">
+      <div class="radio-inline mt-3 expire-radio">
         <label>
           <input type="radio" name="expiration_type" value="1"
                  {% if form.data.expiration_type == "1" or form.initial.expiration_type == 1 %}checked{% endif %}>
-          旅行終了日の翌日まで：
-          <span class="text-muted">（{{ next_day|date:"Y.n.j" }} まで）</span>
+
+          <span class="expire-label">
+            旅行終了日の翌日まで：
+            <span class="expire-date">（{{ next_day|date:"Y.n.j" }} まで）</span>
+          </span>
+
         </label>
       </div>
 
       <!-- 2: 日付を指定する -->
-      <div class="radio-inline mt-2">
+      <div class="radio-inline mt-3 expire-radio">
         <label>
           <input type="radio" name="expiration_type" value="2"
                  {% if form.data.expiration_type == "2" or form.initial.expiration_type == 2 %}checked{% endif %}>
@@ -61,8 +90,8 @@
         <div class="text-danger small">{{ form.expiration_type.errors.0 }}</div>
       {% endif %}
 
-      <!-- 日付入力欄（travel_step1 と同じ構造） -->
-      <div id="date_input_wrapper" class="calendar-input-wrapper mt-3">
+      <!-- 日付入力欄 -->
+      <div id="date_input_wrapper" class="calendar-input-wrapper mt-2">
         {{ form.expiration_date }}
         <button type="button"
                 class="calendar-btn"
@@ -93,6 +122,7 @@
 {% endif %}
 
 {% endblock %}
+
 {% block extra_js %}
 <script>
     window.SHOW_MODAL = {{ show_modal|yesno:"true,false" }};

@@ -31,7 +31,7 @@
    お気に入りモーダル
 ============================ */
 #favoriteModal .modal-dialog {
-    max-width: 300px;
+    max-width: 350px;
     margin: 60px auto;
 }
 
@@ -46,9 +46,8 @@
 }
 
 #favoriteModal .modal-title {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    text-align: center;
+    width: 100%;
     margin: 0;
     font-size: 16px;
     font-weight: 400;
@@ -93,7 +92,11 @@
     font-weight: bold;
     color: #4a90e2;
 }
-
+#favoriteModal #favoriteSelectBtn {
+    width: 60%;          /* 横いっぱい */
+    padding: 12px 0;      /* 高さをしっかり */
+    font-size: 16px;      /* 文字大きめ */
+}
 /* ============================
    追加を続けますかモーダル
 ============================ */

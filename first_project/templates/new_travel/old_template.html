@@ -12,7 +12,6 @@
 
     <!-- タイトル -->
     <h2 class="mb-1 text-center">{{ template.travel_info.travel_title }}</h2>
-    <p class="text-center text-secondary small">テンプレート編集モード</p>
 
     <!-- ★★★ フォーム開始（メモも含める） -->
     <form method="POST">
@@ -122,6 +121,6 @@
 {% endblock %}
 
 {% block extra_js %}
-<script src="{% static 'tabipre/js/parts/item_edit.js' %}"></script>
+<script src="{% static 'tabipre/js/new_travel/item_edit.js' %}"></script>
 <script src="{% static 'tabipre/js/new_travel/old_copy.js' %}"></script>
 {% endblock %}

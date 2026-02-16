@@ -74,13 +74,16 @@ def old_template_edit(request, template_id):
 # -------------------------------
 # 項目編集（モーダル）
 # -------------------------------
-def edit_item(request, item_id):
-    item = get_object_or_404(TravelItem, pk=item_id)
-
+def edit_item(request, item_id=None):
     if request.method == "POST":
+
+        # ★ POST の中の item_id を使う（ここが最重要）
+        post_item_id = request.POST.get("edit_item_id")
+        item = get_object_or_404(TravelItem, pk=post_item_id)
+
         new_name = request.POST.get("item_name", "").strip()
 
-        # 削除処理
+        # ★ 削除処理（これで必ず動く）
         if "delete" in request.POST:
             item.delete()
             return redirect("app:old_template_edit", template_id=item.travel_category.template.id)
@@ -99,7 +102,7 @@ def edit_item(request, item_id):
             request.session["edit_item_name"] = new_name
             return redirect("app:old_template_edit", template_id=item.travel_category.template.id)
 
-        # ③ 重複チェック（同じカテゴリ内）
+        # ③ 重複チェック
         if TravelItem.objects.filter(
             travel_category=item.travel_category,
             item_name=new_name
@@ -114,6 +117,9 @@ def edit_item(request, item_id):
         item.save()
 
         return redirect("app:old_template_edit", template_id=item.travel_category.template.id)
+
+    return redirect("app:home")
+
 # -------------------------------
 # 項目追加（モーダル）
 # -------------------------------

@@ -12,21 +12,22 @@
         <h5 class="modal-title text-center w-100">編集</h5>
       </div>
 
-      <!-- ★ エラー表示（編集モーダル専用） -->
-      {% if open_edit_modal %}
-        {% if messages %}
-        <div class="px-3 pt-2">
-          {% for message in messages %}
-            <div class="alert alert-danger py-1 mb-2">{{ message }}</div>
-          {% endfor %}
-        </div>
-        {% endif %}
+      {% if open_edit_modal and messages %}
+      <div class="px-3 pt-2">
+        {% for message in messages %}
+          <div class="alert alert-danger py-1 mb-2">{{ message }}</div>
+        {% endfor %}
+      </div>
       {% endif %}
 
       <form method="POST" id="editItemForm">
         {% csrf_token %}
 
+        <!-- 編集用 -->
         <input type="hidden" name="edit_item_id" id="editItemId">
+
+        <!-- ★ 削除用（button の外に置く） -->
+        <input type="hidden" name="delete_item" id="deleteItemId">
 
         <div class="modal-body">
           <div class="d-flex align-items-center">
@@ -39,6 +40,8 @@
 
             <div class="text-center d-flex flex-column align-items-center">
               <div class="delete-label text-danger small mb-1">削除</div>
+
+              <!-- 削除ボタン -->
               <button type="submit"
                       name="delete"
                       value="1"
