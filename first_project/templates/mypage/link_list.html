@@ -4,11 +4,12 @@
 {% block extra_css %}
 {{ block.super }}
 <link rel="stylesheet" href="{% static 'tabipre/css/mypage/list_link.css' %}">
+<link rel="stylesheet" href="{% static 'tabipre/css/mypage/mypage.css' %}">
 {% endblock %}
 {% block content %}
 <div class="container mt-4">
 
-    <h2 class="mb-4 sub-title">共有リンクの設定</h2>
+    <div class="mb-4 sub-title">共有リンクの設定</div>
 
     {% if links %}
         <ul class="list-group mb-4">

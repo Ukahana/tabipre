@@ -1,34 +1,60 @@
 .mypage .link-text {
-    font-size: 18px;   /* 好きな大きさに変更できる */
-}
-.mypage .link-section p {
-    margin: 15px 0;
-}
-.mypage .sub-title {
-    margin-top: 80px;   /* 好きな値に調整できる */
-}
-.app-frame {
-  background-color: #fdf6f0ff;
+  font-size: 18px;
 }
 
+.mypage .link-section p {
+  margin: 15px 0;
+}
+
+.mypage .sub-title {
+  margin-top: 80px;
+}
+
+.app-frame {
+  background-color: #fdf6f0;
+}
+
+/* Buttons */
+.app-btn {
+  font-weight: normal;
+}
+
+.app-btn-primary {
+  background-color: #1976d1;
+  color: #fff;
+  border: none;
+  padding: 10px 0;
+  font-size: 18px;
+  border-radius: 8px;
+  width: 100%;
+  text-align: center;
+}
+
+.app-btn-primary:hover {
+  background-color: #1565c0;
+}
 
 .app-btn-secondary {
-    text-decoration: none !important;
-    background: #8a8a8a;
-    color: #fff; }
+  background: #8a8a8a;
+  color: #fff;
+  text-decoration: none !important;
+}
+
 .app-btn-secondary:hover {
-    background: #6f6f6f;
-    text-decoration: none !important; }
+  background: #6f6f6f;
+}
 
 .app-btn-warning {
-    background: #ffab40;
-    color: #fff;
-    text-decoration: none !important; }
+  background: #ffab40;
+  color: #fff;
+  text-decoration: none !important;
+}
+
 .app-btn-warning:hover {
-    background: #e89a3a;
-    text-decoration: none !important; }
+  background: #e89a3a;
+}
 
 .statement p {
-    margin-bottom: 2px;  
-    font-size: 16px;      
+  margin-bottom: 2px;
+  font-size: 16px;
 }

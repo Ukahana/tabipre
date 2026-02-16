@@ -26,7 +26,7 @@ input[type="text"]::-moz-calendar-picker-indicator {
   border-bottom: none;
 }
 
-/* shareLinkModal — input-group の背景 */
+/* shareLinkModal — input 背景 */
 #shareLinkModal .input-group input {
   background-color: #f8f9fa;
 }
@@ -44,13 +44,14 @@ input[type="text"]::-moz-calendar-picker-indicator {
 /* deleteLinkModal — フッター調整 */
 #deleteLinkModal .modal-footer {
   border-top: none;
-  flex-direction: row;
   justify-content: center;
   gap: 10px;
 }
 
 /* 検索エリア */
-.search-area { margin-top: 0; }
+.search-area {
+  margin-top: 0;
+}
 
 /* ログインボタン */
 .btn-primary {
@@ -115,9 +116,7 @@ form label {
 
 /* --- shareLinkModal 専用 --- */
 
-/* 権限ラベル中央寄せ（上でまとめ済み） */
-
-/* ラジオボタンセット横並び */
+/* 権限ラジオセット横並び */
 #shareLinkModal .permission-group {
   display: flex;
   justify-content: center;
@@ -126,7 +125,7 @@ form label {
   margin-top: 10px;
 }
 
-/* ラジオボタン＋テキスト横並び */
+/* ラジオボタン + テキスト横並び */
 #shareLinkModal .form-check {
   display: flex;
   align-items: center;
@@ -134,11 +133,18 @@ form label {
   margin: 0;
 }
 
+/* ラジオボタンサイズ */
+#shareLinkModal .my-radio {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+}
 
 /* コピー ボタン */
 #copy-btn {
   background-color: #ccc !important;
   color: #fff !important;
+  border-radius: 0 0.375rem 0.375rem 0 !important;
 }
 #copy-btn:hover {
   background-color: #b5b5b5 !important;
@@ -148,36 +154,52 @@ form label {
 #delete-link {
   color: #5a6268;
 }
-/* ラジオボタンと文字を横並びにする */
-/* ラジオボタンセット全体を横並びに */
-#shareLinkModal .permission-group {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 32px;
-    width: 100%;
+
+/* 登録ボタン（色＋文字サイズ小さめ） */
+#save-btn {
+  background-color: #1976d1ff !important;
+  font-size: 16px !important;
+}
+/* --- deleteLinkModal 専用 --- */
+
+/* 本文（中央寄せ・余白） */
+#deleteLinkModal .modal-body {
+  text-align: center;
+  font-size: 1.05rem;
+  padding-top: 20px;
+  padding-bottom: 10px;
 }
 
-/* ラジオボタン + テキストを横並びに（ズレ補正付き） */
-/* ラジオボタンセット横並び */
-#shareLinkModal .permission-group {
-    display: flex;
-    justify-content: center;
-    gap: 32px;
-    margin-top: 10px;
+/* フッター（中央寄せ・境界線なし） */
+#deleteLinkModal .modal-footer {
+  border-top: none;
+  justify-content: center;
+  gap: 20px; /* 他モーダルと統一 */
 }
 
-/* ラジオボタン + テキストを横並びに（sort モーダルと同じ方式） */
-#shareLinkModal .form-check {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin: 0;
+/* 「はい」ボタン（danger を柔らかく） */
+#deleteLinkModal .btn-danger {
+  background-color: #d9534f;
+  border-color: #d9534f;
+  color: #fff;
+  padding: 10px 20px;      /* 他の削除系と統一 */
+  font-size: 16px;         /* 統一 */
+  border-radius: 6px;      /* 統一 */
+}
+#deleteLinkModal .btn-danger:hover {
+  background-color: #c64541;
+  border-color: #c64541;
 }
 
-/* ラジオボタンの大きさ（transform を使わない） */
-#shareLinkModal .my-radio {
-    width: 18px;
-    height: 18px;
-    margin: 0;
+/* 「いいえ」ボタン（btn-no と統一） */
+#deleteLinkModal .btn-secondary {
+  background-color: #e0e0e0;
+  color: #333;
+  border: 1px solid #595959;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 6px;
+}
+#deleteLinkModal .btn-secondary:hover {
+  background-color: #bdbdbd;
 }

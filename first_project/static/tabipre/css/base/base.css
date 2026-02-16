@@ -63,7 +63,6 @@
 .sub-title {
   font-size: 26px;
   color: #5c3a3a;
-  font-weight: bold;
   text-align: center;
 }
 .modal-title {
@@ -225,9 +224,4 @@ textarea.form-control {
 /* モーダル開閉時のスクロールバー補正を無効化 */
 body.modal-open {
   padding-right: 0 !important;
-}
-
-/* スクロールバーの幅を常に確保してズレを防ぐ（推奨） */
-html {
-  scrollbar-gutter: stable;
 }
