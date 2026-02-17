@@ -20,7 +20,7 @@
       </div>
       {% endif %}
 
-      <form method="POST" id="editItemForm">
+      <form method="POST" action="{% url 'app:edit_item' 0 %}" id="editItemForm">
         {% csrf_token %}
 
         <!-- 編集用 -->
@@ -55,7 +55,7 @@
         </div>
 
         <div class="modal-footer d-flex flex-column align-items-center border-0">
-          <button type="submit" class="btn btn-primary mb-2 w-75 py-2">登録</button>
+          <button type="submit" class="btn btn-primary mb-0 w-75 py-2">登録</button>
           <a href="#" class="back-link" data-bs-dismiss="modal">キャンセル</a>
         </div>
 

@@ -18,32 +18,31 @@
 
 /* ＋分類・項目の追加ボタン（画面下） */
 .custom-add-btn {
-    background-color: #9fc5e8;
+    background-color:#c9daf8ff;
     color: #000;
     font-size: 16px;
     padding: 10px 0;
     border-radius: 6px;
     border: none;
 }
-
 .custom-add-btn:hover {
-    background-color: #8bb8d8ff;
+    background-color: #a4c2f4ff; 
 }
 
 /* 登録情報を変更するボタン */
 .custom-edit-btn {
-    background-color: #1976d2;
+    background-color: #0b5394ff;
     color: #fff;
     font-size: 16px;
     padding: 10px 0;
     border-radius: 6px;
     border: none;
 }
-
 .custom-edit-btn:hover {
-    background-color: #1565c0;
     color: #fff;
+    background-color: #0c6fcfff; 
 }
+
 
 /* お気に入りスター */
 .favorite-label {
@@ -120,7 +119,7 @@
 .delete-template-btn {
     background: none;
     border: none;
-    color: #000;
+    color: #595959;
     text-decoration: underline;
     font-size: 14px;
     cursor: pointer;

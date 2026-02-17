@@ -131,7 +131,7 @@ def add_item_page(request, template_id):
         name = request.POST.get("item_name", "").strip()
         add_favorite = request.POST.get("favorite") == "1"
 
-        # ★ category_id が空でも落ちないようにする
+        # --- 分類取得（エラー対策） ---
         try:
             category = TravelCategory.objects.get(pk=category_id, template=template)
         except (TravelCategory.DoesNotExist, ValueError, TypeError):
@@ -156,7 +156,7 @@ def add_item_page(request, template_id):
             request.session["error_category_id"] = category_id
             return redirect("app:old_template_edit", template_id=template_id)
 
-        # ★★★ 分類内で重複チェック ★★★
+        # --- 分類内で重複チェック ---
         if TravelItem.objects.filter(travel_category=category, item_name=name).exists():
             messages.error(request, "同じ分類内に同じ名前の項目があります。")
             request.session["add_item_error"] = True
@@ -171,9 +171,13 @@ def add_item_page(request, template_id):
             item_checked=0
         )
 
+        # --- お気に入り登録（重複しないように修正） ---
         if add_favorite:
             favorite, _ = Favorite.objects.get_or_create(user=request.user)
-            FavoriteItem.objects.get_or_create(favorite=favorite, item_name=name)
+
+            # すでに存在する場合は登録しない
+            if not FavoriteItem.objects.filter(favorite=favorite, item_name=name).exists():
+                FavoriteItem.objects.create(favorite=favorite, item_name=name)
 
         return redirect("app:old_template_edit", template_id=template_id)
 
