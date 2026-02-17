@@ -140,3 +140,12 @@
 .modal-footer {
     gap: 20px;
 }
+.save-btn {
+    background-color: #198754ff !important;
+    border-color: none;
+    color: white;
+}
+.save-btn:hover {
+    background-color: #157347ff !important;
+   color: #fff;
+}

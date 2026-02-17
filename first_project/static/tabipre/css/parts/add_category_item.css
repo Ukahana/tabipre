@@ -8,7 +8,7 @@
 
 .color-palette {
     display: grid;
-    grid-template-columns: repeat(4, auto);
+    grid-template-columns: repeat(4, 40px);
     gap: 10px 15px;
     justify-content: center;
     margin: 20px;
@@ -42,7 +42,6 @@
 
 #favoriteModal .modal-header {
     border-bottom: none;
-    position: relative;
 }
 
 #favoriteModal .modal-title {
@@ -51,23 +50,19 @@
     margin: 0;
     font-size: 16px;
     font-weight: 400;
-    color: #595959;
 }
 
-/* ▼ モーダル内スクロール（ここが重要） */
+/* モーダル内スクロール */
 #favoriteModal .modal-body {
-    max-height: 200px;  
+    max-height: 200px;
     overflow-y: auto;
     padding-left: 25%;
 }
 
-/* ============================
-   ラジオボタン行
-============================ */
+/* ラジオボタン行 */
 #favoriteModal .stay-option {
     display: flex;
     align-items: center;
-    justify-content: flex-start;
     padding: 6px 10px;
     cursor: pointer;
 }
@@ -75,74 +70,58 @@
 #favoriteModal .stay-option:hover {
     background: #f5f5f5;
 }
+
 #favoriteModal .stay-option span {
     color: #e91e63;
 }
-/* ラジオボタン */
+
 #favoriteModal .favorite-radio {
     width: 22px;
     height: 22px;
     accent-color: #7a8b6f;
-    margin: 0;
-    margin-right: 10px;  
+    margin-right: 10px;
 }
 
-/* 選択時の強調 */
 #favoriteModal .favorite-radio:checked + span {
     font-weight: bold;
     color: #4a90e2;
 }
+
 #favoriteModal #favoriteSelectBtn {
-    width: 60%;          /* 横いっぱい */
-    padding: 12px 0;      /* 高さをしっかり */
-    font-size: 16px;      /* 文字大きめ */
+    width: 60%;
+    padding: 12px 0;
+    font-size: 16px;
 }
+
 /* ============================
    追加を続けますかモーダル
 ============================ */
-
 .favorite-label {
-    font-size: 8px;
+    font-size: 6px;
     color: #555;
-    margin-bottom: 2px;
     text-align: center;
-}
-/* お気に入りから追加ボタン */
-.favorite-add-btn {
-    background-color: #ffe599ff;
+    margin-bottom: 2px;
 }
 
-.favorite-add-btn:hover {
-    opacity: 0.9;
-}
 .favorite-wrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-.favorite-label {
-    font-size: 6px;
-    color: #555;
-    margin-bottom: 2px;
-}
-
 .favorite-icon {
     width: 32px;
     cursor: pointer;
 }
-/* 分類名の横並び用 */
-.form-label {
-    white-space: nowrap;
-}
 
+/* 分類名の横並び */
 .category-name-wrapper {
     display: flex;
     align-items: center;
 }
 
 .category-name-wrapper label {
-    width: 80px; /* ラベル幅を固定 */
+    width: 80px;
     margin-bottom: 0;
 }
 
@@ -150,43 +129,52 @@
     flex-grow: 1;
 }
 
-/* continueModal ボタン共通 */
-/* continueModal ボタン共通 */
+/* continueModal ボタン */
 #continueModal .modal-yes,
 #continueModal .modal-no {
-  all: unset;               /* Bootstrapリセット */
-  display: inline-block;
-  text-align: center;
-  cursor: pointer;
-  padding: 10px 20px;            /* ← このサイズも維持 */
-  font-size: 16px;        /* ← この文字サイズも維持 */
-  border-radius: 0;
-  border: 1px solid #595959;
+    all: unset;
+    display: inline-block;
+    text-align: center;
+    cursor: pointer;
+    padding: 10px 20px;
+    font-size: 16px;
+    border-radius: 0;
+    border: 1px solid #595959;
 }
 
-/* はい（緑） */
 #continueModal .modal-yes {
-  background-color: #6aa84f;
-  color: #fff;
-  border: none;
+    background-color: #6aa84f;
+    color: #fff;
+    border: none;
 }
 
-/* いいえ（薄グレー） */
 #continueModal .modal-no {
-  background-color: #eee;
-  color: #000;
-  border: #595959;
+    background-color: #eee;
+    color: #000;
 }
 
-/* ホバー */
 #continueModal .modal-yes:hover,
 #continueModal .modal-no:hover {
-  opacity: 0.9;
+    opacity: 0.9;
 }
 
-/* ボタン間の余白 */
 #continueModal .modal-body .d-flex {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+/* ボタン色 */
+.add-category-item-btn {
+    background-color: #ffe599ff !important;
+}
+
+.add-category-item-btn:hover,
+.register-submit-btn:hover {
+    opacity: 0.9;
+}
+
+.register-submit-btn {
+    background-color: #9fc5e8ff !important;
+    border-color: #595959 !important;
 }

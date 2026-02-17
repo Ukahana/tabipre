@@ -40,6 +40,11 @@ class TravelStep1Form(TravelBaseForm):
 
     class Meta(TravelBaseForm.Meta):
         fields = ["travel_title", "start_date", "end_date", "stay_type"]
+        widgets = {
+            "travel_title": forms.TextInput(attrs={"class": "form-control"}),
+            "start_date": forms.DateInput(attrs={"type": "text"}),
+            "end_date": forms.DateInput(attrs={"type": "text"}),
+        }
 
     def clean(self):
         cleaned = super().clean()

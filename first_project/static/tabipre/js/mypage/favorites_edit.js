@@ -1,6 +1,17 @@
 // 項目追加
 document.getElementById("add-item").addEventListener("click", function () {
     const container = document.querySelector(".edit-list");
+
+    // ★ すべての input をチェックして、空欄が1つでもあれば追加しない
+    const inputs = container.querySelectorAll("input[name='items']");
+    for (const input of inputs) {
+        if (input.value.trim() === "") {
+            input.focus();
+            return;
+        }
+    }
+
+    // 新しい項目を追加
     const li = document.createElement("li");
     li.classList.add("item-row");
 
@@ -12,7 +23,7 @@ document.getElementById("add-item").addEventListener("click", function () {
 
     container.appendChild(li);
 
-    // ★ 追加したら一番下までスクロール
+    // 一番下までスクロール
     container.scrollTop = container.scrollHeight;
 });
 

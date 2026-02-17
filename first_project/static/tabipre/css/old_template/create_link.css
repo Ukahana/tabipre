@@ -92,3 +92,11 @@
   align-self: flex-start;
    transform: translateY(4px);
 }
+.btn-primary {
+    background-color: #0c64e5ff !important;
+    border-color: #0c64e5ff !important;
+}
+
+.btn-primary:hover {
+    opacity: 0.9;
+}

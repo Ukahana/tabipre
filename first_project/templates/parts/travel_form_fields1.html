@@ -34,6 +34,9 @@
     {{ form.end_date.errors }}
 </div>
 
+<!-- ★ JS の日付エラーも Django と同じ errorlist で表示 -->
+<ul id="date_error" class="errorlist"></ul>
+
 <div class="stay-type">
     <div class="stay-type-title d-block">宿泊日数</div>
 
@@ -51,4 +54,3 @@
     <span id="stay_nights"></span>泊
     <span id="stay_days"></span>日
 </div>
-
