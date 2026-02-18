@@ -10,7 +10,10 @@ import json
 def travel_detail(request, travel_id):
     travel_info = get_object_or_404(Travel_info, pk=travel_id)
 
-    template = Template.objects.filter(travel_info=travel_info).order_by('-id').first()
+    template = Template.objects.filter(
+    travel_info=travel_info,
+    template_source__isnull=True
+    ).first()
 
     if template:
         categories = TravelCategory.objects.filter(template=template)
@@ -44,6 +47,7 @@ def travel_detail(request, travel_id):
         "template": template,
         "total_items": total_items,
         "checked_items": checked_items,
+        "can_edit": True,
     }
 
     return render(request, "old_travel/travel_detail.html", context)
@@ -58,9 +62,10 @@ def travel_uncheck_all(request, travel_id):
 
 @require_POST
 def toggle_item_checked(request, item_id):
-    print("★★ toggle_item_checked 呼ばれた！ item_id=", item_id)
 
+        
     item = get_object_or_404(TravelItem, pk=item_id)
+                             
     data = json.loads(request.body)
 
     checked = data.get("checked", False)

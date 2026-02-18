@@ -3,9 +3,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const dateInput = document.getElementById("id_expiration_date");
 
     const fp = flatpickr(dateInput, {
-        dateFormat: "Y-m-d",          // Django に送る形式
+        dateFormat: "Y-m-d",
         altInput: true,
-        altFormat: "Y/m/d",           // 表示用
+        altFormat: "Y/m/d",
         altInputClass: "flatpickr-alt-input",
         allowInput: true,
         locale: "ja",
@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     const altInput = fp.altInput;
 
-    // ★ 手入力 → 本体 input を確実に同期
+    // 手入力 → 本体 input を同期
     altInput.addEventListener("blur", function () {
         const raw = altInput.value.trim();
 
@@ -23,10 +23,8 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        // flatpickr 標準パーサーに任せる
         fp.setDate(raw, true);
 
-        // 本体 input を YYYY-MM-DD で更新
         if (fp.selectedDates.length > 0) {
             dateInput.value = fp.formatDate(fp.selectedDates[0], "Y-m-d");
         }
@@ -55,12 +53,24 @@ document.addEventListener("DOMContentLoaded", function () {
 
     updateExpiration();
 
-    // モーダル
+    // モーダル（1回だけ）
     if (window.SHOW_MODAL === true) {
         const modalEl = document.getElementById("linkModal");
         if (modalEl) {
             const modal = new bootstrap.Modal(modalEl);
             modal.show();
+        }
+
+        // コピー処理もここにまとめる
+        const copyBtn = document.getElementById("copy_btn");
+        const shareInput = document.getElementById("share_url");
+
+        if (copyBtn && shareInput) {
+            copyBtn.addEventListener("click", () => {
+                navigator.clipboard.writeText(shareInput.value)
+                    .then(() => alert("コピーしました"))
+                    .catch(() => alert("コピーに失敗しました"));
+            });
         }
     }
 });

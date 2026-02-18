@@ -50,7 +50,10 @@ def old_travel_edit1(request, travel_id):
 # ---------------------------------------------------------
 def old_travel_edit2(request, travel_id):
     travel = get_object_or_404(Travel_info, pk=travel_id)
-    template = Template.objects.get(travel_info=travel)
+    template = Template.objects.filter(
+      travel_info=travel,
+      template_source__isnull=True
+    ).first()
 
     # ★ カテゴリ取得（必須）
     categories = template.travelcategory_set.all()

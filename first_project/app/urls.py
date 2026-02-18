@@ -64,7 +64,7 @@ from app.views.mypage.account_edit import AccountEditView, EmailChangeView
 from app.views.mypage.favorites_edit import FavoritesEditView
 
 # old_travel link
-from app.views.old_travel.link import create_link, share_view
+from app.views.old_travel.link import create_link, share_view,toggle_item_checked_share
 
 
 def user_logout(request):
@@ -124,6 +124,11 @@ urlpatterns = [
     path("category/<int:category_id>/delete/", delete_category, name="delete_category"),  
     # ✅ チェック操作（JS と一致）
     path("toggle_item/<int:item_id>/", toggle_item_checked, name="toggle_item"),
+
+    # ✅ チェック操作（共有リンク用）
+    path(
+    "share/<str:token>/toggle_item/<int:item_id>/",toggle_item_checked_share,name="toggle_item_checked_share"
+),
 
     # 共有リンク
     path("travel/<int:travel_id>/link/", create_link, name="travel_link"),

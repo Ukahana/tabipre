@@ -45,7 +45,7 @@ class Link(models.Model):
     )
 
     expiration_date = models.DateField(
-         verbose_name=_("有効期限")
+         verbose_name=_("有効期限"),
          )
     
     created_at = models.DateTimeField(

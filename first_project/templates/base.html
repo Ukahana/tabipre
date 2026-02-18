@@ -24,7 +24,7 @@
             {% endblock %}
         </div>
 
-        {% if request.user.is_authenticated %}
+        {% if request.user.is_authenticated and not is_share_page %}
         <nav class="navbar navbar-light bottom-nav">
             <div class="container d-flex justify-content-around text-center">
 

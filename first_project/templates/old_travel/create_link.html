@@ -12,6 +12,13 @@
   <div class="sub-title mb-4">リンクの共有</div>
   <form method="post">
     {% csrf_token %}
+    {% if form.non_field_errors %}
+      <ul class="errorlist">
+        {% for error in form.non_field_errors %}
+          <li>{{ error }}</li>
+        {% endfor %}
+      </ul>
+    {% endif %}
 
     <!-- 権限設定 -->
     <div class="mb-4">
@@ -110,7 +117,7 @@
   </form>
 
   <div class="mt-3 text-center">
-    <a href="{% url 'app:travel_detail' template.travel_info.travel_info_id %}" class="text-secondary">
+    <a href="{% url 'app:travel_detail' travel.travel_info_id %}" class="text-secondary">
       キャンセル
     </a>
   </div>
