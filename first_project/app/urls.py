@@ -64,8 +64,11 @@ from app.views.mypage.account_edit import AccountEditView, EmailChangeView
 from app.views.mypage.favorites_edit import FavoritesEditView
 
 # old_travel link
-from app.views.old_travel.link import create_link, share_view,toggle_item_checked_share
-
+from app.views.old_travel.copylink import (
+    create_link,
+    share_view,
+    toggle_item_checked_share
+)
 
 def user_logout(request):
     logout(request)
@@ -75,7 +78,10 @@ def user_logout(request):
 app_name = 'app'
 
 urlpatterns = [
-    # ログイン
+
+    # ============================
+    # ログイン・認証
+    # ============================
     path('logout/', user_logout, name='logout'),
     path('', UserLoginView.as_view(), name='login'),
     path('regist/', RegistUserView.as_view(), name='regist'),
@@ -87,10 +93,27 @@ urlpatterns = [
     path('reset/done/', PasswordResetCompleteView.as_view(
         template_name='login/password_reset_complete.html'), name='password_reset_complete'),
 
+    # ID ベースの共有リンク設定
+    path('share/settings/', share_settings, name='share_settings'),
+    path('share/<int:link_id>/update/', update_share_link, name='share_update'),
+    path('share/<int:link_id>/delete/', delete_share_link, name='delete_share_link'),
+    
+    # ============================
+    # 共有リンク
+    # ============================
+    path("share/<str:token>/toggle_item/<int:item_id>/", toggle_item_checked_share, name="toggle_item_checked_share"),
+    path("share/<str:token>/", share_view, name="share_view"),
+
+
+
+    # ============================
     # ホーム
+    # ============================
     path('home/', HomeView.as_view(), name='home'),
 
+    # ============================
     # 新規テンプレート作成
+    # ============================
     path('travel_step1/', travel_create_step1, name='travel_step1'),
     path('travel_step2/', new_travel_step2, name='travel_step2'),
     path("template/<int:template_id>/edit/", template_edit, name="template_edit"),
@@ -100,44 +123,39 @@ urlpatterns = [
     path("autocomplete/item/", autocomplete_item, name="autocomplete_item"),
     path('template/<int:template_id>/old_copy/', old_template_copy, name='old_template_copy'),
 
+    # ============================
     # マイページ
+    # ============================
     path('mypage/', mypage, name='mypage'),
     path('favorites/', favorites_list, name='favorites_list'),
     path('favorites/edit/', FavoritesEditView.as_view(), name='favorites_edit'),
     path('account/password_change/', CustomPasswordChangeView.as_view(), name='password_change'),
-    # 共有リンク
-    path('share/settings/', share_settings, name='share_settings'),
-    path('share/<int:link_id>/update/', update_share_link, name='share_update'),
-    path('share/<int:link_id>/delete/', delete_share_link, name='delete_share_link'),
-
-    # アカウント
     path('account/edit/', AccountEditView.as_view(), name='account_edit'),
     path('account/email/', EmailChangeView.as_view(), name='account_email'),
-    
+
+    # ============================
     # 旅行詳細
+    # ============================
     path("travel/<int:travel_id>/", travel_detail, name="travel_detail"),
     path("old_template/<int:template_id>/edit/", old_template_edit, name="old_template_edit"),
     path("old_template/<int:template_id>/add/", category_item_add, name="category_item_add"),
     path("item/add/<int:template_id>/", add_item_page, name="add_item_page"),
     path("item/edit/<int:item_id>/", edit_item, name="edit_item"),
     path('old_template/<int:template_id>/delete/', delete_template, name='delete_template'),
-    path("category/<int:category_id>/delete/", delete_category, name="delete_category"),  
-    # ✅ チェック操作（JS と一致）
+    path("category/<int:category_id>/delete/", delete_category, name="delete_category"),
+
+    # チェック操作（通常）
     path("toggle_item/<int:item_id>/", toggle_item_checked, name="toggle_item"),
 
-    # ✅ チェック操作（共有リンク用）
-    path(
-    "share/<str:token>/toggle_item/<int:item_id>/",toggle_item_checked_share,name="toggle_item_checked_share"
-),
-
-    # 共有リンク
+    # ============================
+    # 共有リンク作成
+    # ============================
     path("travel/<int:travel_id>/link/", create_link, name="travel_link"),
-    path("share/<str:token>/", share_view, name="share_view"),
 
-    # すべてのチェック解除
+    # ============================
+    # その他
+    # ============================
     path("travel/<int:travel_id>/uncheck_all/", travel_uncheck_all, name="travel_uncheck_all"),
-
-    # 過去旅行編集
     path("travel/<int:travel_id>/old_edit1/", old_travel_edit1, name="old_travel_edit1"),
     path("travel/<int:travel_id>/old_edit2/", old_travel_edit2, name="old_travel_edit2"),
 

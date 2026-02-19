@@ -90,20 +90,22 @@
         </a>
 
         <!-- 登録情報を変更する -->
-        <a href="{% url 'app:old_travel_edit1' card_travel_info.travel_info_id %}"
-           class="btn custom-edit-btn mb-3 d-block">
-          登録情報を変更する
-        </a>
+        {% if can_edit %}
+            <a href="{% url 'app:old_travel_edit1' card_travel_info.travel_info_id %}"
+                class="btn custom-edit-btn mb-3 d-block">
+                 登録情報を変更する
+            </a>
 
+            <!-- ★★★ テンプレート削除（モーダルを開く） ★★★ -->
+            <button
+                type="button"
+                class="delete-template-btn"
+                data-bs-toggle="modal"
+                data-bs-target="#deleteTemplateModal">
+                テンプレート・旅行情報を削除
+            </button>
+        {% endif %}
 
-        <!-- ★★★ テンプレート削除（モーダルを開く） ★★★ -->
-        <button
-            type="button"
-            class="delete-template-btn"
-            data-bs-toggle="modal"
-            data-bs-target="#deleteTemplateModal">
-            テンプレート・旅行情報を削除
-        </button>
 
     </div>
 

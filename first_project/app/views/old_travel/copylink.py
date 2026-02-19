@@ -1,37 +1,29 @@
 import secrets
+import json
 from datetime import timedelta
 from django.utils import timezone
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from dateutil.relativedelta import relativedelta
-from app.models import Link, Travel_info, Template
-from app.forms import LinkForm
-from ...models.template import Template, TravelCategory, TravelItem
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
-import json
-
-import secrets
-from datetime import timedelta
-from django.utils import timezone
-from django.shortcuts import render, get_object_or_404
-from dateutil.relativedelta import relativedelta
-from app.models import Link, Travel_info, Template
-from app.forms import LinkForm
-from ...models.template import Template, TravelCategory, TravelItem
-from django.http import JsonResponse
-from django.views.decorators.http import require_POST
-import json
 from django.utils.dateformat import DateFormat
+
+from app.models import Link, Travel_info, Template
+from app.forms import LinkForm
+from ...models.template import Template, TravelCategory, TravelItem
+
+
+# ---------------------------------------------------------
+# 共有リンク作成
+# ---------------------------------------------------------
 def create_link(request, travel_id):
     travel = get_object_or_404(Travel_info, pk=travel_id)
 
-    # 元テンプレート（template_source=None）
     original_template = Template.objects.filter(
         travel_info=travel,
         template_source__isnull=True
     ).first()
 
-    # 既存リンク（2回目以降）
     existing_link = Link.objects.filter(
         template__template_source=original_template
     ).first()
@@ -45,10 +37,11 @@ def create_link(request, travel_id):
         (2, "日付を指定する"),
     ]
 
-    # ▼ GET：いつでも画面表示（2回目でも日付は出す）
+    # GET
     if request.method == "GET":
         form = LinkForm(initial={
-            "expiration_type": 0,
+            "permission_type": Link.PermissionType.READ_ONLY,
+            "expiration_type": Link.ExpirationType.ONE_MONTH,
             "expiration_date": one_month_later,
         })
         form.fields["expiration_type"].choices = expiration_choices
@@ -63,11 +56,10 @@ def create_link(request, travel_id):
             "show_modal": False,
         })
 
-    # ▼ POST：リンク発行
+    # POST
     form = LinkForm(request.POST)
     form.fields["expiration_type"].choices = expiration_choices
 
-    # ★ ① まず既存リンクチェック（2回目以降）
     if existing_link:
         form.add_error(None, "この旅行の共有リンクはすでに作成されています。")
         return render(request, "old_travel/create_link.html", {
@@ -79,7 +71,6 @@ def create_link(request, travel_id):
             "show_modal": False,
         })
 
-    # ★ ② 1回目だけ通常バリデーション（必須チェックなど）
     if not form.is_valid():
         return render(request, "old_travel/create_link.html", {
             "form": form,
@@ -90,7 +81,7 @@ def create_link(request, travel_id):
             "show_modal": False,
         })
 
-    # ▼ ★★ コピー処理（1回目のみ実行）★★
+    # コピー作成
     copied_template = Template.objects.create(
         user=original_template.user,
         travel_info=original_template.travel_info,
@@ -112,7 +103,7 @@ def create_link(request, travel_id):
                 item_checked=0,
             )
 
-    # ▼ Link 保存
+    # Link 保存
     link = form.save(commit=False)
     link.user = request.user
     link.template = copied_template
@@ -139,35 +130,52 @@ def create_link(request, travel_id):
     })
 
 
+# ---------------------------------------------------------
+# 共有リンク閲覧（閲覧のみ or 編集可能）
+# ---------------------------------------------------------
 def share_view(request, token):
     link = get_object_or_404(Link, share_token=token)
 
-    # 有効期限チェック
     today = timezone.now().date()
     if link.expiration_date and link.expiration_date < today:
         return render(request, "share/expired.html")
 
-    # ★ コピーされたテンプレートを使う
     template = link.template
     travel_info = template.travel_info
-    
-    # ★ カテゴリと項目を travel_detail と同じ構造で取得
-    if template:
+
+    # ---------------------------------------------------------
+    # ★ 編集可能リンク → ログイン必須 → 編集画面へ
+    # ---------------------------------------------------------
+    if link.permission_type == Link.PermissionType.EDITABLE:
+
+        if not request.user.is_authenticated:
+           login_url = reverse("app:login")
+           return redirect(f"{login_url}?next=/share/{token}/")
+
+
         categories = TravelCategory.objects.filter(template=template)
 
-        for cat in categories:
-            cat.items = cat.travelitem_set.order_by('item_checked', 'id')
-            cat.checked_count_display = cat.checked_count
-            cat.total_count_display = cat.total_count
-    else:
-        categories = []
+        return render(request, "old_travel/template_manage.html", {
+            "current_template": template,
+            "categories": categories,
+            "card_travel_info": travel_info,
+            "hide_sensitive_buttons": True,  # ← ボタン非表示
+        })
 
-    # ★ ステータス計算（travel_detail と同じ）
+    # ---------------------------------------------------------
+    # ★ 閲覧のみリンク（従来の閲覧画面）
+    # ---------------------------------------------------------
+    categories = TravelCategory.objects.filter(template=template)
+
+    for cat in categories:
+        cat.items = cat.travelitem_set.order_by('item_checked', 'id')
+        cat.checked_count_display = cat.checked_count
+        cat.total_count_display = cat.total_count
+
     items = TravelItem.objects.filter(travel_category__template=template)
     total_items = items.count()
     checked_items = items.filter(item_checked=1).count()
 
-    today = timezone.now().date()
     if travel_info.end_date < today:
         status = "済"
     elif total_items > 0 and total_items == checked_items:
@@ -177,9 +185,8 @@ def share_view(request, token):
 
     travel_info.status_label = status
 
-    # ★ 閲覧専用フラグ
-    can_check = True
-    can_edit = False  # 共有リンクは編集不可
+    df = DateFormat(link.expiration_date)
+    formatted_expiration = df.format('Y.n.j')
 
     return render(request, "old_travel/travel_detail.html", {
         "travel_info": travel_info,
@@ -187,102 +194,25 @@ def share_view(request, token):
         "template": template,
         "total_items": total_items,
         "checked_items": checked_items,
-        "can_check": can_check,
-        "can_edit": can_edit,
-        "is_share_page": True,
-        "formatted_expiration": link.formatted_expiration,
-    })
-
-@require_POST
-def toggle_item_checked_share(request, token, item_id):
-    link = get_object_or_404(Link, share_token=token)
-    template = link.template  # ← コピーされたテンプレート
-
-    item = get_object_or_404(
-        TravelItem,
-        pk=item_id,
-        travel_category__template=template  # ← ★ コピー側だけ更新！
-    )
-
-    data = json.loads(request.body)
-    checked = data.get("checked", False)
-
-    item.item_checked = 1 if checked else 0
-    item.save()
-
-    return JsonResponse({"success": True})
-
-
-def share_view(request, token):
-    link = get_object_or_404(Link, share_token=token)
-
-    # 有効期限チェック
-    today = timezone.now().date()
-    if link.expiration_date and link.expiration_date < today:
-        return render(request, "share/expired.html")
-
-    # ★ コピーされたテンプレートを使う
-    template = link.template
-    travel_info = template.travel_info
-    
-    # ★ カテゴリと項目を travel_detail と同じ構造で取得
-    if template:
-        categories = TravelCategory.objects.filter(template=template)
-
-        for cat in categories:
-            cat.items = cat.travelitem_set.order_by('item_checked', 'id')
-            cat.checked_count_display = cat.checked_count
-            cat.total_count_display = cat.total_count
-    else:
-        categories = []
-
-    # ★ ステータス計算（travel_detail と同じ）
-    items = TravelItem.objects.filter(travel_category__template=template)
-    total_items = items.count()
-    checked_items = items.filter(item_checked=1).count()
-
-    today = timezone.now().date()
-    if travel_info.end_date < today:
-        status = "済"
-    elif total_items > 0 and total_items == checked_items:
-        status = "完"
-    else:
-        status = "未"
-
-    travel_info.status_label = status
-
-    # ★ 閲覧専用フラグ
-    can_check = True
-    can_edit = False  # 共有リンクは編集不可
-
-    # 有効期限の整形
-    if link.expiration_date:
-        df = DateFormat(link.expiration_date)
-        formatted_expiration = df.format('Y.n.j')
-    else:
-        formatted_expiration = "設定なし"
-        
-    return render(request, "old_travel/travel_detail.html", {
-        "travel_info": travel_info,
-        "categories": categories,
-        "template": template,
-        "total_items": total_items,
-        "checked_items": checked_items,
-        "can_check": can_check,
-        "can_edit": can_edit,
+        "can_check": True,
+        "can_edit": False,
         "is_share_page": True,
         "formatted_expiration": formatted_expiration,
     })
 
+
+# ---------------------------------------------------------
+# チェック更新（閲覧のみでも編集可能でも共通）
+# ---------------------------------------------------------
 @require_POST
 def toggle_item_checked_share(request, token, item_id):
     link = get_object_or_404(Link, share_token=token)
-    template = link.template  # ← コピーされたテンプレート
+    template = link.template
 
     item = get_object_or_404(
         TravelItem,
         pk=item_id,
-        travel_category__template=template  # ← ★ コピー側だけ更新！
+        travel_category__template=template
     )
 
     data = json.loads(request.body)

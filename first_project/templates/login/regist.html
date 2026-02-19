@@ -10,7 +10,11 @@
 <div class="login-center">
     <div class="container">
         <div class="sub-title mb-4">新規アカウント登録</div>
-
+        {% if request.GET.next %}
+        <div class="app-info-box mb-3">
+           共有リンクの編集にはアカウント登録が必要です。
+        </div>
+        {% endif %}
         <form method="POST" novalidate>
             {% csrf_token %}
 
@@ -64,7 +68,11 @@
         </form>
 
         <p class="link mt-3">
-            <a href="{% url 'app:login' %}">ログイン画面はこちら</a>
+            {% if request.GET.next %}
+                <a href="{% url 'app:login' %}?next={{ request.GET.next }}">ログイン画面はこちら</a>
+            {% else %}
+                <a href="{% url 'app:login' %}">ログイン画面はこちら</a>
+            {% endif %}
         </p>
     </div>
 </div>

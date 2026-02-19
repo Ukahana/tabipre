@@ -14,7 +14,11 @@
     {% if form.non_field_errors %}
         <div class="app-error-box">{{ form.non_field_errors.0 }}</div>
     {% endif %}
-
+    {% if request.GET.next %}
+        <div class="app-info-box mb-3">
+           共有リンクの編集にはログインが必要です。
+        </div>
+    {% endif %}
     <form method="POST">
         {% csrf_token %}
 
@@ -40,7 +44,11 @@
     </form>
 
     <div class="link mt-4">
-        <a href="{% url 'app:regist' %}">アカウント登録</a>
+        {% if request.GET.next %}
+            <a href="{% url 'app:regist' %}?next={{ request.GET.next }}">アカウント登録</a>
+        {% else %}
+            <a href="{% url 'app:regist' %}">アカウント登録</a>
+        {% endif %}
     </div>
 
     <p class="link mt-3">

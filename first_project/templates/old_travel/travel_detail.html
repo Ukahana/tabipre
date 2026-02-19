@@ -19,7 +19,7 @@
 {% endif %}
 
   <!-- メモ -->
-  {% if travel_info.memo %}
+  {% if travel_info.memo and not is_share_page %}
   <div class="mb-3">
     <div id="memoArea" class="collapse show">
       <div class="card memo-card">
