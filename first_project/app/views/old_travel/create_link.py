@@ -104,9 +104,8 @@ def create_link(request, travel_id):
         link.expiration_date = next_day
 
     link.save()
-
     share_url = request.build_absolute_uri(f"/share/{link.share_token}/")
-
+        
     return render(request, "old_travel/create_link.html", {
         "form": form,
         "template": original_template,

@@ -12,18 +12,19 @@
 
   <!-- タイトル -->
   {% include "parts/travel_card.html" with card_travel_info=travel_info %}
-{% if is_share_page %}
-<div class="text-muted small">このページは共有リンクから表示されています。
-  <br>有効期限：{{ formatted_expiration }}</span>
-</div>
-{% endif %}
+  {% if is_share_page %}
+  <div class="text-muted small">
+    このページは共有リンクから表示されています。
+    <br>有効期限：{{ formatted_expiration }}
+  </div>
+  {% endif %}
 
-  <!-- メモ -->
+  <!-- メモ（共有リンクでは非表示） -->
   {% if travel_info.memo and not is_share_page %}
   <div class="mb-3">
     <div id="memoArea" class="collapse show">
       <div class="card memo-card">
-           <div class="memo-inner">{{ travel_info.memo|linebreaksbr  }}</div>
+           <div class="memo-inner">{{ travel_info.memo|linebreaksbr }}</div>
       </div>
     </div>
     <button class="memo-toggle-btn"
@@ -57,16 +58,26 @@
   </div>
   {% endfor %}
 
-  <!-- すべてのチェックを外す -->
+  <!-- すべてのチェックを外す（編集可能時のみ） -->
   {% if can_edit %}
   <div class="mt-3">
     <a href="{% url 'app:travel_uncheck_all' travel_info.travel_info_id %}" class="uncheck-link">
       すべてのチェックを外す
     </a>
   </div>
+  {% endif %}
 
-  <!-- 編集ボタン & 共有リンク -->
+  <!-- ★ 編集に戻る（共有リンク閲覧時のみ） -->
+  {% if is_share_page and permission_type == 1 %}
+  <div class="mt-4 text-center">
+    <a href="{% url 'app:share_edit_view' token %}" class="btn btn-outline-primary">
+        編集に戻る
+    </a>
+  </div>
+  {% endif %}
 
+  <!-- 編集ボタン & 共有リンク（通常の旅行のみ） -->
+  {% if can_edit %}
   <div class="mt-3 edit-button">
 
     {% if template %}

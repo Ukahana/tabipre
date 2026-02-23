@@ -65,11 +65,17 @@ from app.views.mypage.favorites_edit import FavoritesEditView
 
 # old_travel link
 from app.views.old_travel.copylink import (
-    create_link,
-    share_view,
     toggle_item_checked_share
 )
-
+from app.views.old_travel.create_link import (
+    create_link
+)
+from app.views.old_travel.share_view import (
+    share_view,
+    share_edit_view,
+    share_add_category_item
+)
+    
 def user_logout(request):
     logout(request)
     return redirect('app:login')
@@ -102,8 +108,11 @@ urlpatterns = [
     # 共有リンク
     # ============================
     path("share/<str:token>/toggle_item/<int:item_id>/", toggle_item_checked_share, name="toggle_item_checked_share"),
+    # 閲覧のみ
     path("share/<str:token>/", share_view, name="share_view"),
-
+    # ★ 編集ページ（ログイン必須）
+    path("share/<str:token>/edit/", share_edit_view, name="share_edit_view"),
+    path("share/<str:token>/edit/add/", share_add_category_item, name="share_add_category_item"),
 
 
     # ============================

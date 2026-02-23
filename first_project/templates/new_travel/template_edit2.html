@@ -9,22 +9,17 @@
 {% block content %}
 <div class="container mt-3">
 
-    <h3 class="text-center mb-3">{{ template.travel_info.travel_title }}</h3>
+    <!-- タイトル -->
+    <h3 class="text-center mb-3">{{ current_template.travel_info.travel_title }}</h3>
 
-    <!-- 親フォーム：保存・削除・チェック更新・分類追加 -->
+    <!-- 編集フォーム -->
     <form method="POST">
         {% csrf_token %}
 
         {% for category in categories %}
-            {% for item in category.travelitem_set.all %}
-                <input type="hidden" name="hidden_checked_{{ item.id }}" value="{{ item.item_checked }}">
-                <input type="hidden" name="hidden_name_{{ item.id }}" value="{{ item.item_name }}">
-            {% endfor %}
-        {% endfor %}
-
-        {% for category in categories %}
         <div class="card mb-3 shadow-sm">
 
+            <!-- カテゴリヘッダー（編集不可） -->
             <div class="card-header text-white d-flex justify-content-between align-items-center"
                  style="background-color: {{ category.get_category_color_display }};">
 
@@ -33,6 +28,7 @@
                      data-bs-target="#cat{{ category.id }}"
                      style="cursor: pointer;">
 
+                    <!-- ★ 編集不可：strong に戻す -->
                     <strong>{{ category.category_name }}</strong>
 
                     <span class="badge bg-light text-dark ms-2">
@@ -52,19 +48,20 @@
                 </button>
             </div>
 
+            <!-- アイテム一覧 -->
             <ul id="cat{{ category.id }}" class="list-group list-group-flush collapse show">
 
                 {% for item in category.travelitem_set.all %}
                 <li class="list-group-item">
                     <div class="d-flex align-items-center w-100">
 
-                        <!-- チェック -->
+                        <!-- チェック（Ajax 用） -->
                         <input type="checkbox"
-                               name="item_checked_{{ item.id }}"
                                class="form-check-input me-3"
-                               {% if item.item_checked %}checked{% endif %}>
+                               {% if item.item_checked %}checked{% endif %}
+                               data-item-id="{{ item.id }}">
 
-                        <!-- 名前編集 -->
+                        <!-- 名前編集（ここは編集可） -->
                         <input type="text"
                                name="rename_{{ item.id }}"
                                value="{{ item.item_name }}"
@@ -90,22 +87,22 @@
         </div>
         {% endfor %}
 
+        <!-- 分類追加 -->
         <button type="submit"
                 name="go_add"
                 value="1"
                 class="btn custom-add-btn mb-3 w-100 mt-3">
-         ＋分類・項目の追加
+            ＋分類・項目の追加
         </button>
 
-
-        <!-- ⭐ 保存ボタン -->
+        <!-- 保存ボタン -->
         <button type="submit" name="save_changes" class="btn save-btn w-100 mt-2 mb-2">
             保存
         </button>
-
     </form>
 
 </div>
+
 {% block extra_js %}
 <script src="{% static 'tabipre/js/new_travel/template_edit2.js' %}"></script>
 {% endblock %}

@@ -57,6 +57,7 @@
                        value="{{ form.item_name.value|default:'' }}">
 
                 <!-- ★ 星アイコン -->
+              {% if not is_share_edit %}
                 <div class="text-center ms-2" style="width:48px;">
                     <div class="favorite-label" style="font-size:8px; line-height:1;">お気に入り</div>
 
@@ -68,6 +69,7 @@
                 </div>
 
                 {{ form.favorite_flag }}
+              {% endif %}
             </div>
         </div>
 
@@ -76,13 +78,14 @@
         {% endif %}
 
         <!-- ⭐ 項目名の下に移動した「お気に入りから追加」ボタン -->
+        {% if not is_share_edit %}
         <button type="button"
                 class="btn favorite-add-btn w-100 mb-3 mt-3"
                 data-bs-toggle="modal"
                 data-bs-target="#favoriteModal">
             お気に入りから追加
         </button>
-
+        {% endif %}
         <!-- 分類の色 -->
         <label class="category-text mt-4 w-100">分類の色を選択する</label>
         <div class="color-palette mb-3">
@@ -119,7 +122,9 @@
 
 <!-- モーダル -->
 {% include "new_travel/modal/add_template.html" %}
+{% if not is_share_edit %}
 {% include "parts/favorite_modal.html" %}
+{% endif %}
 {% include "new_travel/modal/add_continue_modal.html" %}
 
 <script src="{% static 'tabipre/js/new_travel/new_continue.js' %}"></script>
