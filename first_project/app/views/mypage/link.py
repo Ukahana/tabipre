@@ -14,11 +14,13 @@ from app.models import Link
 def share_settings(request):
     links = Link.objects.filter(user=request.user).order_by('-created_at')
 
-    # 日付を整形して新しい属性として追加
     for link in links:
         if link.expiration_date:
             df = DateFormat(link.expiration_date)
-            link.formatted_expiration = df.format('Y.n.j')  # 例: 2026.5.1
+            link.formatted_expiration = df.format('Y.n.j')
+
+        # ★ ここで絶対 URL を作る
+        link.absolute_url = request.build_absolute_uri(f"/share/{link.share_token}/")
 
     return render(request, 'mypage/link_list.html', {
         'links': links

@@ -70,7 +70,7 @@
   <!-- ★ 編集に戻る（共有リンク閲覧時のみ） -->
   {% if is_share_page and permission_type == 1 %}
   <div class="mt-4 text-center">
-    <a href="{% url 'app:share_edit_view' token %}" class="btn btn-outline-primary">
+    <a href="{% url 'app:share_edit_view' token %}" class="back-link">
         編集に戻る
     </a>
   </div>

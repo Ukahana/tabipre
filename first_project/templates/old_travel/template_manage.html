@@ -90,7 +90,6 @@
         </a>
 
         <!-- 登録情報を変更する -->
-        {% if can_edit %}
             <a href="{% url 'app:old_travel_edit1' card_travel_info.travel_info_id %}"
                 class="btn custom-edit-btn mb-3 d-block">
                  登録情報を変更する
@@ -104,7 +103,6 @@
                 data-bs-target="#deleteTemplateModal">
                 テンプレート・旅行情報を削除
             </button>
-        {% endif %}
 
 
     </div>

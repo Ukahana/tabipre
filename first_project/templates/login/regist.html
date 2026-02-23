@@ -10,11 +10,7 @@
 <div class="login-center">
     <div class="container">
         <div class="sub-title mb-4">新規アカウント登録</div>
-        {% if request.GET.next %}
-        <div class="app-info-box mb-3">
-           共有リンクの編集にはアカウント登録が必要です。
-        </div>
-        {% endif %}
+
         <form method="POST" novalidate>
             {% csrf_token %}
 
