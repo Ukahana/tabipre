@@ -225,3 +225,6 @@ textarea.form-control {
 body.modal-open {
   padding-right: 0 !important;
 }
+html {
+  overflow-y: scroll;
+}

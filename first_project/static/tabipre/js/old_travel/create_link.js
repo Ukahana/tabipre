@@ -53,24 +53,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
     updateExpiration();
 
-    // モーダル（1回だけ）
+    // モーダル
     if (window.SHOW_MODAL === true) {
         const modalEl = document.getElementById("linkModal");
         if (modalEl) {
             const modal = new bootstrap.Modal(modalEl);
-            modal.show();
-        }
 
-        // コピー処理もここにまとめる
-        const copyBtn = document.getElementById("copy_btn");
-        const shareInput = document.getElementById("share_url");
+            // ★ モーダルが開いた後にイベントを付ける（重要）
+            modalEl.addEventListener("shown.bs.modal", () => {
+                const copyBtn = document.getElementById("copy_btn");
+                const shareInput = document.getElementById("share_url");
 
-        if (copyBtn && shareInput) {
-            copyBtn.addEventListener("click", () => {
-                navigator.clipboard.writeText(shareInput.value)
-                    .then(() => alert("コピーしました"))
-                    .catch(() => alert("コピーに失敗しました"));
+                if (copyBtn && shareInput) {
+                    copyBtn.addEventListener("click", () => {
+                        navigator.clipboard.writeText(shareInput.value)
+                            .then(() => {
+                            });
+                    });
+                }
             });
+
+            modal.show();
         }
     }
 });

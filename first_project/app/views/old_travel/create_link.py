@@ -6,11 +6,11 @@ from dateutil.relativedelta import relativedelta
 from app.models import Link, Travel_info, Template
 from app.forms import LinkForm
 from ...models.template import Template, TravelCategory, TravelItem
-
+from django.contrib import messages
 
 def create_link(request, travel_id):
     travel = get_object_or_404(Travel_info, pk=travel_id)
-
+    
     original_template = Template.objects.filter(
         travel_info=travel,
         template_source__isnull=True
@@ -47,6 +47,7 @@ def create_link(request, travel_id):
             "show_modal": False,
         })
 
+    
     form = LinkForm(request.POST)
     form.fields["expiration_type"].choices = expiration_choices
 
@@ -105,7 +106,7 @@ def create_link(request, travel_id):
 
     link.save()
     share_url = request.build_absolute_uri(f"/share/{link.share_token}/")
-        
+    
     return render(request, "old_travel/create_link.html", {
         "form": form,
         "template": original_template,

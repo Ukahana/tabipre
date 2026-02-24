@@ -143,6 +143,8 @@ def share_add_category_item(request, token):
                     "past_categories": past_categories,
                     "color_map": color_map,
                     "open_continue_modal": False,
+                    "is_share_edit": True,
+                    "token": token,
                 }
             )
 
@@ -185,6 +187,7 @@ def share_add_category_item(request, token):
                 "color_map": color_map,
                 "open_continue_modal": True,
                 "is_share_edit": True,
+                "token": token,
             }
         )
 
@@ -199,5 +202,6 @@ def share_add_category_item(request, token):
             "past_categories": past_categories,
             "color_map": color_map,
             "is_share_edit": True,
+            "token": token,
         }
     )
