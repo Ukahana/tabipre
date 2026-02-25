@@ -100,3 +100,16 @@
 .btn-primary:hover {
     opacity: 0.9;
 }
+
+/* ============================= */
+/* 共有リンク期限切れ画面（中央寄せ） */
+/* ============================= */
+
+.expired-wrapper {
+  height: 100vh;              
+  display: flex;
+  justify-content: center;     
+  align-items: center;        
+  text-align: center;          
+  flex-direction: column;     
+}

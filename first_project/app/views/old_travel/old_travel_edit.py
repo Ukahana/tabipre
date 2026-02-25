@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from datetime import date, datetime  
+from datetime import  datetime  
 from app.models import Travel_info, Template, Transport, Travelmode
 from app.forms import TravelStep1Form, TravelStep2Form
 

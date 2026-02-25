@@ -10,13 +10,26 @@ from django.contrib.auth.decorators import login_required
 from app.forms.template_add import CategoryItemForm
 
 def share_view(request, token):
-    link = get_object_or_404(Link, share_token=token)
 
+    # ① 削除済みチェック（リンクが存在しない）
+    link = Link.objects.filter(share_token=token).first()
+    if not link:
+        return render(request, "parts/expired.html", {
+            "is_share_page": True,
+            "title": "この共有リンクは削除されています",
+            "message": "リンクの作成者が共有を停止しました。",
+        })
+
+    # ② 期限切れチェック
     today = timezone.now().date()
     if link.expiration_date and link.expiration_date < today:
-        return render(request, "share/expired.html")
+        return render(request, "parts/expired.html", {
+            "is_share_page": True,
+            "title": "この共有リンクは期限切れです",
+            "message": "リンクの有効期限が過ぎています。",
+        })
 
-    # ★ 編集可能でも、mode=view のときは閲覧画面を表示する
+    # ③ 編集可能でも mode=view 以外なら編集画面へ
     if link.permission_type == Link.PermissionType.EDITABLE and request.GET.get("mode") != "view":
         return redirect(reverse("app:share_edit_view", args=[token]))
 
@@ -57,7 +70,6 @@ def share_view(request, token):
         "formatted_expiration": formatted_expiration,
         "token": token,
         "permission_type": link.permission_type,
-
     })
 
 
@@ -80,6 +92,7 @@ def share_edit_view(request, token):
             "can_edit": True,
             "token": token,
             "permission_type": link.permission_type,
+            "is_share_page": True,
         })
 
     # --- 分類追加 ---

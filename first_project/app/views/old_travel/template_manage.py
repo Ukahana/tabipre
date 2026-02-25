@@ -1,7 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 
-from ...models.travel import Travel_info
 from ...models.template import Template, TravelCategory, TravelItem
 from ...models.favorite import Favorite, FavoriteItem
 from django.contrib import messages
@@ -225,6 +224,6 @@ def delete_template(request, template_id):
     if request.method == "POST":
         travel.delete()
         template.delete()
-        return redirect("app:home")  # 一覧へ戻る
+        return redirect("app:home")  
 
     return redirect("app:home")

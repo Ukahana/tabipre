@@ -31,7 +31,7 @@ def category_item_add(request, template_id):
                     "categories": categories,
                     "color_list": color_list,
                     "favorite_items": favorite_items,
-                    "open_continue_modal": False,  # ← エラー時はモーダル出さない
+                    "open_continue_modal": False,  
                 }
             )
 

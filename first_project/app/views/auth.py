@@ -35,43 +35,6 @@ class RegistUserView(CreateView):
 # ============================
 #  ログイン
 # ============================
-from django.shortcuts import redirect
-from django.views.generic import CreateView, FormView
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.views import PasswordResetView
-from django.urls import reverse_lazy
-from django.contrib import messages
-
-from ..forms.auth import (
-    RegistForm,
-    UserLoginForm,
-    CustomPasswordResetForm,
-)
-
-
-# ============================
-#  新規登録
-# ============================
-class RegistUserView(CreateView):
-    template_name = 'login/regist.html'
-    form_class = RegistForm
-    success_url = reverse_lazy('app:home')
-
-    def form_valid(self, form):
-        self.object = form.save()
-        login(self.request, self.object, backend='app.backends.EmailBackend')
-        return redirect(self.get_success_url())
-
-    def get_success_url(self):
-        next_url = self.request.GET.get("next")
-        if next_url:
-            return next_url
-        return super().get_success_url()
-
-
-# ============================
-#  ログイン
-# ============================
 class UserLoginView(FormView):
     template_name = 'login/user_login.html'
     form_class = UserLoginForm
@@ -106,26 +69,7 @@ class PasswordResetMailView(PasswordResetView):
     template_name = 'login/password_reset.html'
     form_class = CustomPasswordResetForm
 
-    # メールテンプレート（TXT + HTML）
-    email_template_name = 'login/password_reset_email.txt'
-    html_email_template_name = 'login/password_reset_email.html'
-    subject_template_name = 'login/password_reset_subject.txt'
-
-    # 成功後は同じ画面に戻す
-    success_url = reverse_lazy('app:password_reset')
-
-    def form_valid(self, form):
-        messages.success(self.request, "パスワード再設定用のメールを送信しました。")
-        return super().form_valid(form)
-
-# ============================
-#  パスワード再設定（メール送信）
-# ============================
-class PasswordResetMailView(PasswordResetView):
-    template_name = 'login/password_reset.html'
-    form_class = CustomPasswordResetForm
-
-    # メールテンプレート（TXT + HTML）
+    # メールテンプレート
     email_template_name = 'login/password_reset_email.txt'
     html_email_template_name = 'login/password_reset_email.html'
     subject_template_name = 'login/password_reset_subject.txt'

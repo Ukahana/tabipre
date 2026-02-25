@@ -2,7 +2,6 @@ from django.views import View
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from app.models import Favorite, FavoriteItem
-from app.forms.favorite import FavoriteItemsForm 
 
 
 class FavoritesEditView(View):
@@ -14,13 +13,12 @@ class FavoritesEditView(View):
         if not favorite:
             favorite = Favorite.objects.create(user=request.user)
 
-        # 既存項目をフォームに渡す（JS で hidden に入れる前提）
+        # 既存項目をテンプレートへ渡す
         items = [item.item_name for item in favorite.items.all()]
-        form = FavoriteItemsForm(initial={"items": "||".join(items)})
 
         return render(request, self.template_name, {
             "favorite": favorite,
-            "form": form,
+            "items": items,
         })
 
     def post(self, request):
@@ -29,17 +27,9 @@ class FavoritesEditView(View):
         if not favorite:
             favorite = Favorite.objects.create(user=request.user)
 
-        form = FavoriteItemsForm(request.POST)
-
-        if not form.is_valid():
-            # エラー時は元の画面に戻す
-            return render(request, self.template_name, {
-                "favorite": favorite,
-                "form": form,
-            })
-
-        # バリデーション済みの items を取得
-        items = form.cleaned_data["items"]
+        # hidden にまとめられた items を取得
+        items_raw = request.POST.get("items", "")
+        items = [name for name in items_raw.split("||") if name.strip()]
 
         # 既存項目を削除
         favorite.items.all().delete()

@@ -10,7 +10,7 @@ from django.contrib import messages
 
 def create_link(request, travel_id):
     travel = get_object_or_404(Travel_info, pk=travel_id)
-    
+
     original_template = Template.objects.filter(
         travel_info=travel,
         template_source__isnull=True
@@ -21,7 +21,11 @@ def create_link(request, travel_id):
     ).first()
 
     next_day = travel.end_date + timedelta(days=1)
-    one_month_later = timezone.now().date() + relativedelta(months=1)
+    today = timezone.now().date()
+    one_month_later = today + relativedelta(months=1)
+
+    # ▼ 旅行終了日の翌日が過去かどうか
+    is_after_trip_expired = next_day < today
 
     expiration_choices = [
         (0, "1か月間有効："),
@@ -29,6 +33,9 @@ def create_link(request, travel_id):
         (2, "日付を指定する"),
     ]
 
+    # -------------------------
+    # GET
+    # -------------------------
     if request.method == "GET":
         form = LinkForm(initial={
             "permission_type": Link.PermissionType.READ_ONLY,
@@ -45,12 +52,16 @@ def create_link(request, travel_id):
             "one_month_later": one_month_later,
             "existing_link": existing_link,
             "show_modal": False,
+            "is_after_trip_expired": is_after_trip_expired,
         })
 
-    
+    # -------------------------
+    # POST
+    # -------------------------
     form = LinkForm(request.POST)
     form.fields["expiration_type"].choices = expiration_choices
 
+    # 既存リンクチェック
     if existing_link:
         form.add_error(None, "この旅行の共有リンクはすでに作成されています。")
         return render(request, "old_travel/create_link.html", {
@@ -60,8 +71,10 @@ def create_link(request, travel_id):
             "next_day": next_day,
             "one_month_later": one_month_later,
             "show_modal": False,
+            "is_after_trip_expired": is_after_trip_expired,
         })
 
+    # バリデーション NG
     if not form.is_valid():
         return render(request, "old_travel/create_link.html", {
             "form": form,
@@ -70,9 +83,26 @@ def create_link(request, travel_id):
             "next_day": next_day,
             "one_month_later": one_month_later,
             "show_modal": False,
+            "is_after_trip_expired": is_after_trip_expired,
         })
 
+    # ▼ 不正に「旅行終了日の翌日」を選んだ場合の保険
+    if form.cleaned_data["expiration_type"] == Link.ExpirationType.AFTER_TRIP:
+        if is_after_trip_expired:
+            form.add_error("expiration_type", "旅行終了日の翌日はすでに過ぎています。")
+            return render(request, "old_travel/create_link.html", {
+                "form": form,
+                "template": original_template,
+                "travel": travel,
+                "next_day": next_day,
+                "one_month_later": one_month_later,
+                "show_modal": False,
+                "is_after_trip_expired": is_after_trip_expired,
+            })
+
+    # -------------------------
     # コピー作成
+    # -------------------------
     copied_template = Template.objects.create(
         user=original_template.user,
         travel_info=original_template.travel_info,
@@ -94,6 +124,9 @@ def create_link(request, travel_id):
                 item_checked=0,
             )
 
+    # -------------------------
+    # リンク作成
+    # -------------------------
     link = form.save(commit=False)
     link.user = request.user
     link.template = copied_template
@@ -106,7 +139,7 @@ def create_link(request, travel_id):
 
     link.save()
     share_url = request.build_absolute_uri(f"/share/{link.share_token}/")
-    
+
     return render(request, "old_travel/create_link.html", {
         "form": form,
         "template": original_template,
@@ -116,4 +149,5 @@ def create_link(request, travel_id):
         "link": link,
         "share_url": share_url,
         "show_modal": True,
+        "is_after_trip_expired": is_after_trip_expired,
     })

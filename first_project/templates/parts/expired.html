@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+{{ block.super }}
+<link rel="stylesheet" href="{% static 'tabipre/css/old_template/create_link.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="expired-wrapper">
+    <h3>{{ title }}</h3>
+    <p>{{ message }}</p>
+</div>
+{% endblock %}

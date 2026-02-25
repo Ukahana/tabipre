@@ -49,5 +49,13 @@ def update_share_link(request, link_id):
 @require_POST
 def delete_share_link(request, link_id):
     link = get_object_or_404(Link, id=link_id, user=request.user)
-    link.delete()
+
+    copied_template = link.template  # リンクが参照しているテンプレート
+
+    link.delete()  # まずリンクを削除
+
+    # ★ コピー元があるテンプレートなら削除（共有用テンプレート）
+    if copied_template.template_source is not None:
+        copied_template.delete()
+
     return redirect('app:share_settings')

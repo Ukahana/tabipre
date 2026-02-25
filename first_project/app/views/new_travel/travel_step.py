@@ -83,7 +83,7 @@ def travel_step2(request):
                     defaults={"custom_transport_text": other_text}
                 )
 
-            # ⭐ テンプレート作成（1つだけ）
+            #  テンプレート作成（1つだけ）
             template = template_source(travel, request.user)
 
             # 新規作成完了 → フラグ OFF
@@ -124,7 +124,7 @@ def travel_step2(request):
                     defaults={"custom_transport_text": tm.custom_transport_text}
                 )
 
-            # ⭐ テンプレートは1つだけ
+            #  テンプレートは1つだけ
             new_template, created = Template.objects.get_or_create(
                 travel_info=travel,
                 defaults={
@@ -134,7 +134,7 @@ def travel_step2(request):
                 }
             )
 
-            # ⭐ 初回作成時だけカテゴリ・アイテムをコピー
+            #  初回作成時だけカテゴリ・アイテムをコピー
             if created:
                 old_categories = TravelCategory.objects.filter(template=old_template)
 

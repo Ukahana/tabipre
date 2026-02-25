@@ -74,6 +74,7 @@
       <div class="radio-inline mt-3 expire-radio">
         <label>
           <input type="radio" name="expiration_type" value="1"
+                 {% if is_after_trip_expired %}disabled{% endif %}
                  {% if form.data.expiration_type == "1" or form.initial.expiration_type == 1 %}checked{% endif %}>
 
           <span class="expire-label">
@@ -81,6 +82,9 @@
             <span class="expire-date">（{{ next_day|date:"Y.n.j" }} まで）</span>
           </span>
 
+          {% if is_after_trip_expired %}
+            <span class="text-danger small ms-2">※旅行が終了しているため選択できません</span>
+          {% endif %}
         </label>
       </div>
 

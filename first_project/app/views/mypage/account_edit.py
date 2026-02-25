@@ -9,10 +9,7 @@ from ...forms.auth import (
     validate_user_name_common,
     validate_email_common,
     validate_email_not_used,
-    CustomPasswordChangeForm,
 )
-
-
 
 @method_decorator(login_required, name='dispatch')
 class AccountEditView(View):

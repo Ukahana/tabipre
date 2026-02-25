@@ -21,7 +21,7 @@
       {% for item in favorite.items.all %}
         <li class="item-row">
           <span class="dot">・</span>
-          <input type="text" name="items" class="form-control item-input"
+          <input type="text" class="form-control item-input"
                  value="{{ item.item_name }}">
           <button type="button" class="remove-item">×</button>
         </li>

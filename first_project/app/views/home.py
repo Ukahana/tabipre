@@ -28,7 +28,10 @@ class HomeView(LoginRequiredMixin, TemplateView):
         transport_filter = [t for t in request.GET.getlist("transport") if t]
         sort = request.GET.get("sort", "")
 
-        travels = Travel_info.objects.filter(user=request.user)
+        travels = Travel_info.objects.filter(
+            user=request.user,
+            template__template_source__isnull=True 
+            )
 
         if keyword:
             travels = travels.filter(travel_title__icontains=keyword)
