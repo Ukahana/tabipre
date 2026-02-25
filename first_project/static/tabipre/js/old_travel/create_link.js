@@ -59,18 +59,25 @@ document.addEventListener("DOMContentLoaded", function () {
         if (modalEl) {
             const modal = new bootstrap.Modal(modalEl);
 
-            // ★ モーダルが開いた後にイベントを付ける（重要）
+            // ★ モーダルが開いた後にイベントを付ける
             modalEl.addEventListener("shown.bs.modal", () => {
                 const copyBtn = document.getElementById("copy_btn");
                 const shareInput = document.getElementById("share_url");
 
-                if (copyBtn && shareInput) {
-                    copyBtn.addEventListener("click", () => {
-                        navigator.clipboard.writeText(shareInput.value)
-                            .then(() => {
-                            });
-                    });
-                }
+                if (!copyBtn || !shareInput) return;
+
+                copyBtn.addEventListener("click", () => {
+                    navigator.clipboard.writeText(shareInput.value)
+                        .then(() => {
+
+                            // ★ ボタンの見た目を一瞬変える
+                            const originalText = copyBtn.textContent;
+                            copyBtn.textContent = "コピーしました！";
+                            copyBtn.classList.add("btn-success");
+                            copyBtn.classList.remove("btn-primary");
+
+                        });
+                });
             });
 
             modal.show();

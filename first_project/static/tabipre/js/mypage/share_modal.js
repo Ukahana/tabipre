@@ -3,7 +3,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const modal = document.getElementById("shareLinkModal");
     let currentLinkId = null;
 
-    // モーダル表示時の処理
+    // モーダル表示時
     modal.addEventListener("show.bs.modal", function (event) {
         const trigger = event.relatedTarget;
 
@@ -12,16 +12,16 @@ document.addEventListener("DOMContentLoaded", () => {
         const permission = trigger.getAttribute("data-permission");
         const expiration = trigger.getAttribute("data-expiration");
 
-        // URL をセット
         document.getElementById("share-url").value = url;
 
-        // ラジオボタンを選択
         document.getElementById("perm-view").checked = permission === "0";
         document.getElementById("perm-edit").checked = permission === "1";
 
-        // 有効期限
         const expInput = document.getElementById("share-expiration");
         if (expInput) expInput.value = expiration;
+
+        // メッセージを初期化
+        document.getElementById("copy-msg").textContent = "";
     });
 
     // 🔥 リンク削除
@@ -62,10 +62,19 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     };
 
-    // 📋 コピー機能
+    // 📋 コピー機能（JSだけでメッセージ表示）
     document.getElementById("copy-btn").onclick = () => {
         const input = document.getElementById("share-url");
-        input.select();
-        navigator.clipboard.writeText(input.value);
+        const msg = document.getElementById("copy-msg");
+
+        navigator.clipboard.writeText(input.value).then(() => {
+
+            msg.textContent = "コピーしました";
+
+            // 1.5秒後に消す
+            setTimeout(() => {
+                msg.textContent = "";
+            }, 1500);
+        });
     };
 });

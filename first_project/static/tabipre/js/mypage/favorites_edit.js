@@ -1,14 +1,31 @@
-// 項目追加
+// ------------------------------
+// 項目追加ボタン
+// ------------------------------
 document.getElementById("add-item").addEventListener("click", function () {
     const container = document.querySelector(".edit-list");
+    const errorList = document.getElementById("errorlist");
 
-    // ★ すべての input をチェックして、空欄が1つでもあれば追加しない
-    const inputs = container.querySelectorAll("input[name='items']");
-    for (const input of inputs) {
+    // エラーリセット
+    errorList.style.display = "none";
+    errorList.innerHTML = "";
+
+    const inputs = container.querySelectorAll(".item-input");
+    let hasError = false;
+
+    // 空欄チェック
+    inputs.forEach(input => {
+        input.classList.remove("is-invalid");
+
         if (input.value.trim() === "") {
-            input.focus();
-            return;
+            input.classList.add("is-invalid");
+            hasError = true;
         }
+    });
+
+    if (hasError) {
+        errorList.innerHTML = "<li>空欄の項目があります。入力してから追加してください。</li>";
+        errorList.style.display = "block";
+        return;
     }
 
     // 新しい項目を追加
@@ -17,19 +34,39 @@ document.getElementById("add-item").addEventListener("click", function () {
 
     li.innerHTML = `
         <span class="dot">・</span>
-        <input type="text" name="items" class="form-control item-input" placeholder="項目を入力">
+        <input type="text" class="form-control item-input" placeholder="項目を入力">
         <button type="button" class="remove-item">×</button>
     `;
 
     container.appendChild(li);
-
-    // 一番下までスクロール
     container.scrollTop = container.scrollHeight;
 });
 
-// 削除ボタン（動的追加にも対応）
+
+// ------------------------------
+// 削除ボタン（×）
+// ------------------------------
 document.addEventListener("click", function (e) {
     if (e.target.classList.contains("remove-item")) {
         e.target.closest(".item-row").remove();
     }
+});
+
+
+// ------------------------------
+// 保存前に hidden にまとめる
+// ------------------------------
+document.querySelector("form").addEventListener("submit", function () {
+    const inputs = document.querySelectorAll(".item-input");
+    const hidden = document.getElementById("items-hidden");
+    const values = [];
+
+    inputs.forEach(input => {
+        const v = input.value.trim();
+        if (v !== "") {
+            values.push(v);
+        }
+    });
+
+    hidden.value = values.join("||");
 });

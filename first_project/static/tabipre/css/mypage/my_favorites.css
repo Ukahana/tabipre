@@ -127,3 +127,9 @@
     outline: none !important;
     background-color: #fff;
 }
+
+/* Bootstrap の is-invalid のアイコンを消す */
+.is-invalid {
+    background-image: none !important;
+    padding-right: 0 !important;
+}
