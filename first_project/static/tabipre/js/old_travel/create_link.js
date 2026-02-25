@@ -10,11 +10,36 @@ document.addEventListener("DOMContentLoaded", function () {
         allowInput: true,
         locale: "ja",
         clickOpens: false,
+
+        // ★ 旅行編集画面と同じ：年なし日付を補完する
+        parseDate: (value, format) => {
+            if (!value) return null;
+
+            const nums = value.replace(/[^\d]/g, "");
+            const currentYear = new Date().getFullYear();
+
+            // 2/1 → "21"
+            if (nums.length === 2) {
+                return new Date(currentYear, nums[0] - 1, nums[1]);
+            }
+
+            // 3-15 → "315"
+            if (nums.length === 3) {
+                return new Date(currentYear, nums[0] - 1, nums.slice(1));
+            }
+
+            // 0315 → "0315"
+            if (nums.length === 4) {
+                return new Date(currentYear, nums.slice(0, 2) - 1, nums.slice(2, 4));
+            }
+
+            return flatpickr.parseDate(value, format);
+        }
     });
 
     const altInput = fp.altInput;
 
-    // 手入力 → 本体 input を同期
+    // ▼ 手入力 → 本体 input を同期
     altInput.addEventListener("blur", function () {
         const raw = altInput.value.trim();
 
@@ -23,6 +48,7 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
+        // flatpickr にセット（parseDate が補完してくれる）
         fp.setDate(raw, true);
 
         if (fp.selectedDates.length > 0) {
@@ -30,12 +56,12 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // カレンダーボタン
+    // ▼ カレンダーボタン
     document.querySelectorAll(".calendar-btn").forEach(btn => {
         btn.addEventListener("click", () => fp.open());
     });
 
-    // expiration_type による表示切り替え
+    // ▼ expiration_type による表示切り替え
     function updateExpiration() {
         const selected = document.querySelector('input[name="expiration_type"]:checked');
         if (!selected) return;
@@ -52,35 +78,4 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     updateExpiration();
-
-    // モーダル
-    if (window.SHOW_MODAL === true) {
-        const modalEl = document.getElementById("linkModal");
-        if (modalEl) {
-            const modal = new bootstrap.Modal(modalEl);
-
-            // ★ モーダルが開いた後にイベントを付ける
-            modalEl.addEventListener("shown.bs.modal", () => {
-                const copyBtn = document.getElementById("copy_btn");
-                const shareInput = document.getElementById("share_url");
-
-                if (!copyBtn || !shareInput) return;
-
-                copyBtn.addEventListener("click", () => {
-                    navigator.clipboard.writeText(shareInput.value)
-                        .then(() => {
-
-                            // ★ ボタンの見た目を一瞬変える
-                            const originalText = copyBtn.textContent;
-                            copyBtn.textContent = "コピーしました！";
-                            copyBtn.classList.add("btn-success");
-                            copyBtn.classList.remove("btn-primary");
-
-                        });
-                });
-            });
-
-            modal.show();
-        }
-    }
 });

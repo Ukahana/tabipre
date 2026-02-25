@@ -16,7 +16,7 @@ class LinkForm(forms.ModelForm):
                 attrs={
                     "type": "text",
                     "autocomplete": "off",
-                    "placeholder": "例: 2026-3-1 , 2026/3/1 , 2026.3.1",
+                    "placeholder": "日付を指定してください（例：2026-3-1）",
                 }
             ),
         }
@@ -25,7 +25,7 @@ class LinkForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields["expiration_date"].required = False
 
-    # ▼ 年あり形式のみ許可
+    # ▼ 年なし日付（例：2/1）も許可し、今年の年を補完する
     def clean_expiration_date(self):
         value = self.cleaned_data.get("expiration_date")
         if not value:
@@ -45,11 +45,14 @@ class LinkForm(forms.ModelForm):
         parts = normalized.split("-")
 
         try:
-            # ★ 年なし（2/1 など）は不許可
-            if len(parts) != 3:
+            # ▼ 年なし（例：2-1）なら今年を補完
+            if len(parts) == 2:
+                year = timezone.now().year
+                month, day = parts
+            elif len(parts) == 3:
+                year, month, day = parts
+            else:
                 raise ValueError
-
-            year, month, day = parts
 
             month = month.zfill(2)
             day = day.zfill(2)
@@ -58,7 +61,7 @@ class LinkForm(forms.ModelForm):
             return parsed
 
         except Exception:
-            raise ValidationError("正しい日付を入力してください（例: 2026-3-1）")
+            raise ValidationError("正しい日付を入力してください（例：2026-3-1）")
 
     # ▼ expiration_type=2 のときだけ日付必須
     def clean(self):
@@ -72,6 +75,7 @@ class LinkForm(forms.ModelForm):
             elif exp_date < timezone.now().date():
                 self.add_error("expiration_date", "過去の日付は指定できません。")
         else:
+            # 他のタイプでは expiration_date のエラーを消す
             if "expiration_date" in self._errors:
                 del self._errors["expiration_date"]
 
