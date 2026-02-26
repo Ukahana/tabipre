@@ -34,14 +34,8 @@
   gap: 8px;
 }
 
-.flatpickr-input {
-  height: 38px !important;
-  padding: 6px 10px !important;
-  font-size: 16px !important;
-  width: 100% !important;
-  box-sizing: border-box !important;
-}
 
+/* Django の元 input は非表示 */
 #id_expiration_date {
   display: none !important;
 }
@@ -90,15 +84,16 @@
 
 .expire-radio input[type="radio"] {
   align-self: flex-start;
-   transform: translateY(4px);
+  transform: translateY(4px);
 }
+
 .btn-primary {
-    background-color: #0c64e5ff !important;
-    border-color: #0c64e5ff !important;
+  background-color: #0c64e5ff !important;
+  border-color: #0c64e5ff !important;
 }
 
 .btn-primary:hover {
-    opacity: 0.9;
+  opacity: 0.9;
 }
 
 /* ============================= */
@@ -106,10 +101,10 @@
 /* ============================= */
 
 .expired-wrapper {
-  height: 100vh;              
+  height: 100vh;
   display: flex;
-  justify-content: center;     
-  align-items: center;        
-  text-align: center;          
-  flex-direction: column;     
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
 }

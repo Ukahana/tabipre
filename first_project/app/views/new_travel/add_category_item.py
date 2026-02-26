@@ -111,6 +111,6 @@ def add_category_item(request, template_id):
             "past_categories": past_categories,
             "favorite_items": favorite_items,
             "color_map": color_map,
-            "is_share_edit": True,
+            "is_share_edit": False,
         }
     )

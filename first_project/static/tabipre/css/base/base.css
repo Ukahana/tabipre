@@ -27,7 +27,14 @@
     padding-bottom: 20px;
   }
 }
-
+@media (max-width: 480px) {
+  .app-frame {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;   /* 上下中央 */
+    min-height: 100dvh;        /* スマホの高さバグ対策 */
+  }
+}
 /* ============================= */
 /* フッター */
 /* ============================= */
