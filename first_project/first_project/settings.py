@@ -107,7 +107,8 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
+# パスワードリセットリンクの有効期限（秒）
+PASSWORD_RESET_TIMEOUT = 60 * 60 * 24  # 24時間
 
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/

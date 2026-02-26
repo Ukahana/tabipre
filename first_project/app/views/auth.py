@@ -10,6 +10,7 @@ from ..forms.auth import (
     UserLoginForm,
     CustomPasswordResetForm,
 )
+from django.conf import settings
 
 
 # ============================
@@ -69,14 +70,18 @@ class PasswordResetMailView(PasswordResetView):
     template_name = 'login/password_reset.html'
     form_class = CustomPasswordResetForm
 
-    # メールテンプレート
     email_template_name = 'login/password_reset_email.txt'
     html_email_template_name = 'login/password_reset_email.html'
     subject_template_name = 'login/password_reset_subject.txt'
 
-    # 成功後は同じ画面に戻す
     success_url = reverse_lazy('app:password_reset')
 
     def form_valid(self, form):
         messages.success(self.request, "パスワード再設定用のメールを送信しました。")
         return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        timeout_hours = settings.PASSWORD_RESET_TIMEOUT // 3600
+        context["expiration_time"] = f"{timeout_hours}時間"
+        return context
