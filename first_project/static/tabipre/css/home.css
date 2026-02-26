@@ -235,5 +235,9 @@ input[type="text"], button { border-radius: 0; }
     padding-right: 40px;
 }
 .search-input::placeholder {
-    padding-left: 10px; /* 好きな値に調整 */
+    padding-left: 10px; 
+}
+.tag-scroll {
+    overflow-y: hidden;   
+    padding-bottom: 8px;  
 }
