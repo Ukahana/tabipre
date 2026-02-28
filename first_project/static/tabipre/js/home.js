@@ -41,10 +41,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const input = document.getElementById("keywordInput");
     const clearBtn = document.getElementById("clearBtn");
 
-    // 入力時に × ボタン表示
+    // 入力時に × ボタン表示（ページ遷移はしない）
     input.addEventListener("input", function () {
         clearBtn.style.display = input.value ? "block" : "none";
+    });
 
+    // 入力確定時（IME変換完了後）に空なら検索条件を削除
+    input.addEventListener("change", function () {
         if (input.value === "") {
             const url = new URL(window.location.href);
             url.searchParams.delete("keyword");
@@ -56,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // × ボタン押下でクリア
+    // × ボタン押下でクリア → 即検索条件削除
     clearBtn.addEventListener("click", function () {
         input.value = "";
         clearBtn.style.display = "none";
