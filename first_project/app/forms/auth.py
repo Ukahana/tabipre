@@ -6,6 +6,8 @@ from ..models import User
 import re
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.forms import PasswordResetForm
+from django.contrib.auth.forms import SetPasswordForm
+from django.conf import settings
 
 UserModel = get_user_model()
 
@@ -201,3 +203,39 @@ class CustomPasswordResetForm(PasswordResetForm):
             raise ValidationError("このメールアドレスは登録されていません。")
 
         return email
+
+    def save(self, domain_override=None,
+             subject_template_name=None,
+             email_template_name=None,
+             use_https=False, token_generator=None,
+             from_email=None, request=None,
+             html_email_template_name=None,
+             extra_email_context=None):
+
+        # ★ expiration_time をここで追加する
+        timeout_hours = settings.PASSWORD_RESET_TIMEOUT // 3600
+        extra_email_context = extra_email_context or {}
+        extra_email_context["expiration_time"] = f"{timeout_hours}時間"
+
+        return super().save(
+            domain_override=domain_override,
+            subject_template_name=subject_template_name,
+            email_template_name=email_template_name,
+            use_https=use_https,
+            token_generator=token_generator,
+            from_email=from_email,
+            request=request,
+            html_email_template_name=html_email_template_name,
+            extra_email_context=extra_email_context,
+        )
+
+class CustomSetPasswordForm(SetPasswordForm):
+
+    def clean_new_password1(self):
+        new_password = self.cleaned_data.get('new_password1')
+
+        # 現在のパスワードと同じかチェック
+        if self.user.check_password(new_password):
+            raise ValidationError("現在のパスワードと同じです。別のパスワードを設定してください。")
+
+        return new_password

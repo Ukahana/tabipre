@@ -14,6 +14,7 @@ from ..forms.auth import (
     RegistForm,
     UserLoginForm,
     CustomPasswordResetForm,
+    CustomSetPasswordForm
 )
 
 
@@ -77,7 +78,6 @@ class PasswordResetMailView(PasswordResetView):
     html_email_template_name = 'login/password_reset_email.html'
     subject_template_name = 'login/password_reset_subject.txt'
 
-    # メール送信後は「送信完了ページ」へ
     success_url = reverse_lazy('app:password_reset')
 
     def form_valid(self, form):
@@ -90,6 +90,13 @@ class PasswordResetMailView(PasswordResetView):
         context["expiration_time"] = f"{timeout_hours}時間"
         return context
 
+    def get_email_context(self, context):
+        context = super().get_email_context(context)
+        timeout_hours = settings.PASSWORD_RESET_TIMEOUT // 3600
+        context["expiration_time"] = f"{timeout_hours}時間"
+        return context
+
+
 
 # ============================
 #  パスワード再設定（新パスワード入力）
@@ -97,6 +104,7 @@ class PasswordResetMailView(PasswordResetView):
 class CustomPasswordResetConfirmView(PasswordResetConfirmView):
     template_name = 'mypage/password_change.html'
     success_url = reverse_lazy('app:password_reset_complete')
+    form_class = CustomSetPasswordForm
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -105,9 +113,12 @@ class CustomPasswordResetConfirmView(PasswordResetConfirmView):
         return context
 
 
+
 # ============================
 #  パスワード再設定完了
 # ============================
 class CustomPasswordResetCompleteView(PasswordResetCompleteView):
     def dispatch(self, request, *args, **kwargs):
+        messages.success(request, "パスワードの変更が完了しました。")
         return redirect('app:login')
+    

@@ -11,3 +11,9 @@ class CustomPasswordChangeView(PasswordChangeView):
     def form_valid(self, form):
         messages.success(self.request, "パスワードを変更しました。")
         return super().form_valid(form)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['reset_mode'] = False
+        context['is_share_page'] = False
+        return context
