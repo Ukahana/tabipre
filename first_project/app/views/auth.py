@@ -1,16 +1,20 @@
 from django.shortcuts import redirect
 from django.views.generic import CreateView, FormView
 from django.contrib.auth import authenticate, login
-from django.contrib.auth.views import PasswordResetView
+from django.contrib.auth.views import (
+    PasswordResetView,
+    PasswordResetConfirmView,
+    PasswordResetCompleteView,
+)
 from django.urls import reverse_lazy
 from django.contrib import messages
+from django.conf import settings
 
 from ..forms.auth import (
     RegistForm,
     UserLoginForm,
     CustomPasswordResetForm,
 )
-from django.conf import settings
 
 
 # ============================
@@ -28,9 +32,7 @@ class RegistUserView(CreateView):
 
     def get_success_url(self):
         next_url = self.request.GET.get("next")
-        if next_url:
-            return next_url
-        return super().get_success_url()
+        return next_url if next_url else super().get_success_url()
 
 
 # ============================
@@ -45,6 +47,7 @@ class UserLoginView(FormView):
         email = form.cleaned_data['email']
         password = form.cleaned_data['password']
 
+        # EmailBackend を使用するため username=email で認証
         user = authenticate(
             request=self.request,
             username=email,
@@ -74,6 +77,7 @@ class PasswordResetMailView(PasswordResetView):
     html_email_template_name = 'login/password_reset_email.html'
     subject_template_name = 'login/password_reset_subject.txt'
 
+    # メール送信後は「送信完了ページ」へ
     success_url = reverse_lazy('app:password_reset')
 
     def form_valid(self, form):
@@ -85,3 +89,25 @@ class PasswordResetMailView(PasswordResetView):
         timeout_hours = settings.PASSWORD_RESET_TIMEOUT // 3600
         context["expiration_time"] = f"{timeout_hours}時間"
         return context
+
+
+# ============================
+#  パスワード再設定（新パスワード入力）
+# ============================
+class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+    template_name = 'mypage/password_change.html'
+    success_url = reverse_lazy('app:password_reset_complete')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['reset_mode'] = True
+        context['is_share_page'] = True
+        return context
+
+
+# ============================
+#  パスワード再設定完了
+# ============================
+class CustomPasswordResetCompleteView(PasswordResetCompleteView):
+    def dispatch(self, request, *args, **kwargs):
+        return redirect('app:login')

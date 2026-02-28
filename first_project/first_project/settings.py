@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-jk8dge)48&vmiii)($zxda--e8szub*i0!si3za=w2cj49c0(b
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -143,3 +143,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 # EMAIL_HOST_USER = 'あなたのGmailアドレス'
 # EMAIL_HOST_PASSWORD = 'アプリパスワード'
 # # DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+# Gmailで送信用

@@ -1,13 +1,11 @@
 from django import forms
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
-from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth import get_user_model
 from ..models import User
 import re
 from django.contrib.auth.forms import PasswordChangeForm
-from django.core.exceptions import ValidationError
-from django.conf import settings
+from django.contrib.auth.forms import PasswordResetForm
 
 UserModel = get_user_model()
 
@@ -29,29 +27,31 @@ def validate_user_name_common(name):
 
     return name
 
+
 def validate_email_common(email):
     email = email.strip().lower()
 
     if not email:
         raise ValidationError("メールアドレスを入力してください。")
 
-    # 形式チェック（Django の EmailField に任せてもOK）
     if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
         raise ValidationError("正しいメールアドレスを入力してください。")
 
     return email
 
+
 def validate_email_not_used(email, user=None):
-    """
-    user が指定されている場合は「自分以外が使っているか」をチェック
-    """
     qs = User.objects.filter(email=email)
     if user:
         qs = qs.exclude(pk=user.pk)
 
     if qs.exists():
         raise ValidationError("このメールアドレスは既に使用されています。")
-    
+
+
+# ============================
+#  パスワード変更フォーム
+# ============================
 class CustomPasswordChangeForm(PasswordChangeForm):
 
     def validate_password_rules(self, pw):
@@ -65,20 +65,19 @@ class CustomPasswordChangeForm(PasswordChangeForm):
             self.add_error('new_password1', "大文字を入れてください。")
 
     def clean(self):
-        pw1 = self.cleaned_data.get("new_password1")
-        pw2 = self.cleaned_data.get("new_password2")
+        cleaned = super().clean()
+        pw1 = cleaned.get("new_password1")
+        pw2 = cleaned.get("new_password2")
 
-        # パスワード一致チェック
         if pw1 and pw2 and pw1 != pw2:
             self.add_error('new_password2', "パスワードが一致しません。")
 
-        # 独自ルールチェック
         if pw1:
             self.validate_password_rules(pw1)
 
-        # 最後に Django 標準チェック
-        return super().clean()
-    
+        return cleaned
+
+
 # ============================
 #  登録フォーム
 # ============================
@@ -109,21 +108,20 @@ class RegistForm(forms.ModelForm):
             }),
         }
 
-    # --- ユーザー名チェック（共通関数を使用） ---
+    # --- ユーザー名チェック ---
     def clean_user_name(self):
         name = self.cleaned_data.get("user_name", "")
         return validate_user_name_common(name)
 
-    # --- メールアドレス正規化 + 重複チェック ---
+    # --- メールアドレスチェック ---
     def clean_email(self):
         email = self.cleaned_data.get("email")
         if not email:
             return email
 
-        email = email.strip().lower()
+        email = validate_email_common(email)
 
-        if User.objects.filter(email=email).exists():
-            raise ValidationError("このメールアドレスは既に登録されています。")
+        validate_email_not_used(email)
 
         return email
 
@@ -141,8 +139,7 @@ class RegistForm(forms.ModelForm):
         try:
             validate_password(pw)
         except ValidationError as e:
-            combined = " / ".join(e.messages)
-            self.add_error('password', combined)
+            self.add_error('password', " / ".join(e.messages))
 
     def clean(self):
         cleaned = super().clean()
@@ -192,57 +189,15 @@ class UserLoginForm(forms.Form):
             email = email.strip().lower()
         return email
 
-
-# ============================
-#  パスワード再設定フォーム
-# ============================
 class CustomPasswordResetForm(PasswordResetForm):
-
-    email = forms.EmailField(
-        label="メールアドレス",
-        widget=forms.EmailInput(attrs={
-            'class': 'form-control',
-            'oninput': 'this.value = this.value.toLowerCase();'
-        }),
-        error_messages={
-            'required': 'メールアドレスを入力してください。',
-            'invalid': '正しいメールアドレスを入力してください。',
-        }
-    )
 
     def clean_email(self):
         email = self.cleaned_data.get("email", "").strip().lower()
 
-        if not UserModel.objects.filter(email=email).exists():
+        if not email:
+            raise ValidationError("メールアドレスを入力してください。")
+
+        if not User.objects.filter(email=email).exists():
             raise ValidationError("このメールアドレスは登録されていません。")
 
         return email
-
-    # ★★★ ここを追加 ★★★
-    def save(self, domain_override=None,
-             subject_template_name='login/password_reset_subject.txt',
-             email_template_name='login/password_reset_email.txt',
-             use_https=False, token_generator=None,
-             from_email=None, request=None, html_email_template_name='login/password_reset_email.html',
-             extra_email_context=None):
-
-        # 有効期限（秒 → 時間）
-        timeout_hours = settings.PASSWORD_RESET_TIMEOUT // 3600
-
-        # context を追加
-        if extra_email_context is None:
-            extra_email_context = {}
-
-        extra_email_context["expiration_time"] = f"{timeout_hours}時間"
-
-        return super().save(
-            domain_override=domain_override,
-            subject_template_name=subject_template_name,
-            email_template_name=email_template_name,
-            use_https=use_https,
-            token_generator=token_generator,
-            from_email=from_email,
-            request=request,
-            html_email_template_name=html_email_template_name,
-            extra_email_context=extra_email_context,
-        )

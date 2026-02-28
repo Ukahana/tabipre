@@ -7,8 +7,10 @@ from app.views.auth import (
     RegistUserView,
     UserLoginView,
     PasswordResetMailView,
+    CustomPasswordResetConfirmView,
+    CustomPasswordResetCompleteView,
 )
-from django.contrib.auth.views import PasswordResetConfirmView, PasswordResetCompleteView
+
 
 # home
 from app.views.home import HomeView
@@ -94,12 +96,9 @@ urlpatterns = [
 
     # パスワード再設定
     path('password_reset/', PasswordResetMailView.as_view(), name='password_reset'),
-    path('reset/<uidb64>/<token>/', PasswordResetConfirmView.as_view(
-        template_name='login/password_reset_confirm.html'), name='password_reset_confirm'),
-    path('reset/done/', PasswordResetCompleteView.as_view(
-        template_name='login/password_reset_complete.html'), name='password_reset_complete'),
-
-
+    path('reset/<uidb64>/<token>/',CustomPasswordResetConfirmView.as_view(),
+    name='password_reset_confirm'),
+    path('reset/done/', CustomPasswordResetCompleteView.as_view(), name='password_reset_complete'),
     # ============================
     # 共有リンク（管理画面：IDベース）
     # ============================
