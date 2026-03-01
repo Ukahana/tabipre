@@ -4,8 +4,11 @@ from app.models import Travel_info
 
 # モーダル表示：過去の旅行一覧を表示するだけ
 def TravelCopyModalView(request):
-    past_travels = Travel_info.objects.filter(user=request.user).order_by('-start_date')
-
+    past_travels = Travel_info.objects.filter(
+    user=request.user,
+    template__isnull=False
+    ).order_by('-start_date')
+    
     return render(request, "new_travel/copy_modal.html", {
         "past_travels": past_travels
     })

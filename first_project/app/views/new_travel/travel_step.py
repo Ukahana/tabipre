@@ -84,11 +84,12 @@ def travel_step2(request):
                 )
 
             #  テンプレート作成（1つだけ）
+            
             template = template_source(travel, request.user)
+
 
             # 新規作成完了 → フラグ OFF
             request.session["creating_travel"] = False
-
             del request.session["travel_step1"]
             messages.success(request, "テンプレートを自動作成しました")
             return redirect("app:template_edit", template_id=template.id)
@@ -101,7 +102,7 @@ def travel_step2(request):
 
             old_travel_id = request.POST.get("old_travel_id")
             old_travel = get_object_or_404(Travel_info, pk=old_travel_id)
-            old_template = Template.objects.get(travel_info=old_travel)
+            old_template = Template.objects.filter(travel_info=old_travel).first()
 
             start_date = datetime.strptime(step1_data["start_date"], "%Y-%m-%d").date()
             end_date = datetime.strptime(step1_data["end_date"], "%Y-%m-%d").date()
@@ -125,33 +126,30 @@ def travel_step2(request):
                 )
 
             #  テンプレートは1つだけ
-            new_template, created = Template.objects.get_or_create(
+            new_template = Template.objects.create(
                 travel_info=travel,
-                defaults={
-                    "user": request.user,
-                    "source_type": Template.SourceType.FROM_TEMPLATE,
-                    "template_source": old_template,
-                }
+                user=request.user,
+                source_type=Template.SourceType.FROM_TEMPLATE,
+                template_source=old_template,
             )
+            
+            old_categories = TravelCategory.objects.filter(template=old_template)
 
             #  初回作成時だけカテゴリ・アイテムをコピー
-            if created:
-                old_categories = TravelCategory.objects.filter(template=old_template)
+            for old_cat in old_categories:
+                new_cat = TravelCategory.objects.create(
+                    template=new_template,
+                    category_name=old_cat.category_name,
+                    category_color=old_cat.category_color,
+                    travel_type=old_cat.travel_type,
+                )
 
-                for old_cat in old_categories:
-                    new_cat = TravelCategory.objects.create(
-                        template=new_template,
-                        category_name=old_cat.category_name,
-                        category_color=old_cat.category_color,
-                        travel_type=old_cat.travel_type,
+                for old_item in old_cat.travelitem_set.all():
+                    TravelItem.objects.create(
+                        travel_category=new_cat,
+                        item_name=old_item.item_name,
+                        item_checked=old_item.item_checked,
                     )
-
-                    for old_item in old_cat.travelitem_set.all():
-                        TravelItem.objects.create(
-                            travel_category=new_cat,
-                            item_name=old_item.item_name,
-                            item_checked=old_item.item_checked,
-                        )
 
             # コピー完了 → フラグ OFF
             request.session["creating_travel"] = False
@@ -172,7 +170,10 @@ def travel_step2(request):
     # -----------------------------
     # Home と同じステータスロジック
     # -----------------------------
-    templates = Template.objects.filter(travel_info__user=request.user)
+    templates = Template.objects.filter(
+    travel_info__user=request.user
+    )
+    
     today = date.today()
 
     completed_travel_ids = (
@@ -189,7 +190,6 @@ def travel_step2(request):
 
     for t in templates:
         info = t.travel_info
-
         if info.end_date < today:
             t.display_status = "済"
         elif info.travel_info_id in completed_travel_ids:

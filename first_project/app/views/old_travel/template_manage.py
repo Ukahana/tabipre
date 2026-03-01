@@ -218,12 +218,10 @@ def edit_category_item(request, category_id):
         }
     )
 def delete_template(request, template_id):
-    template = get_object_or_404(Template, id=template_id)
+    template = get_object_or_404(Template, id=template_id, user=request.user)
     travel = template.travel_info
 
     if request.method == "POST":
-        travel.delete()
-        template.delete()
-        return redirect("app:home")  
-
-    return redirect("app:home")
+        template.delete()  
+        travel.delete()    
+        return redirect("app:home")

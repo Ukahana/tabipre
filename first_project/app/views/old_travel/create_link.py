@@ -13,7 +13,6 @@ def create_link(request, travel_id):
 
     original_template = Template.objects.filter(
         travel_info=travel,
-        template_source__isnull=True
     ).first()
 
     existing_link = Link.objects.filter(

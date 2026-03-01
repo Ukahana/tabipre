@@ -11,8 +11,7 @@ def travel_detail(request, travel_id):
     travel_info = get_object_or_404(Travel_info, pk=travel_id)
 
     template = Template.objects.filter(
-    travel_info=travel_info,
-    template_source__isnull=True
+    travel_info=travel_info
     ).first()
 
     if template:

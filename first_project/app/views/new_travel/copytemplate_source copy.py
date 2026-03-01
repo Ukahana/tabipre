@@ -23,15 +23,17 @@ INITIAL_ITEMS = {
 
 def template_source(travel, user):
 
-    # travel_info に紐づくテンプレートが残っていたら削除
-    Template.objects.filter(travel_info=travel).delete()
-
-    # 必ず新規テンプレートを作成
-    template = Template.objects.create(
+    template, created = Template.objects.get_or_create(
         travel_info=travel,
-        user=user,
-        source_type=Template.SourceType.FROM_TRAVEL,
+        defaults={
+            "user": user,
+            "source_type": Template.SourceType.FROM_TRAVEL,
+        }
     )
+
+    # 既にテンプレートがある場合はカテゴリ生成しない
+    if not created:
+        return template
 
     # --- ここから下は「初回作成時のみ」実行される ---
 
