@@ -1,14 +1,14 @@
-console.log("読み込まれた")
 document.addEventListener("DOMContentLoaded", function () {
-    const otherCheckbox = document.querySelector('#id_transport_types_5');
+    const checkboxes = document.querySelectorAll('input[name="transport_types"]');
     const otherBox = document.querySelector('.transport-other-box');
 
-    if (!otherCheckbox || !otherBox) return;
+    if (!checkboxes.length || !otherBox) return;
 
     function toggleOtherBox() {
-        otherBox.style.display = otherCheckbox.checked ? "inline-block" : "none";
+        const isChecked = [...checkboxes].some(cb => cb.checked && cb.value === "OTHER");
+        otherBox.style.display = isChecked ? "inline-block" : "none";
     }
 
-    otherCheckbox.addEventListener("change", toggleOtherBox);
+    checkboxes.forEach(cb => cb.addEventListener("change", toggleOtherBox));
     toggleOtherBox(); // 初期状態反映
 });

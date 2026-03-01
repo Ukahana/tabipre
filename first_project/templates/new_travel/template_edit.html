@@ -7,9 +7,6 @@
 
 {% block content %}
 <div class="container mt-3">
-
-    {% include 'includes/toast.html' %}
-
     <h2 class="mb-3 text-center">{{ template.travel_info.travel_title }}</h2>
 
     {% for category in template.travelcategory_set.all %}

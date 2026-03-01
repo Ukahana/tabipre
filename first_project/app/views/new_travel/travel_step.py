@@ -95,7 +95,7 @@ def travel_step2(request):
         # -----------------------------
         # コピー作成（旧旅行からコピー）
         # -----------------------------
-        if action == "copy":
+        if action == "copy" and form.is_valid():
             old_travel_id = request.POST.get("old_travel_id")
             old_travel = get_object_or_404(Travel_info, pk=old_travel_id)
             old_template = Template.objects.filter(travel_info=old_travel).first()

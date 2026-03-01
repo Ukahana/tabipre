@@ -32,10 +32,6 @@
     {% endfor %}
   </div>
 
-  <div class="errorlist">
-    {{ form.transport_types.errors }}
-  </div>
-
   <div class="transport-other-row">
     {% for checkbox in form.transport_types %}
       {% if checkbox.choice_label == "その他" %}
@@ -51,7 +47,9 @@
       {% endif %}
     {% endfor %}
   </div>
-
+  <div class="errorlist">
+    {{ form.transport_types.errors }}
+  </div>
   <div class="errorlist">
     {{ form.transport_other.errors }}
   </div>

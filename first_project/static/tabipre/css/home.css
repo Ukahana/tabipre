@@ -239,5 +239,6 @@ input[type="text"], button { border-radius: 0; }
 }
 .tag-scroll {
     overflow-y: hidden;   
-    padding-bottom: 8px;  
+    padding-bottom: 8px; 
+    margin-top: 12px; 
 }

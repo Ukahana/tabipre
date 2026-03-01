@@ -76,7 +76,7 @@ class TravelStep2Form(TravelBaseForm):
     transport_types = forms.ModelMultipleChoiceField(
         queryset=Transport.objects.all(),
         widget=forms.CheckboxSelectMultiple,
-        required=False,
+        required=True,
         label="交通手段",
     )
 
@@ -102,7 +102,7 @@ class TravelStep2Form(TravelBaseForm):
         super().__init__(*args, **kwargs)
 
         self.fields["location"].choices = Travel_info.LocationType.choices
-        self.fields["location"].required = False
+        self.fields["location"].required = True
 
         if travel:
             self.fields["transport_types"].initial = travel.transport.all()
@@ -123,10 +123,7 @@ class TravelStep2Form(TravelBaseForm):
 
     def clean(self):
         cleaned = super().clean()
-
-        if cleaned.get("location") == "":
-            cleaned["location"] = None
-
+        
         transports = cleaned.get("transport_types")
         other_text = cleaned.get("transport_other", "").strip()
         location = cleaned.get("location")
@@ -134,15 +131,9 @@ class TravelStep2Form(TravelBaseForm):
 
         cleaned["memo"] = memo.strip()
 
-        if not transports:
-            self.add_error("transport_types", "交通手段を1つ以上選択してください。")
-
         if transports and any(t.transport_type == Transport.TransportType.OTHER for t in transports):
             if not other_text:
                 self.add_error("transport_other", "その他を選択した場合は入力が必要です。")
-
-        if location is None:
-            self.add_error("location", "場所を選択してください。")
 
         if len(memo) > 230:
             self.add_error("memo", "メモは230文字以内で入力してください。")
