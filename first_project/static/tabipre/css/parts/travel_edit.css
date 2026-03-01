@@ -96,15 +96,6 @@
   transform: translateY(-2px);
 }
 
-.travel-edit-fields input[type="date"] {
-  appearance: none;
-}
-
-.travel-edit-fields input[type="date"]::-webkit-calendar-picker-indicator {
-  opacity: 0;
-}
-
-
 /* ============================= */
 /* Step2：場所の分類・交通手段 */
 /* ============================= */

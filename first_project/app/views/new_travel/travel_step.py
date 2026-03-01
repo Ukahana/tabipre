@@ -83,12 +83,10 @@ def travel_step2(request):
                     defaults={"custom_transport_text": other_text}
                 )
 
-            #  テンプレート作成（1つだけ）
-            
+            # テンプレート作成
             template = template_source(travel, request.user)
 
-
-            # 新規作成完了 → フラグ OFF
+            # 完了処理
             request.session["creating_travel"] = False
             del request.session["travel_step1"]
             messages.success(request, "テンプレートを自動作成しました")
@@ -98,8 +96,6 @@ def travel_step2(request):
         # コピー作成（旧旅行からコピー）
         # -----------------------------
         if action == "copy":
-            form = TravelStep2Form()  # 空フォーム
-
             old_travel_id = request.POST.get("old_travel_id")
             old_travel = get_object_or_404(Travel_info, pk=old_travel_id)
             old_template = Template.objects.filter(travel_info=old_travel).first()
@@ -125,17 +121,16 @@ def travel_step2(request):
                     defaults={"custom_transport_text": tm.custom_transport_text}
                 )
 
-            #  テンプレートは1つだけ
+            # テンプレートコピー
             new_template = Template.objects.create(
                 travel_info=travel,
                 user=request.user,
                 source_type=Template.SourceType.FROM_TEMPLATE,
                 template_source=old_template,
             )
-            
+
             old_categories = TravelCategory.objects.filter(template=old_template)
 
-            #  初回作成時だけカテゴリ・アイテムをコピー
             for old_cat in old_categories:
                 new_cat = TravelCategory.objects.create(
                     template=new_template,
@@ -151,9 +146,7 @@ def travel_step2(request):
                         item_checked=old_item.item_checked,
                     )
 
-            # コピー完了 → フラグ OFF
             request.session["creating_travel"] = False
-
             del request.session["travel_step1"]
             return redirect("app:old_template_copy", template_id=new_template.id)
 
@@ -161,31 +154,33 @@ def travel_step2(request):
         step2_data = request.session.get("travel_step2")
         if step2_data:
             form = TravelStep2Form(initial={
-               "location": step2_data.get("location", ""),
-               "transport_types": step2_data.get("transport", []),
-               "memo": step2_data.get("memo", ""),
+                "location": step2_data.get("location", ""),
+                "transport_types": step2_data.get("transport", []),
+                "memo": step2_data.get("memo", ""),
             })
         else:
             form = TravelStep2Form()
+
     # -----------------------------
-    # Home と同じステータスロジック
+    # ステータス判定（Home と同じ）
     # -----------------------------
     templates = Template.objects.filter(
-    travel_info__user=request.user
-    )
-    
+        travel_info__user=request.user
+    ).order_by('-travel_info__end_date', '-travel_info__start_date')
+
+
     today = date.today()
 
     completed_travel_ids = (
         TravelItem.objects
         .filter(travel_category__template__travel_info__user=request.user)
-        .values("travel_category__template__travel_info")
+        .values("travel_category__template__travel_info_id")
         .annotate(
             total=Count("id"),
             done=Count("id", filter=Q(item_checked=TravelItem.ItemChecked.YES))
         )
         .filter(total=F("done"))
-        .values_list("travel_category__template__travel_info", flat=True)
+        .values_list("travel_category__template__travel_info_id", flat=True)
     )
 
     for t in templates:
