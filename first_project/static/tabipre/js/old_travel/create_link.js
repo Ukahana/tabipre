@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const dateInput = document.getElementById("id_expiration_date");
 
     let fp = null;
-    let altInput = null;
 
     if (dateInput) {
         try {
@@ -15,51 +14,11 @@ document.addEventListener("DOMContentLoaded", function () {
                 altInput: true,
                 altFormat: "Y/m/d",
                 altInputClass: "flatpickr-alt-input",
-                allowInput: true,
+                allowInput: false,      // ← 手入力禁止
                 locale: "ja",
-                clickOpens: false,
-
-                parseDate: (value, format) => {
-                    if (!value) return null;
-
-                    const nums = value.replace(/[^\d]/g, "");
-                    const currentYear = new Date().getFullYear();
-
-                    if (nums.length === 2) {
-                        return new Date(currentYear, nums[0] - 1, nums[1]);
-                    }
-                    if (nums.length === 3) {
-                        return new Date(currentYear, nums[0] - 1, nums.slice(1));
-                    }
-                    if (nums.length === 4) {
-                        return new Date(currentYear, nums.slice(0, 2) - 1, nums.slice(2, 4));
-                    }
-
-                    return flatpickr.parseDate(value, format);
-                }
-            });
-
-            altInput = fp.altInput;
-
-            if (altInput) {
-                altInput.addEventListener("blur", function () {
-                    const raw = altInput.value.trim();
-
-                    if (!raw) {
-                        dateInput.value = "";
-                        return;
-                    }
-
-                    fp.setDate(raw, true);
-
-                    if (fp.selectedDates.length > 0) {
-                        dateInput.value = fp.formatDate(fp.selectedDates[0], "Y-m-d");
-                    }
-                });
-            }
-
-            document.querySelectorAll(".calendar-btn").forEach(btn => {
-                btn.addEventListener("click", () => fp.open());
+                clickOpens: true,       // ← 入力欄クリックでカレンダーを開く
+                minDate: "today",
+                disableMobile: true       // ← 過去日を選べない
             });
 
         } catch (e) {
@@ -82,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const wrapper = document.getElementById("date_input_wrapper");
         if (wrapper) {
-            wrapper.style.display = isUserInput ? "flex" : "none";
+            wrapper.style.display = isUserInput ? "block" : "none";
         }
     }
 
@@ -107,6 +66,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.error("Modal error:", e);
     }
 });
+
 // ▼ コピー処理
 const copyBtn = document.getElementById("copy_btn");
 if (copyBtn) {
@@ -114,17 +74,12 @@ if (copyBtn) {
         const input = document.getElementById("share_url");
         if (!input) return;
 
-        // クリップボードへコピー
         navigator.clipboard.writeText(input.value).then(() => {
 
-            // ボタンの文字を変更
             copyBtn.textContent = "コピーしました！";
-
-            // ボタンの色も少し変える（任意）
             copyBtn.classList.remove("btn-primary");
             copyBtn.classList.add("btn-success");
 
-            // 2秒後に元に戻す
             setTimeout(() => {
                 copyBtn.textContent = "コピー";
                 copyBtn.classList.remove("btn-success");

@@ -16,7 +16,8 @@ class LinkForm(forms.ModelForm):
                 attrs={
                     "type": "text",
                     "autocomplete": "off",
-                    "placeholder": "日付を指定してください（例：2026-3-1）",
+                    "readonly": "readonly",
+                    "inputmode": "none",
                 }
             ),
         }

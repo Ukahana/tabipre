@@ -27,18 +27,38 @@ document.addEventListener("DOMContentLoaded", function () {
         daysEl.textContent = diff + 1;
     }
 
+    // ▼ 共通設定（前コードと同じレイアウト）
+    const commonOptions = {
+        dateFormat: "Y-m-d",
+        altInput: true,
+        altFormat: "Y/m/d",
+        allowInput: false,
+        locale: "ja",
+        disableMobile: true,
+        clickOpens: true,
+        onChange: calcStay,
+        onValueUpdate: calcStay,
+
+        parseDate: (value, format) => {
+            if (!value) return null;
+
+            const nums = value.replace(/[^\d]/g, "");
+            const currentYear = new Date().getFullYear();
+
+            if (nums.length === 2) return new Date(currentYear, nums[0] - 1, nums[1]);
+            if (nums.length === 3) return new Date(currentYear, nums[0] - 1, nums.slice(1));
+            if (nums.length === 4) return new Date(currentYear, nums.slice(0, 2) - 1, nums.slice(2, 4));
+
+            return flatpickr.parseDate(value, format);
+        }
+    };
+
+    // ▼ .date-wrapper 内の input を flatpickr 化
     document.querySelectorAll(".date-wrapper input").forEach(input => {
 
         if (input._flatpickr) return;
 
-        const fp = flatpickr(input, {
-            dateFormat: "Y-m-d",
-            allowInput: false,  
-            locale: "ja",
-            clickOpens: true,
-            onChange: calcStay,
-            onValueUpdate: calcStay,
-        });
+        const fp = flatpickr(input, commonOptions);
 
         if (input.id === "id_start_date") startFP = fp;
         if (input.id === "id_end_date") endFP = fp;

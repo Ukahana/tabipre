@@ -104,11 +104,7 @@
       <!-- 日付入力欄 -->
       <div id="date_input_wrapper" class="calendar-input-wrapper mt-2">
         {{ form.expiration_date }}
-        <button type="button"
-                class="calendar-btn"
-                data-target="{{ form.expiration_date.auto_id }}">
-          📅
-        </button>
+          <img src="{% static 'tabipre/icons/calendar.png' %}" class="calendar-icon">
       </div>
 
       {% if form.expiration_date.errors %}

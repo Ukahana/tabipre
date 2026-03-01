@@ -52,10 +52,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // ▼ end_date の flatpickr
     flatpickr(endInput, {
+
         dateFormat: "Y-m-d",
         altInput: true,
         altFormat: "Y/m/d",
-        allowInput: true,
+        allowInput: false,
         locale: "ja",
         disableMobile: true, 
         onChange: calcStay,

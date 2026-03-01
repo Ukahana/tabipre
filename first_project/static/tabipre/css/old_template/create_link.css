@@ -108,3 +108,27 @@
   text-align: center;
   flex-direction: column;
 }
+/* 入力欄とアイコンを重ねるためのラッパー */
+.calendar-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+/* Django の input を表示させる（非表示を解除） */
+#id_expiration_date {
+  display: block !important;
+  width: 100%;
+  padding-right: 40px; /* アイコン分の余白 */
+}
+
+/* 入力欄の中に重ねるカレンダーアイコン */
+.calendar-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  width: 22px;
+  height: 22px;
+  transform: translateY(-50%);
+  pointer-events: none; /* 飾りなのでクリック不可 */
+  opacity: 0.7;
+}
