@@ -1,22 +1,23 @@
 parseDate: (value, format) => {
     if (!value) return null;
 
+    // 数字以外を除去
     const nums = value.replace(/[^\d]/g, "");
-    const currentYear = new Date().getFullYear();  // ★ 今年の年を取得
 
-    // 4/2 → 今年の 4/2
-    if (nums.length === 2) {
-        const m = nums[0];
-        const d = nums[1];
-        return new Date(currentYear, Number(m) - 1, Number(d));
+    // 入力禁止なので、4桁以外は flatpickr に任せる
+    if (nums.length !== 8) {
+        return flatpickr.parseDate(value, format);
     }
 
-    // 04/02 → 今年の 4/2
-    if (nums.length === 4) {
-        const m = nums.slice(0, 2);
-        const d = nums.slice(2, 4);
-        return new Date(currentYear, Number(m) - 1, Number(d));
+    // YYYYMMDD の場合のみ処理
+    const y = Number(nums.slice(0, 4));
+    const m = Number(nums.slice(4, 6));
+    const d = Number(nums.slice(6, 8));
+
+    if (m >= 1 && m <= 12 && d >= 1 && d <= 31) {
+        return new Date(y, m - 1, d);
     }
 
+    // それ以外は flatpickr 標準
     return flatpickr.parseDate(value, format);
 }

@@ -27,56 +27,50 @@ document.addEventListener("DOMContentLoaded", function () {
         daysEl.textContent = diff + 1;
     }
 
-    // ▼ flatpickr 初期化（年なし日付対応）
-    document.querySelectorAll(".calendar-btn").forEach(btn => {
-        const targetId = btn.dataset.target;
-        const input = document.getElementById(targetId);
-        if (!input) return;
+    // ▼ start_date の flatpickr
+    flatpickr(startInput, {
+        dateFormat: "Y-m-d",
+        altInput: true,
+        altFormat: "Y/m/d",
+        allowInput: true,
+        locale: "ja",
+        disableMobile: true, 
+        onChange: calcStay,
+        parseDate: (value, format) => {
+            if (!value) return null;
 
-        flatpickr(input, {
-            dateFormat: "Y-m-d",
-            altInput: true,
-            altFormat: "Y/m/d",
-            allowInput: true,
-            locale: "ja",
-            clickOpens: false,
-            onChange: calcStay,
+            const nums = value.replace(/[^\d]/g, "");
+            const currentYear = new Date().getFullYear();
 
-            // ★ 年なし日付を補完（
-            parseDate: (value, format) => {
-                if (!value) return null;
+            if (nums.length === 2) return new Date(currentYear, nums[0] - 1, nums[1]);
+            if (nums.length === 3) return new Date(currentYear, nums[0] - 1, nums.slice(1));
+            if (nums.length === 4) return new Date(currentYear, nums.slice(0, 2) - 1, nums.slice(2, 4));
 
-                const nums = value.replace(/[^\d]/g, "");
-                const currentYear = new Date().getFullYear();
+            return flatpickr.parseDate(value, format);
+        }
+    });
 
-                // 2/1 → "21"
-                if (nums.length === 2) {
-                    return new Date(currentYear, nums[0] - 1, nums[1]);
-                }
+    // ▼ end_date の flatpickr
+    flatpickr(endInput, {
+        dateFormat: "Y-m-d",
+        altInput: true,
+        altFormat: "Y/m/d",
+        allowInput: true,
+        locale: "ja",
+        disableMobile: true, 
+        onChange: calcStay,
+        parseDate: (value, format) => {
+            if (!value) return null;
 
-                // 3-15 → "315"
-                if (nums.length === 3) {
-                    return new Date(currentYear, nums[0] - 1, nums.slice(1));
-                }
+            const nums = value.replace(/[^\d]/g, "");
+            const currentYear = new Date().getFullYear();
 
-                // 0315 → "0315"
-                if (nums.length === 4) {
-                    return new Date(currentYear, nums.slice(0, 2) - 1, nums.slice(2, 4));
-                }
+            if (nums.length === 2) return new Date(currentYear, nums[0] - 1, nums[1]);
+            if (nums.length === 3) return new Date(currentYear, nums[0] - 1, nums.slice(1));
+            if (nums.length === 4) return new Date(currentYear, nums.slice(0, 2) - 1, nums.slice(2, 4));
 
-                return flatpickr.parseDate(value, format);
-            }
-        });
-
-        // ▼ カレンダーボタン
-        btn.addEventListener("click", () => input._flatpickr.open());
-
-        // ▼ 手入力 → flatpickr に反映 → calcStay 発動
-        input.addEventListener("change", () => {
-            if (input._flatpickr) {
-                input._flatpickr.setDate(input.value, true);
-            }
-        });
+            return flatpickr.parseDate(value, format);
+        }
     });
 
     calcStay();

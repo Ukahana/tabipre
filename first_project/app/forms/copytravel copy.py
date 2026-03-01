@@ -9,35 +9,27 @@ class TravelBaseForm(forms.ModelForm):
     class Meta:
         model = Travel_info
         fields = []
-        # ★ Base には日付ウィジェットを書かない（Step1 で上書きするため）
+        widgets = {
+            "start_date": forms.DateInput(attrs={"type": "text"}),
+            "end_date": forms.DateInput(attrs={"type": "text"}),
+        }
         input_formats = ["%Y.%m.%d", "%Y-%m-%d"]
 
 
-# ---------------------------------------------------------
-# ★ Step1（タイトル・日付・宿泊タイプ）
-# ---------------------------------------------------------
-from django import forms
 
+# ---------------------------------------------------------
+# ★ Step1（タイトル・日付・宿泊タイプ）【修正版】
+# ---------------------------------------------------------
 class TravelStep1Form(TravelBaseForm):
     start_date = forms.DateField(
         input_formats=["%Y.%m.%d", "%Y-%m-%d"],
-        widget=forms.TextInput(
-            attrs={
-                "class": "date-input",
-                "autocomplete": "off",
-            }
-        )
+        widget=forms.DateInput(attrs={"type": "text"})
     )
-
     end_date = forms.DateField(
         input_formats=["%Y.%m.%d", "%Y-%m-%d"],
-            widget=forms.TextInput(
-              attrs={
-                    "class": "date-input",
-                    "autocomplete": "off",
-                }
-        )
+        widget=forms.DateInput(attrs={"type": "text"})
     )
+
     stay_type = forms.TypedChoiceField(
         choices=Travel_info.StayType.choices,
         coerce=int,
@@ -50,6 +42,8 @@ class TravelStep1Form(TravelBaseForm):
         fields = ["travel_title", "start_date", "end_date", "stay_type"]
         widgets = {
             "travel_title": forms.TextInput(attrs={"class": "form-control"}),
+            "start_date": forms.DateInput(attrs={"type": "text"}),
+            "end_date": forms.DateInput(attrs={"type": "text"}),
         }
 
     def clean(self):
@@ -58,16 +52,20 @@ class TravelStep1Form(TravelBaseForm):
         start = cleaned.get("start_date")
         end = cleaned.get("end_date")
 
+        # 日付未入力（Django の required が自動でエラーを出すので追加しない）
         if not start or not end:
             return cleaned
 
+        # 日付逆転
         if end < start:
             self.add_error("end_date", "終了日は開始日より後の日付を選択してください。")
 
+        # 60日超
         if (end - start).days > 60:
             self.add_error("end_date", "旅行期間が長すぎます。60日以内にしてください。")
 
         return cleaned
+
 
 # ---------------------------------------------------------
 # ★ Step2（交通手段・その他・場所・メモ）
@@ -101,9 +99,11 @@ class TravelStep2Form(TravelBaseForm):
         travel = kwargs.get("instance")
         super().__init__(*args, **kwargs)
 
+        # location の設定
         self.fields["location"].choices = Travel_info.LocationType.choices
-        self.fields["location"].required = False
+        self.fields["location"].required = False   # ★ ここを False に変更
 
+        # 編集時の初期値
         if travel:
             self.fields["transport_types"].initial = travel.transport.all()
 
@@ -123,7 +123,7 @@ class TravelStep2Form(TravelBaseForm):
 
     def clean(self):
         cleaned = super().clean()
-
+        
         if cleaned.get("location") == "":
             cleaned["location"] = None
 
@@ -131,22 +131,27 @@ class TravelStep2Form(TravelBaseForm):
         other_text = cleaned.get("transport_other", "").strip()
         location = cleaned.get("location")
         memo = cleaned.get("memo", "")
-
+        
         cleaned["memo"] = memo.strip()
 
+        # 交通手段が 0 個
         if not transports:
             self.add_error("transport_types", "交通手段を1つ以上選択してください。")
 
+        # その他選択時の入力必須
         if transports and any(t.transport_type == Transport.TransportType.OTHER for t in transports):
             if not other_text:
                 self.add_error("transport_other", "その他を選択した場合は入力が必要です。")
 
+        # location 未選択
         if location is None:
             self.add_error("location", "場所を選択してください。")
 
+        # memo 文字数
         if len(memo) > 230:
             self.add_error("memo", "メモは230文字以内で入力してください。")
 
+        # その他入力 100 文字超
         if len(other_text) > 100:
             self.add_error("transport_other", "その他の交通手段は100文字以内で入力してください。")
 

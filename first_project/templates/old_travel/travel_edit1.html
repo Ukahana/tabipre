@@ -9,7 +9,7 @@
 {% block content %}
 <div class="container mt-5 mt-4">
 
-    <form method="post" novalidate>
+    <form id="travelForm" method="post" novalidate>
         {% csrf_token %}
         <input type="hidden" name="action" value="edit_all">
 
@@ -28,4 +28,5 @@
 </div>
 
 <script src="{% static 'tabipre/js/old_travel/travel_edit1.js' %}"></script>
+
 {% endblock %}

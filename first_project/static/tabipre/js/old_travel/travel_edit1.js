@@ -1,16 +1,14 @@
 document.addEventListener("DOMContentLoaded", function () {
 
-    let startInput, endInput;
+    let startFP, endFP;
+
     const nightsEl = document.getElementById("stay_nights");
     const daysEl = document.getElementById("stay_days");
     const errorEl = document.getElementById("date_error");
 
-    // -----------------------------
-    // 泊数計算
-    // -----------------------------
     function calcStay() {
-        const start = startInput?._flatpickr?.selectedDates[0];
-        const end = endInput?._flatpickr?.selectedDates[0];
+        const start = startFP?.selectedDates[0];
+        const end = endFP?.selectedDates[0];
 
         nightsEl.textContent = "";
         daysEl.textContent = "";
@@ -29,48 +27,22 @@ document.addEventListener("DOMContentLoaded", function () {
         daysEl.textContent = diff + 1;
     }
 
-    // -----------------------------
-    // flatpickr 初期化
-    // -----------------------------
-    document.querySelectorAll(".calendar-btn").forEach(btn => {
-        const targetId = btn.dataset.target;
-        const input = document.getElementById(targetId);
+    document.querySelectorAll(".date-wrapper input").forEach(input => {
 
-        if (!input) return;
+        if (input._flatpickr) return;
 
-        flatpickr(input, {
-            dateFormat: "Y.m.d",
-            altInput: true,
-            altFormat: "Y/m/d",
-            allowInput: true,
+        const fp = flatpickr(input, {
+            dateFormat: "Y-m-d",
+            allowInput: false,  
             locale: "ja",
-            clickOpens: false,
+            clickOpens: true,
             onChange: calcStay,
-
-            parseDate: (value, format) => {
-                if (!value) return null;
-
-                const nums = value.replace(/[^\d]/g, "");
-                const currentYear = new Date().getFullYear();
-
-                if (nums.length === 2) {
-                    return new Date(currentYear, nums[0] - 1, nums[1]);
-                }
-                if (nums.length === 4) {
-                    return new Date(currentYear, nums.slice(0, 2) - 1, nums.slice(2, 4));
-                }
-
-                return flatpickr.parseDate(value, format);
-            }
+            onValueUpdate: calcStay,
         });
 
-        btn.addEventListener("click", () => input._flatpickr.open());
+        if (input.id === "id_start_date") startFP = fp;
+        if (input.id === "id_end_date") endFP = fp;
     });
 
-    // ★ flatpickr 初期化後に取得する
-    startInput = document.getElementById("id_start_date");
-    endInput = document.getElementById("id_end_date");
-
-    // ★ 初期表示でも泊数を計算
     calcStay();
 });

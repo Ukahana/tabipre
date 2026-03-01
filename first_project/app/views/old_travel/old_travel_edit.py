@@ -39,8 +39,6 @@ def old_travel_edit1(request, travel_id):
     return render(request, "old_travel/travel_edit1.html", {
         "form": form,
         "travel": travel,
-        "stay_nights": stay_nights,
-        "stay_days": stay_days,
         "stay_type": form.instance.stay_type,
     })
 
