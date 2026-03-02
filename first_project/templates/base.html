@@ -27,19 +27,19 @@
 
         {% if request.user.is_authenticated and not is_share_page %}
         <nav class="navbar navbar-light bottom-nav">
-            <div class="container d-flex justify-content-around text-center">
+            <div class="container d-flex text-center">
 
-                <a class="nav-link text-center" href="{% url 'app:travel_step1' %}">
-                    新規旅行<br>
-                    <img src="{% static 'tabipre/icons/travel.png' %}" width="28">
-                </a>
-
-                <a class="nav-link text-center" href="{% url 'app:home' %}">
+                <a class="nav-link flex-fill" href="{% url 'app:home' %}">
                     ホーム<br>
                     <img src="{% static 'tabipre/icons/home.png' %}" width="28">
                 </a>
 
-                <a class="nav-link text-center" href="{% url 'app:mypage' %}">
+                <a class="nav-link flex-fill" href="{% url 'app:travel_step1' %}">
+                    新規旅行<br>
+                    <img src="{% static 'tabipre/icons/travel.png' %}" width="28">
+                </a>
+
+                <a class="nav-link flex-fill" href="{% url 'app:mypage' %}">
                     マイページ<br>
                     <img src="{% static 'tabipre/icons/mypage.png' %}" width="28">
                 </a>
