@@ -14,7 +14,7 @@
     <h2 class="mb-1 text-center">{{ template.travel_info.travel_title }}</h2>
 
     <!-- ★★★ フォーム開始（メモも含める） -->
-    <form method="POST">
+    <form method="POST" action="{% url 'app:old_template_copy' template.id %}">
         {% csrf_token %}
 
         <!-- メモ欄 -->

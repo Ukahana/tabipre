@@ -10,13 +10,14 @@
       <div class="modal-body">
 
         {% if templates %}
+        <!-- ★ モーダル専用フォーム（Step2 とは完全に独立） -->
         <form method="POST" action="{% url 'app:travel_step2' %}">
           {% csrf_token %}
           <input type="hidden" name="action" value="copy">
 
           {% for template in templates %}
 
-            <!-- ★ input をカードの直前に置くことで CSS が効く -->
+            <!-- input の直後にカード（CSS が効く構造） -->
             <input type="radio"
                    id="t{{ template.id }}"
                    name="old_travel_id"
@@ -25,9 +26,7 @@
 
             <div class="template-card">
 
-              <!-- カード上部：選択エリア -->
               <label for="t{{ template.id }}" class="template-select-area">
-
                 <div class="template-item">
 
                   {% if template.display_status %}
@@ -53,10 +52,9 @@
                   </div>
 
                 </div>
-
               </label>
 
-              <!-- カード下部：押しやすい選択ボタン -->
+              <!-- ★ submit ボタン（必ず form の中にある） -->
               <button type="submit"
                       class="btn-select"
                       onclick="document.getElementById('t{{ template.id }}').checked = true;">
@@ -67,7 +65,7 @@
 
           {% endfor %}
 
-        </form>
+        </form> <!-- ★★★ ここで form を閉じる（重要） ★★★ -->
 
         {% else %}
           <p>コピーできるテンプレートがありません。</p>

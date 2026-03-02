@@ -1,28 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from app.models import Travel_info
+from app.models import Template
 
-
-# モーダル表示：過去の旅行一覧を表示するだけ
 def TravelCopyModalView(request):
-    past_travels = Travel_info.objects.filter(
-    user=request.user,
-    template__isnull=False
-    ).order_by('-start_date')
-    
-    return render(request, "new_travel/copy_modal.html", {
-        "past_travels": past_travels
+    templates = Template.objects.filter(
+        user=request.user
+    ).select_related("travel_info").order_by("-travel_info__start_date")
+
+    return render(request, "new_travel/modal/old_travel.html", {
+        "templates": templates
     })
 
-
-# コピー適用：選択した旅行の内容を Step2 のセッションへ反映
-def TravelCopyApplyView(request, travel_id):
-    travel = get_object_or_404(Travel_info, travel_info_id=travel_id)
-
-    # Step2 のセッションにコピー内容を入れる
-    request.session['travel_step2'] = {
-        "location": travel.location,
-        "transport": list(travel.transport.values_list('id', flat=True)),
-        "memo": travel.memo or "",
-    }
-
-    return redirect('travel_step2')

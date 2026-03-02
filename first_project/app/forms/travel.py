@@ -9,7 +9,6 @@ class TravelBaseForm(forms.ModelForm):
     class Meta:
         model = Travel_info
         fields = []
-        # ★ Base には日付ウィジェットを書かない（Step1 で上書きするため）
         input_formats = ["%Y.%m.%d", "%Y-%m-%d"]
 
 
@@ -73,11 +72,25 @@ class TravelStep1Form(TravelBaseForm):
 # ★ Step2（交通手段・その他・場所・メモ）
 # ---------------------------------------------------------
 class TravelStep2Form(TravelBaseForm):
+    location = forms.TypedChoiceField(
+        choices=Travel_info.LocationType.choices,
+        coerce=int,
+        widget=forms.RadioSelect,
+        required=True,
+        label="場所の分類",
+        error_messages={
+            "required": "場所の分類を選択してください。",
+        }
+    )
+
     transport_types = forms.ModelMultipleChoiceField(
         queryset=Transport.objects.all(),
         widget=forms.CheckboxSelectMultiple,
         required=True,
         label="交通手段",
+        error_messages={
+        "required": "交通手段を選択してください。",
+        }
     )
 
     transport_other = forms.CharField(
@@ -93,16 +106,12 @@ class TravelStep2Form(TravelBaseForm):
     class Meta(TravelBaseForm.Meta):
         fields = ["location", "memo"]
         widgets = {
-            "location": forms.RadioSelect(),
             "memo": forms.Textarea(attrs={"rows": 5, "class": "memo-box"}),
         }
 
     def __init__(self, *args, **kwargs):
         travel = kwargs.get("instance")
-        super().__init__(*args, **kwargs)
-
-        self.fields["location"].choices = Travel_info.LocationType.choices
-        self.fields["location"].required = True
+        super().__init__(*args, **kwargs)    
 
         if travel:
             self.fields["transport_types"].initial = travel.transport.all()

@@ -5,11 +5,13 @@
 {{ block.super }}
 <link rel="stylesheet" href="{% static 'tabipre/css/parts/travel_edit.css' %}">
 {% endblock %}
+
 {% block content %}
 <div class="container mt-2">
 
     <div class="sub-title mb-2">詳細設定</div>
 
+    <!-- ★ Step2 のフォーム（旅行情報入力） -->
     <form method="POST" class="travel_step2_form">
         {% csrf_token %}
 
@@ -20,15 +22,21 @@
                 テンプレート作成
             </button>
 
-            <button type="button" id="copy-open-btn" class="btn btn-copy" data-bs-target="#copyModal">
+            <!-- ★ モーダルを開くだけ（POST しない） -->
+            <button type="button" class="btn btn-copy" data-bs-toggle="modal" data-bs-target="#copyModal">
                 前回のテンプレートをコピー
             </button>
-           <p>※旅行情報を選択しない場合、前回の旅行内容をコピーします</p>
+
+            <p>※旅行情報を選択しない場合、前回の旅行内容をコピーします</p>
         </div>
     </form>
 
 </div>
 
-{% include 'new_travel/modal/old_travel.html' %}
+<!-- JS -->
 <script src="{% static 'tabipre/js/new_travel/travel_step2.js' %}"></script>
+
+<!-- ★ モーダルは必ず form の外に置く（重要） -->
+{% include 'new_travel/modal/old_travel.html' %}
+
 {% endblock %}
