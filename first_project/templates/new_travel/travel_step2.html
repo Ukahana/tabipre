@@ -23,16 +23,15 @@
             </button>
 
             <!-- ★ モーダルを開くだけ（POST しない） -->
-            <button type="button" class="btn btn-copy" data-bs-toggle="modal" data-bs-target="#copyModal">
-                前回のテンプレートをコピー
+            <button type="submit" name="action" value="open_modal" class="btn btn-copy">
+              前回のテンプレートをコピー
             </button>
 
-            <p>※旅行情報を選択しない場合、前回の旅行内容をコピーします</p>
         </div>
     </form>
 
 </div>
-
+<div id="modal-flag" data-open-modal="{{ open_modal|yesno:'true,false' }}"></div>
 <!-- JS -->
 <script src="{% static 'tabipre/js/new_travel/travel_step2.js' %}"></script>
 

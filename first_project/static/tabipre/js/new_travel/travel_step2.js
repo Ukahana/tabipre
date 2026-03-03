@@ -14,4 +14,14 @@ document.addEventListener("DOMContentLoaded", function () {
         toggle();
     }
 
+    // -----------------------------
+    // モーダル自動オープン
+    // -----------------------------
+    const flagElement = document.getElementById("modal-flag");
+    const modalFlag = flagElement?.dataset.openModal;
+
+    if (modalFlag === "true") {
+        const modal = new bootstrap.Modal(document.getElementById("copyModal"));
+        modal.show();
+    }
 });

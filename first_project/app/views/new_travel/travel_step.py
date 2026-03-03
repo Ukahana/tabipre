@@ -15,11 +15,9 @@ from ...views.new_travel.template_source import template_source
 @login_required
 def travel_create_step1(request):
 
-    # 新規旅行作成開始フラグ ON
+
     request.session["creating_travel"] = True
 
-    # creating_travel=True のときだけ下書きを削除
-    # ※ is_draft を廃止したので travel_info が紐づいていないテンプレートだけ削除
     Template.objects.filter(travel_info__isnull=True, user=request.user).delete()
 
     if request.method == "POST":
@@ -37,7 +35,6 @@ def travel_create_step1(request):
         form = TravelStep1Form()
 
     return render(request, "new_travel/travel_step1.html", {"form": form})
-
 # -----------------------------
 # Step2：場所・交通手段・メモ
 # -----------------------------
@@ -47,9 +44,6 @@ def travel_step2(request):
     if not step1_data:
         return redirect("app:travel_step1")
 
-    # -----------------------------
-    # テンプレート一覧
-    # -----------------------------
     templates = Template.objects.filter(
         travel_info__user=request.user
     ).order_by('-travel_info__end_date', '-travel_info__start_date')
@@ -83,18 +77,63 @@ def travel_step2(request):
         action = request.POST.get("action")
 
         # -----------------------------
-        # モーダルからのコピー確定処理
+        # open_modal（モーダルを開く）
+        # -----------------------------
+        if action == "open_modal":
+            form = TravelStep2Form(request.POST)
+
+            if not form.is_valid():
+                return render(request, "new_travel/travel_step2.html", {
+                    "form": form,
+                    "step1": step1_data,
+                    "templates": templates,
+                })
+
+            # QueryDict のまま保存
+            request.session["step2_data"] = request.POST.copy()
+
+            return render(request, "new_travel/travel_step2.html", {
+                "form": form,
+                "step1": step1_data,
+                "templates": templates,
+                "open_modal": True,
+            })
+
+        # -----------------------------
+        # copy（前回旅行からコピー）
         # -----------------------------
         if action == "copy" and request.POST.get("old_travel_id"):
-            old_id = request.POST.get("old_travel_id")
 
+            step2_data = request.session.get("step2_data")
+
+            # QueryDict を正しく復元
+            from django.http import QueryDict
+            q = QueryDict('', mutable=True)
+            for key, value_list in step2_data.items():
+                q.setlist(key, value_list)
+
+            form = TravelStep2Form(q)
+
+            if not form.is_valid():
+                return render(request, "new_travel/travel_step2.html", {
+                    "form": form,
+                    "step1": step1_data,
+                    "templates": templates,
+                })
+
+            old_id = request.POST.get("old_travel_id")
             old_travel = get_object_or_404(
                 Travel_info,
                 travel_info_id=old_id,
                 user=request.user
             )
+            request.session["copy_step2"] = {
+                "location": form.cleaned_data["location"],
+                "transport_types": [t.pk for t in form.cleaned_data["transport_types"]], 
+                "transport_other": form.cleaned_data.get("transport_other", "").strip(),
+                "memo": form.cleaned_data.get("memo", "").strip(),
+            }
 
-            # Step1 のデータで新規作成
             start_date = datetime.strptime(step1_data["start_date"], "%Y-%m-%d").date()
             end_date = datetime.strptime(step1_data["end_date"], "%Y-%m-%d").date()
 
@@ -105,12 +144,40 @@ def travel_step2(request):
                 end_date=end_date,
                 stay_type=step1_data["stay_type"],
                 location=form.cleaned_data["location"],
-                memo=old_travel.memo,          # ← メモはコピー元を使用
+                memo=old_travel.memo,
             )
 
             # -----------------------------
-            # テンプレート構造コピー
+            # ★ 重複しない交通手段登録（修正版）
             # -----------------------------
+            transport_types = set(form.cleaned_data["transport_types"])
+            other_text = form.cleaned_data.get("transport_other", "").strip()
+
+            other_transport = Transport.objects.get(
+                transport_type=Transport.TransportType.OTHER
+            )
+
+            # OTHER が選択されていて、かつ入力がある場合は通常登録から除外
+            if other_transport in transport_types and other_text:
+                transport_types.remove(other_transport)
+
+            # 通常の交通手段
+            for transport in transport_types:
+                Travelmode.objects.create(
+                    travel_info=new_travel,
+                    transport=transport,
+                    custom_transport_text=""
+                )
+
+            # OTHER（custom_text あり）
+            if other_text:
+                Travelmode.objects.create(
+                    travel_info=new_travel,
+                    transport=other_transport,
+                    custom_transport_text=other_text
+                )
+
+            # テンプレート構造コピー
             old_template = Template.objects.get(travel_info=old_travel)
             new_template = Template.objects.create(
                 user=request.user,
@@ -134,25 +201,24 @@ def travel_step2(request):
                         item_checked=item.item_checked
                     )
 
-            # 完了
             request.session["creating_travel"] = False
             del request.session["travel_step1"]
-            messages.success(request, "テンプレートをコピーしました")
-            return redirect("app:template_edit", template_id=new_template.id)
+            messages.success(request, "前回の旅行をコピーしました")
+            return redirect("app:old_template_copy", template_id=new_template.id)
 
         # -----------------------------
-        # 通常の Step2 保存（テンプレート作成）
+        # template（通常保存）
         # -----------------------------
-        form = TravelStep2Form(request.POST)
-        if not form.is_valid():
-            return render(request, "new_travel/travel_step2.html", {
-                "form": form,
-                "step1": step1_data,
-                "templates": templates,
-                "skip_validation": False,
-            })
-
         if action == "template":
+            form = TravelStep2Form(request.POST)
+
+            if not form.is_valid():
+                return render(request, "new_travel/travel_step2.html", {
+                    "form": form,
+                    "step1": step1_data,
+                    "templates": templates,
+                })
+
             start_date = datetime.strptime(step1_data["start_date"], "%Y-%m-%d").date()
             end_date = datetime.strptime(step1_data["end_date"], "%Y-%m-%d").date()
 
@@ -166,23 +232,31 @@ def travel_step2(request):
                 memo=form.cleaned_data["memo"].strip(),
             )
 
-            # 交通手段保存
-            for transport in form.cleaned_data["transport_types"]:
-                Travelmode.objects.update_or_create(
+            # -----------------------------
+            # ★ 重複しない交通手段登録（修正版）
+            # -----------------------------
+            transport_types = set(form.cleaned_data["transport_types"])
+            other_text = form.cleaned_data.get("transport_other", "").strip()
+
+            other_transport = Transport.objects.get(
+                transport_type=Transport.TransportType.OTHER
+            )
+
+            if other_transport in transport_types and other_text:
+                transport_types.remove(other_transport)
+
+            for transport in transport_types:
+                Travelmode.objects.create(
                     travel_info=travel,
                     transport=transport,
-                    defaults={"custom_transport_text": ""}
+                    custom_transport_text=""
                 )
 
-            other_text = form.cleaned_data.get("transport_other", "").strip()
             if other_text:
-                other_transport = Transport.objects.get(
-                    transport_type=Transport.TransportType.OTHER
-                )
-                Travelmode.objects.update_or_create(
+                Travelmode.objects.create(
                     travel_info=travel,
                     transport=other_transport,
-                    defaults={"custom_transport_text": other_text}
+                    custom_transport_text=other_text
                 )
 
             template = template_source(travel, request.user)
@@ -192,7 +266,6 @@ def travel_step2(request):
             messages.success(request, "テンプレートを自動作成しました")
             return redirect("app:template_edit", template_id=template.id)
 
-        
     # -----------------------------
     # GET
     # -----------------------------
@@ -201,6 +274,4 @@ def travel_step2(request):
         "form": form,
         "step1": step1_data,
         "templates": templates,
-        "skip_validation": False,
     })
-    

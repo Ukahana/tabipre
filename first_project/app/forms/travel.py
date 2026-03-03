@@ -75,12 +75,10 @@ class TravelStep2Form(TravelBaseForm):
     location = forms.TypedChoiceField(
         choices=Travel_info.LocationType.choices,
         coerce=int,
+        empty_value=None,
         widget=forms.RadioSelect,
-        required=True,
+        required=False,
         label="場所の分類",
-        error_messages={
-            "required": "場所の分類を選択してください。",
-        }
     )
 
     transport_types = forms.ModelMultipleChoiceField(
@@ -104,6 +102,7 @@ class TravelStep2Form(TravelBaseForm):
     )
 
     class Meta(TravelBaseForm.Meta):
+        model = Travel_info 
         fields = ["location", "memo"]
         widgets = {
             "memo": forms.Textarea(attrs={"rows": 5, "class": "memo-box"}),
@@ -132,10 +131,11 @@ class TravelStep2Form(TravelBaseForm):
 
     def clean(self):
         cleaned = super().clean()
-        
+        if cleaned.get("location") in [None, ""]:
+            self.add_error("location", "場所の分類を選択してください。")
+
         transports = cleaned.get("transport_types")
         other_text = cleaned.get("transport_other", "").strip()
-        location = cleaned.get("location")
         memo = cleaned.get("memo", "")
 
         cleaned["memo"] = memo.strip()

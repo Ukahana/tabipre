@@ -5,36 +5,47 @@ from ...models.travel import  Transport, Travelmode
 def old_template_copy(request, template_id):
     template = get_object_or_404(Template, id=template_id)
 
-    # ★ Step2 の内容を取得
     step2 = request.session.get("copy_step2")
     if not step2:
         return redirect("app:travel_step2")
 
     if request.method == "POST":
 
-        # --- Step2 の memo / location を上書き ---
         travel = template.travel_info
-        travel.memo = step2["memo"]
+        
+        # ★ メモをフォームから反映（ここを追加）
+        posted_memo = request.POST.get("memo", "").strip()
+        travel.memo = posted_memo
+
+        # ★ 場所の分類は Step2 の入力を反映
         travel.location = step2["location"]
         travel.save()
 
-        # --- Step2 の交通手段を上書き ---
-        transport_ids = step2["transport_types"]
-        travel.transport.set(transport_ids)
+        # ★ 交通手段を Step2 の内容で上書き
+        Travelmode.objects.filter(travel_info=travel).delete()
+
+        # 通常の交通手段
+        for tid in step2["transport_types"]:
+            transport = Transport.objects.get(pk=tid)
+            Travelmode.objects.create(
+                travel_info=travel,
+                transport=transport,
+                custom_transport_text=""
+            )
 
         # その他の交通手段
-        other_text = step2.get("transport_other", "")
+        other_text = step2.get("transport_other", "").strip()
         if other_text:
             other_transport = Transport.objects.get(
                 transport_type=Transport.TransportType.OTHER
             )
-            Travelmode.objects.update_or_create(
+            Travelmode.objects.create(
                 travel_info=travel,
                 transport=other_transport,
-                defaults={"custom_transport_text": other_text}
+                custom_transport_text=other_text
             )
 
-        # --- 以下は既存の編集処理（分類削除・項目削除など） ---
+        # --- 以下は既存の編集処理 ---
         delete_cat_id = request.POST.get("delete_category")
         if delete_cat_id and delete_cat_id.isdigit():
             TravelItem.objects.filter(travel_category_id=delete_cat_id).delete()
@@ -60,7 +71,6 @@ def old_template_copy(request, template_id):
             item.item_checked = 1 if checked else 0
             item.save()
 
-        # ★ 保存ボタン → home
         if "save_changes" in request.POST:
             del request.session["copy_step2"]
             return redirect("app:home")
@@ -71,4 +81,5 @@ def old_template_copy(request, template_id):
     return render(request, "new_travel/old_template.html", {
         "template": template,
         "categories": categories,
+        "step2_memo": step2.get("memo", ""),
     })
