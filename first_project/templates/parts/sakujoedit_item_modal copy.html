@@ -20,7 +20,7 @@
       </div>
       {% endif %}
 
-      <form method="POST" action="" id="editItemForm">
+      <form method="POST" action="{% url 'app:edit_item' 0 %}" id="editItemForm">
         {% csrf_token %}
 
         <!-- 編集用 -->

@@ -4,96 +4,84 @@
 {% block extra_css %}
 {{ block.super }}
 <link rel="stylesheet" href="{% static 'tabipre/css/new_travel/template_old.css' %}">
-<link rel="stylesheet" href="{% static 'tabipre/css/parts/edit_item.css' %}">
 {% endblock %}
 
 {% block content %}
 <div class="container mt-2">
 
-    <!-- タイトル -->
     <h2 class="mb-1 text-center">{{ template.travel_info.travel_title }}</h2>
 
-    <!-- ★★★ フォーム開始（メモも含める） -->
-    <form method="POST" action="{% url 'app:old_template_copy' template.id %}">
+    <form id="oldCopyForm" method="POST" action="{% url 'app:old_template_copy' template.id %}">
         {% csrf_token %}
 
         <!-- メモ欄 -->
         <div class="mb-3">
-
-            <!-- ラベルは collapse の外に置く -->
             <label class="form-label">メモ（編集可）</label>
 
-            <div id="memoArea" class="collapse show">
-                <textarea name="memo" class="form-control" rows="4">{{ template.travel_info.memo }}</textarea>
-            </div>
-
-            <div class="text-center mt-2">
-                <button id="memoToggleBtn"
-                        type="button"
-                        class="memo-toggle-btn"
-                        data-bs-toggle="collapse"
-                        data-bs-target="#memoArea">
-                    メモを非表示
-                </button>
-            </div>
+            <textarea name="memo" class="form-control" rows="4">
+{{ request.POST.memo|default:template.travel_info.memo }}
+            </textarea>
         </div>
 
-        <!-- ★ カテゴリ一覧 -->
+        <!-- カテゴリ一覧 -->
         {% for cat in categories %}
         <div class="card mb-3 shadow-sm">
 
-            <!-- 分類ヘッダー -->
             <div class="card-header d-flex justify-content-between align-items-center"
                  style="background-color: {{ cat.get_category_color_display }}; color: white;">
 
-                <div class="d-flex align-items-center">
+                <div class="d-flex align-items-center"
+                     data-bs-toggle="collapse"
+                     data-bs-target="#cat{{ cat.id }}"
+                     style="cursor: pointer;">
+
                     <strong>{{ cat.category_name }}</strong>
 
                     <span class="badge bg-light text-dark ms-2">
                         {{ cat.checked_count }} / {{ cat.total_count }}
                     </span>
 
-                    <button type="button"
-                            class="btn-transparent ms-2"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#cat{{ cat.id }}">
-                        ▼
-                    </button>
+                    <span class="ms-2">▼</span>
                 </div>
 
-                <!-- 分類削除 -->
+                <!-- カテゴリ削除 -->
                 <button type="submit"
                         name="delete_category"
                         value="{{ cat.id }}"
-                        class="btn-transparent btn-category-delete">
+                        class="btn-transparent btn-category-delete"
+                        onclick="event.stopPropagation();">
                     ×
                 </button>
             </div>
 
-            <!-- 項目リスト -->
             <ul id="cat{{ cat.id }}" class="list-group collapse show">
 
                 {% for item in cat.travelitem_set.all %}
-                <li class="list-group-item d-flex justify-content-between align-items-center">
+                <li class="list-group-item">
 
-                    <div class="form-check me-3">
+                    <div class="d-flex align-items-center w-100">
+
+                        <!-- チェック -->
                         <input type="checkbox"
                                name="item_checked_{{ item.id }}"
-                               class="form-check-input"
+                               class="form-check-input me-3"
                                {% if item.item_checked %}checked{% endif %}>
-                        {{ item.item_name }}
-                    </div>
 
-                    <div class="d-flex gap-1">
-                        <!-- 編集モーダル -->
-                        <button type="button"
-                                class="edit-btn"
-                                data-item-id="{{ item.id }}"
-                                data-item-name="{{ item.item_name }}"
-                                data-bs-toggle="modal"
-                                data-bs-target="#editItemModal">
-                            <img src="{% static 'tabipre/icons/edit.png' %}" alt="編集" style="width:16px; height:16px;">
+                        <!-- ★ 項目名を直接編集 -->
+                        <input type="text"
+                               name="rename_{{ item.id }}"
+                               value="{{ item.item_name }}"
+                               class="form-control">
+
+                        <!-- ★ 削除 -->
+                        <button type="submit"
+                                name="delete_item"
+                                value="{{ item.id }}"
+                                class="delete-x ms-3"
+                                onclick="event.stopPropagation();">
+                            ×
                         </button>
+
                     </div>
                 </li>
                 {% endfor %}
@@ -111,16 +99,9 @@
         </div>
 
     </form>
-    <!-- ★★★ フォーム終了 -->
 
 </div>
-
-<!-- 共通モーダル -->
-{% include "parts/edit_item_modal.html" %}
-
 {% endblock %}
-
 {% block extra_js %}
-<script src="{% static 'tabipre/js/new_travel/item_edit.js' %}"></script>
 <script src="{% static 'tabipre/js/new_travel/old_copy.js' %}"></script>
 {% endblock %}
