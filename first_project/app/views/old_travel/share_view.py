@@ -16,17 +16,13 @@ def share_view(request, token):
     if not link:
         return render(request, "parts/expired.html", {
             "is_share_page": True,
-            "title": "この共有リンクは削除されています",
-            "message": "リンクの作成者が共有を停止しました。",
         })
 
-    # ② 期限切れチェック
+    # ② 期限切れチェック（削除と同じ文言で統一）
     today = timezone.now().date()
     if link.expiration_date and link.expiration_date < today:
         return render(request, "parts/expired.html", {
             "is_share_page": True,
-            "title": "この共有リンクは期限切れです",
-            "message": "リンクの有効期限が過ぎています。",
         })
 
     # ③ 編集可能でも mode=view 以外なら編集画面へ
@@ -71,8 +67,7 @@ def share_view(request, token):
         "token": token,
         "permission_type": link.permission_type,
     })
-
-
+    
 @login_required
 def share_edit_view(request, token):
     link = get_object_or_404(Link, share_token=token)

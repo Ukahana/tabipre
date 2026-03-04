@@ -132,3 +132,11 @@
   pointer-events: none; /* 飾りなのでクリック不可 */
   opacity: 0.7;
 }
+.expired-wrapper p {
+  margin: 0;          /* 余白ゼロにする */
+  line-height: 1.5;   /* 読みやすさだけ確保 */
+}
+
+.expired-wrapper p + p {
+  margin-top: 4px;    /* 2つ目以降の p だけ少し余白 */
+}
