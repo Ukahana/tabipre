@@ -315,10 +315,21 @@ a.custom-edit-btn:hover {
 }
 
 #copyModal .modal-header {
+  position: relative;
+  justify-content: center;
   padding: 6px 0;
 }
 
+/* タイトルは中央に固定 */
+#copyModal .modal-title {
+  margin: 0;
+}
 
+/* × ボタンの位置だけ調整（右余白を作る） */
+#copyModal .modal-header .btn-close {
+  position: absolute;
+  right: 20px; /* ← 左余白を作りたいならここを調整 */
+}
 /* ============================= */
 /* その他微調整 */
 /* ============================= */
