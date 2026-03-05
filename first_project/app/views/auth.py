@@ -17,7 +17,8 @@ from ..forms.auth import (
     CustomSetPasswordForm
 )
 
-
+from smtplib import SMTPException
+from django.core.mail import BadHeaderError
 # ============================
 #  新規登録
 # ============================
@@ -81,8 +82,15 @@ class PasswordResetMailView(PasswordResetView):
     success_url = reverse_lazy('app:password_reset')
 
     def form_valid(self, form):
-        messages.success(self.request, "再設定のメールを送信しました。")
-        return super().form_valid(form)
+        try:
+            response = super().form_valid(form)
+            messages.success(self.request, "再設定のメールを送信しました。")
+            return response
+        
+        except (BadHeaderError, SMTPException, ConnectionError):
+            messages.error(self.request, "メールの送信に失敗しました。時間をおいて再度お試しください。")
+            return redirect('app:password_reset')
+
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

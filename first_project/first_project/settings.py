@@ -133,15 +133,15 @@ STATICFILES_DIRS = [
 
 LOGIN_URL = '/'
 # メールを送らず、ターミナル表示に後で削除
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-# Gmailで送信用↓
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_PORT = 587
-# EMAIL_USE_TLS = True
-# EMAIL_HOST_USER = 'あなたのGmailアドレス'
-# EMAIL_HOST_PASSWORD = 'アプリパスワード'
-# # DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
 
 # Gmailで送信用
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'yamamoto.test.portfolio@gmail.com'
+EMAIL_HOST_PASSWORD = 'gatbgtntbvrmgkes'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
