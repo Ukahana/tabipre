@@ -64,11 +64,7 @@
         </form>
 
         <p class="link mt-3">
-            {% if request.GET.next %}
                 <a href="{% url 'app:login' %}?next={{ request.GET.next }}">ログイン画面はこちら</a>
-            {% else %}
-                <a href="{% url 'app:login' %}">ログイン画面はこちら</a>
-            {% endif %}
         </p>
     </div>
 </div>

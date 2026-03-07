@@ -62,7 +62,7 @@ form label {
 /* 検索フォーム */
 .search-input {
     height: 35px;
-    width: 85%;
+    width: 50%;
     padding: 4px 8px;
     border: 1px solid #ccc;
 }
@@ -73,7 +73,8 @@ form label {
     background-color: #4a90e2;
     color: #fff;
     height: 35px;
-    width: 50px;
+    width: 80px;
+    margin-left: 5px;
     padding: 4px 6px;
     line-height: 1;
     border: 1px solid #595959;
@@ -214,10 +215,10 @@ input[type="text"], button { border-radius: 0; }
 /* 入力欄の右側に × を表示 */
 .clear-btn {
     position: absolute;
-    right: 70px;
+    right: 80px;
     top: 50%;
     transform: translateY(-50%);
-    font-size: 20px;
+    font-size: 28px;
     color: #aaa;
     cursor: pointer;
     padding: 5px;
@@ -241,4 +242,19 @@ input[type="text"], button { border-radius: 0; }
     overflow-y: hidden;   
     padding-bottom: 8px; 
     margin-top: 12px; 
+}
+/* 旅行カードのサイズ調整 */
+.card.travel-card {
+    min-height: 300px;        /* カードの高さを大きく */
+    border-radius: 10px;      /* 少し丸みを付ける（任意） */
+}
+
+/* カード内のタイトルを大きく */
+.card.travel-card .card-title {
+    font-size: 1.3rem;
+}
+
+/* 日付の文字も少し大きく */
+.card.travel-card .card-text {
+    font-size: 1.1rem;
 }

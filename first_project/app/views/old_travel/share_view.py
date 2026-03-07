@@ -16,6 +16,7 @@ def share_view(request, token):
     if not link:
         return render(request, "parts/expired.html", {
             "is_share_page": True,
+            "mode": "share_link",
         })
 
     # ② 期限切れチェック（削除と同じ文言で統一）
@@ -23,10 +24,12 @@ def share_view(request, token):
     if link.expiration_date and link.expiration_date < today:
         return render(request, "parts/expired.html", {
             "is_share_page": True,
+            "mode": "share_link",
+
         })
 
-    # ③ 編集可能でも mode=view 以外なら編集画面へ
-    if link.permission_type == Link.PermissionType.EDITABLE and request.GET.get("mode") != "view":
+    # ③ 編集可能なら常に編集画面へ
+    if link.permission_type == Link.PermissionType.EDITABLE:
         return redirect(reverse("app:share_edit_view", args=[token]))
 
     # --- 閲覧専用処理 ---
@@ -70,11 +73,20 @@ def share_view(request, token):
     
 @login_required
 def share_edit_view(request, token):
-    link = get_object_or_404(Link, share_token=token)
+    link = Link.objects.filter(share_token=token).first()
 
+    # 削除済み or 存在しない
+    if not link:
+        return render(request, "parts/expired.html", {
+            "is_share_page": True,
+            "mode": "share_link",
+        })
+
+    # 閲覧専用なら編集画面は開けない → 閲覧画面へ戻す
     if link.permission_type != Link.PermissionType.EDITABLE:
-        return HttpResponseForbidden("編集権限がありません")
+        return redirect(reverse("app:share_view", args=[token]) + "?mode=view")
 
+    # ここから下は「編集可能」の場合だけ実行される
     template = link.template
     categories = TravelCategory.objects.filter(template=template)
 
@@ -117,14 +129,22 @@ def share_edit_view(request, token):
         TravelItem.objects.filter(id=delete_item_id).delete()
 
     # --- 保存後は閲覧画面へ ---
-    return redirect(f"/share/{token}/?mode=view")
+    return redirect(f"{reverse('app:share_view', args=[token])}?mode=view")
 
 @login_required
 def share_add_category_item(request, token):
-    link = get_object_or_404(Link, share_token=token)
+    link = Link.objects.filter(share_token=token).first()
 
+    # 削除済み or 存在しない
+    if not link:
+        return render(request, "parts/expired.html", {
+            "is_share_page": True,
+            "mode": "share_link",
+        })
+
+    # 閲覧専用なら編集画面は開けない → 閲覧画面へ戻す
     if link.permission_type != Link.PermissionType.EDITABLE:
-        return HttpResponseForbidden("編集権限がありません")
+        return redirect(reverse("app:share_view", args=[token]) + "?mode=view")
 
     template = link.template
 
@@ -153,6 +173,7 @@ def share_add_category_item(request, token):
                     "open_continue_modal": False,
                     "is_share_edit": True,
                     "token": token,
+                    "is_share_page": True,  
                 }
             )
 

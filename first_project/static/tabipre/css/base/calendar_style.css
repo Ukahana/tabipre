@@ -59,3 +59,14 @@
 .flatpickr-day.today {
     border-color: #4a90e2; /* アプリの青をアクセントに */
 }
+/* 年・月の枠線を消す */
+.flatpickr-current-month,
+.flatpickr-current-month .cur-year,
+.flatpickr-current-month .cur-month {
+    border: none !important;
+
+}
+.flatpickr-current-month * {
+    border: none !important;
+
+}

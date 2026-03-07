@@ -30,9 +30,8 @@ class HomeView(LoginRequiredMixin, TemplateView):
 
         travels = Travel_info.objects.filter(
             user=request.user,
-            template__isnull=False
-            )
-
+            template__template_source__isnull=True
+        )
         if keyword:
             travels = travels.filter(travel_title__icontains=keyword)
 

@@ -107,8 +107,8 @@ urlpatterns = [
     # 共有リンク（管理画面：IDベース）
     # ============================
     path('tabipre/share/settings/', share_settings, name='share_settings'),
-    path('tabipre/share/<int:link_id>/update/', update_share_link, name='share_update'),
-    path('tabipre/share/<int:link_id>/delete/', delete_share_link, name='delete_share_link'),
+    path('tabipre/share/<str:token>/update/', update_share_link, name='share_update'),
+    path('tabipre/share/<str:token>/delete/', delete_share_link, name='delete_share_link'),
 
     # ============================
     # 共有リンク（公開：tokenベース）

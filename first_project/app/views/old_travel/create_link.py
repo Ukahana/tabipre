@@ -6,7 +6,7 @@ from dateutil.relativedelta import relativedelta
 from app.models import Link, Travel_info, Template
 from app.forms import LinkForm
 from ...models.template import Template, TravelCategory, TravelItem
-from django.contrib import messages
+from django.urls import reverse
 
 def create_link(request, travel_id):
     travel = get_object_or_404(Travel_info, pk=travel_id)
@@ -137,7 +137,9 @@ def create_link(request, travel_id):
         link.expiration_date = next_day
 
     link.save()
-    share_url = request.build_absolute_uri(f"/share/{link.share_token}/")
+    share_url = request.build_absolute_uri(
+    reverse("app:share_view", args=[link.share_token])
+    )
 
     return render(request, "old_travel/create_link.html", {
         "form": form,

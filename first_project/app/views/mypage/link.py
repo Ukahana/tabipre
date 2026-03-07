@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.decorators.http import require_POST
 from django.utils.dateformat import DateFormat
-
+from django.urls import reverse
 
 from app.models import Link
 
@@ -15,12 +15,14 @@ def share_settings(request):
     links = Link.objects.filter(user=request.user).order_by('-created_at')
 
     for link in links:
+        # 有効期限のフォーマット
         if link.expiration_date:
             df = DateFormat(link.expiration_date)
             link.formatted_expiration = df.format('Y.n.j')
 
-        # ★ ここで絶対 URL を作る
-        link.absolute_url = request.build_absolute_uri(f"/share/{link.share_token}/")
+        # ★ 正しい絶対URLを生成（reverse を使う）
+        relative_url = reverse("app:share_view", args=[link.share_token])
+        link.absolute_url = request.build_absolute_uri(relative_url)
 
     return render(request, 'mypage/link_list.html', {
         'links': links
@@ -30,8 +32,8 @@ def share_settings(request):
 # ② 権限変更（モーダルの「登録」ボタン）
 @login_required
 @require_POST
-def update_share_link(request, link_id):
-    link = get_object_or_404(Link, id=link_id, user=request.user)
+def update_share_link(request, token):
+    link = get_object_or_404(Link, share_token=token, user=request.user)
 
     data = json.loads(request.body)
     permission_type = data.get("permission")
@@ -47,14 +49,13 @@ def update_share_link(request, link_id):
 # ③ リンク削除（モーダルの「リンクを削除」）
 @login_required
 @require_POST
-def delete_share_link(request, link_id):
-    link = get_object_or_404(Link, id=link_id, user=request.user)
+def delete_share_link(request, token):
+    link = get_object_or_404(Link, share_token=token, user=request.user)
 
-    copied_template = link.template  # リンクが参照しているテンプレート
+    copied_template = link.template  
 
-    link.delete()  # まずリンクを削除
+    link.delete()  
 
-    # ★ コピー元があるテンプレートなら削除（共有用テンプレート）
     if copied_template.template_source is not None:
         copied_template.delete()
 

@@ -1,26 +1,31 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     const modal = document.getElementById("shareLinkModal");
-    let currentLinkId = null;
+
+    let currentToken = null;
 
     // モーダル表示時
     modal.addEventListener("show.bs.modal", function (event) {
         const trigger = event.relatedTarget;
 
-        currentLinkId = trigger.getAttribute("data-link-id");
+        currentToken = trigger.getAttribute("data-token");
+
         const url = trigger.getAttribute("data-url");
         const permission = trigger.getAttribute("data-permission");
         const expiration = trigger.getAttribute("data-expiration");
 
+        // URL をセット
         document.getElementById("share-url").value = url;
 
-        document.getElementById("perm-view").checked = permission === "0";
-        document.getElementById("perm-edit").checked = permission === "1";
+        // 権限ラジオ（0/1 どちらでも判定できるように）
+        document.getElementById("perm-view").checked = (permission == 0 || permission == "0");
+        document.getElementById("perm-edit").checked = (permission == 1 || permission == "1");
 
+        // 有効期限（もしあれば）
         const expInput = document.getElementById("share-expiration");
         if (expInput) expInput.value = expiration;
 
-        // メッセージを初期化
+        // コピー完了メッセージ初期化
         document.getElementById("copy-msg").textContent = "";
     });
 
@@ -29,7 +34,9 @@ document.addEventListener("DOMContentLoaded", () => {
         e.preventDefault();
 
         const form = document.getElementById("delete-link-form");
-        form.action = `/share/${currentLinkId}/delete/`;
+
+        // ★ token ベースの URL（/tabipre/ を忘れない）
+        form.action = `/tabipre/share/${currentToken}/delete/`;
 
         const shareModal = bootstrap.Modal.getInstance(modal);
         shareModal.hide();
@@ -44,11 +51,12 @@ document.addEventListener("DOMContentLoaded", () => {
         );
     };
 
-    // 🔵 保存処理
+    // 🔵 保存処理（権限変更）
     document.getElementById("save-btn").onclick = () => {
         const selected = document.querySelector("input[name='permission']:checked").value;
 
-        fetch(`/share/${currentLinkId}/update/`, {
+        // ★ token ベースの URL（/tabipre/ を忘れない）
+        fetch(`/tabipre/share/${currentToken}/update/`, {
             method: "POST",
             headers: {
                 "X-CSRFToken": document.querySelector("[name=csrfmiddlewaretoken]").value,
@@ -62,16 +70,14 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     };
 
-    // 📋 コピー機能（JSだけでメッセージ表示）
+    // 📋 コピー機能
     document.getElementById("copy-btn").onclick = () => {
         const input = document.getElementById("share-url");
         const msg = document.getElementById("copy-msg");
 
         navigator.clipboard.writeText(input.value).then(() => {
-
             msg.textContent = "コピーしました";
 
-            // 1.5秒後に消す
             setTimeout(() => {
                 msg.textContent = "";
             }, 1500);

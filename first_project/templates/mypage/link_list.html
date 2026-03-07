@@ -21,8 +21,9 @@
                        data-bs-toggle="modal"
                        data-bs-target="#shareLinkModal"
                        data-link-id="{{ link.id }}"
+                       data-token="{{ link.share_token }}"
                        data-url="{{ link.absolute_url }}"
-                       data-permission="{{ link.permission_type }}"
+                       data-permission="{{ link.permission_type|add:0 }}"
                        data-expiration="{{ link.formatted_expiration }}"
                        data-title="{{ link.template.travel_info.travel_title }}"
                     >
