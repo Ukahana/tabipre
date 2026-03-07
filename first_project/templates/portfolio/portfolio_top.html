@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'tabipre/css/portfolio.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+
+  <header class="text-center mb-5">
+    <h2>ポートフォリオ No.1</h2>
+  </header>
+
+  <section id="hero" class="text-center mb-3">
+    <h1>旅プレ</h1>
+    <p>旅行前やることリスト作成アプリ</p>
+  </section>
+
+  <!-- アプリ概要 -->
+  <section id="about-app" class="mb-5">
+    <p class="text-center">
+      旅プレは、旅行前の「何を準備すればいいんだっけ？」という悩みを解消するアプリです。
+      行き先や交通手段に合わせてテンプレートを自動生成します。
+      過去の旅行テンプレートを再利用でき、さらに自分のスタイルに合わせてカスタマイズも可能です。
+      「旅行は準備から楽しむもの」という考えのもと、迷いがちなタスクをまとめて、自分らしい旅支度をサポートします。
+    </p>
+  </section>
+
+  <!-- 画像ギャラリー -->
+  <section class="mb-5">
+    <div class="row text-center g-3 mt-3">
+      <div class="col-6 col-md-3">
+        <img src="{% static 'tabipre/app-img/travel.png' %}" class="img-fluid">
+      </div>
+      <div class="col-6 col-md-3">
+        <img src="{% static 'tabipre/app-img/template.png' %}" class="img-fluid">
+      </div>
+      <div class="col-6 col-md-3">
+        <img src="{% static 'tabipre/app-img/add.png' %}" class="img-fluid">
+      </div>
+      <div class="col-6 col-md-3">
+        <img src="{% static 'tabipre/app-img/favorite.png' %}" class="img-fluid">
+      </div>
+    </div>
+  </section>
+
+  <!-- 資料 -->
+  <section id="documents" class="text-center mb-5">
+    <h2>資料一覧</h2>
+
+    <div class="d-flex justify-content-center gap-4 flex-wrap mt-3">
+      <a href="{% static 'tabipre/documents/proposal.pdf' %}" target="_blank">企画書</a>
+      <a href="{% static 'tabipre/documents/ui_flow.svg' %}" target="_blank">画面遷移図</a>
+      <a href="{% static 'tabipre/documents/ui_design.pdf' %}" target="_blank">画面設計図</a>
+      <a href="{% static 'tabipre/documents/er.svg' %}" target="_blank">ER図</a>
+    </div>
+  </section>
+
+  <div class="text-center mb-5">
+    <a href="{% url 'app:login' %}" class="btn btn-primary btn-lg">
+      アプリを開く
+    </a>
+  </div>
+
+  <footer class="text-center mt-5">
+    <p>© 2026 Yuka Portfolio</p>
+  </footer>
+
+</div>
+{% endblock %}

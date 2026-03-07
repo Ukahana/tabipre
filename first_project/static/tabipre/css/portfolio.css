@@ -1,0 +1,105 @@
+/* 全体 */
+body {
+  font-family: "Gowun Dodum", "Yu Gothic", sans-serif;
+  background: #f5f3ef;
+  color: #4a4a4a;
+}
+
+/* 見出し（韓国手書き風） */
+h1, h2 {
+  font-family: "Nanum Pen Script", cursive;
+  color: #5c4b3b;
+  letter-spacing: 0.03em;
+}
+
+h1 {
+  font-size: 3.2rem;
+  margin-bottom: 0.2rem;
+  transform: rotate(-1deg);
+}
+
+h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #d8cfc4;
+  padding-bottom: 0.3rem;
+  transform: rotate(-0.5deg);
+}
+
+/* サブタイトル */
+#hero p {
+  font-size: 1.1rem;
+  color: #6d6257;
+  letter-spacing: 0.02em;
+  margin-top: 0.3rem;
+  opacity: 0.9;
+}
+
+/* アプリ説明文（改行保持） */
+#about-app p {
+  white-space: pre-line;
+  font-size: 0.95rem;
+  color: #5a5248;
+  line-height: 1.55;
+  letter-spacing: 0.01em;
+  text-align: center;
+}
+
+/* 画像 */
+.row.g-3 img {
+  border-radius: 14px;
+  background: #fff;
+  padding: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform .2s ease;
+}
+
+.row.g-3 img:hover {
+  transform: translateY(-3px);
+}
+
+/* 画像キャプション */
+.caption {
+  font-size: 0.85rem;
+  color: #6d6257;
+  margin-top: 0.3rem;
+  opacity: 0.8;
+}
+
+/* 資料一覧（韓国ミニマル） */
+#documents a {
+  font-size: 1.2rem;
+  color: #6d6257;
+  font-weight: 500;
+  border-bottom: 1px solid #c8bfb3;
+  padding-bottom: 2px;
+  letter-spacing: 0.02em;
+  transition: opacity .2s ease;
+}
+
+#documents a:hover {
+  opacity: 0.7;
+}
+
+/* ボタン（大きめ韓国風） */
+.btn-primary.btn-lg {
+  background: #8c7a6b;
+  border: none;
+  border-radius: 40px;
+  padding: 1rem 3rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  transition: opacity .2s ease, transform .2s ease;
+}
+
+.btn-primary.btn-lg:hover {
+  opacity: 0.9;
+  transform: translateY(-3px);
+}
+
+/* フッター */
+footer p {
+  color: #8f8f8f;
+  font-size: 0.85rem;
+}
