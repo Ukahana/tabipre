@@ -1,4 +1,4 @@
-/* 全体の背景色・フォント */
+/* 背景色・フォント */
 .app-frame {
     background: #f5ebdd;
     font-family: "Arial","Helvetica","sans-serif";
@@ -6,7 +6,7 @@
     max-height: 100%;
 }
 
-/* ログインボタン */
+/* ログインボタン*/
 .btn-primary {
     background-color: #3f7fbf;
     border: none;
@@ -55,15 +55,15 @@ form label {
 /* リンク */
 .link {
     text-align: center;
-    font-size: 15px;
-    margin-bottom: 0; /* ← 下余白を削る */
+    margin-bottom: 0;
 }
 .link a {
     color: #5c3a3a;
     text-decoration: underline;
 }
+
 .link a:hover {
-    color: #000;
+    color: #000; 
 }
 
 /* フッター非表示 */
@@ -71,31 +71,30 @@ form label {
     display: none !important;
 }
 
-/* エラー */
+/* エラー表示 */
 .app-error-box {
     color: #c45a5a;
     margin-bottom: 10px;
 }
-/* エラーメッセージを1行にする */
 .text-danger {
-    display: block;           /* ブロック化（安定表示） */
+    display: block;
 }
-/* ★ 中央寄せ（高さは画面いっぱい） */
+
+/* ログイン画面の中央寄せ */
 .login-center {
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
-
-    padding-bottom: 0 !important; /* ← 下の余白を削る */
+    padding-bottom: 0 !important;
 }
 
-/* タイトルだけ下げる（高さは変えない） */
+/* タイトルだけ下げる */
 .login-center .sub-title {
     padding-top: 40px;
 }
 
-/* 画面が小さいときだけスクロールを許可 */
+/* 画面が小さいときの調整 */
 @media (max-height: 600px) {
     .login-center {
         height: auto;
@@ -104,8 +103,4 @@ form label {
         padding-top: 20px;
         padding-bottom: 20px;
     }
-}
-/* パスワード再設定画面のタイトルだけ下げる（余白は増やさない） */
-.pass-reset .sub-title {
-    padding-top: 20%;   /* ← 好きな数値に調整してOK */
 }

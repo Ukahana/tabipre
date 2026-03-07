@@ -100,14 +100,6 @@
 /* 共有リンク期限切れ画面（中央寄せ） */
 /* ============================= */
 
-.expired-wrapper {
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  flex-direction: column;
-}
 /* 入力欄とアイコンを重ねるためのラッパー */
 .calendar-input-wrapper {
   position: relative;
@@ -139,4 +131,18 @@
 
 .expired-wrapper p + p {
   margin-top: 4px;    /* 2つ目以降の p だけ少し余白 */
+}
+.container{
+  padding: none;  
+  border: none;  
+}
+/* expired-wrapper があるページでは container の左右余白を消す */
+/* expired-wrapper のページでは container の左右余白をゼロにする */
+.expired-wrapper {
+  width: 100%;
+}
+
+.content-wrapper.container {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }

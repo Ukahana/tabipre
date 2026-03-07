@@ -5,53 +5,28 @@
   max-width: 420px;
   margin: 0 auto;
   min-height: 100vh;
+  padding: 6px 18px;
   background: #fff;
   border: 1px solid #ccc;
-  padding: 12px 18px;
-  box-sizing: border-box;
   color: #595959;
+  display: flex;
+  flex-direction: column;
   justify-content: center;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
 }
-/* 全体 */
-.app-frame {
-    background: #fff;
-    font-family: Arial, Helvetica, sans-serif;
-}
-.search-area { margin-top: 0; }
 
-/* 画面が小さいときはスクロールを許可する */
 @media (max-height: 600px) {
-  .app-frame {
-    justify-content: flex-start; /* 上から配置 */
-    padding-top: 20px;
-    padding-bottom: 20px;
-  }
+  .app-frame { justify-content: flex-start; padding: 20px 18px; }
 }
 @media (max-width: 480px) {
-  .app-frame {
-    padding-top: 20%;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;   
-    min-height: 100dvh;
-  }
+  .app-frame { padding-top: 0; }
 }
-@media (max-width: 376px) {
-  .app-frame {
-    padding-top:15px; 
-  }
-}
-@media (min-width: 481px) {
-  .app-frame {
-    padding-top: 0 !important;
-  }
-}
+
 /* ============================= */
 /* フッター */
 /* ============================= */
 .bottom-nav {
-  border-top: 1px solid #ddd;
-  background: #f5ebddff;
   position: fixed;
   bottom: 0;
   left: 50%;
@@ -60,6 +35,8 @@
   max-width: 420px;
   height: 60px;
   padding: 6px 0;
+  background: #f5ebdd;
+  border-top: 1px solid #ddd;
   z-index: 999;
 }
 .bottom-nav a {
@@ -71,22 +48,13 @@
 /* ============================= */
 /* タイトル */
 /* ============================= */
-.title {
-  font-size: 30px;
-  margin-top: 80px;
+.title, .sub-title, .modal-title {
+  text-align: center;
   color: #5c3a3a;
-  font-weight: bold;
-  text-align: center;
 }
-.sub-title {
-  font-size: 26px;
-  color: #5c3a3a;
-  text-align: center;
-}
-.modal-title {
-  font-size: 18px;
-  text-align: center;
-}
+.title { font-size: 30px; margin-top: 40px; font-weight: bold; }
+.sub-title { font-size: 26px; }
+.modal-title { font-size: 18px; }
 
 /* ============================= */
 /* リンク */
@@ -94,48 +62,39 @@
 .link-text {
   display: block;
   text-align: center;
-  font-size: 15px;
+  padding: 8px 0;
+  font-size: 18px;
   color: #5c3a3a;
   text-decoration: underline;
-  padding: 8px 0;
-}
-.back-link {
-  color: #595959;
 }
 .link-text:hover { color: #000; }
+.back-link { color: #595959; }
 
 /* ============================= */
-/* ボタン（角丸なし） */
+/* ボタン */
 /* ============================= */
-.btn,
-.btn-primary,
-.app-btn,
-.app-btn-primary,
-.app-btn-secondary,
-.app-btn-warning {
+.btn, .btn-primary, .app-btn, .app-btn-primary,
+.app-btn-secondary, .app-btn-warning {
   border-radius: 0 !important;
 }
 
 .app-btn {
   display: block;
-  padding: 14px 20px;
-  font-size: 1.1rem;
-  text-align: center;
-  font-weight: 600;
-  border: none;
   width: 100%;
+  padding: 14px 20px;
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+  border: none;
 }
-
 .app-btn-primary { background: #4a90e2; color: #fff; }
 .app-btn-primary:hover { background: #3f7fbf; }
-
 
 /* ============================= */
 /* コンテンツ余白 */
 /* ============================= */
 .content-wrapper {
-  padding-bottom: 60px !important;
-}
+ padding-bottom: 60px !important; }
 
 /* ============================= */
 /* ステータスバッジ */
@@ -143,15 +102,15 @@
 .badge-t {
   display: inline-block;
   min-width: 32px;
-  border-radius: 6px;
-  font-size: 18px;
   padding: 6px 10px;
   margin: 5px 20px 0 0 !important;
+  border-radius: 6px;
   border: 1px solid #595959;
+  font-size: 18px;
 }
-.badge-t.status-mi { background: #999; color: #fff; }
-.badge-t.status-kan { background: #4285f4; color: #fff; }
-.badge-t.status-zumi { background: #b6d7a8; color: #000; }
+.status-mi { background: #999; color: #fff; }
+.status-kan { background: #4285f4; color: #fff; }
+.status-zumi { background: #b6d7a8; color: #000; }
 
 /* ============================= */
 /* カード */
@@ -167,58 +126,44 @@
 /* 送信ボタン */
 /* ============================= */
 .app-submit {
-  background: #9fc5e8ff;
-  border: 1px solid #595959;
-  display: block;
-  margin: 0 auto;
   width: 140px;
   min-height: 44px;
+  margin: 0 auto;
+  background: #9fc5e8;
+  border: 1px solid #595959;
   border-radius: 0;
 }
-.app-submit:hover { background: #8ab6d8ff; }
+.app-submit:hover { background: #8ab6d8; }
 
 /* ============================= */
 /* ラベル */
 /* ============================= */
-.form-label {
-  font-size: 18px;
-  margin-bottom: 4px;
-  display: inline-block;
-  border-radius: 0;
-}
+.form-label { font-size: 20px; margin-bottom: 4px; }
 
 /* ============================= */
-/* 入力欄（角丸なし・枠線濃いめ） */
+/* 入力欄 */
 /* ============================= */
-input,
-select,
-textarea {
+input, select, textarea,
+input.form-control, select.form-control, textarea.form-control {
   width: 100%;
-  padding: 6px 10px;
-  border-radius: 0;
-  border: 1px solid #595959;
+  padding: 4px 8px;
   font-size: 18px;
-  box-sizing: border-box;
-}
-
-/* Bootstrap 上書き */
-input.form-control,
-select.form-control,
-textarea.form-control {
   border: 1px solid #595959 !important;
+  border-radius: 6px;
+  box-sizing: border-box;
 }
 
 /* ============================= */
 /* モーダル */
 /* ============================= */
 .modal-dialog {
-  margin: 80px auto 40px auto;
   max-width: 360px;
+  margin: 80px auto 40px;
 }
+
 /* ============================= */
 /* エラー */
 /* ============================= */
-/* エラー文字（Django の errorlist） */
 .errorlist {
   color: #b30000;
   font-size: 15px;
@@ -226,23 +171,20 @@ textarea.form-control {
   padding: 0;
   list-style: none;
 }
-
-/* エラーがある入力欄を赤枠に */
 .is-invalid {
   border: 2px solid #b30000 !important;
   background: #fff5f5;
 }
-/* 項目編集モーダル削除ボタン*/
+
 .delete-label {
-  white-space: nowrap;
   display: inline-block;
-  min-width: 40px; 
+  min-width: 40px;
   text-align: center;
+  white-space: nowrap;
 }
-/* モーダル開閉時のスクロールバー補正を無効化 */
-body.modal-open {
-  padding-right: 0 !important;
-}
-html {
-  overflow-y: scroll;
-}
+
+/* モーダル時のスクロール補正無効化 */
+body.modal-open { padding-right: 0 !important; }
+
+html { overflow-y: scroll; }
+body { font-size: 18px; }

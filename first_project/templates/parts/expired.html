@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
 {% load static %}
 
 {% block extra_css %}
@@ -7,11 +7,26 @@
 {% endblock %}
 
 {% block content %}
- 
 
 <div class="expired-wrapper">
-   <div class="title mb-3">リンクが無効です</div>
-    <p>この共有リンクは無効になっています。</p>
-    <p>作成者にご確認ください。</p>
+
+    <div class="title mb-3">リンクが無効です</div>
+
+    {% if mode == "password_reset" %}
+        <p>このパスワード再設定リンクは無効、または有効期限が切れています。</p>
+        <p>再度パスワード再設定を行ってください。</p>
+
+        <div class="mt-4">
+            <a href="{% url 'app:password_reset' %}" class="link-text">
+                パスワード再設定メールを再送する
+            </a>
+        </div>
+
+    {% elif mode == "share_link" %}
+        <p>この共有リンクは無効になっています。</p>
+        <p>作成者にご確認ください。</p>
+    {% endif %}
+
 </div>
+
 {% endblock %}

@@ -192,6 +192,13 @@ class UserLoginForm(forms.Form):
         return email
 
 class CustomPasswordResetForm(PasswordResetForm):
+    email = forms.EmailField(
+        label='メールアドレス',
+        widget=forms.EmailInput(attrs={
+            'class': 'form-control',
+            'oninput': 'this.value = this.value.toLowerCase();'
+        })
+    )
 
     def clean_email(self):
         email = self.cleaned_data.get("email", "").strip().lower()
@@ -231,11 +238,36 @@ class CustomPasswordResetForm(PasswordResetForm):
 
 class CustomSetPasswordForm(SetPasswordForm):
 
-    def clean_new_password1(self):
-        new_password = self.cleaned_data.get('new_password1')
+    def validate_password_rules(self, pw):
+        if len(pw) < 10:
+            self.add_error('new_password1', "10文字以上必要です。")
+        if not any(c.isdigit() for c in pw):
+            self.add_error('new_password1', "数字を入れてください。")
+        if not any(c.islower() for c in pw):
+            self.add_error('new_password1', "小文字を入れてください。")
+        if not any(c.isupper() for c in pw):
+            self.add_error('new_password1', "大文字を入れてください。")
+
+        try:
+            validate_password(pw)
+        except ValidationError as e:
+            self.add_error('new_password1', " / ".join(e.messages))
+
+    def clean(self):
+        cleaned = super().clean()
+        pw1 = cleaned.get("new_password1")
+        pw2 = cleaned.get("new_password2")
+
+        # パスワード一致チェック
+        if pw1 and pw2 and pw1 != pw2:
+            self.add_error('new_password2', "パスワードが一致しません。")
 
         # 現在のパスワードと同じかチェック
-        if self.user.check_password(new_password):
-            raise ValidationError("現在のパスワードと同じです。別のパスワードを設定してください。")
+        if pw1 and self.user.check_password(pw1):
+            self.add_error('new_password1', "現在のパスワードと同じです。別のパスワードを設定してください。")
 
-        return new_password
+        # パスワードルールチェック
+        if pw1:
+            self.validate_password_rules(pw1)
+
+        return cleaned
