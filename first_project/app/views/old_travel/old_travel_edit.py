@@ -5,7 +5,7 @@ from app.forms import TravelStep1Form, TravelStep2Form
 
 
 # ---------------------------------------------------------
-# ★ Step1：旅行基本情報の編集（タイトル・日付・宿泊タイプ）
+#  Step1：旅行基本情報の編集（タイトル・日付・宿泊タイプ）
 # ---------------------------------------------------------
 def old_travel_edit1(request, travel_id):
     travel = get_object_or_404(Travel_info, pk=travel_id)
@@ -44,7 +44,7 @@ def old_travel_edit1(request, travel_id):
 
 
 # ---------------------------------------------------------
-# ★ Step2：旅行詳細情報の編集（交通手段・メモ・場所）
+#  Step2：旅行詳細情報の編集（交通手段・メモ・場所）
 # ---------------------------------------------------------
 def old_travel_edit2(request, travel_id):
     travel = get_object_or_404(Travel_info, pk=travel_id)
@@ -52,7 +52,7 @@ def old_travel_edit2(request, travel_id):
       travel_info=travel,
     ).first()
 
-    # ★ カテゴリ取得（必須）
+    # カテゴリ取得（必須）
     categories = template.travelcategory_set.all()
 
     session_data = request.session.get("edit_travel")

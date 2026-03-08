@@ -219,7 +219,7 @@ class CustomPasswordResetForm(PasswordResetForm):
              html_email_template_name=None,
              extra_email_context=None):
 
-        # ★ expiration_time をここで追加する
+        #  expiration_time をここで追加する
         timeout_hours = settings.PASSWORD_RESET_TIMEOUT // 3600
         extra_email_context = extra_email_context or {}
         extra_email_context["expiration_time"] = f"{timeout_hours}時間"

@@ -11,7 +11,7 @@
 
     <div class="sub-title mb-2">詳細設定</div>
 
-    <!-- ★ Step2 のフォーム（旅行情報入力） -->
+    <!--  Step2 のフォーム（旅行情報入力） -->
     <form method="POST" class="travel_step2_form">
         {% csrf_token %}
 
@@ -22,8 +22,8 @@
                 テンプレート作成
             </button>
 
-            <!-- ★ モーダルを開くだけ（POST しない） -->
-            <button type="submit" name="action" value="open_modal" class="btn btn-copy">
+            <!--  モーダルを開くだけ（POST しない） -->
+            <button type="button" id="open-modal-btn" class="btn btn-copy">
               前回のテンプレートをコピー
             </button>
 
@@ -35,7 +35,7 @@
 <!-- JS -->
 <script src="{% static 'tabipre/js/new_travel/travel_step2.js' %}"></script>
 
-<!-- ★ モーダルは必ず form の外に置く（重要） -->
+<!--  モーダルは必ず form の外に置く（重要） -->
 {% include 'new_travel/modal/old_travel.html' %}
 
 {% endblock %}

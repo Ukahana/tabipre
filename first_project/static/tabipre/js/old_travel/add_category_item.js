@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     // ============================
-    // ★ カラー選択（修正版）
+    //  カラー選択（修正版）
     // ============================
     const colorOptions = document.querySelectorAll(".color-option");
     const colorInput = document.getElementById("id_category_color");
@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ============================
-    // ★ 登録ボタン → continue=0 で送信
+    //  登録ボタン → continue=0 で送信
     // ============================
     const submitBtn = document.getElementById("validateBeforeModal");
     const form = document.getElementById("categoryItemForm");

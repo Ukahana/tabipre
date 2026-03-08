@@ -29,7 +29,7 @@ def add_category_item(request, template_id):
         form = CategoryItemForm(request.POST, template=template)
         continue_flag = request.POST.get("continue")
 
-        # ★ バリデーション NG → エラー表示
+        #  バリデーション NG → エラー表示
         if not form.is_valid():
             return render(
                 request,
@@ -44,7 +44,7 @@ def add_category_item(request, template_id):
                 }
             )
 
-        # ★ バリデーション OK
+        #  バリデーション OK
         cd = form.cleaned_data
 
         # 分類を取得 or 作成
@@ -65,7 +65,7 @@ def add_category_item(request, template_id):
                 item_checked=0,
             )
 
-            # ★ お気に入り登録（重複チェック付き）
+            #  お気に入り登録（重複チェック付き）
             if cd["favorite_flag"] == 1:
                 if not FavoriteItem.objects.filter(
                     favorite=favorite,
@@ -76,15 +76,15 @@ def add_category_item(request, template_id):
                         item_name=item.item_name
                     )
 
-        # ★ はい → 続けて追加
+        #  はい → 続けて追加
         if continue_flag == "1":
             return redirect("app:add_category_item", template_id)
 
-        # ★ いいえ → 戻る
+        #  いいえ → 戻る
         if continue_flag == "2":
             return redirect("app:template_edit2", template_id)
 
-        # ★ モーダル表示
+        #  モーダル表示
         return render(
             request,
             "new_travel/add_category_item.html",

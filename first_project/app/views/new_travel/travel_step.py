@@ -149,7 +149,7 @@ def travel_step2(request):
             )
 
             # -----------------------------
-            # ★ 重複しない交通手段登録（修正版）
+            # 重複しない交通手段登録（修正版）
             # -----------------------------
             transport_types = set(form.cleaned_data["transport_types"])
             other_text = form.cleaned_data.get("transport_other", "").strip()
@@ -234,7 +234,7 @@ def travel_step2(request):
             )
 
             # -----------------------------
-            # ★ 重複しない交通手段登録（修正版）
+            #  重複しない交通手段登録（修正版）
             # -----------------------------
             transport_types = set(form.cleaned_data["transport_types"])
             other_text = form.cleaned_data.get("transport_other", "").strip()

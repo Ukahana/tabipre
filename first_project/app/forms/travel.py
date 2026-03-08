@@ -3,7 +3,7 @@ from ..models import Travel_info, Transport, Travelmode
 
 
 # ---------------------------------------------------------
-# ★ BaseForm（共通設定）
+#  BaseForm（共通設定）
 # ---------------------------------------------------------
 class TravelBaseForm(forms.ModelForm):
     class Meta:
@@ -13,7 +13,7 @@ class TravelBaseForm(forms.ModelForm):
 
 
 # ---------------------------------------------------------
-# ★ Step1（タイトル・日付・宿泊タイプ）
+#  Step1（タイトル・日付・宿泊タイプ）
 # ---------------------------------------------------------
 from django import forms
 
@@ -69,7 +69,7 @@ class TravelStep1Form(TravelBaseForm):
         return cleaned
 
 # ---------------------------------------------------------
-# ★ Step2（交通手段・その他・場所・メモ）
+#  Step2（交通手段・その他・場所・メモ）
 # ---------------------------------------------------------
 class TravelStep2Form(TravelBaseForm):
     location = forms.TypedChoiceField(

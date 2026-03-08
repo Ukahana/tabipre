@@ -70,12 +70,12 @@ def toggle_item_checked(request, item_id):
     data = json.loads(request.body)
 
     checked = data.get("checked", False)
-    print("★★ checked =", checked)
+    print(" checked =", checked)
 
     # ← Boolean → Integer に変換（これが超重要）
     item.item_checked = 1 if checked else 0
     item.save()
 
-    print("★★ 保存完了 item.item_checked =", item.item_checked)
+    print("保存完了 item.item_checked =", item.item_checked)
 
     return JsonResponse({"success": True})

@@ -20,7 +20,7 @@ def share_settings(request):
             df = DateFormat(link.expiration_date)
             link.formatted_expiration = df.format('Y.n.j')
 
-        # ★ 正しい絶対URLを生成（reverse を使う）
+        #  正しい絶対URLを生成（reverse を使う）
         relative_url = reverse("app:share_view", args=[link.share_token])
         link.absolute_url = request.build_absolute_uri(relative_url)
 

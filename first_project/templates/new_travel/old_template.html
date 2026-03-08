@@ -65,13 +65,13 @@
                                class="form-check-input me-3"
                                {% if item.item_checked %}checked{% endif %}>
 
-                        <!-- ★ 項目名を直接編集 -->
+                        <!--  項目名を直接編集 -->
                         <input type="text"
                                name="rename_{{ item.id }}"
                                value="{{ item.item_name }}"
                                class="form-control">
 
-                        <!-- ★ 削除 -->
+                        <!--  削除 -->
                         <button type="submit"
                                 name="delete_item"
                                 value="{{ item.id }}"

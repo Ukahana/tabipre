@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("editItemId").value = itemId;
         document.getElementById("editItemInput").value = itemName;
 
-        // ★★★ 削除用 hidden にも itemId をセット（必須） ★★★
+        //  削除用 hidden にも itemId をセット（必須） 
         const deleteInput = document.getElementById("deleteItemId");
         if (deleteInput) {
             deleteInput.value = itemId;
@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
         document.getElementById("editItemId").value = itemId;
         document.getElementById("editItemInput").value = itemName;
 
-        // ★★★ エラー時も削除用 hidden をセット ★★★
+        //  エラー時も削除用 hidden をセット 
         const deleteInput = document.getElementById("deleteItemId");
         if (deleteInput) {
             deleteInput.value = itemId;

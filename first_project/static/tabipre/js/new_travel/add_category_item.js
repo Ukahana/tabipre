@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     // ============================
-    // ★ カラー選択（既存旅行と同じ動き）
+    //  カラー選択（既存旅行と同じ動き）
     // ============================
     const colorOptions = document.querySelectorAll(".color-option");
     const selectedColor = document.getElementById("selectedColor");
@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     // ============================
-    // ★ 星アイコン（既存旅行と同じ動き）
+    // 星アイコン（既存旅行と同じ動き）
     // ============================
     const star = document.getElementById("favoriteStar");
     const favoriteFlag = document.getElementById("id_favorite_flag");

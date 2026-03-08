@@ -14,7 +14,7 @@
         {% csrf_token %}
         <input type="hidden" name="action" value="edit_all">
 
-        <!-- ★ continue フラグ -->
+        <!--  continue フラグ -->
         <input type="hidden" name="continue" id="continueFlag" value="0">
 
         <div class="travel-edit-fields">
@@ -32,7 +32,7 @@
     </form>
 </div>
 
-<!-- ★ continueModal を読み込む -->
+<!--  continueModal を読み込む -->
 {% include "new_travel/modal/add_continue_modal.html" %}
 
 <script src="{% static 'tabipre/js/new_travel/travel_step1.js' %}"></script>

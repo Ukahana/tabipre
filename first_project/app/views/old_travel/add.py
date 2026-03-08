@@ -20,7 +20,7 @@ def category_item_add(request, template_id):
         form = OldCategoryItemForm(request.POST, template=template)
         continue_flag = request.POST.get("continue")
 
-        # ★ エラー → エラーメッセージ表示、モーダルは出さない
+        #  エラー → エラーメッセージ表示、モーダルは出さない
         if not form.is_valid():
             return render(
                 request,
@@ -35,7 +35,7 @@ def category_item_add(request, template_id):
                 }
             )
 
-        # ★ バリデーション OK
+        #  バリデーション OK
         cd = form.cleaned_data
 
         # 分類を取得 or 作成
@@ -56,15 +56,15 @@ def category_item_add(request, template_id):
                 item_checked=0,
             )
 
-        # ★ はい → 続けて追加
+        #  はい → 続けて追加
         if continue_flag == "1":
             return redirect("app:category_item_add", template_id)
 
-        # ★ いいえ → 戻る
+        #  いいえ → 戻る
         if continue_flag == "2":
             return redirect("app:old_template_edit", template_id)
 
-        # ★ 成功 → モーダル表示
+        #  成功 → モーダル表示
         return render(
             request,
             "old_travel/add_category_item.html",

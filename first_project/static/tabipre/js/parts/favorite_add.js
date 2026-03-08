@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     // ================================
-    // ★ モーダルが開いたときに選択をクリア
+    // モーダルが開いたときに選択をクリア
     // ================================
     const favoriteModal = document.getElementById("favoriteModal");
     if (favoriteModal) {
@@ -14,14 +14,14 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // ================================
-    // ★ お気に入りモーダルの「登録」ボタン
+    // お気に入りモーダルの「登録」ボタン
     // ================================
     document.addEventListener("click", (e) => {
         if (e.target.id === "favoriteSelectBtn") {
 
             const selected = document.querySelector(".favorite-radio:checked");
 
-            // ★ 選択されていない場合は item_name を変更しない
+            //  選択されていない場合は item_name を変更しない
             if (!selected) {
                 return;
             }
@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // ================================
-    // ★ 星アイコン（favoriteStar）の ON/OFF 切り替え
+    //  星アイコン（favoriteStar）の ON/OFF 切り替え
     // ================================
     const star = document.getElementById("favoriteStar");
     const hidden = document.getElementById("favoriteValue");

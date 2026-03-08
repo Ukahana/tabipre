@@ -13,7 +13,7 @@
     <!-- タイトル -->
     {% include "parts/travel_card.html" %}
 
-    <!-- ★★★ 分類一覧 ★★★ -->
+    <!--  分類一覧  -->
     {% for category in categories %}
     <div class="card mb-3 shadow-sm">
 
@@ -47,7 +47,7 @@
             </form>
         </div>
 
-        <!-- ★★★ 項目一覧 ★★★ -->
+        <!--  項目一覧  -->
         <ul id="cat{{ category.id }}" class="list-group list-group-flush collapse show">
 
             {% for item in category.travelitem_set.all %}
@@ -95,7 +95,7 @@
                  登録情報を変更する
             </a>
 
-            <!-- ★★★ テンプレート削除（モーダルを開く） ★★★ -->
+            <!--  テンプレート削除（モーダルを開く）  -->
             <button
                 type="button"
                 class="delete-template-btn"

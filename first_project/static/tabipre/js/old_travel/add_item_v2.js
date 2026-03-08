@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    // ★★★ お気に入りスターの ON/OFF ★★★
+    //  お気に入りスターの ON/OFF 
     const star = document.getElementById("favoriteStar");
     const favValue = document.getElementById("favoriteValue");
 
@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // ★★★ 項目追加モーダルに category_id をセット ★★★
+    //  項目追加モーダルに category_id をセット 
     const addItemButtons = document.querySelectorAll(".add-item-btn");
     const categoryInput = document.getElementById("modalCategoryId");
 
@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // ★★★ エラーがある場合は addItemModal を自動で開く ★★★
+    //  エラーがある場合は addItemModal を自動で開く 
     setTimeout(() => {
         const hasError = document.querySelector(".errorlist");
         const addItemModal = document.getElementById("addItemModal");

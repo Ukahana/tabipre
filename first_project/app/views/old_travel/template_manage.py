@@ -76,13 +76,13 @@ def old_template_edit(request, template_id):
 def edit_item(request, item_id=None):
     if request.method == "POST":
 
-        # ★ POST の中の item_id を使う（ここが最重要）
+        #  POST の中の item_id を使う（ここが最重要）
         post_item_id = request.POST.get("edit_item_id")
         item = get_object_or_404(TravelItem, pk=post_item_id)
 
         new_name = request.POST.get("item_name", "").strip()
 
-        # ★ 削除処理（これで必ず動く）
+        #  削除処理（これで必ず動く）
         if "delete" in request.POST:
             item.delete()
             return redirect("app:old_template_edit", template_id=item.travel_category.template.id)

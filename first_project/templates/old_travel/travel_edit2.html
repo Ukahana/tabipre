@@ -14,14 +14,14 @@
     <form method="POST" class="travel_step2_form">
         {% csrf_token %}
 
-        <!-- ★ フォーム全体のエラー（任意） -->
+        <!-- フォーム全体のエラー（任意） -->
         {% if form.non_field_errors %}
             <div class="alert alert-danger">
                 {{ form.non_field_errors }}
             </div>
         {% endif %}
 
-        <!-- ★ 各フィールドのエラーを表示するための共通パーツ -->
+        <!-- 各フィールドのエラーを表示するための共通パーツ -->
         {% include "parts/travel_step2_form.html" %}
 
         <!-- ボタン -->

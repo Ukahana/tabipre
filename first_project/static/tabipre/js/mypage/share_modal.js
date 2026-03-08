@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const form = document.getElementById("delete-link-form");
 
-        // ★ token ベースの URL（/tabipre/ を忘れない）
+        //  token ベースの URL（/tabipre/ を忘れない）
         form.action = `/tabipre/share/${currentToken}/delete/`;
 
         const shareModal = bootstrap.Modal.getInstance(modal);
@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("save-btn").onclick = () => {
         const selected = document.querySelector("input[name='permission']:checked").value;
 
-        // ★ token ベースの URL（/tabipre/ を忘れない）
+        //  token ベースの URL（/tabipre/ を忘れない）
         fetch(`/tabipre/share/${currentToken}/update/`, {
             method: "POST",
             headers: {

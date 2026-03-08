@@ -10,7 +10,7 @@
       <div class="modal-body">
 
         {% if templates %}
-        <!-- ★ モーダル専用フォーム（Step2 とは完全に独立） -->
+        <!--  モーダル専用フォーム（Step2 とは完全に独立） -->
         <form method="POST" action="{% url 'app:travel_step2' %}">
           {% csrf_token %}
           <input type="hidden" name="action" value="copy">
@@ -54,7 +54,7 @@
                 </div>
               </label>
 
-              <!-- ★ submit ボタン（必ず form の中にある） -->
+              <!--  submit ボタン（必ず form の中にある） -->
               <button type="submit"
                       class="btn-select"
                       onclick="document.getElementById('t{{ template.id }}').checked = true;">
@@ -65,7 +65,7 @@
 
           {% endfor %}
 
-        </form> <!-- ★★★ ここで form を閉じる（重要） ★★★ -->
+        </form> <!--  ここで form を閉じる（重要）  -->
 
         {% else %}
           <p>コピーできるテンプレートがありません。</p>

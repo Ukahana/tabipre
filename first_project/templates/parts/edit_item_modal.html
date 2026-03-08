@@ -12,7 +12,7 @@
         <h5 class="modal-title text-center w-100">編集</h5>
       </div>
 
-      <!-- ★★★ addItemModal と同じエラー表示 ★★★ -->
+      <!--  addItemModal と同じエラー表示  -->
       {% if open_edit_modal and messages %}
       <div class="px-3 pt-2">
         {% for message in messages %}
@@ -30,7 +30,7 @@
         <div class="modal-body">
           <div class="d-flex align-items-center">
 
-            <!-- ★ エラー時に赤枠を付ける -->
+            <!--  エラー時に赤枠を付ける -->
             <input type="text"
                    name="item_name"
                    id="editItemInput"
