@@ -29,7 +29,7 @@ def add_category_item(request, template_id):
         form = CategoryItemForm(request.POST, template=template)
         continue_flag = request.POST.get("continue")
 
-        # ★ バリデーション NG → エラー表示（モーダル出さない）
+        # ★ バリデーション NG → エラー表示
         if not form.is_valid():
             return render(
                 request,
@@ -76,15 +76,15 @@ def add_category_item(request, template_id):
                         item_name=item.item_name
                     )
 
-        # ★ はい → 続けて追加（保存済み）
+        # ★ はい → 続けて追加
         if continue_flag == "1":
             return redirect("app:add_category_item", template_id)
 
-        # ★ いいえ → 戻る（保存済み）
+        # ★ いいえ → 戻る
         if continue_flag == "2":
             return redirect("app:template_edit2", template_id)
 
-        # ★ モーダル表示（保存済み）
+        # ★ モーダル表示
         return render(
             request,
             "new_travel/add_category_item.html",
@@ -99,11 +99,10 @@ def add_category_item(request, template_id):
         )
 
     # ============================
-    # GET
+    # GET（hidden は使わない）
     # ============================
-    hidden = request.session.get("edit_hidden")
-    
     form = CategoryItemForm(template=template)
+
     return render(
         request,
         "new_travel/add_category_item.html",
@@ -114,6 +113,5 @@ def add_category_item(request, template_id):
             "favorite_items": favorite_items,
             "color_map": color_map,
             "is_share_edit": False,
-            "hidden": hidden,
         }
     )

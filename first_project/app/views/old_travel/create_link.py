@@ -120,7 +120,7 @@ def create_link(request, travel_id):
             TravelItem.objects.create(
                 travel_category=new_cat,
                 item_name=item.item_name,
-                item_checked=0,
+                item_checked=item.item_checked,
             )
 
     # -------------------------

@@ -83,13 +83,12 @@ class PasswordResetMailView(PasswordResetView):
 
     success_url = reverse_lazy('app:password_reset')
 
-    def form_valid(self, form):
-        # next を保存
-        self.next_url = (
-            self.request.GET.get("next")
-            or self.request.POST.get("next")
-        )
+    def dispatch(self, request, *args, **kwargs):
+        # ★ GET/POST どちらでも next_url を初期化
+        self.next_url = request.GET.get("next") or request.POST.get("next")
+        return super().dispatch(request, *args, **kwargs)
 
+    def form_valid(self, form):
         try:
             response = super().form_valid(form)
             messages.success(self.request, "再設定のメールを送信しました。")
@@ -98,45 +97,18 @@ class PasswordResetMailView(PasswordResetView):
             messages.error(self.request, "メールの送信に失敗しました。時間をおいて再度お試しください。")
             return redirect('app:password_reset')
 
-    def _add_common_context(self, context):
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        context["protocol"] = self.request.scheme
+        context["domain"] = self.request.get_host()
+
         timeout_hours = settings.PASSWORD_RESET_TIMEOUT // 3600
         context["expiration_time"] = f"{timeout_hours}時間"
+
+        context["next"] = self.next_url
+
         return context
-
-    def get_context_data(self, **kwargs):
-        return self._add_common_context(super().get_context_data(**kwargs))
-
-    def send_mail(self, subject_template_name, email_template_name,
-                  context, from_email, to_email, html_email_template_name=None):
-
-        uid = context.get("uid")
-        token = context.get("token")
-
-        # パスワード再設定URLのパス部分
-        reset_path = reverse('app:password_reset_confirm', kwargs={
-            'uidb64': uid,
-            'token': token,
-        })
-
-        # 完全なURLを生成
-        base_url = f"{self.request.scheme}://{self.request.get_host()}{reset_path}"
-
-        if self.next_url:
-            reset_url = f"{base_url}?next={self.next_url}"
-        else:
-            reset_url = base_url
-
-        # テンプレートに渡す
-        context["reset_url"] = reset_url
-
-        super().send_mail(
-            subject_template_name,
-            email_template_name,
-            context,
-            from_email,
-            to_email,
-            html_email_template_name=html_email_template_name,
-        )
 
 # ============================
 #  パスワード再設定（新パスワード入力）

@@ -28,9 +28,10 @@ def share_view(request, token):
 
         })
 
-    # ③ 編集可能なら常に編集画面へ
-    if link.permission_type == Link.PermissionType.EDITABLE:
-        return redirect(reverse("app:share_edit_view", args=[token]))
+   
+    # ③ 編集可能なら、mode=view でない限り編集画面へ
+    if link.permission_type == Link.PermissionType.EDITABLE and request.GET.get("mode") != "view":
+       return redirect(reverse("app:share_edit_view", args=[token]))
 
     # --- 閲覧専用処理 ---
     template = link.template
@@ -56,6 +57,8 @@ def share_view(request, token):
     travel_info.status_label = status
 
     formatted_expiration = DateFormat(link.expiration_date).format("Y.n.j")
+    
+    edit_url = reverse("app:share_edit_view", args=[token])
 
     return render(request, "old_travel/travel_detail.html", {
         "travel_info": travel_info,
@@ -69,24 +72,24 @@ def share_view(request, token):
         "formatted_expiration": formatted_expiration,
         "token": token,
         "permission_type": link.permission_type,
+        "edit_url": edit_url,
     })
     
 @login_required
 def share_edit_view(request, token):
     link = Link.objects.filter(share_token=token).first()
 
-    # 削除済み or 存在しない
+    # 削除済み
     if not link:
         return render(request, "parts/expired.html", {
             "is_share_page": True,
             "mode": "share_link",
         })
 
-    # 閲覧専用なら編集画面は開けない → 閲覧画面へ戻す
+    # 閲覧専用なら編集不可
     if link.permission_type != Link.PermissionType.EDITABLE:
         return redirect(reverse("app:share_view", args=[token]) + "?mode=view")
 
-    # ここから下は「編集可能」の場合だけ実行される
     template = link.template
     categories = TravelCategory.objects.filter(template=template)
 
@@ -103,33 +106,41 @@ def share_edit_view(request, token):
             "is_share_page": True,
         })
 
+    # --- POST：まず全ての編集内容を保存 ---
+    for cat in categories:
+        for item in cat.travelitem_set.all():
+
+            # チェック状態
+            checked = request.POST.get(f"item_checked_{item.id}") == "on"
+            item.item_checked = checked
+
+            # 名前変更
+            new_name = request.POST.get(f"rename_{item.id}")
+            if new_name is not None:
+                item.item_name = new_name
+
+            item.save()
+
     # --- 分類追加 ---
     if "go_add" in request.POST:
         return redirect(reverse("app:share_add_category_item", args=[token]))
-
-    # --- 名前変更 ---
-    for cat in categories:
-        new_cat_name = request.POST.get(f"category_name_{cat.id}")
-        if new_cat_name:
-            cat.category_name = new_cat_name
-            cat.save()
-
-        for item in cat.travelitem_set.all():
-            new_item_name = request.POST.get(f"rename_{item.id}")
-            if new_item_name:
-                item.item_name = new_item_name
-                item.save()
 
     # --- 削除処理 ---
     delete_cat_id = request.POST.get("delete_category")
     if delete_cat_id:
         TravelCategory.objects.filter(id=delete_cat_id).delete()
+        return redirect("app:share_edit_view", token=token)
 
     delete_item_id = request.POST.get("delete_item")
     if delete_item_id:
         TravelItem.objects.filter(id=delete_item_id).delete()
+        return redirect("app:share_edit_view", token=token)
 
-    # --- 保存後は閲覧画面へ ---
+
+
+    if "save_changes" in request.POST:
+        return redirect(f"{reverse('app:share_view', args=[token])}?mode=view")
+
     return redirect(f"{reverse('app:share_view', args=[token])}?mode=view")
 
 @login_required
@@ -218,6 +229,7 @@ def share_add_category_item(request, token):
                 "open_continue_modal": True,
                 "is_share_edit": True,
                 "token": token,
+                "is_share_page": True,
             }
         )
 
@@ -233,5 +245,6 @@ def share_add_category_item(request, token):
             "color_map": color_map,
             "is_share_edit": True,
             "token": token,
+            "is_share_page": True,
         }
     )

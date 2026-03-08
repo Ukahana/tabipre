@@ -8,19 +8,38 @@
         <div class="d-flex gap-4 justify-content-center mt-3">
 
           {% if template %}
-          <!-- はい -->
-          <button type="button"
-                  class="modal-yes"
-                  onclick="window.location.href='{% url 'app:add_category_item' template.id %}'">
-              はい
-          </button>
 
-          <!-- いいえ -->
-          <button type="button"
-                  class="modal-no"
-                  onclick="window.location.href='{% url 'app:template_edit2' template.id %}'">
-              いいえ
-          </button>
+          {% if is_share_page %}
+              <!-- 共有リンク編集時：はい → share_add_category_item -->
+              <button type="button"
+                      class="modal-yes"
+                      onclick="window.location.href='{% url 'app:share_add_category_item' token %}'">
+                  はい
+              </button>
+
+              <!-- 共有リンク編集時：いいえ → share_edit_view -->
+              <button type="button"
+                      class="modal-no"
+                      onclick="window.location.href='{% url 'app:share_edit_view' token %}'">
+                  いいえ
+              </button>
+
+          {% else %}
+              <!-- 通常テンプレート編集時：はい → add_category_item -->
+              <button type="button"
+                      class="modal-yes"
+                      onclick="window.location.href='{% url 'app:add_category_item' template.id %}'">
+                  はい
+              </button>
+
+              <!-- 通常テンプレート編集時：いいえ → template_edit2 -->
+              <button type="button"
+                      class="modal-no"
+                      onclick="window.location.href='{% url 'app:template_edit2' template.id %}'">
+                  いいえ
+              </button>
+          {% endif %}
+
           {% endif %}
 
         </div>

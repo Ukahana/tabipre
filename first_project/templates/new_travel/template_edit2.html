@@ -58,17 +58,17 @@
                         <!-- チェック（Ajax 用） -->
                         <input type="checkbox"
                                name="item_checked_{{ item.id }}"
-                               class="form-check-input me-3"
+                               class="form-check-input me-3 check-item"
                                {% if item.item_checked %}checked{% endif %}
                                data-item-id="{{ item.id }}">
                         <input type="hidden" name="item_checked_hidden_{{ item.id }}" value="{{ item.item_checked }}">
 
                         <!-- 名前編集（ここは編集可） -->
                         <input type="text"
-                               name="rename_{{ item.id }}"
-                               value="{{ item.item_name }}"
-                               class="form-control">
-
+                                name="rename_{{ item.id }}"
+                                value="{{ item.item_name }}"
+                                class="form-control item-name"
+                                data-item-id="{{ item.id }}">
                         <!-- 削除 -->
                         <button type="submit"
                                 name="delete_item"
@@ -105,7 +105,5 @@
 
 </div>
 
-{% block extra_js %}
-<script src="{% static 'tabipre/js/new_travel/template_edit2.js' %}"></script>
-{% endblock %}
+
 {% endblock %}

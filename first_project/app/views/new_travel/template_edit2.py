@@ -1,62 +1,37 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from ...models.template import Template, TravelCategory, TravelItem
-
+from django.http import JsonResponse
+from django.views.decorators.http import require_POST
+import json
 
 def template_edit2(request, template_id):
     template = get_object_or_404(Template, id=template_id)
 
-    # ⭐ hidden input の内容（セッションから取得）
-    hidden = request.session.get("edit_hidden")
-
-    # -------------------------
-    # POST（保存・削除・更新・分類追加）
-    # -------------------------
     if request.method == "POST":
 
         print("=== template_edit2 POST ===")
         print(request.POST)
 
-        # ⭐ 分類追加ボタン
+        # --- ① まず全ての編集内容を保存する ---
+        for category in template.travelcategory_set.all():
+            for item in category.travelitem_set.all():
+
+                # チェック状態
+                checked = request.POST.get(f"item_checked_{item.id}") == "on"
+                item.item_checked = checked
+
+                # 名前変更
+                new_name = request.POST.get(f"rename_{item.id}")
+                if new_name is not None:
+                    item.item_name = new_name
+
+                item.save()
+
+        # --- ② 分類追加ボタン ---
         if "go_add" in request.POST:
-
-            # POST をコピー
-            data = request.POST.copy()
-
-            # --- rename の保存 ---
-            for key, value in request.POST.items():
-                if key.startswith("rename_"):
-                    item_id = key.replace("rename_", "")
-                    hidden_key = f"hidden_name_{item_id}"
-                    data[hidden_key] = value
-
-            # --- チェック状態の保存 ---
-            for item in TravelItem.objects.filter(travel_category__template=template):
-                key = f"item_checked_{item.id}"
-                hidden_key = f"hidden_checked_{item.id}"
-
-                if key in request.POST:
-                    data[hidden_key] = "1"
-                else:
-                    data[hidden_key] = "0"
-
-            # セッションに保存
-            request.session["edit_hidden"] = data
-
             return redirect("app:add_category_item", template_id=template.id)
 
-        # --- ① まずアイテム更新（rename / checked） ---
-        for item in TravelItem.objects.filter(travel_category__template=template):
-
-            checked = request.POST.get(f"item_checked_{item.id}")
-            item.item_checked = 1 if checked else 0
-
-            new_name = request.POST.get(f"rename_{item.id}")
-            if new_name:
-                item.item_name = new_name
-
-            item.save()
-
-        # --- ② 削除処理 ---
+        # --- ③ 削除処理 ---
         delete_cat_id = request.POST.get("delete_category")
         if delete_cat_id and delete_cat_id.isdigit():
             TravelCategory.objects.filter(id=delete_cat_id).delete()
@@ -67,39 +42,16 @@ def template_edit2(request, template_id):
             TravelItem.objects.filter(id=delete_item_id).delete()
             return redirect("app:template_edit2", template_id=template.id)
 
-        # ⭐ 保存ボタン
+        # --- ④ 保存ボタン ---
         if "save_changes" in request.POST:
-            if "edit_hidden" in request.session:
-                del request.session["edit_hidden"]
             return redirect("app:home")
 
         return redirect("app:template_edit2", template_id=template.id)
 
-    # -------------------------
-    # GET（画面表示）
-    # -------------------------
+    # GET
     categories = TravelCategory.objects.filter(template=template).order_by("id")
 
-    # ⭐⭐⭐ GET のときに hidden を復元する（ここが最重要） ⭐⭐⭐
-    if hidden:
-        for cat in categories:
-            for item in cat.travelitem_set.all():
-
-                # チェック状態
-                key = f"hidden_checked_{item.id}"
-                item.item_checked = int(hidden.get(key, "0"))
-
-                # 名前
-                name_key = f"hidden_name_{item.id}"
-                if name_key in hidden:
-                    item.item_name = hidden.get(name_key)
-
-    return render(
-        request,
-        "new_travel/template_edit2.html",
-        {
-            "template": template,
-            "current_template": template,
-            "categories": categories,
-        }
-    )
+    return render(request, "new_travel/template_edit2.html", {
+        "template": template,
+        "categories": categories,
+    })

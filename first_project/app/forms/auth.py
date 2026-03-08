@@ -206,7 +206,7 @@ class CustomPasswordResetForm(PasswordResetForm):
         if not email:
             raise ValidationError("メールアドレスを入力してください。")
 
-        if not User.objects.filter(email=email).exists():
+        if not UserModel.objects.filter(email=email).exists():
             raise ValidationError("このメールアドレスは登録されていません。")
 
         return email
