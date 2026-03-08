@@ -15,7 +15,6 @@ from app.views.auth import (
     CustomPasswordResetCompleteView,
 )
 
-
 # home
 from app.views.home import HomeView
 
