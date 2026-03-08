@@ -52,8 +52,12 @@
     </div>
 
     <p class="link mt-3">
-        パスワードを忘れた方は
-        <a href="{% url 'app:password_reset' %}">こちら</a>
+     パスワードを忘れた方は
+        {% if request.GET.next %}
+         <a href="{% url 'app:password_reset' %}?next={{ request.GET.next }}">こちら</a>
+        {% else %}
+         <a href="{% url 'app:password_reset' %}">こちら</a>
+        {% endif %}
     </p>
 </div>
 {% endblock %}

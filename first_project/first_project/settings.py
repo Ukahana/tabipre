@@ -131,11 +131,7 @@ STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
 
-LOGIN_URL = '/'
-# メールを送らず、ターミナル表示に後で削除
-# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
-
-
+LOGIN_URL = 'app:login'
 
 # Gmailで送信用
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
