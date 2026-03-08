@@ -106,6 +106,9 @@ def travel_step2(request):
         if action == "copy" and request.POST.get("old_travel_id"):
 
             step2_data = request.session.get("step2_data")
+            
+            if not step2_data:
+                step2_data = request.POST.copy()
 
             # QueryDict を正しく復元
             from django.http import QueryDict
