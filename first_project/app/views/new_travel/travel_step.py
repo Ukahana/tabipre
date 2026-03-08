@@ -7,7 +7,7 @@ from datetime import datetime, date
 from ...models import Travel_info, Transport, Travelmode, Template, TravelCategory, TravelItem
 from ...forms.travel import TravelStep1Form, TravelStep2Form
 from ...views.new_travel.template_source import template_source
-
+from django.http import QueryDict
 
 # -----------------------------
 # Step1：旅行基本情報入力
@@ -108,15 +108,23 @@ def travel_step2(request):
             step2_data = request.session.get("step2_data")
             
             if not step2_data:
-                step2_data = request.POST.copy()
+                step2_data = request.POST
 
-            # QueryDict を正しく復元
             from django.http import QueryDict
+
+            def safe_getlist(data, key):
+                if hasattr(data, "getlist"):
+                    return data.getlist(key)
+                value = data.get(key)
+                return value if isinstance(value, list) else [value]
+
             q = QueryDict('', mutable=True)
-            for key, value_list in step2_data.items():
-                q.setlist(key, value_list)
+
+            for key in step2_data:
+                q.setlist(key, safe_getlist(step2_data, key))
 
             form = TravelStep2Form(q)
+
 
             if not form.is_valid():
                 return render(request, "new_travel/travel_step2.html", {
