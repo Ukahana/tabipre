@@ -137,9 +137,9 @@
   border: none;  
 }
 /* expired-wrapper があるページでは container の左右余白を消す */
-/* expired-wrapper のページでは container の左右余白をゼロにする */
 .expired-wrapper {
   width: 100%;
+  padding-top: 100px;
 }
 
 .content-wrapper.container {

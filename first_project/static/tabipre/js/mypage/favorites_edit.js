@@ -23,7 +23,10 @@ document.getElementById("add-item").addEventListener("click", function () {
     });
 
     if (hasError) {
-        errorList.innerHTML = "<li>空欄の項目があります。</li><li>入力してから追加してください。</li>";
+        errorList.innerHTML = `
+    <li>空欄の項目があります。</li>
+    <li>入力してから追加してください。</li>
+    `;
         errorList.style.display = "block";
         return;
     }

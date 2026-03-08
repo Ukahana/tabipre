@@ -18,9 +18,7 @@
         <div class="mb-3">
             <label class="form-label">メモ（編集可）</label>
 
-            <textarea name="memo" class="form-control" rows="4">
-{{ request.POST.memo|default:template.travel_info.memo }}
-            </textarea>
+            <textarea name="memo" class="form-control" rows="4">{{ request.POST.memo|default:template.travel_info.memo }}</textarea>
         </div>
 
         <!-- カテゴリ一覧 -->

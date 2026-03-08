@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", () => {
 
     // -----------------------------
     // その他の表示切替
@@ -7,11 +7,12 @@ document.addEventListener("DOMContentLoaded", function () {
     const otherBox = document.querySelector('.transport-other-box');
 
     if (otherCheckbox && otherBox) {
-        const toggle = () => {
+        const toggleOtherBox = () => {
             otherBox.style.display = otherCheckbox.checked ? "inline-block" : "none";
         };
-        otherCheckbox.addEventListener("change", toggle);
-        toggle();
+
+        otherCheckbox.addEventListener("change", toggleOtherBox);
+        toggleOtherBox(); // 初期表示
     }
 
     // -----------------------------

@@ -10,7 +10,7 @@
 <div class="container mt-3">
 
     <!-- タイトル -->
-    <h3 class="text-center mb-3">{{ current_template.travel_info.travel_title }}</h3>
+    <h3 class="text-center mb-3">{{ template.travel_info.travel_title }}</h3>
 
     <!-- 編集フォーム -->
     <form method="POST">
@@ -57,9 +57,11 @@
 
                         <!-- チェック（Ajax 用） -->
                         <input type="checkbox"
+                               name="item_checked_{{ item.id }}"
                                class="form-check-input me-3"
                                {% if item.item_checked %}checked{% endif %}
                                data-item-id="{{ item.id }}">
+                        <input type="hidden" name="item_checked_hidden_{{ item.id }}" value="{{ item.item_checked }}">
 
                         <!-- 名前編集（ここは編集可） -->
                         <input type="text"

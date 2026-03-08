@@ -45,9 +45,10 @@ def travel_step2(request):
         return redirect("app:travel_step1")
 
     templates = Template.objects.filter(
-        travel_info__user=request.user
+    travel_info__user=request.user,
+    template_source__isnull=True  
     ).order_by('-travel_info__end_date', '-travel_info__start_date')
-
+    
     today = date.today()
     completed_travel_ids = (
         TravelItem.objects

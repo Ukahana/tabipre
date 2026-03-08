@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from ...models.template import Template, TravelCategory, TravelItem
 
+
 def template_edit2(request, template_id):
     template = get_object_or_404(Template, id=template_id)
 
@@ -21,14 +22,24 @@ def template_edit2(request, template_id):
             # POST をコピー
             data = request.POST.copy()
 
-            # rename の値で hidden_name を上書きする
+            # --- rename の保存 ---
             for key, value in request.POST.items():
                 if key.startswith("rename_"):
                     item_id = key.replace("rename_", "")
                     hidden_key = f"hidden_name_{item_id}"
-                    data[hidden_key] = value  # 上書き
+                    data[hidden_key] = value
 
-            # hidden をセッションに保存
+            # --- チェック状態の保存 ---
+            for item in TravelItem.objects.filter(travel_category__template=template):
+                key = f"item_checked_{item.id}"
+                hidden_key = f"hidden_checked_{item.id}"
+
+                if key in request.POST:
+                    data[hidden_key] = "1"
+                else:
+                    data[hidden_key] = "0"
+
+            # セッションに保存
             request.session["edit_hidden"] = data
 
             return redirect("app:add_category_item", template_id=template.id)
@@ -45,7 +56,7 @@ def template_edit2(request, template_id):
 
             item.save()
 
-        # --- ② その後で削除処理 ---
+        # --- ② 削除処理 ---
         delete_cat_id = request.POST.get("delete_category")
         if delete_cat_id and delete_cat_id.isdigit():
             TravelCategory.objects.filter(id=delete_cat_id).delete()
@@ -74,14 +85,21 @@ def template_edit2(request, template_id):
         for cat in categories:
             for item in cat.travelitem_set.all():
 
+                # チェック状態
                 key = f"hidden_checked_{item.id}"
                 item.item_checked = int(hidden.get(key, "0"))
 
+                # 名前
                 name_key = f"hidden_name_{item.id}"
                 if name_key in hidden:
                     item.item_name = hidden.get(name_key)
 
-    return render(request, "new_travel/template_edit2.html", {
-        "template": template,
-        "categories": categories,
-    })
+    return render(
+        request,
+        "new_travel/template_edit2.html",
+        {
+            "template": template,
+            "current_template": template,
+            "categories": categories,
+        }
+    )

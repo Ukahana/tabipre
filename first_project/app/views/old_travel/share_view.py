@@ -93,6 +93,7 @@ def share_edit_view(request, token):
     # --- GET：編集画面表示 ---
     if request.method == "GET":
         return render(request, "new_travel/template_edit2.html", {
+            "template": template,
             "current_template": template,
             "categories": categories,
             "card_travel_info": template.travel_info,

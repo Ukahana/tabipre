@@ -101,6 +101,8 @@ def add_category_item(request, template_id):
     # ============================
     # GET
     # ============================
+    hidden = request.session.get("edit_hidden")
+    
     form = CategoryItemForm(template=template)
     return render(
         request,
@@ -112,5 +114,6 @@ def add_category_item(request, template_id):
             "favorite_items": favorite_items,
             "color_map": color_map,
             "is_share_edit": False,
+            "hidden": hidden,
         }
     )
