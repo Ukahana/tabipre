@@ -26,7 +26,9 @@ def travel_detail(request, travel_id):
     else:
         categories = []
 
-    items = TravelItem.objects.filter(travel_category__template=template)
+    items = TravelItem.objects.filter(
+    travel_category__template__travel_info=travel_info
+    )
     total_items = items.count()
     checked_items = items.filter(item_checked=1).count()
 

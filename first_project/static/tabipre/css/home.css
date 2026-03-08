@@ -251,7 +251,7 @@ input[type="text"], button { border-radius: 0; }
 
 /* カード内のタイトルを大きく */
 .card.travel-card .card-title {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
 }
 
 /* 日付の文字も少し大きく */

@@ -51,7 +51,7 @@ class HomeView(LoginRequiredMixin, TemplateView):
             .values("travel_category__template__travel_info")
             .annotate(
                 total=Count("id"),
-                done=Count("id", filter=Q(item_checked=TravelItem.ItemChecked.YES))
+                done=Count("id", filter=Q(item_checked=1))
             )
             .filter(total=F("done"))
             .values_list("travel_category__template__travel_info", flat=True)

@@ -3,7 +3,7 @@
 
         <div class="d-flex align-items-start">
 
-            <span id="travelStatus"
+            <span id="travelStatus-{{ card_travel_info.travel_info_id }}"
                   data-end-date="{{ card_travel_info.end_date|date:'Y-m-d' }}"
                   class="badge-t 
                       {% if card_travel_info.status_label == '未' %}status-mi

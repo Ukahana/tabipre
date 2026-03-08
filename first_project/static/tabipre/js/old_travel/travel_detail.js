@@ -9,12 +9,11 @@ function getCookie(name) {
     return null;
 }
 
-
 // チェック処理
 function toggleItem(checkbox, itemId) {
     const pos = window.scrollY;
 
-    fetch(`/toggle_item/${itemId}/`, {
+    fetch(`/tabipre/toggle_item/${itemId}/`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -25,10 +24,9 @@ function toggleItem(checkbox, itemId) {
         window.scrollTo(0, pos);
         updateCategoryCount(checkbox);
         updateTotalCount();
-        updateStatus();   // ← ここが確実に動くようにする
+        updateStatus();   // ← travelStatus を更新
     });
 }
-
 
 // カテゴリ内の分数更新
 function updateCategoryCount(checkbox) {
@@ -42,7 +40,6 @@ function updateCategoryCount(checkbox) {
     if (badge) badge.textContent = `${checked.length} / ${all.length}`;
 }
 
-
 // 全体の分数更新
 function updateTotalCount() {
     const all = document.querySelectorAll('.form-check-input');
@@ -52,12 +49,12 @@ function updateTotalCount() {
     if (total) total.textContent = `${checked.length} / ${all.length}`;
 }
 
-
 // ステータス更新（未 / 完 / 済）
 function updateStatus() {
-    console.log("updateStatus called");  // ← デバッグ
+    console.log("updateStatus called");
 
-    const statusEl = document.getElementById('travelStatus');
+    // ← travelStatus-◯◯ を参照
+    const statusEl = document.getElementById(`travelStatus-${travelId}`);
     if (!statusEl) {
         console.log("statusEl not found");
         return;
@@ -69,7 +66,7 @@ function updateStatus() {
     const all = document.querySelectorAll('.form-check-input');
     const checked = document.querySelectorAll('.form-check-input:checked');
 
-    console.log("all:", all.length, "checked:", checked.length);  // ← デバッグ
+    console.log("all:", all.length, "checked:", checked.length);
 
     // 旅行終了日が過ぎていたら常に「済」
     if (today > endDate) {
@@ -82,10 +79,9 @@ function updateStatus() {
     setStatus(statusEl, isAllChecked ? "完" : "未");
 }
 
-
 // ステータス表示の共通処理
 function setStatus(el, status) {
-    console.log("setStatus:", status);  // ← デバッグ
+    console.log("setStatus:", status);
 
     el.textContent = status;
     el.classList.remove("status-mi", "status-kan", "status-zumi");
@@ -94,7 +90,6 @@ function setStatus(el, status) {
     if (status === "完") el.classList.add("status-kan");
     if (status === "済") el.classList.add("status-zumi");
 }
-
 
 // ページ読み込み時にも実行
 document.addEventListener("DOMContentLoaded", () => {

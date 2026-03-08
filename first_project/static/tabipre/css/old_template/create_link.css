@@ -146,3 +146,8 @@
   padding-left: 0 !important;
   padding-right: 0 !important;
 }
+.app-frame {
+  padding: 20px; 
+  padding-top: 20px;
+
+}
