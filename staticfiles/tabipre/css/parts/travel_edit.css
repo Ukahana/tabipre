@@ -1,0 +1,351 @@
+/* ============================= */
+/* Step1：宿泊タイプ */
+/* ============================= */
+
+.field-block:first-of-type {
+  margin-top: 20%;
+}
+
+#id_travel_title {
+  width: 100%;
+}
+
+.travel-edit-fields .stay-type {
+  margin: 20px 0 12px;
+}
+
+.travel-edit-fields .stay-type-title {
+  font-weight: 400;
+  font-size: 18px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.travel-edit-fields .stay-type-options,
+.travel_step2_form .location-type-options {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.travel-edit-fields .stay-option,
+.travel_step2_form .form-item {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-size: 18px;
+  white-space: nowrap;
+}
+
+.travel-edit-fields input,
+.travel-edit-fields select,
+.travel-edit-fields textarea {
+  margin-bottom: 12px;
+}
+
+/* ラジオ・チェックボックス */
+.travel-edit-fields input[type="radio"],
+.travel_step2_form .form-item input[type="radio"],
+.travel_step2_form .form-item input[type="checkbox"],
+#copyModal input[type="radio"] {
+  width: 22px;
+  height: 22px;
+  cursor: pointer;
+  accent-color: #7a8b6f;
+  margin: 0;
+  transform: translateY(4px);
+}
+
+/* 宿泊日数 */
+.travel-edit-fields .stay-length {
+  font-size: 20px;
+  font-weight: 400;
+  text-align: right;
+  margin: 8px 30px 0 0;
+}
+
+/* ============================= */
+/* カレンダー入力 */
+/* ============================= */
+
+.date-wrapper {
+  position: relative;
+}
+
+.date-wrapper input {
+  width: 100%;
+  height: 38px;
+  font-size: 16px;
+  padding-right: 40px;
+  box-sizing: border-box;
+}
+
+.calendar-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  pointer-events: none;
+  opacity: 0.7;
+}
+/* ============================= */
+/* Step2：場所の分類・交通手段 */
+/* ============================= */
+
+.travel_step2_form .transport-options {
+  display: grid;
+  grid-template-columns: repeat(3, 100px);
+  gap: 12px 24px;
+  margin: 8px 0;
+}
+
+.transport-other-input {
+  width: 200px;
+  height: 38px;
+  font-size: 16px;
+  margin-left: 8px;
+  border-radius: 6px;
+  border: 1px solid #595959;
+}
+
+.travel_step2_form .form-label {
+  font-size: 18px;
+  font-weight: 400;
+  margin: 20px 0 8px;
+}
+
+.travel_step2_form .field-block textarea {
+  width: 100%;
+  height: 100px;
+  font-size: 16px;
+  padding: 8px;
+  resize: vertical;
+  box-sizing: border-box;
+}
+
+.transport-type .form-item {
+  padding: 6px 0;
+}
+
+.transport-type .form-item .form-label-text {
+  font-size: 18px;
+  color: #4a4a4a;
+}
+
+
+/* ============================= */
+/* Step2：ボタン */
+/* ============================= */
+
+.travel_step2_form .btn-create,
+.travel_step2_form .btn-copy {
+  padding: 10px 16px;
+  font-size: 16px;
+  border: 1px solid #595959;
+  box-shadow: none;
+}
+
+a.custom-edit-btn {
+  background-color: #c49a6c !important;
+  color: #fff !important;
+  border: none !important;
+}
+
+a.custom-edit-btn:hover {
+  background-color: #a67f55 !important;
+}
+
+.travel_step2_form .btn-copy {
+  background-color: #ffe599;
+  border-color: #ffe599;
+}
+
+.travel_step2_form .btn-copy:hover {
+  background-color: #ffd86b;
+}
+
+.create-push {
+  background-color: #198754ff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
+}
+
+.create-push:hover {
+  background-color: #157347ff;
+}
+
+/* テンプレート作成ボタン（黄緑 × 白文字） */
+.travel_step2_form .btn-create {
+  background-color: #8BC34A !important;
+  border-color: #8BC34A !important;
+  color: #ffffff !important;
+}
+
+.travel_step2_form .btn-create:hover {
+  background-color: #7CB342 !important;
+  border-color: #7CB342 !important;
+}
+
+
+/* ============================= */
+/* flatpickr：スマホ向け */
+/* ============================= */
+
+.flatpickr-calendar {
+  font-size: 18px;
+}
+
+.flatpickr-day {
+  width: 44px;
+  height: 44px;
+  line-height: 44px;
+  font-size: 16px;
+}
+
+.flatpickr-weekday {
+  font-size: 14px;
+}
+
+.flatpickr-months .flatpickr-month {
+  height: 52px;
+  font-size: 18px;
+}
+
+.flatpickr-prev-month,
+.flatpickr-next-month {
+  width: 42px;
+  height: 42px;
+  font-size: 22px;
+}
+
+.flatpickr-day.selected {
+  background: #4a90e2;
+  color: #fff;
+  border-radius: 6px;
+}
+
+.flatpickr-day.inRange {
+  background: #d9e8ff;
+}
+
+
+/* ============================= */
+/* モーダル：テンプレート選択 */
+/* ============================= */
+
+#copyModal .modal-title {
+  text-align: center;
+}
+
+#copyModal .template-card {
+  border: 2px solid #ccc;
+  border-radius: 10px;
+  padding: 14px;
+  margin-bottom: 14px;
+  transition: 0.2s;
+}
+
+#copyModal .radio-select {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+#copyModal input[type="radio"]:checked + .template-card {
+  border-color: #4a90e2;
+  background-color: #f0f6ff;
+}
+
+#copyModal .template-select-area {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  cursor: pointer;
+  width: 100%;
+}
+
+#copyModal .badge-t {
+  font-size: 14px;
+  padding: 4px 7px;
+  border-radius: 4px;
+  font-weight: 600;
+  margin-right: 10px !important;
+}
+
+#copyModal .template-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#copyModal .template-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.3;
+}
+
+#copyModal .template-text small {
+  font-size: 13px;
+  color: #666;
+}
+
+#copyModal .btn-select {
+  width: 100%;
+  margin-top: 12px;
+  padding: 14px 0;
+  background-color: #4a90e2;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+#copyModal .btn-select:hover {
+  background-color: #3578c8;
+}
+
+#copyModal .modal-header {
+  position: relative;
+  justify-content: center;
+  padding: 6px 0;
+}
+
+/* タイトルは中央に固定 */
+#copyModal .modal-title {
+  margin: 0;
+}
+
+/* × ボタンの位置だけ調整（右余白を作る） */
+#copyModal .modal-header .btn-close {
+  position: absolute;
+  right: 20px; /* ← 左余白を作りたいならここを調整 */
+}
+/* ============================= */
+/* その他微調整 */
+/* ============================= */
+
+.container .sub-title.mb-0 {
+  margin-bottom: -40px !important;
+}
+
+.travel_step2_form .form-label {
+  margin-top: 6px;
+}
+
+.travel_step2_form .memo-box {
+  margin-top: 4px;
+}
+
+.travel_step2_form .location-type-options {
+  margin-top: 4px;
+}

@@ -1,0 +1,260 @@
+
+
+.search-area { margin-top: 0; }
+
+/* ログインボタン */
+.btn-primary {
+    background-color: #4a90e2;
+    border: none;
+    font-size: 1.2rem;
+    padding: 10px;
+}
+.btn-primary:hover { background-color: #3f7fbf; }
+
+/* 入力欄 */
+form input {
+    border: 1px solid #ccc;
+    padding: 8px;
+    width: 100%;
+    background-color: #ffffff;
+    box-sizing: border-box;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    color: #000;
+}
+form input:focus {
+    border-color: #4a90e2;
+    box-shadow: 0 0 8px rgba(74, 144, 226, 0.55);
+    border-width: 1.5px;
+    outline: none;
+}
+
+/* Chrome/Safari autofill対策 */
+input:-webkit-autofill {
+    background-color: #fff !important;
+    box-shadow: 0 0 0 1000px #fff inset !important;
+    -webkit-text-fill-color: #000 !important;
+}
+
+/* ラベル */
+form label {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 1.1rem;
+}
+
+/* パスワード注意書き */
+.statement {
+    color: #999;
+    font-size: 15px;
+}
+
+/* リンク */
+.link {
+    text-align: center;
+    font-size: 15px;
+}
+.link a {
+    color: #5c3a3a;
+    text-decoration: underline;
+}
+.link a:hover { color: #000; }
+
+/* 検索フォーム */
+.search-input {
+    height: 35px;
+    width: 50%;
+    padding: 4px 8px;
+    border: 1px solid #ccc;
+}
+
+/* 検索ボタン */
+.search-btn {
+    font-size: 16px;
+    background-color: #4a90e2;
+    color: #fff;
+    height: 35px;
+    width: 80px;
+    margin-left: 5px;
+    padding: 4px 6px;
+    line-height: 1;
+    border: 1px solid #595959;
+}
+.search-btn:hover {
+    background-color: #3f7fbf;
+    border-color: #3f7fbf;
+}
+
+input[type="text"], button { border-radius: 0; }
+
+/* カード */
+.card-body { padding: 4px 25px !important; }
+.card-title { margin: 2px 0; }
+.card-text { margin: 0; font-size: 14px; }
+
+/* 並び替えボタン */
+.sort-btn-wrapper {
+    display: flex;
+    justify-content: flex-end;
+}
+.sort-btn {
+    padding: 4px 10px;
+    font-size: 16px;
+    color: #6c757d;
+}
+.sort-btn:hover { color: #5a6268; }
+
+/* タグ */
+.tag-badge {
+    display: inline-block;
+    background-color: #eee;
+    color: #000;
+    padding: 2px 8px;
+    border-radius: 5px;
+    font-size: 14px;
+    white-space: nowrap;
+    margin-right: 8px;
+    border: 1px solid #ccc;
+    text-decoration: none;
+    margin-bottom: 4px;
+}
+.tag-badge:hover {
+    background-color: #e0e0e0;
+    color: #000;
+    text-decoration: none;
+}
+
+/* タグ選択状態 */
+.tag-badge.selected {
+    background-color: #fff;
+    color: #4a90e2;
+    border-color: #4a90e2;
+    position: relative;
+    padding-left: 22px;
+}
+.tag-badge.selected::before {
+    content: "×";
+    position: absolute;
+    left: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-weight: bold;
+    color: #4a90e2;
+}
+
+/* ページネーション */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 24px;
+}
+
+/* ページリンク */
+.page-link {
+    background-color: #eee !important;
+    color: #000;
+    border: 1px solid #000 !important;
+    padding: 6px 16px;
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+/* 現在ページ */
+.page-item span.page-link {
+    background: #fff !important;
+    color: #000 !important;
+    border: none !important;
+    padding: 6px 10px;
+    font-size: 16px;
+}
+
+/* sortモーダル */
+.stay-type-options {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-bottom: 15px;
+}
+.stay-option {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+.stay-option input[type="radio"] {
+    width: 18px;
+    height: 18px;
+    margin: 0;
+}
+
+/* タイトル名・日付の余白調整 */
+.sort-label {
+    margin-left: 25%;
+    font-size: 18px;
+}
+
+/* 並び替えボタン（モーダル内） */
+.sort-submit-btn {
+    display: block;
+    margin: 20px auto 10px auto;
+    width: 140px;
+    padding: 8px 0;
+    font-size: 16px;
+    border-radius: 6px;
+}
+
+#sortModal .modal-header {
+    border-bottom: none !important;
+}
+#sortModal .modal-sm {
+    max-width: 300px; 
+}
+.sort-modal-body {
+    padding-top: 4px;
+
+}
+/* 入力欄の右側に × を表示 */
+.clear-btn {
+    position: absolute;
+    right: 80px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 28px;
+    color: #aaa;
+    cursor: pointer;
+    padding: 5px;
+    background: transparent;
+    z-index: 10; 
+    display: block;
+}
+/* 入力欄に文字が入ったら × を表示 */
+.search-input:not(:placeholder-shown) ~ .clear-btn {
+    display: block;
+}
+
+/* 入力欄の右側にスペースを確保 */
+.search-input {
+    padding-right: 40px;
+}
+.search-input::placeholder {
+    padding-left: 10px; 
+}
+.tag-scroll {
+    overflow-y: hidden;   
+    padding-bottom: 8px; 
+    margin-top: 12px; 
+}
+/* 旅行カードのサイズ調整 */
+.card.travel-card {
+    min-height: 300px;        /* カードの高さを大きく */
+    border-radius: 10px;      /* 少し丸みを付ける（任意） */
+}
+
+/* カード内のタイトルを大きく */
+.card.travel-card .card-title {
+    font-size: 1.5rem;
+}
+
+/* 日付の文字も少し大きく */
+.card.travel-card .card-text {
+    font-size: 1.1rem;
+}

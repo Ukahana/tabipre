@@ -15,7 +15,7 @@ class HomeView(LoginRequiredMixin, TemplateView):
 
     def get(self, request, *args, **kwargs):
 
-        # ⭐ 新規旅行作成中に離脱した場合の破棄処理
+        #  新規旅行作成中に離脱した場合の破棄処理
         if request.session.get("creating_travel"):
             Template.objects.filter(
                 travel_info__isnull=True,
@@ -29,9 +29,9 @@ class HomeView(LoginRequiredMixin, TemplateView):
         sort = request.GET.get("sort", "")
 
         travels = Travel_info.objects.filter(
-            user=request.user,
-            template__template_source__isnull=True
+            user=request.user
         )
+
         if keyword:
             travels = travels.filter(travel_title__icontains=keyword)
 

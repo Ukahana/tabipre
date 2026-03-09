@@ -23,7 +23,7 @@ TEMPLATE_DIR = os.path.join(BASE_DIR,'templates')
 SECRET_KEY = 'django-insecure-jk8dge)48&vmiii)($zxda--e8szub*i0!si3za=w2cj49c0(b'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['Ukahana.pythonanywhere.com']
 
@@ -130,6 +130,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
+
+STATIC_ROOT = '/home/Ukahana/tabipre/staticfiles'
 
 LOGIN_URL = 'app:login'
 
