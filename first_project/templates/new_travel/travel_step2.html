@@ -32,10 +32,11 @@
 
 </div>
 <div id="modal-flag" data-open-modal="{{ open_modal|yesno:'true,false' }}"></div>
-<!-- JS -->
-<script src="{% static 'tabipre/js/new_travel/travel_step2.js' %}"></script>
 
 <!--  モーダルは必ず form の外に置く（重要） -->
 {% include 'new_travel/modal/old_travel.html' %}
+{% endblock %}
 
+{% block extra_js %}
+<script src="{% static 'tabipre/js/new_travel/travel_step2.js' %}"></script>
 {% endblock %}

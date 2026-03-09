@@ -18,7 +18,6 @@ from ..forms.auth import (
     CustomPasswordResetForm,
     CustomSetPasswordForm,
 )
-from django.urls import reverse
 
 # ============================
 #  新規登録
@@ -29,8 +28,8 @@ class RegistUserView(CreateView):
     success_url = reverse_lazy('app:home')
 
     def form_valid(self, form):
-        user = form.save()
-        login(self.request, user, backend='app.backends.EmailBackend')
+        self.object = form.save()
+        login(self.request, self.object, backend='app.backends.EmailBackend')
         return redirect(self.get_success_url())
 
     def get_success_url(self):

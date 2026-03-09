@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-jk8dge)48&vmiii)($zxda--e8szub*i0!si3za=w2cj49c0(b
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['Ukahana.pythonanywhere.com']
 
 
 # Application definition
@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app',
-    
+
 ]
 
 MIDDLEWARE = [
@@ -88,7 +88,7 @@ DATABASES = {
 AUTH_USER_MODEL = 'app.User'
 
 AUTHENTICATION_BACKENDS = [
-    'app.backends.EmailBackend',  
+    'app.backends.EmailBackend',
     'django.contrib.auth.backends.ModelBackend',
 ]
 
