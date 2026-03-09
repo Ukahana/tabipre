@@ -177,7 +177,7 @@ def travel_step2(request):
             for tid in transport_types:
                 transport = Transport.objects.get(pk=tid)
                 Travelmode.objects.create(
-                    travel_info=new_travel,
+                    travel_info=travel,
                     transport=transport,
                     custom_transport_text=""
                 )
@@ -185,7 +185,7 @@ def travel_step2(request):
             # OTHER（custom_text あり）
             if other_text:
                 Travelmode.objects.create(
-                    travel_info=new_travel,
+                    travel_info=travel,
                     transport=other_transport,
                      custom_transport_text=other_text
                 )
@@ -264,14 +264,14 @@ def travel_step2(request):
                 Travelmode.objects.create(
                     travel_info=travel,
                     transport=transport,
-                    defaults={"custom_transport_text": ""}
+                    custom_transport_text=""
                 )
 
             if other_text:
                 Travelmode.objects.create(
                     travel_info=travel,
                     transport=other_transport,
-                    defaults={"custom_transport_text": other_text}
+                    custom_transport_text=other_text
                 )
 
             template = template_source(travel, request.user)
