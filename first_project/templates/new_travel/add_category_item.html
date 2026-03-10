@@ -13,77 +13,67 @@
 
     <!-- フォーム -->
     <form id="categoryItemForm" method="POST"
-      action="{% if is_share_edit %}
-                 {% url 'app:share_add_category_item' token %}
-               {% else %}
-                 {% url 'app:add_category_item' template.id %}
-               {% endif %}">
+          action="{% if is_share_edit %}
+                     {% url 'app:share_add_category_item' token %}
+                   {% else %}
+                     {% url 'app:add_category_item' template.id %}
+                   {% endif %}">
         {% csrf_token %}
+
         {% if is_share_edit %}
-           <input type="hidden" name="token" value="{{ token }}">
+            <input type="hidden" name="token" value="{{ token }}">
         {% endif %}
 
-        <!-- continue フラグ -->
         <input type="hidden" name="continue" id="continueFlag" value="0">
 
         <!-- 分類名 -->
-        <div class="mt-4 d-flex align-items-center">
-            <label class="form-label me-3 mb-0" style="width:80px;">分類名</label>
-            <input type="text"
-                   name="category_name"
-                   id="category_name"
-                   class="form-control"
-                   autocomplete="off"
-                   placeholder="例：衣類"
-                   list="categoryList"
-                   value="{{ form.category_name.value|default:'' }}">
+        <div class="mt-4">
+            <div class="d-flex align-items-center category-label-row">
+                <label class="form-label mb-0 me-2" style="width: 80px;">分類名</label>
+                <div class="flex-grow-1">
+                    {{ form.category_name }}
+                </div>
+            </div>
+
+            <datalist id="categoryList">
+                {% for name in past_categories %}
+                    <option value="{{ name }}"></option>
+                {% endfor %}
+            </datalist>
+
+            {% if form.category_name.errors %}
+                <div class="text-danger small mt-1">{{ form.category_name.errors.0 }}</div>
+            {% endif %}
         </div>
-
-        <datalist id="categoryList">
-            {% for name in past_categories %}
-                <option value="{{ name }}"></option>
-            {% endfor %}
-        </datalist>
-
-        {% if form.category_name.errors %}
-        <div class="text-danger small mt-1">{{ form.category_name.errors.0 }}</div>
-        {% endif %}
 
         <!-- 項目名 -->
         <div class="mt-4">
-          <div class="d-flex align-items-center">
-            <label class="form-label me-0 mb-2" style="width:80px;">項目名</label>
+            <div class="d-flex align-items-center">
+                <label class="form-label mb-0 me-2" style="width: 80px;">項目名</label>
 
-            <div class="flex-grow-1 d-flex align-items-center">
-              <div class="flex-grow-1 me-2">
-                <input type="text"
-                       name="item_name"
-                       id="itemNameInput"
-                       class="form-control"
-                       autocomplete="off"
-                       placeholder="未入力でも追加できます"
-                       value="{{ form.item_name.value|default:'' }}">
+                <div class="flex-grow-1 me-2">
+                    {{ form.item_name }}
                 </div>
 
                 {% if not is_share_edit %}
-                <div class="text-center" style="width:48px;">
-                    <div class="favorite-label" style="font-size:8px; line-height:1;">お気に入り</div>
+                <div class="text-center" style="width: 48px;">
+                    <div class="favorite-label" style="font-size: 8px; line-height: 1;">お気に入り</div>
 
                     <img id="favoriteStar"
                          src="{% static 'tabipre/icons/star_off.png' %}"
                          data-on="{% static 'tabipre/icons/star_on.png' %}"
                          data-off="{% static 'tabipre/icons/star_off.png' %}"
-                         style="width:32px; cursor:pointer;">
+                         style="width: 32px; cursor: pointer;">
                 </div>
 
                 {{ form.favorite_flag }}
                 {% endif %}
             </div>
-        </div>
 
-        {% if form.item_name.errors %}
-        <div class="text-danger small mt-1">{{ form.item_name.errors.0 }}</div>
-        {% endif %}
+            {% if form.item_name.errors %}
+                <div class="text-danger small mt-1">{{ form.item_name.errors.0 }}</div>
+            {% endif %}
+        </div>
 
         {% if not is_share_edit %}
         <button type="button"
@@ -96,6 +86,7 @@
 
         <!-- 分類の色 -->
         <label class="category-text mt-4 w-100">分類の色を選択する</label>
+
         <div class="color-palette mb-3">
             {% for value, color in color_map.items %}
                 <div class="color-option
@@ -110,7 +101,7 @@
                value="{{ form.category_color.value|default:'' }}" required>
 
         {% if form.category_color.errors %}
-        <div class="text-danger small mt-1">{{ form.category_color.errors.0 }}</div>
+            <div class="text-danger small mt-1">{{ form.category_color.errors.0 }}</div>
         {% endif %}
 
         <!-- 登録 -->
@@ -118,16 +109,16 @@
                 id="validateBeforeModal"
                 class="btn app-submit mt-4 w-100"
                 onclick="submitCategoryForm('first')">
-             登録
+            登録
         </button>
 
-        <!-- キャンセル（共有編集時は share_edit_view に戻す） -->
+        <!-- キャンセル -->
         <div class="text-center mt-2">
-           {% if is_share_edit %}
-               <a href="{% url 'app:share_edit_view' token %}" class="back-link">キャンセル</a>
-           {% else %}
-               <a href="{% url 'app:template_edit2' template.id %}" class="back-link">キャンセル</a>
-           {% endif %}
+            {% if is_share_edit %}
+                <a href="{% url 'app:share_edit_view' token %}" class="back-link">キャンセル</a>
+            {% else %}
+                <a href="{% url 'app:template_edit2' template.id %}" class="back-link">キャンセル</a>
+            {% endif %}
         </div>
 
     </form>
@@ -136,7 +127,7 @@
 <!-- モーダル -->
 {% include "new_travel/modal/add_template.html" %}
 {% if not is_share_edit %}
-{% include "parts/favorite_modal.html" %}
+    {% include "parts/favorite_modal.html" %}
 {% endif %}
 {% include "new_travel/modal/add_continue_modal.html" %}
 

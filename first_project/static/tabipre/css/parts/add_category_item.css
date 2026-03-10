@@ -52,14 +52,12 @@
     font-weight: 400;
 }
 
-/* モーダル内スクロール */
 #favoriteModal .modal-body {
     max-height: 200px;
     overflow-y: auto;
     padding-left: 25%;
 }
 
-/* ラジオボタン行 */
 #favoriteModal .stay-option {
     display: flex;
     align-items: center;
@@ -178,33 +176,49 @@
     background-color: #9fc5e8ff !important;
     border-color: #595959 !important;
 }
-/* スマホ最適化 */
+
+/* ============================
+   スマホ最適化
+============================ */
 @media (max-width: 480px) {
 
-    /* 分類名・項目名の横並び → 縦並び */
+    /* 分類名・項目名を横並び維持 */
     .d-flex.align-items-center {
-        flex-direction: column;
-        align-items: flex-start !important;
+        flex-direction: row !important;
+        align-items: center !important;
     }
 
+    /* ラベル幅統一 */
     .d-flex.align-items-center label {
-        margin-bottom: 6px;
-        width: 100% !important;
+        width: 80px !important;
+        margin-right: 0 !important;
+        margin-bottom: 0 !important;
+        font-size: 16px !important;
+        white-space: nowrap;
     }
 
-    /* カラーパレット：4列 → 3列 */
-    .color-palette {
-        grid-template-columns: repeat(3, 40px);
+    /* 分類名だけ右余白調整 */
+    .category-label-row label {
+        margin-right: -10px !important;
     }
 
-    /* 小さすぎる文字を調整 */
+    /* 入力欄文字サイズ */
+    .d-flex.align-items-center .form-control {
+        font-size: 16px !important;
+    }
+
+    /* スター位置調整 */
+    .text-center[style*="48px"] {
+        width: 48px !important;
+        margin-left: 6px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* お気に入り文字を1行に */
     .favorite-label {
-        font-size: 11px !important;
-    }
-
-    /* モーダル内の文字を少し大きく */
-    #favoriteModal .modal-title,
-    #favoriteModal .stay-option span {
-        font-size: 14px;
+        font-size: 10px !important;
+        white-space: nowrap !important;
     }
 }
