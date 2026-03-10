@@ -13,25 +13,37 @@
 
         <form id="favoriteSelectForm">
 
-          {% for fav in favorite_items %}
-            <label class="stay-option d-flex align-items-center mb-2">
-              <input class="favorite-radio"
-                     type="radio"
-                     name="favorite_choice"
-                     value="{{ fav.item_name }}">
-              <span class="ms-2">{{ fav.item_name }}</span>
-            </label>
-          {% endfor %}
+          {% if favorite_items %}
+            {% for fav in favorite_items %}
+              <label class="stay-option d-flex align-items-center mb-2">
+                <input class="favorite-radio"
+                       type="radio"
+                       name="favorite_choice"
+                       value="{{ fav.item_name }}">
+                <span class="ms-2">{{ fav.item_name }}</span>
+              </label>
+            {% endfor %}
+          {% else %}
+            <div class="favorite-none text-center py-3">
+              <p>お気に入りは</p>
+              <p>まだ登録されていません</p>
+            </div>
+          {% endif %}
 
         </form>
 
       </div>
 
+      {% if favorite_items %}
       <div class="modal-footer justify-content-center">
-        <button type="button" class="btn btn-primary favorite" id="favoriteSelectBtn" data-next="{{ next_url }}">
+        <button type="button"
+                class="btn btn-primary favorite"
+                id="favoriteSelectBtn"
+                data-next="{{ next_url }}">
           登録
         </button>
       </div>
+      {% endif %}
 
     </div>
   </div>

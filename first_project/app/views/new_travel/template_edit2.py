@@ -54,4 +54,5 @@ def template_edit2(request, template_id):
     return render(request, "new_travel/template_edit2.html", {
         "template": template,
         "categories": categories,
+        "is_share_page": False, 
     })

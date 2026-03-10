@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block content %}
-<div class="container mt-4">
+<div class="mt-4">
 
     <div class="sub-title mb-4">新規分類・項目の追加</div>
 
@@ -120,16 +120,16 @@
                 <a href="{% url 'app:template_edit2' template.id %}" class="back-link">キャンセル</a>
             {% endif %}
         </div>
-
     </form>
-</div>
 
-<!-- モーダル -->
-{% include "new_travel/modal/add_template.html" %}
-{% if not is_share_edit %}
-    {% include "parts/favorite_modal.html" %}
-{% endif %}
-{% include "new_travel/modal/add_continue_modal.html" %}
+    <!-- モーダルを block content の中に移動 -->
+    {% include "new_travel/modal/add_template.html" %}
+    {% if not is_share_edit %}
+        {% include "parts/favorite_modal.html" %}
+    {% endif %}
+    {% include "new_travel/modal/add_continue_modal.html" %}
+
+</div>
 
 <script src="{% static 'tabipre/js/new_travel/new_continue.js' %}"></script>
 <script src="{% static 'tabipre/js/new_travel/add_category_item.js' %}"></script>

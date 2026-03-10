@@ -176,7 +176,18 @@
     background-color: #9fc5e8ff !important;
     border-color: #595959 !important;
 }
-
+/* お気に入りが空のときのメッセージ */
+#favoriteModal .favorite-none {
+    color: #e91e63;
+    font-size: 16px;
+    text-align: center;
+}
+#favoriteModal .modal-body {
+    padding-left: 10px;
+}
+#favoriteModal .stay-option {
+    padding-left: 25%;
+}
 /* ============================
    スマホ最適化
 ============================ */
