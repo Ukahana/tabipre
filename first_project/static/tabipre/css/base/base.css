@@ -186,3 +186,13 @@ body.modal-open { padding-right: 0 !important; }
 
 html { overflow-y: scroll; }
 body { font-size: 18px; }
+
+/*チェックボックス*/
+.form-check-input {
+  -webkit-appearance: none;
+  appearance: none;
+}
+.form-check-input {
+  width: 26px;
+  height: 26px;
+}

@@ -206,7 +206,7 @@ input[type="text"], button { border-radius: 0; }
     border-bottom: none !important;
 }
 #sortModal .modal-sm {
-    max-width: 300px; 
+    max-width: 300px;
 }
 .sort-modal-body {
     padding-top: 4px;
@@ -223,7 +223,7 @@ input[type="text"], button { border-radius: 0; }
     cursor: pointer;
     padding: 5px;
     background: transparent;
-    z-index: 10; 
+    z-index: 10;
     display: block;
 }
 /* 入力欄に文字が入ったら × を表示 */
@@ -236,17 +236,17 @@ input[type="text"], button { border-radius: 0; }
     padding-right: 40px;
 }
 .search-input::placeholder {
-    padding-left: 10px; 
+    padding-left: 10px;
 }
 .tag-scroll {
-    overflow-y: hidden;   
-    padding-bottom: 8px; 
-    margin-top: 12px; 
+    overflow-y: hidden;
+    padding-bottom: 8px;
+    margin-top: 12px;
 }
 /* 旅行カードのサイズ調整 */
 .card.travel-card {
-    min-height: 300px;        /* カードの高さを大きく */
-    border-radius: 10px;      /* 少し丸みを付ける（任意） */
+    min-height: 300px;
+    border-radius: 10px;
 }
 
 /* カード内のタイトルを大きく */
@@ -257,4 +257,16 @@ input[type="text"], button { border-radius: 0; }
 /* 日付の文字も少し大きく */
 .card.travel-card .card-text {
     font-size: 1.1rem;
+}
+
+@media (max-width: 480px) {
+    .tag-badge {
+        font-size: 16px;
+        padding: 6px 12px;
+        border-radius: 8px;
+    }
+
+    .tag-badge.selected {
+        padding-left: 26px;
+    }
 }
