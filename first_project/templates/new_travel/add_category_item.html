@@ -35,11 +35,13 @@
                 </div>
             </div>
 
-            <datalist id="categoryList">
-                {% for name in past_categories %}
-                    <option value="{{ name }}"></option>
-                {% endfor %}
-            </datalist>
+        <datalist id="categoryList">
+            {% for name in past_categories %}
+                <option value="{{ name }}"></option>
+            {% endfor %}
+        </datalist>
+
+
 
             {% if form.category_name.errors %}
                 <div class="text-danger small mt-1">{{ form.category_name.errors.0 }}</div>

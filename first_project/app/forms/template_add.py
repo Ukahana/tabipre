@@ -8,6 +8,7 @@ class CategoryItemForm(forms.Form):
         widget=forms.TextInput(attrs={
             "class": "form-control",
             "placeholder": "例：衣類",
+            "list": "categoryList",
             "autocomplete": "off",
         }),
         error_messages={
@@ -21,7 +22,7 @@ class CategoryItemForm(forms.Form):
         required=False,
         widget=forms.TextInput(attrs={
             "class": "form-control",
-            "placeholder": "未入力でも追加できます",
+            "placeholder": "未入力も追加できます",
             "id": "itemNameInput",
             "autocomplete": "off",
         }),
@@ -46,8 +47,9 @@ class CategoryItemForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         self.template = kwargs.pop("template", None)
+        self.past_categories = kwargs.pop("past_categories", [])
         super().__init__(*args, **kwargs)
-
+        
     def clean_item_name(self):
         return (self.cleaned_data.get("item_name") or "").strip()
 

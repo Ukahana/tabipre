@@ -5,7 +5,7 @@
   max-width: 420px;
   margin: 0 auto;
   min-height: 100vh;
-  padding: 8px; 
+  padding: 8px;
   padding-top: 30px;
   background: #fff;
   border: 1px solid #ccc;
@@ -38,7 +38,10 @@
   font-size: 14px;
   text-decoration: none;
 }
-
+.bottom-nav a:nth-child(2) img {
+    line-height: 3px;
+    margin-top: 2px;
+}
 /* ============================= */
 /* タイトル */
 /* ============================= */
@@ -152,7 +155,7 @@ input.form-control, select.form-control, textarea.form-control {
 /* ============================= */
 .modal-dialog {
   width: 100%;
-  max-width: 420px; 
+  max-width: 420px;
   margin: 80px auto 40px;
 }
 

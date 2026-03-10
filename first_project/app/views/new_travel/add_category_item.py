@@ -41,7 +41,6 @@ def add_category_item(request, template_id):
                     "favorite_items": favorite_items,
                     "color_map": color_map,
                     "open_continue_modal": False,
-                    "is_share_page": False,
                 }
             )
 
@@ -96,7 +95,6 @@ def add_category_item(request, template_id):
                 "favorite_items": favorite_items,
                 "color_map": color_map,
                 "open_continue_modal": True,
-                "is_share_page": False,
             }
         )
 
@@ -115,6 +113,5 @@ def add_category_item(request, template_id):
             "favorite_items": favorite_items,
             "color_map": color_map,
             "is_share_edit": False,
-            "is_share_page": False, 
         }
     )

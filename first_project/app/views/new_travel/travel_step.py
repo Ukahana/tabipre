@@ -159,6 +159,8 @@ def travel_step2(request):
                 memo=old_travel.memo,
             )
 
+            travel = new_travel
+
             # -----------------------------
             # 重複しない交通手段登録（修正版）
             # -----------------------------
@@ -192,7 +194,13 @@ def travel_step2(request):
 
 
             # テンプレート構造コピー
-            old_template = Template.objects.get(travel_info=old_travel)
+            old_template = (
+                Template.objects
+                .filter(travel_info=old_travel)
+                .order_by('-created_at')
+                .first()
+            )
+
             new_template = Template.objects.create(
                 user=request.user,
                 travel_info=new_travel,
