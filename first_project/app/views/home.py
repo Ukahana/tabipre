@@ -43,6 +43,8 @@ class HomeView(LoginRequiredMixin, TemplateView):
                 transport__transport_type__in=transport_filter
             )
 
+        travels = travels.distinct()
+
         today = timezone.now().date()
 
         completed_travel_ids = (
