@@ -30,21 +30,21 @@ def old_template_copy(request, template_id):
 
         for tid in step2["transport_types"]:
             transport = Transport.objects.get(pk=tid)
-            Travelmode.objects.create(
+            Travelmode.objects.get_or_create(
                 travel_info=travel,
                 transport=transport,
-                custom_transport_text=""
+                defaults={"custom_transport_text": ""}
             )
 
-        other_text = step2.get("transport_other", "").strip()
+        other_text = step2["transport_other"].strip()
         if other_text:
             other_transport = Transport.objects.get(
                 transport_type=Transport.TransportType.OTHER
             )
-            Travelmode.objects.create(
+            Travelmode.objects.get_or_create(
                 travel_info=travel,
                 transport=other_transport,
-                custom_transport_text=other_text
+                defaults={"custom_transport_text": other_text}
             )
 
         # -------------------------

@@ -87,7 +87,7 @@ class TravelStep2Form(TravelBaseForm):
         required=True,
         label="交通手段",
         error_messages={
-        "required": "交通手段を選択してください。",
+            "required": "交通手段を選択してください。",
         }
     )
 
@@ -102,7 +102,7 @@ class TravelStep2Form(TravelBaseForm):
     )
 
     class Meta(TravelBaseForm.Meta):
-        model = Travel_info 
+        model = Travel_info
         fields = ["location", "memo"]
         widgets = {
             "memo": forms.Textarea(attrs={"rows": 5, "class": "memo-box"}),
@@ -110,24 +110,32 @@ class TravelStep2Form(TravelBaseForm):
 
     def __init__(self, *args, **kwargs):
         travel = kwargs.get("instance")
-        super().__init__(*args, **kwargs)    
+        super().__init__(*args, **kwargs)
 
-        if travel:
-            self.fields["transport_types"].initial = travel.transport.all()
+        if not travel or not travel.pk:
+            return
 
-            other_transport = Transport.objects.filter(
-                transport_type=Transport.TransportType.OTHER
+        current = list(travel.transport.all())
+
+        other_transport = Transport.objects.filter(
+            transport_type=Transport.TransportType.OTHER
+        ).first()
+
+
+        if other_transport:
+            other_mode = Travelmode.objects.filter(
+                travel_info=travel,
+                transport=other_transport,
             ).first()
 
-            if other_transport:
-                other_mode = Travelmode.objects.filter(
-                    travel_info=travel,
-                    transport=other_transport,
-                ).first()
+            self.fields["transport_other"].initial = (
+                other_mode.custom_transport_text if other_mode else ""
+            )
 
-                self.fields["transport_other"].initial = (
-                    other_mode.custom_transport_text if other_mode else ""
-                )
+            if other_mode and other_transport not in current:
+                current.append(other_transport)
+
+        self.fields["transport_types"].initial = current
 
     def clean(self):
         cleaned = super().clean()

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from datetime import  datetime  
+from datetime import  datetime
 from app.models import Travel_info, Template, Transport, Travelmode
 from app.forms import TravelStep1Form, TravelStep2Form
 
@@ -64,11 +64,30 @@ def old_travel_edit2(request, travel_id):
 
     if request.method == "GET":
         form = TravelStep2Form(instance=travel)
+        other_transport = Transport.objects.get(
+           transport_type=Transport.TransportType.OTHER
+        )
+        other_mode = Travelmode.objects.filter(
+           travel_info=travel,
+           transport=other_transport
+        ).first()
+
+        if other_mode:
+
+            form.fields["transport_other"].initial = other_mode.custom_transport_text
+
+            current_types = list(form.initial.get("transport_types", []))
+            if other_transport.pk not in current_types:
+                current_types.append(other_transport.pk)
+            form.initial["transport_types"] = current_types
+
+
+
         return render(request, "old_travel/travel_edit2.html", {
             "travel": travel,
             "template": template,
             "form": form,
-            "categories": categories,  
+            "categories": categories,
             "step1": session_data,
         })
 
@@ -114,6 +133,6 @@ def old_travel_edit2(request, travel_id):
         "travel": travel,
         "template": template,
         "form": form,
-        "categories": categories,  
+        "categories": categories,
         "step1": session_data,
     })

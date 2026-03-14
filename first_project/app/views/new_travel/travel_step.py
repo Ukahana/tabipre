@@ -133,18 +133,20 @@ def travel_step2(request):
                     "templates": templates,
                 })
 
-            old_id = request.POST.get("old_travel_id")
-            old_travel = get_object_or_404(
-                Travel_info,
-                travel_info_id=old_id,
-                user=request.user
-            )
             request.session["copy_step2"] = {
                 "location": form.cleaned_data["location"],
                 "transport_types": [t.pk for t in form.cleaned_data["transport_types"]],
                 "transport_other": form.cleaned_data.get("transport_other", "").strip(),
                 "memo": form.cleaned_data.get("memo", "").strip(),
             }
+
+            old_id = request.POST.get("old_travel_id")
+            old_travel = get_object_or_404(
+                Travel_info,
+                travel_info_id=old_id,
+                user=request.user
+            )
+
 
             start_date = datetime.strptime(step1_data["start_date"], "%Y-%m-%d").date()
             end_date = datetime.strptime(step1_data["end_date"], "%Y-%m-%d").date()
@@ -162,7 +164,7 @@ def travel_step2(request):
             travel = new_travel
 
             # -----------------------------
-            # 重複しない交通手段登録（修正版）
+            # 重複しない交通手段登録
             # -----------------------------
             transport_types = {t.pk for t in form.cleaned_data["transport_types"]}
             other_text = form.cleaned_data.get("transport_other", "").strip()
@@ -172,24 +174,24 @@ def travel_step2(request):
             )
 
             # OTHER が選択されていて、かつ入力がある場合は通常登録から除外
-            if other_transport in transport_types and other_text:
+            if other_transport.pk in transport_types and other_text:
                 transport_types.remove(other_transport.pk)
 
             # 通常の交通手段
             for tid in transport_types:
                 transport = Transport.objects.get(pk=tid)
-                Travelmode.objects.create(
+                Travelmode.objects.get_or_create(
                     travel_info=travel,
                     transport=transport,
-                    custom_transport_text=""
+                    defaults={"custom_transport_text": ""}
                 )
 
             # OTHER（custom_text あり）
             if other_text:
-                Travelmode.objects.create(
+                Travelmode.objects.get_or_create(
                     travel_info=travel,
                     transport=other_transport,
-                     custom_transport_text=other_text
+                     defaults={"custom_transport_text": other_text}
                 )
 
 
@@ -264,22 +266,22 @@ def travel_step2(request):
                 transport_type=Transport.TransportType.OTHER
             )
 
-            if other_transport in transport_types and other_text:
-                transport_types.remove(other_transport)
+            if other_transport.pk in transport_types and other_text:
+                transport_types.remove(other_transport.pk)
 
             for tid in transport_types:
                 transport = Transport.objects.get(pk=tid)
-                Travelmode.objects.create(
+                Travelmode.objects.get_or_create(
                     travel_info=travel,
                     transport=transport,
-                    custom_transport_text=""
+                    defaults={"custom_transport_text": ""}
                 )
 
             if other_text:
-                Travelmode.objects.create(
+                Travelmode.objects.get_or_create(
                     travel_info=travel,
                     transport=other_transport,
-                    custom_transport_text=other_text
+                    defaults={"custom_transport_text": other_text}
                 )
 
             template = template_source(travel, request.user)

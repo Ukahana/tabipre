@@ -40,7 +40,7 @@
           <span class="form-label-text">その他</span>
 
           <span class="transport-other-box"
-                style="{% if form.transport_other.value %}display:inline{% else %}display:none{% endif %};">
+                 style="{% if form.transport_other.initial %}display:inline{% else %}display:none{% endif %};">
             {{ form.transport_other }}
           </span>
         </label>
