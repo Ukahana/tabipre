@@ -196,3 +196,20 @@ body { font-size: 18px; }
   width: 26px;
   height: 26px;
 }
+
+/*ここから修正*/
+.bottom-nav.navbar {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+.bottom-nav img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+}
+.bottom-nav a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}

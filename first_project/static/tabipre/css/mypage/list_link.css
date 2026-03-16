@@ -142,12 +142,16 @@ form label {
 
 /* コピー ボタン */
 #copy-btn {
-  background-color: #ccc !important;
+  background-color: #8a8a8a !important;
+  border-color: #8a8a8a !important;
   color: #fff !important;
   border-radius: 0 0.375rem 0.375rem 0 !important;
+  box-shadow: none !important;
+
 }
 #copy-btn:hover {
-  background-color: #b5b5b5 !important;
+  background-color: #7a7a7a !important;
+  box-shadow: none !important;
 }
 
 /* 削除リンク */

@@ -27,7 +27,7 @@
 
         {% if request.user.is_authenticated and not is_share_page %}
         <nav class="navbar navbar-light bottom-nav">
-            <div class="container d-flex text-center">
+            <div class="d-flex w-100 text-center">
 
                 <a class="nav-link flex-fill" href="{% url 'app:home' %}">
                     ホーム<br>

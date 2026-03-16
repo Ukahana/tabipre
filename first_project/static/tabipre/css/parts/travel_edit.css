@@ -182,16 +182,17 @@ a.custom-edit-btn:hover {
   background-color: #157347ff;
 }
 
-/* テンプレート作成ボタン（黄緑 × 白文字） */
+/* テンプレート作成ボタン（緑 × 白文字） */
 .travel_step2_form .btn-create {
-  background-color: #8BC34A !important;
-  border-color: #8BC34A !important;
+  background-color: #4CAF50 !important;
+  border-color: #4CAF50 !important;
   color: #ffffff !important;
 }
 
 .travel_step2_form .btn-create:hover {
-  background-color: #7CB342 !important;
-  border-color: #7CB342 !important;
+  background-color: #43A047 !important;
+  border-color: #43A047 !important;
+
 }
 
 

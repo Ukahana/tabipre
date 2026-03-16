@@ -52,8 +52,10 @@
 }
 
 #copy_btn {
-  background-color: #ccc !important;
-  border-color: #ccc !important;
+  background-color: #8a8a8a !important;
+  border-color: #8a8a8a !important;
+  color: #fff !important;
+
 }
 
 /* 日付表示を縦並びに */
@@ -133,8 +135,8 @@
   margin-top: 4px;    /* 2つ目以降の p だけ少し余白 */
 }
 .container{
-  padding: none;  
-  border: none;  
+  padding: none;
+  border: none;
 }
 /* expired-wrapper があるページでは container の左右余白を消す */
 .expired-wrapper {
@@ -147,7 +149,7 @@
   padding-right: 0 !important;
 }
 .app-frame {
-  padding: 20px; 
+  padding: 20px;
   padding-top: 20px;
 
 }
