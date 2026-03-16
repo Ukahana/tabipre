@@ -143,3 +143,5 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'yamamoto.test.portfolio@gmail.com'
 EMAIL_HOST_PASSWORD = 'gatbgtntbvrmgkes'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"

@@ -156,7 +156,6 @@ def travel_step2(request):
                 travel_title=step1_data["travel_title"],
                 start_date=start_date,
                 end_date=end_date,
-                stay_type=step1_data["stay_type"],
                 location=form.cleaned_data["location"],
                 memo=old_travel.memo,
             )
@@ -251,7 +250,6 @@ def travel_step2(request):
                 travel_title=step1_data["travel_title"],
                 start_date=start_date,
                 end_date=end_date,
-                stay_type=step1_data["stay_type"],
                 location=form.cleaned_data["location"],
                 memo=form.cleaned_data["memo"].strip(),
             )

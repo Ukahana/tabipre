@@ -13,7 +13,7 @@ class TravelBaseForm(forms.ModelForm):
 
 
 # ---------------------------------------------------------
-#  Step1（タイトル・日付・宿泊タイプ）
+#  Step1（タイトル・日付）
 # ---------------------------------------------------------
 from django import forms
 
@@ -37,16 +37,10 @@ class TravelStep1Form(TravelBaseForm):
                 }
         )
     )
-    stay_type = forms.TypedChoiceField(
-        choices=Travel_info.StayType.choices,
-        coerce=int,
-        widget=forms.RadioSelect,
-        label="宿泊タイプ",
-        required=True,
-    )
+
 
     class Meta(TravelBaseForm.Meta):
-        fields = ["travel_title", "start_date", "end_date", "stay_type"]
+        fields = ["travel_title", "start_date", "end_date"]
         widgets = {
             "travel_title": forms.TextInput(attrs={"class": "form-control"}),
         }

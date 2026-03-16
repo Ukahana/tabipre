@@ -26,7 +26,6 @@ def old_travel_edit1(request, travel_id):
                 "travel_title": form.cleaned_data["travel_title"],
                 "start_date": start.isoformat(),
                 "end_date": end.isoformat(),
-                "stay_type": form.cleaned_data["stay_type"],
             }
 
             return redirect("app:old_travel_edit2", travel_id=travel_id)
@@ -39,7 +38,6 @@ def old_travel_edit1(request, travel_id):
     return render(request, "old_travel/travel_edit1.html", {
         "form": form,
         "travel": travel,
-        "stay_type": form.instance.stay_type,
     })
 
 
@@ -97,7 +95,6 @@ def old_travel_edit2(request, travel_id):
         travel.travel_title = session_data["travel_title"]
         travel.start_date = start_date
         travel.end_date = end_date
-        travel.stay_type = session_data["stay_type"]
 
         travel = form.save(commit=False)
         travel.full_clean()
