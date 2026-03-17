@@ -5,6 +5,7 @@
 {{ block.super }}
 <link rel="stylesheet" href="{% static 'tabipre/css/mypage/mypage.css' %}">
 {% endblock %}
+
 {% block body_class %}mypage{% endblock %}
 
 {% block content %}
@@ -29,6 +30,19 @@
         <p><a href="{% url 'app:account_email' %}" class="link-text">メールアドレス変更</a></p>
         <p><a href="{% url 'app:password_change' %}" class="link-text">パスワード変更</a></p>
     </div>
+
+    <hr class="logout-divider">
+
+    <p>
+        <a href="#"
+           class="logout-link"
+           data-bs-toggle="modal"
+           data-bs-target="#logoutConfirmModal">
+            ログアウト
+        </a>
+    </p>
+
+    {% include 'mypage/modal/logout.html' %}
 
 </div>
 {% endblock %}
