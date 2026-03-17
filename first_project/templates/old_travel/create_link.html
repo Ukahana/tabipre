@@ -18,6 +18,9 @@
           <li>{{ error }}</li>
         {% endfor %}
       </ul>
+      <a href="{% url 'app:share_settings' %}"  class="btn btn-outline-primary w-100 mt-2">
+            作成済みのリンクはこちら
+      </a>
     {% endif %}
 
     <!-- 権限設定 -->
