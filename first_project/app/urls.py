@@ -83,6 +83,9 @@ from app.views.old_travel.share_view import (
 
 def user_logout(request):
     logout(request)
+    next_url = request.GET.get("next")
+    if next_url:
+        return redirect(next_url)
     return redirect('app:login')
 
 

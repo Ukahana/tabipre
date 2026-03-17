@@ -58,3 +58,21 @@
   margin-bottom: 2px;
   font-size: 16px;
 }
+/* ログアウト区切り線 */
+.logout-divider {
+  margin: 20px 0;
+  border-width: 2px;
+  border-color: #ccc;
+}
+
+/* ログアウトリンク */
+.logout-link {
+  color: #666;
+  font-size: 16px;
+  display: block;
+  text-align: center;
+}
+
+.logout-link:hover {
+  text-decoration: underline;
+}

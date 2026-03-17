@@ -1,0 +1,38 @@
+<!-- ログアウト確認モーダル -->
+<div class="modal fade" id="logoutModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-body text-center fs-5">
+        ログアウトしますか？
+      </div>
+
+      <div class="modal-footer d-flex justify-content-center gap-3">
+
+        {% if is_share_page %}
+        <!-- ▼ 共有リンクから開いた場合：共有リンク用ログイン画面へ戻す -->
+        <form method="POST"
+              action="{% url 'app:logout' %}?next={% url 'app:login' %}?next={{ request.get_full_path|urlencode }}"
+              class="m-0">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger px-4">はい</button>
+        </form>
+
+        {% else %}
+        <!-- ▼ 通常ログアウト（マイページなど） -->
+        <form method="POST" action="{% url 'app:logout' %}" class="m-0">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-danger px-4">はい</button>
+        </form>
+        {% endif %}
+
+        <!-- いいえ -->
+        <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">
+          いいえ
+        </button>
+
+      </div>
+
+    </div>
+  </div>
+</div>

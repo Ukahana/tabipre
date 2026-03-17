@@ -5,7 +5,7 @@
   max-width: 420px;
   margin: 0 auto;
   min-height: 100vh;
-  padding: 8px; 
+  padding: 8px;
   padding-top: 30px;
   background: #fff;
   border: 1px solid #ccc;
@@ -152,7 +152,7 @@ input.form-control, select.form-control, textarea.form-control {
 /* ============================= */
 .modal-dialog {
   width: 100%;
-  max-width: 420px; 
+  max-width: 420px;
   margin: 80px auto 40px;
 }
 
@@ -183,3 +183,45 @@ body.modal-open { padding-right: 0 !important; }
 
 html { overflow-y: scroll; }
 body { font-size: 18px; }
+
+/* 本文（中央寄せ・余白） */
+#logoutModal .modal-body {
+  text-align: center;
+  font-size: 1.05rem;
+  padding-top: 20px;
+  padding-bottom: 10px;
+}
+
+/* フッター（中央寄せ・境界線なし） */
+#logoutModal .modal-footer {
+  border-top: none;
+  justify-content: center;
+  gap: 20px;
+}
+
+/* 「はい」ボタン */
+#logoutModal .btn-danger {
+  background-color: #d9534f;
+  border-color: #d9534f;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 6px;
+}
+#logoutModal .btn-danger:hover {
+  background-color: #c64541;
+  border-color: #c64541;
+}
+
+/* 「いいえ」ボタン */
+#logoutModal .btn-secondary {
+  background-color: #e0e0e0;
+  color: #333;
+  border: 1px solid #595959;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 6px;
+}
+#logoutModal .btn-secondary:hover {
+  background-color: #bdbdbd;
+}
