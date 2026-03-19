@@ -112,13 +112,15 @@ def travel_step2(request):
 
             from django.http import QueryDict
 
+            q = QueryDict('', mutable=True)
+
+
             def safe_getlist(data, key):
                 if hasattr(data, "getlist"):
                     return data.getlist(key)
                 value = data.get(key)
                 return value if isinstance(value, list) else [value]
 
-            q = QueryDict('', mutable=True)
 
             for key in step2_data:
                 q.setlist(key, safe_getlist(step2_data, key))
