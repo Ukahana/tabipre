@@ -54,7 +54,10 @@ def template_source(travel, user):
         elif t == Transport.TransportType.TRAIN:
             categories.append("電車")
         elif t == Transport.TransportType.OTHER:
-            categories.append(tm.custom_transport_text.strip() or "その他")
+            name = tm.custom_transport_text.strip()
+            if name:
+                categories.append(name)
+
 
     CATEGORY_COLOR_MAP = {
         "共通": TravelCategory.CategoryColor.BLUE,

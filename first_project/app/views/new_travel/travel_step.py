@@ -162,6 +162,8 @@ def travel_step2(request):
 
             travel = new_travel
 
+
+
             # -----------------------------
             # 重複しない交通手段登録
             # -----------------------------
@@ -187,7 +189,7 @@ def travel_step2(request):
 
             # OTHER（custom_text あり）
             if other_text:
-                Travelmode.objects.get_or_create(
+                Travelmode.objects.update_or_create(
                     travel_info=travel,
                     transport=other_transport,
                      defaults={"custom_transport_text": other_text}
@@ -269,14 +271,14 @@ def travel_step2(request):
 
             for tid in transport_types:
                 transport = Transport.objects.get(pk=tid)
-                Travelmode.objects.get_or_create(
+                Travelmode.objects.update_or_create(
                     travel_info=travel,
                     transport=transport,
                     defaults={"custom_transport_text": ""}
                 )
 
             if other_text:
-                Travelmode.objects.get_or_create(
+                Travelmode.objects.update_or_create(
                     travel_info=travel,
                     transport=other_transport,
                     defaults={"custom_transport_text": other_text}
