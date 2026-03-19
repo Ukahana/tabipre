@@ -36,7 +36,14 @@ document.addEventListener("DOMContentLoaded", function () {
             input.value = "open_modal";
             form.appendChild(input);
 
-            form.submit();
+            // ★ form.submit() は使わない（値が取りこぼされるため）
+            // ★ 隠し submit ボタンを作ってクリックする
+            const hiddenSubmit = document.createElement("button");
+            hiddenSubmit.type = "submit";
+            hiddenSubmit.style.display = "none";
+            form.appendChild(hiddenSubmit);
+
+            hiddenSubmit.click();
         });
     }
 

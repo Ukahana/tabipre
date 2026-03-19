@@ -71,9 +71,9 @@ def old_travel_edit2(request, travel_id):
         ).first()
 
         if other_mode:
-            
-            # OTHER のテキストだけ初期表示する
-            form.fields["transport_other"].initial = other_mode.custom_transport_text
+             form.fields["transport_other"].initial = other_mode.custom_transport_text
+             form.initial["transport_types"] = list(travel.transport.values_list("pk", flat=True))
+
 
         return render(request, "old_travel/travel_edit2.html", {
             "travel": travel,

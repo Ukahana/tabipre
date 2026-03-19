@@ -142,7 +142,21 @@ class TravelStep2Form(TravelBaseForm):
 
         cleaned["memo"] = memo.strip()
 
-        if transports and any(t.transport_type == Transport.TransportType.OTHER for t in transports):
+        transport_ids = []
+        if transports:
+            for t in transports:
+                if hasattr(t, "pk"):
+                    transport_ids.append(t.pk)
+                else:
+                    transport_ids.append(int(t))
+
+        # OTHER の Transport を取得
+        other_transport = Transport.objects.filter(
+            transport_type=Transport.TransportType.OTHER
+        ).first()
+
+        # OTHER が選ばれているか判定
+        if other_transport and other_transport.pk in transport_ids:
             if not other_text:
                 self.add_error("transport_other", "その他を選択した場合は入力が必要です。")
 

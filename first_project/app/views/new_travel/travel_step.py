@@ -22,6 +22,7 @@ def travel_create_step1(request):
 
     if request.method == "POST":
         form = TravelStep1Form(request.POST)
+
         if form.is_valid():
 
             data = form.cleaned_data.copy()
@@ -90,8 +91,16 @@ def travel_step2(request):
                     "templates": templates,
                 })
 
-            # QueryDict のまま保存
-            request.session["step2_data"] = request.POST.copy()
+            step2_dict = {}
+            for key in request.POST:
+                if key == "transport_types":
+                   step2_dict[key] = request.POST.getlist(key)
+                else:
+                   step2_dict[key] = request.POST.get(key)
+
+            step2_dict["transport_other"] = request.POST.get("transport_other", "")
+
+            request.session["step2_data"] = step2_dict
 
             return render(request, "new_travel/travel_step2.html", {
                 "form": form,
@@ -103,27 +112,24 @@ def travel_step2(request):
         # -----------------------------
         # copy（前回旅行からコピー）
         # -----------------------------
-        if action == "copy" and request.POST.get("old_travel_id"):
+        elif action == "copy" and request.POST.get("old_travel_id"):
+
 
             step2_data = request.session.get("step2_data")
 
             if not step2_data:
-                step2_data = request.POST
+                return redirect("app:travel_step2")
 
-            from django.http import QueryDict
 
             q = QueryDict('', mutable=True)
+            for key, value in step2_data.items():
+                if key == "transport_types":
+                    q.setlist(key, value)
+                else:
+                    q[key] = value
 
+            q["transport_other"] = step2_data.get("transport_other", "")
 
-            def safe_getlist(data, key):
-                if hasattr(data, "getlist"):
-                    return data.getlist(key)
-                value = data.get(key)
-                return value if isinstance(value, list) else [value]
-
-
-            for key in step2_data:
-                q.setlist(key, safe_getlist(step2_data, key))
 
             form = TravelStep2Form(q)
 

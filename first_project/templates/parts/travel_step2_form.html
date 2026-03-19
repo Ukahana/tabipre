@@ -21,6 +21,7 @@
 <div class="transport-type">
   <label class="form-label d-block">【目的地までの交通手段】</label>
 
+  <!-- 通常の交通手段 -->
   <div class="transport-options">
     {% for checkbox in form.transport_types %}
       {% if checkbox.choice_label != "その他" %}
@@ -32,6 +33,7 @@
     {% endfor %}
   </div>
 
+  <!-- その他 -->
   <div class="transport-other-row">
     {% for checkbox in form.transport_types %}
       {% if checkbox.choice_label == "その他" %}
@@ -40,13 +42,14 @@
           <span class="form-label-text">その他</span>
 
           <span class="transport-other-box"
-                 style="{% if form.transport_other.initial %}display:inline{% else %}display:none{% endif %};">
+                style="{% if checkbox.value in form.transport_types.value %}display:inline{% else %}display:none{% endif %};">
             {{ form.transport_other }}
           </span>
         </label>
       {% endif %}
     {% endfor %}
   </div>
+
   <div class="errorlist">
     {{ form.transport_types.errors }}
   </div>
