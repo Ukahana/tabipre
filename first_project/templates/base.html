@@ -26,8 +26,8 @@
         </div>
 
         {% if request.user.is_authenticated and not is_share_page %}
-        <nav class="navbar navbar-light bottom-nav">
-            <div class="d-flex w-100 text-center">
+        <nav class="bottom-nav">
+            <div class="fooder">
 
                 <a class="nav-link flex-fill" href="{% url 'app:home' %}">
                     ホーム<br>
@@ -36,7 +36,7 @@
 
                 <a class="nav-link flex-fill" href="{% url 'app:travel_step1' %}">
                     新規旅行<br>
-                    <img src="{% static 'tabipre/icons/travel.png' %}" width="29">
+                    <img src="{% static 'tabipre/icons/travel.png' %}">
                 </a>
 
                 <a class="nav-link flex-fill" href="{% url 'app:mypage' %}">

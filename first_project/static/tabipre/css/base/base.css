@@ -21,27 +21,59 @@
 /* フッター */
 /* ============================= */
 .bottom-nav {
-  position: fixed;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 100%;
-  max-width: 420px;
-  height: 60px;
-  padding: 6px 0;
-  background: #f5ebdd;
-  border-top: 1px solid #ddd;
-  z-index: 999;
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 420px;
+    height: 60px;
+    padding: 6px 0;
+    background: #f5ebdd;
+    border-top: 1px solid #ddd;
+    z-index: 999;
 }
+
+.fooder {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+/* 共通リンク */
+.nav-link {
+    flex: 1;
+    text-decoration: none;
+    color: #000;
+    font-size: 12px;
+    text-align: center;
+}
+
+/* 左・中央・右の微調整 */
+.nav-link:nth-child(1) { margin-left: 20px; }
+.nav-link:nth-child(2) { margin-left: 12px; }
+.nav-link:nth-child(3) { margin-right: 8px; }
+
+/* アイコン */
+.nav-link img {
+    display: block;
+    margin: 4px auto 0;
+}
+
+/* 新規旅行（2番目）だけ大きく */
+.nav-link:nth-child(2) img {
+    width: 30px;
+    height: 30px;
+}
+
+/* リンク色 */
 .bottom-nav a {
-  color: #0097a7;
-  font-size: 14px;
-  text-decoration: none;
+    color: #0097a7;
+    font-size: 14px;
+    text-decoration: none;
 }
-.bottom-nav a:nth-child(2) img {
-    line-height: 3px;
-    margin-top: 2px;
-}
+
 /* ============================= */
 /* タイトル */
 /* ============================= */
@@ -254,4 +286,31 @@ body { font-size: 18px; }
 }
 #logoutModal .btn-secondary:hover {
   background-color: #bdbdbd;
+}
+
+/* フッターのリンクを縦並び＆中央揃え */
+.bottom-nav .nav-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 !important;   /* Bootstrap の余白を消す */
+    margin: 0;
+    font-size: 12px;         /* 文字サイズを統一 */
+    line-height: 1.2;
+}
+
+/* アイコンの下に少し余白 */
+.bottom-nav .nav-link img {
+    margin-bottom: 2px;
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+}
+
+/* nth-child の個別調整は不要なので削除 */
+.bottom-nav a:nth-child(2) img {
+    margin-top: 0 !important;
+    line-height: normal !important;
 }
