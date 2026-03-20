@@ -288,16 +288,16 @@ body { font-size: 18px; }
   background-color: #bdbdbd;
 }
 
-/* フッターのリンクを縦並び＆中央揃え */
+
 .bottom-nav .nav-link {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
 
-    padding: 0 !important;   /* Bootstrap の余白を消す */
+    padding: 0 !important;   
     margin: 0;
-    font-size: 12px;         /* 文字サイズを統一 */
+    font-size: 12px;         
     line-height: 1.2;
 }
 
@@ -309,7 +309,6 @@ body { font-size: 18px; }
     object-fit: contain;
 }
 
-/* nth-child の個別調整は不要なので削除 */
 .bottom-nav a:nth-child(2) img {
     margin-top: 0 !important;
     line-height: normal !important;
