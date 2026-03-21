@@ -41,7 +41,6 @@
     width: 100%;
 }
 
-/* 共通リンク */
 .nav-link {
     flex: 1;
     text-decoration: none;
@@ -50,21 +49,22 @@
     text-align: center;
 }
 
-/* 左・中央・右の微調整 */
-.nav-link:nth-child(1) { margin-left: 20px; }
-.nav-link:nth-child(2) { margin-left: 12px; }
-.nav-link:nth-child(3) { margin-right: 8px; }
+.nav-link:nth-child(1) { padding-left: 20px; }
+.nav-link:nth-child(2) { padding-left: 12px; }
+.nav-link:nth-child(3) { padding-right: 6px; }
 
 /* アイコン */
 .nav-link img {
     display: block;
-    margin: 4px auto 0;
+    margin: 2px auto 0;
 }
 
-/* 新規旅行（2番目）だけ大きく */
+/* 新規旅行（2番目） */
 .nav-link:nth-child(2) img {
-    width: 30px;
-    height: 30px;
+    width: 32px;
+    height: 32px;
+    margin-top: -1px;
+    margin-bottom: -3px;
 }
 
 /* リンク色 */
@@ -73,7 +73,6 @@
     font-size: 14px;
     text-decoration: none;
 }
-
 /* ============================= */
 /* タイトル */
 /* ============================= */
@@ -229,23 +228,6 @@ body { font-size: 18px; }
   height: 26px;
 }
 
-/*ここから修正*/
-.bottom-nav.navbar {
-    padding-left: 0 !important;
-    padding-right: 0 !important;
-}
-.bottom-nav img {
-    width: 28px;
-    height: 28px;
-    object-fit: contain;
-}
-.bottom-nav a {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
 /* 本文（中央寄せ・余白） */
 #logoutModal .modal-body {
   text-align: center;
@@ -286,30 +268,4 @@ body { font-size: 18px; }
 }
 #logoutModal .btn-secondary:hover {
   background-color: #bdbdbd;
-}
-
-
-.bottom-nav .nav-link {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-
-    padding: 0 !important;   
-    margin: 0;
-    font-size: 12px;         
-    line-height: 1.2;
-}
-
-/* アイコンの下に少し余白 */
-.bottom-nav .nav-link img {
-    margin-bottom: 2px;
-    width: 28px;
-    height: 28px;
-    object-fit: contain;
-}
-
-.bottom-nav a:nth-child(2) img {
-    margin-top: 0 !important;
-    line-height: normal !important;
 }
