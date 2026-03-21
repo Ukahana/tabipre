@@ -1,0 +1,209 @@
+/* list-group の見た目 */
+.list-group-item {
+  margin-bottom: 12px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+}
+
+/* ラベル中央寄せ（太字解除） */
+.modal-body .form-label {
+  display: block;
+  text-align: center;
+  font-weight: normal;
+}
+.modal-body .form-label:nth-of-type(2) {
+  margin-top: 20px;
+}
+
+/* カレンダーアイコンを消す */
+input[type="text"]::-webkit-calendar-picker-indicator,
+input[type="text"]::-moz-calendar-picker-indicator {
+  display: none !important;
+}
+
+/* shareLinkModal — ヘッダー線削除 */
+#shareLinkModal .modal-header {
+  border-bottom: none;
+}
+
+/* shareLinkModal — input 背景 */
+#shareLinkModal .input-group input {
+  background-color: #f8f9fa;
+}
+
+/* shareLinkModal — フッター縦並び（スマホ） */
+#shareLinkModal .modal-footer {
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.75rem;
+}
+#shareLinkModal .modal-footer a {
+  text-align: center;
+}
+
+/* deleteLinkModal — フッター調整 */
+#deleteLinkModal .modal-footer {
+  border-top: none;
+  justify-content: center;
+  gap: 10px;
+}
+
+/* 検索エリア */
+.search-area {
+  margin-top: 0;
+}
+
+/* ログインボタン */
+.btn-primary {
+  background-color: #4a90e2;
+  border: none;
+  font-size: 1.2rem;
+  padding: 10px;
+}
+.btn-primary:hover {
+  background-color: #3f7fbf;
+}
+
+/* エラー表示 */
+.errorlist {
+  color: red;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+/* 入力欄 */
+form input {
+  border: 1px solid #ccc;
+  padding: 8px;
+  width: 100%;
+  background-color: #fff;
+  box-sizing: border-box;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  color: #000;
+}
+form input:focus {
+  border-color: #4a90e2;
+  box-shadow: 0 0 8px rgba(74,144,226,0.55);
+  border-width: 1.5px;
+  outline: none;
+}
+
+/* Chrome/Safari autofill対策 */
+input:-webkit-autofill {
+  background-color: #fff !important;
+  box-shadow: 0 0 0 1000px #fff inset !important;
+  -webkit-text-fill-color: #000 !important;
+}
+
+/* ラベル */
+form label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 1.1rem;
+}
+
+/* パスワード注意書き */
+.statement {
+  color: #999;
+  font-size: 15px;
+}
+
+/* リンク */
+.link {
+  text-align: center;
+  font-size: 15px;
+}
+
+/* --- shareLinkModal 専用 --- */
+
+/* 権限ラジオセット横並び */
+#shareLinkModal .permission-group {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 32px;
+  margin-top: 10px;
+}
+
+/* ラジオボタン + テキスト横並び */
+#shareLinkModal .form-check {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 0;
+}
+
+/* ラジオボタンサイズ */
+#shareLinkModal .my-radio {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+}
+
+/* コピー ボタン */
+#copy-btn {
+  background-color: #8a8a8a !important;
+  border-color: #8a8a8a !important;
+  color: #fff !important;
+  border-radius: 0 0.375rem 0.375rem 0 !important;
+  box-shadow: none !important;
+
+}
+#copy-btn:hover {
+  background-color: #7a7a7a !important;
+  box-shadow: none !important;
+}
+
+/* 削除リンク */
+#delete-link {
+  color: #5a6268;
+}
+
+/* 登録ボタン（色＋文字サイズ小さめ） */
+#save-btn {
+  background-color: #1976d1ff !important;
+  font-size: 16px !important;
+}
+/* --- deleteLinkModal 専用 --- */
+
+/* 本文（中央寄せ・余白） */
+#deleteLinkModal .modal-body {
+  text-align: center;
+  font-size: 1.05rem;
+  padding-top: 20px;
+  padding-bottom: 10px;
+}
+
+/* フッター（中央寄せ・境界線なし） */
+#deleteLinkModal .modal-footer {
+  border-top: none;
+  justify-content: center;
+  gap: 20px; /* 他モーダルと統一 */
+}
+
+/* 「はい」ボタン（danger を柔らかく） */
+#deleteLinkModal .btn-danger {
+  background-color: #d9534f;
+  border-color: #d9534f;
+  color: #fff;
+  padding: 10px 20px;      /* 他の削除系と統一 */
+  font-size: 16px;         /* 統一 */
+  border-radius: 6px;      /* 統一 */
+}
+#deleteLinkModal .btn-danger:hover {
+  background-color: #c64541;
+  border-color: #c64541;
+}
+
+/* 「いいえ」ボタン（btn-no と統一） */
+#deleteLinkModal .btn-secondary {
+  background-color: #e0e0e0;
+  color: #333;
+  border: 1px solid #595959;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 6px;
+}
+#deleteLinkModal .btn-secondary:hover {
+  background-color: #bdbdbd;
+}

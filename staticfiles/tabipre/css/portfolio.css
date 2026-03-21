@@ -1,0 +1,134 @@
+/* 全体 */
+body {
+  font-family: "Gowun Dodum", "Yu Gothic", sans-serif;
+  background: #f5f3ef;
+  color: #4a4a4a;
+}
+
+/* 見出し */
+h1, h2 {
+  font-family: "Nanum Pen Script", cursive;
+  color: #5c4b3b;
+  letter-spacing: 0.03em;
+}
+
+h1 {
+  font-size: 2.8rem;
+  margin-bottom: 0.2rem;
+  transform: rotate(-1deg);
+}
+
+h2 {
+  font-size: 1.7rem;
+  margin-bottom: 1rem;
+  border-bottom: 1px solid #d8cfc4;
+  padding-bottom: 0.3rem;
+  transform: rotate(-0.5deg);
+}
+
+/* サブタイトル */
+#hero p {
+  font-size: 1.0rem;
+  color: #6d6257;
+  letter-spacing: 0.02em;
+  margin-top: 0.3rem;
+  opacity: 0.9;
+}
+
+/* アプリ説明文（改行保持） */
+#about-app p {
+  white-space: pre-line;
+  font-size: 0.9rem;
+  color: #5a5248;
+  line-height: 1.55;
+  letter-spacing: 0.01em;
+  text-align: center;
+}
+
+/* 画像 */
+.row.g-3 img {
+  width:100%;
+  aspect-ratio: 9/ 16;
+  object-fit: cover;
+  border-radius: 10px;
+  background: #fff;
+  padding: 4px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transition: transform .2s ease;
+}
+
+.row.g-3 img:hover {
+  transform: translateY(-3px);
+}
+
+/* 画像キャプション */
+.caption {
+  font-size: 0.85rem;
+  color: #6d6257;
+  margin-top: 0.3rem;
+  opacity: 0.8;
+}
+
+/* 資料一覧 */
+#documents a {
+  font-size: 1.1rem;
+  color: #6d6257;
+  font-weight: 500;
+  padding-bottom: 2px;
+  letter-spacing: 0.02em;
+  transition: opacity .2s ease;
+}
+
+#documents a:hover {
+  opacity: 0.7;
+}
+
+/* ボタン */
+.btn-primary.btn-lg {
+  background: #8c7a6b;
+  border: none;
+  padding: 0.8rem 2.4rem;
+  font-size: 1.1rem;
+  border-radius: 36px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  transition: opacity .2s ease, transform .2s ease;
+}
+
+.btn-primary.btn-lg:hover {
+  opacity: 0.9;
+  transform: translateY(-3px);
+}
+
+/* フッター */
+footer p {
+  color: #8f8f8f;
+  font-size: 0.85rem;
+}
+@media (max-width: 576px) {
+
+  h1 { font-size: 2.2rem; }
+  h2 { font-size: 1.5rem; }
+
+  #hero p { font-size: 0.95rem; }
+
+  #about-app p {
+    font-size: 0.9rem;
+    text-align: left;
+    padding: 0 1rem;
+
+  }
+
+  #documents .d-flex {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+
+  .btn-primary.btn-lg {
+    width: 100%;
+    font-size: 1.1rem;
+    padding: 0.9rem;
+  }
+
+  footer p { font-size: 0.8rem; }
+}

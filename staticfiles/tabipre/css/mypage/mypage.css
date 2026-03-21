@@ -1,0 +1,120 @@
+.mypage .link-text {
+  font-size: 18px;
+}
+
+.mypage .link-section p {
+  margin: 15px 0;
+}
+
+.mypage .sub-title {
+  margin-top: 80px;
+}
+
+.app-frame {
+  background-color: #fdf6f0;
+}
+
+/* Buttons */
+.app-btn {
+  font-weight: normal;
+}
+
+.app-btn-primary {
+  background-color: #1976d1;
+  color: #fff;
+  border: none;
+  padding: 10px 0;
+  font-size: 18px;
+  border-radius: 8px;
+  width: 100%;
+  text-align: center;
+}
+
+.app-btn-primary:hover {
+  background-color: #1565c0;
+}
+
+.app-btn-secondary {
+  background: #8a8a8a;
+  color: #fff;
+  text-decoration: none !important;
+}
+
+.app-btn-secondary:hover {
+  background: #6f6f6f;
+}
+
+.app-btn-warning {
+  background: #ffab40;
+  color: #fff;
+  text-decoration: none !important;
+}
+
+.app-btn-warning:hover {
+  background: #e89a3a;
+}
+
+.statement p {
+  margin-bottom: 2px;
+  font-size: 16px;
+}
+/* ログアウト区切り線 */
+.logout-divider {
+  margin: 20px 0;
+  border-width: 2px;
+  border-color: #ccc;
+}
+
+/* ログアウトリンク */
+.logout-link {
+  color: #666;
+  font-size: 16px;
+  display: block;
+  text-align: center;
+}
+
+.logout-link:hover {
+  text-decoration: underline;
+}
+
+/* 本文（中央寄せ・余白） */
+#logoutConfirmModal .modal-body {
+  text-align: center;
+  font-size: 1.05rem;
+  padding-top: 20px;
+  padding-bottom: 10px;
+}
+
+/* フッター（中央寄せ・境界線なし） */
+#logoutConfirmModal .modal-footer {
+  border-top: none;
+  justify-content: center;
+  gap: 20px;
+}
+
+/* 「はい」ボタン */
+#logoutConfirmModal .btn-danger {
+  background-color: #d9534f;
+  border-color: #d9534f;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 6px;
+}
+#logoutConfirmModal .btn-danger:hover {
+  background-color: #c64541;
+  border-color: #c64541;
+}
+
+/* 「いいえ」ボタン */
+#logoutConfirmModal .btn-secondary {
+  background-color: #e0e0e0;
+  color: #333;
+  border: 1px solid #595959;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 6px;
+}
+#logoutConfirmModal .btn-secondary:hover {
+  background-color: #bdbdbd;
+}

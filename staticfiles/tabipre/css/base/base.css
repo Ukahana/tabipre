@@ -1,0 +1,271 @@
+/* ============================= */
+/* 全体レイアウト */
+/* ============================= */
+.app-frame {
+  max-width: 420px;
+  margin: 0 auto;
+  min-height: 100vh;
+  padding: 8px;
+  padding-top: 30px;
+  background: #fff;
+  border: 1px solid #ccc;
+  color: #595959;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+
+/* ============================= */
+/* フッター */
+/* ============================= */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 420px;
+    height: 60px;
+    padding: 6px 0;
+    background: #f5ebdd;
+    border-top: 1px solid #ddd;
+    z-index: 999;
+}
+
+.fooder {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.nav-link {
+    flex: 1;
+    text-decoration: none;
+    color: #000;
+    font-size: 12px;
+    text-align: center;
+}
+
+.nav-link:nth-child(1) { padding-left: 20px; }
+.nav-link:nth-child(2) { padding-left: 12px; }
+.nav-link:nth-child(3) { padding-right: 6px; }
+
+/* アイコン */
+.nav-link img {
+    display: block;
+    margin: 2px auto 0;
+}
+
+/* 新規旅行（2番目） */
+.nav-link:nth-child(2) img {
+    width: 32px;
+    height: 32px;
+    margin-top: -1px;
+    margin-bottom: -3px;
+}
+
+/* リンク色 */
+.bottom-nav a {
+    color: #0097a7;
+    font-size: 14px;
+    text-decoration: none;
+}
+/* ============================= */
+/* タイトル */
+/* ============================= */
+.title, .sub-title, .modal-title {
+  text-align: center;
+  color: #5c3a3a;
+}
+.title { font-size: 30px; margin-top: 40px; font-weight: bold; }
+.sub-title { font-size: 26px; }
+.modal-title { font-size: 18px; }
+
+/* ============================= */
+/* リンク */
+/* ============================= */
+.link-text {
+  display: block;
+  text-align: center;
+  padding: 8px 0;
+  font-size: 18px;
+  color: #5c3a3a;
+  text-decoration: underline;
+}
+.link-text:hover { color: #000; }
+.back-link { color: #595959; }
+
+/* ============================= */
+/* ボタン */
+/* ============================= */
+.btn, .btn-primary, .app-btn, .app-btn-primary,
+.app-btn-secondary, .app-btn-warning {
+  border-radius: 0 !important;
+}
+
+.app-btn {
+  display: block;
+  width: 100%;
+  padding: 14px 20px;
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+  border: none;
+}
+.app-btn-primary { background: #4a90e2; color: #fff; }
+.app-btn-primary:hover { background: #3f7fbf; }
+
+/* ============================= */
+/* コンテンツ余白 */
+/* ============================= */
+.content-wrapper {
+ padding-bottom: 60px !important; }
+
+/* ============================= */
+/* ステータスバッジ */
+/* ============================= */
+.badge-t {
+  display: inline-block;
+  min-width: 32px;
+  padding: 6px 10px;
+  margin: 5px 20px 0 0 !important;
+  border-radius: 6px;
+  border: 1px solid #595959;
+  font-size: 18px;
+}
+.status-mi { background: #999; color: #fff; }
+.status-kan { background: #4285f4; color: #fff; }
+.status-zumi { background: #b6d7a8; color: #000; }
+
+/* ============================= */
+/* カード */
+/* ============================= */
+.card .travel-date {
+  font-size: 0.85rem;
+  opacity: 0.8;
+  margin: 0;
+}
+.card-body { padding: 8px 16px !important; }
+
+/* ============================= */
+/* 送信ボタン */
+/* ============================= */
+.app-submit {
+  width: 140px;
+  min-height: 44px;
+  margin: 0 auto;
+  background: #9fc5e8;
+  border: 1px solid #595959;
+  border-radius: 0;
+}
+.app-submit:hover { background: #8ab6d8; }
+
+/* ============================= */
+/* ラベル */
+/* ============================= */
+.form-label { font-size: 20px; margin-bottom: 4px; }
+
+/* ============================= */
+/* 入力欄 */
+/* ============================= */
+input, select, textarea,
+input.form-control, select.form-control, textarea.form-control {
+  width: 100%;
+  padding: 4px 8px;
+  font-size: 18px;
+  border: 1px solid #595959 !important;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+/* ============================= */
+/* モーダル */
+/* ============================= */
+.modal-dialog {
+  width: 100%;
+  max-width: 420px;
+  margin: 80px auto 40px;
+}
+
+/* ============================= */
+/* エラー */
+/* ============================= */
+.errorlist {
+  color: #b30000;
+  font-size: 15px;
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.is-invalid {
+  border: 2px solid #b30000 !important;
+  background: #fff5f5;
+}
+
+.delete-label {
+  display: inline-block;
+  min-width: 40px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* モーダル時のスクロール補正無効化 */
+body.modal-open { padding-right: 0 !important; }
+
+html { overflow-y: scroll; }
+body { font-size: 18px; }
+
+/*チェックボックス*/
+.form-check-input {
+  -webkit-appearance: none;
+  appearance: none;
+}
+.form-check-input {
+  width: 26px;
+  height: 26px;
+}
+
+/* 本文（中央寄せ・余白） */
+#logoutModal .modal-body {
+  text-align: center;
+  font-size: 1.05rem;
+  padding-top: 20px;
+  padding-bottom: 10px;
+}
+
+/* フッター（中央寄せ・境界線なし） */
+#logoutModal .modal-footer {
+  border-top: none;
+  justify-content: center;
+  gap: 20px;
+}
+
+/* 「はい」ボタン */
+#logoutModal .btn-danger {
+  background-color: #d9534f;
+  border-color: #d9534f;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 6px;
+}
+#logoutModal .btn-danger:hover {
+  background-color: #c64541;
+  border-color: #c64541;
+}
+
+/* 「いいえ」ボタン */
+#logoutModal .btn-secondary {
+  background-color: #e0e0e0;
+  color: #333;
+  border: 1px solid #595959;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 6px;
+}
+#logoutModal .btn-secondary:hover {
+  background-color: #bdbdbd;
+}

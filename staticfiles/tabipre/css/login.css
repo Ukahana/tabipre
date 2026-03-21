@@ -1,0 +1,110 @@
+/* 背景色・フォント */
+.app-frame {
+    background: #f5ebdd;
+    font-family: "Arial","Helvetica","sans-serif";
+    color: #5c3a3a;
+    max-height: 100%;
+}
+
+/* ログインボタン*/
+.btn-primary {
+    background-color: #3f7fbf;
+    border: none;
+    font-size: 1.2rem;
+    padding: 10px;
+}
+.btn-primary:hover {
+    background-color: #336a9f;
+}
+
+/* 入力欄 */
+form input {
+    border: 1px solid #ccc;
+    width: 100%;
+    background-color: #ffffff;
+    box-sizing: border-box;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+    color: #000;
+}
+form input:focus {
+    border-color: #4a90e2;
+    box-shadow: 0 0 8px rgba(74, 144, 226, 0.55);
+    border-width: 1.5px;
+    outline: none;
+}
+
+/* ラベル */
+form label {
+    display: block;
+    margin-bottom: 4px;
+    font-size: 1.1rem;
+}
+
+/* パスワード条件 */
+.statement {
+    color: #999999;
+    font-size: 15px;
+    margin: 2px 0;
+    line-height: 1.2;
+}
+.statement p {
+    line-height: 1.1;
+    margin: 2px 0;
+}
+
+/* リンク */
+.link {
+    text-align: center;
+    margin-bottom: 0;
+}
+.link a {
+    color: #5c3a3a;
+    text-decoration: underline;
+}
+
+.link a:hover {
+    color: #000; 
+}
+
+/* フッター非表示 */
+.bottom-nav {
+    display: none !important;
+}
+
+/* エラー表示 */
+.app-error-box {
+    color: #c45a5a;
+    margin-bottom: 10px;
+}
+.text-danger {
+    display: block;
+}
+
+/* ログイン画面の中央寄せ */
+.login-center {
+    min-height: 30vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-bottom: 0 !important;
+}
+
+/* タイトルだけ下げる */
+.login-center .sub-title {
+    padding-top: 40px;
+}
+
+/* 画面が小さいときの調整 */
+@media (max-height: 600px) {
+    .login-center {
+        height: auto;
+        min-height: 100vh;
+        justify-content: flex-start;
+        padding-top: 20px;
+        padding-bottom: 20px;
+    }
+}
+.app-info-box {
+    font-size: 16px;
+    text-align: center;
+}
