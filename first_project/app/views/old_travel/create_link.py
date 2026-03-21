@@ -62,7 +62,7 @@ def create_link(request, travel_id):
 
     # 既存リンクチェック
     if existing_link:
-        form.add_error(None, "この旅行の共有リンクはすでに作成されています。")
+        form.add_error(None, "この旅行のリンクはすでに発行されています")
         return render(request, "old_travel/create_link.html", {
             "form": form,
             "template": original_template,
