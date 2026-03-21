@@ -18,9 +18,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const diff = (end - start) / (1000 * 60 * 60 * 24);
 
+        // 終了日 < 開始日 のときは計算しない
         if (diff < 0) {
-            errorEl.textContent = "終了日は開始日より後の日付を選択してください";
-            return;
+            return;  
         }
 
         nightsEl.textContent = diff;
@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", function () {
         dateFormat: "Y-m-d",
         altInput: true,
         altFormat: "Y/m/d",
-        allowInput: true,
+        allowInput: false,
         locale: "ja",
         disableMobile: true, 
         onChange: calcStay,

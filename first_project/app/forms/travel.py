@@ -24,6 +24,7 @@ class TravelStep1Form(TravelBaseForm):
             attrs={
                 "class": "date-input",
                 "autocomplete": "off",
+                "readonly": "readonly",
             }
         )
     )
@@ -34,6 +35,7 @@ class TravelStep1Form(TravelBaseForm):
               attrs={
                     "class": "date-input",
                     "autocomplete": "off",
+                    "readonly": "readonly",
                 }
         )
     )
