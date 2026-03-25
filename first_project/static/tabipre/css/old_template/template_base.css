@@ -50,6 +50,7 @@
     border-radius: 0;
     font-size: 0.9rem;
     cursor: pointer;
+    min-width: 120px;
 }
 .memo-toggle-btn:hover {
     background: #bfbfbf;

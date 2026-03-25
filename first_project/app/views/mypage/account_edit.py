@@ -37,7 +37,7 @@ class AccountEditView(View):
         if new_name == user.user_name:
             return render(request, self.template_name, {
                 "current_name": new_name,
-                "error_message": "現在の名前と同じです。変更がありません。",
+                "error_message": "同じ名前です。\n別の名前を入力してください。",
             })
 
         # --- 更新処理 ---
@@ -54,36 +54,23 @@ class EmailChangeView(View):
     def get(self, request):
         return render(request, self.template_name, {
             "current_email": request.user.email,
-            "error_current": None,
             "error_new": None,
         })
 
     def post(self, request):
         user = request.user
 
-        current = request.POST.get("current_email", "").strip().lower()
         new = request.POST.get("new_email", "").strip().lower()
-
-        error_current = None
         error_new = None
 
-        # --- 現在のメールチェック ---
-        try:
-            validate_email_common(current)
-        except ValidationError as e:
-            error_current = e.message
-
-        if current != user.email:
-            error_current = "現在のメールアドレスが正しくありません。"
-
-        # --- 新しいメールチェック ---
+        # --- メールアドレスチェック ---
         try:
             validate_email_common(new)
         except ValidationError as e:
             error_new = e.message
 
         if new == user.email:
-            error_new = "現在のメールアドレスと同じです。変更はありません。"
+            error_new = "同じメールアドレスです。\n別のメールアドレスを入力してください。"
 
         try:
             validate_email_not_used(new, user=user)
@@ -91,10 +78,9 @@ class EmailChangeView(View):
             error_new = e.message
 
         # --- エラーがあれば戻す ---
-        if error_current or error_new:
+        if error_new:
             return render(request, self.template_name, {
-                "current_email": current,
-                "error_current": error_current,
+                "current_email": user.email,
                 "error_new": error_new,
             })
 
@@ -104,4 +90,3 @@ class EmailChangeView(View):
 
         messages.success(request, "メールアドレスを更新しました。")
         return redirect("app:mypage")
-    

@@ -20,18 +20,10 @@
 
             <input
                 type="email"
-                name="current_email"
-                class="form-control {% if error_current %}is-invalid{% endif %}"
+                class="form-control"
                 value="{{ current_email }}"
-                oninput="this.value = this.value.toLowerCase();"
-                required
+                readonly
             >
-
-            {% if error_current %}
-                <div class="invalid-feedback">
-                    {{ error_current }}
-                </div>
-            {% endif %}
         </div>
 
         <!-- 新しいメール -->
@@ -49,7 +41,7 @@
 
             {% if error_new %}
                 <div class="invalid-feedback">
-                    {{ error_new }}
+                    {{ error_new|linebreaksbr }}
                 </div>
             {% endif %}
         </div>
