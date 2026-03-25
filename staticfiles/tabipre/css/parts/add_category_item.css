@@ -210,7 +210,7 @@
 
     /* 分類名だけ右余白調整 */
     .category-label-row label {
-        margin-right: -10px !important;
+        margin-right: 8px !important;
     }
 
     /* 入力欄文字サイズ */

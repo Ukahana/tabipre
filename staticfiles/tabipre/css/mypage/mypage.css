@@ -65,18 +65,6 @@
   border-color: #ccc;
 }
 
-/* ログアウトリンク */
-.logout-link {
-  color: #666;
-  font-size: 16px;
-  display: block;
-  text-align: center;
-}
-
-.logout-link:hover {
-  text-decoration: underline;
-}
-
 /* 本文（中央寄せ・余白） */
 #logoutConfirmModal .modal-body {
   text-align: center;
