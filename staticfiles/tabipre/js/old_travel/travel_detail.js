@@ -95,4 +95,18 @@ function setStatus(el, status) {
 document.addEventListener("DOMContentLoaded", () => {
     updateTotalCount();
     updateStatus();
+
+    // メモ開閉ボタンの文言切り替え
+    const memoArea = document.getElementById("memoArea");
+    const toggleBtn = document.querySelector(".memo-toggle-btn");
+
+    if (memoArea && toggleBtn) {
+        memoArea.addEventListener("shown.bs.collapse", function () {
+            toggleBtn.textContent = "メモを非表示";
+        });
+
+        memoArea.addEventListener("hidden.bs.collapse", function () {
+            toggleBtn.textContent = "メモを表示";
+        });
+    }
 });

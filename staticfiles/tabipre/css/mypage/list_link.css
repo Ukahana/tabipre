@@ -5,7 +5,7 @@
   box-shadow: 0 2px 6px rgba(0,0,0,0.08);
 }
 
-/* ラベル中央寄せ（太字解除） */
+/* ラベル中央寄せ */
 .modal-body .form-label {
   display: block;
   text-align: center;
@@ -88,7 +88,6 @@ form input:focus {
   outline: none;
 }
 
-/* Chrome/Safari autofill対策 */
 input:-webkit-autofill {
   background-color: #fff !important;
   box-shadow: 0 0 0 1000px #fff inset !important;
@@ -116,7 +115,6 @@ form label {
 
 /* --- shareLinkModal 専用 --- */
 
-/* 権限ラジオセット横並び */
 #shareLinkModal .permission-group {
   display: flex;
   justify-content: center;
@@ -125,7 +123,6 @@ form label {
   margin-top: 10px;
 }
 
-/* ラジオボタン + テキスト横並び */
 #shareLinkModal .form-check {
   display: flex;
   align-items: center;
@@ -156,17 +153,18 @@ form label {
 
 /* 削除リンク */
 #delete-link {
-  color: #5a6268;
+  font-size: 16px;
+  color: #d9534f;;
 }
 
-/* 登録ボタン（色＋文字サイズ小さめ） */
+/* 登録ボタン */
 #save-btn {
   background-color: #1976d1ff !important;
   font-size: 16px !important;
 }
 /* --- deleteLinkModal 専用 --- */
 
-/* 本文（中央寄せ・余白） */
+/* 本文 */
 #deleteLinkModal .modal-body {
   text-align: center;
   font-size: 1.05rem;
@@ -174,28 +172,28 @@ form label {
   padding-bottom: 10px;
 }
 
-/* フッター（中央寄せ・境界線なし） */
+/* フッター */
 #deleteLinkModal .modal-footer {
   border-top: none;
   justify-content: center;
-  gap: 20px; /* 他モーダルと統一 */
+  gap: 20px;
 }
 
-/* 「はい」ボタン（danger を柔らかく） */
+/* 「はい」ボタン */
 #deleteLinkModal .btn-danger {
   background-color: #d9534f;
   border-color: #d9534f;
   color: #fff;
-  padding: 10px 20px;      /* 他の削除系と統一 */
-  font-size: 16px;         /* 統一 */
-  border-radius: 6px;      /* 統一 */
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 6px;
 }
 #deleteLinkModal .btn-danger:hover {
   background-color: #c64541;
   border-color: #c64541;
 }
 
-/* 「いいえ」ボタン（btn-no と統一） */
+/* 「いいえ」ボタン */
 #deleteLinkModal .btn-secondary {
   background-color: #e0e0e0;
   color: #333;

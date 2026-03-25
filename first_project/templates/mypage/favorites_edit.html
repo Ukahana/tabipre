@@ -17,9 +17,9 @@
   <form method="post">
     {% csrf_token %}
 
-    <ul class="edit-list">
+    <ul class="edit-list mt-2">
       {% for item in favorite.items.all %}
-        <li class="item-row">
+        <li class="item-row mt-1">
           <span class="dot">・</span>
           <input type="text" class="form-control item-input"
                  value="{{ item.item_name }}">
