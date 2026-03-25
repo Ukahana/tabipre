@@ -18,7 +18,7 @@
           <li>{{ error }}</li>
         {% endfor %}
       </ul>
-      <a href="{% url 'app:share_settings' %}"  class="btn btn-outline-primary w-100 mt-2">
+      <a href="{% url 'app:share_settings' %}"  class="btn btn-outline-primary w-100 mt-2 mb-2">
             作成済みのリンクはこちら
       </a>
     {% endif %}
@@ -36,7 +36,7 @@
 
           <span class="permission-label">
             閲覧のみ:
-            <span class="permission-note">リンク先では閲覧のみ可能です</span>
+            <span class="permission-note">内容確認とチェック操作のみ可能です<br>（編集はできません）</span>
           </span>
         </label>
 
