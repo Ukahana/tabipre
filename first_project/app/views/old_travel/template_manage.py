@@ -13,8 +13,18 @@ def old_template_edit(request, template_id):
     template = get_object_or_404(Template, id=template_id)
     travel = template.travel_info
 
-    # 分類削除（POST）
     if request.method == "POST":
+        
+        # テンプレート削除
+        delete_template_id = request.POST.get("delete_template")
+        if delete_template_id:
+            template = get_object_or_404(Template, id=delete_template_id)
+            travel = template.travel_info
+            template.delete()
+            travel.delete()
+            return redirect("app:home")
+
+        # 分類削除
         delete_cat_id = request.POST.get("delete_category")
         if delete_cat_id:
             category = get_object_or_404(
@@ -25,13 +35,20 @@ def old_template_edit(request, template_id):
             TravelItem.objects.filter(travel_category=category).delete()
             category.delete()
             return redirect("app:old_template_edit", template_id=template.id)
+        
+        # 項目削除
+        delete_item_id = request.POST.get("delete_item")
+        if delete_item_id:
+            item = get_object_or_404(TravelItem, id=delete_item_id)
+            template_id = item.travel_category.template.id
+            item.delete()
+            return redirect("app:old_template_edit", template_id=template_id)
 
     favorite, _ = Favorite.objects.get_or_create(user=request.user)
     favorite_items = FavoriteItem.objects.filter(favorite=favorite)
 
     categories = TravelCategory.objects.filter(template=template)
     for cat in categories:
-        items = cat.travelitem_set.all()
         cat.total_count_display = cat.total_count
         cat.checked_count_display = cat.checked_count
 
@@ -163,14 +180,13 @@ def add_item_page(request, template_id):
             request.session["error_category_id"] = category_id
             return redirect("app:old_template_edit", template_id=template_id)
 
-        # --- 正常登録 ---
         TravelItem.objects.create(
             travel_category=category,
             item_name=name,
             item_checked=0
         )
 
-        # --- お気に入り登録（重複しないように修正） ---
+        # --- お気に入り登録---
         if add_favorite:
             favorite, _ = Favorite.objects.get_or_create(user=request.user)
 
@@ -182,19 +198,6 @@ def add_item_page(request, template_id):
 
     return redirect("app:old_template_edit", template_id=template_id)
 
-# -------------------------------
-# 分類削除（個別）
-# -------------------------------
-def delete_category(request, category_id):
-    category = get_object_or_404(
-        TravelCategory,
-        id=category_id,
-        template__user=request.user  
-    )
-
-    TravelItem.objects.filter(travel_category=category).delete()
-    category.delete()
-    return redirect("app:old_template_edit", template_id=category.template.id)
 
 # -------------------------------
 # 分類名編集（モーダル）
@@ -217,11 +220,3 @@ def edit_category_item(request, category_id):
             "category": category
         }
     )
-def delete_template(request, template_id):
-    template = get_object_or_404(Template, id=template_id, user=request.user)
-    travel = template.travel_info
-
-    if request.method == "POST":
-        template.delete()  
-        travel.delete()    
-        return redirect("app:home")

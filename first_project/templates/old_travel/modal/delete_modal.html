@@ -1,18 +1,31 @@
-<div class="modal fade" id="deleteTemplateModal" tabindex="-1">
+<div class="modal fade" id="confirmDeleteModal" tabindex="-1">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
 
-
-      <div class="modal-body text-center mt-2">
+      <div class="modal-body text-center mt-2" id="deleteMessage">
         本当に削除しますか？
       </div>
 
       <div class="modal-footer justify-content-center border-0">
-        <form method="POST" action="{% url 'app:delete_template' current_template.id %}">
+        <form method="POST" id="genericDeleteForm"
+              action="{% url 'app:old_template_edit' template.id %}">
           {% csrf_token %}
+
+            <!-- 分類削除 -->
+            <input type="hidden" name="delete_category" id="deleteCategoryInput">
+
+            <!-- 項目削除 -->
+            <input type="hidden" name="delete_item" id="deleteItemInput">
+
+            <!-- テンプレート削除 -->
+            <input type="hidden" name="delete_template" id="deleteTemplateInput">
+
           <button type="submit" class="btn btn-danger">はい</button>
         </form>
-        <button type="button" class="btn btn-no" data-bs-dismiss="modal">いいえ</button>
+
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          いいえ
+        </button>
       </div>
 
     </div>

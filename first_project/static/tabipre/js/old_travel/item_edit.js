@@ -12,14 +12,20 @@ document.addEventListener("DOMContentLoaded", function () {
         const itemId = button.dataset.itemId;
         const itemName = button.dataset.itemName;
 
+        // 入力欄にセット
         document.getElementById("editItemId").value = itemId;
         document.getElementById("editItemInput").value = itemName;
 
-        //  削除用 hidden にも itemId をセット（必須） 
+        // 削除 hidden input にセット
         const deleteInput = document.getElementById("deleteItemId");
         if (deleteInput) {
             deleteInput.value = itemId;
         }
+
+        // 削除ボタンに情報をセット
+        const deleteBtn = modalEl.querySelector('.delete-item-btn');
+        deleteBtn.dataset.id = itemId;
+        deleteBtn.dataset.name = itemName;
     });
 
     // ② モーダルが開いたら入力欄にフォーカス
@@ -28,22 +34,36 @@ document.addEventListener("DOMContentLoaded", function () {
         const len = input.value.length;
         input.focus();
         input.setSelectionRange(len, len);
+
+        const deleteBtn = modalEl.querySelector('.delete-item-btn');
+        if (!deleteBtn) return;
+
+        deleteBtn.onclick = function (e) {
+            e.preventDefault();
+
+            const itemId = document.getElementById("editItemId").value;
+            const itemName = document.getElementById("editItemInput").value;
+
+            // hidden input にセット
+            document.getElementById("deleteItemInput").value = itemId;
+            document.getElementById("deleteMessage").textContent =
+                `項目「${itemName}」を削除しますか？`;
+
+            modal.hide();
+
+            modalEl.addEventListener("hidden.bs.modal", function handler() {
+                modalEl.removeEventListener("hidden.bs.modal", handler);
+
+                const deleteModalEl = document.getElementById("confirmDeleteModal");
+                const deleteModal = new bootstrap.Modal(deleteModalEl);
+
+                deleteModal.show();
+            });
+        };
     });
 
     // ③ エラー時に自動でモーダルを開く
     if (modalEl.dataset.open === "1") {
-        const itemId = modalEl.dataset.itemId;
-        const itemName = modalEl.dataset.itemName;
-
-        document.getElementById("editItemId").value = itemId;
-        document.getElementById("editItemInput").value = itemName;
-
-        //  エラー時も削除用 hidden をセット 
-        const deleteInput = document.getElementById("deleteItemId");
-        if (deleteInput) {
-            deleteInput.value = itemId;
-        }
-
         modal.show();
     }
 });

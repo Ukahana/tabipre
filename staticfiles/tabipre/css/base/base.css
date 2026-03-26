@@ -255,7 +255,7 @@ body { font-size: 18px; }
 }
 
 /* 「はい」ボタン */
-#logoutModal .btn-danger {
+.btn-danger {
   background-color: #d9534f;
   border-color: #d9534f;
   color: #fff;
@@ -263,13 +263,13 @@ body { font-size: 18px; }
   font-size: 16px;
   border-radius: 6px;
 }
-#logoutModal .btn-danger:hover {
+ .btn-danger:hover {
   background-color: #c64541;
   border-color: #c64541;
 }
 
 /* 「いいえ」ボタン */
-#logoutModal .btn-secondary {
+ .btn-secondary {
   background-color: #e0e0e0;
   color: #333;
   border: 1px solid #595959;
@@ -277,6 +277,6 @@ body { font-size: 18px; }
   font-size: 16px;
   border-radius: 6px;
 }
-#logoutModal .btn-secondary:hover {
+ .btn-secondary:hover {
   background-color: #bdbdbd;
 }

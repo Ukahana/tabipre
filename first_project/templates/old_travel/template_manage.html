@@ -36,15 +36,15 @@
             </div>
 
             <!-- 分類削除 -->
-            <form method="post" action="{% url 'app:old_template_edit' current_template.id %}" style="display:inline;">
-                {% csrf_token %}
-                <button type="submit"
-                        name="delete_category"
-                        value="{{ category.id }}"
-                        class="delete-category-btn">
+                <button type="button"
+                        class="delete-category-btn"
+                        data-type="category"
+                        data-id="{{ category.id }}"
+                        data-name="{{ category.category_name }}"
+                        data-bs-toggle="modal"
+                        data-bs-target="#confirmDeleteModal">
                     ×
                 </button>
-            </form>
         </div>
 
         <!--  項目一覧  -->
@@ -99,8 +99,11 @@
             <button
                 type="button"
                 class="delete-template-btn"
+                data-type="template"
+                data-id="{{ current_template.id }}"
+                data-name="テンプレート"
                 data-bs-toggle="modal"
-                data-bs-target="#deleteTemplateModal">
+                data-bs-target="#confirmDeleteModal">
                 テンプレート・旅行情報を削除
             </button>
 
@@ -116,5 +119,6 @@
 
 <script src="{% static 'tabipre/js/old_travel/add_item_v2.js' %}"></script>
 <script src="{% static 'tabipre/js/old_travel/item_edit.js' %}"></script>
+<script src="{% static 'tabipre/js/old_travel/delete_modal.js' %}"></script>
 
 {% endblock %}

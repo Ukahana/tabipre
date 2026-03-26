@@ -20,7 +20,7 @@
       </div>
       {% endif %}
 
-      <form method="POST" action="{% url 'app:edit_item' 0 %}" id="editItemForm">
+      <form method="POST" id="editItemForm">
         {% csrf_token %}
 
         <input type="hidden" name="edit_item_id" id="editItemId">
@@ -29,6 +29,7 @@
         <div class="modal-body">
           <div class="d-flex align-items-center">
 
+            <!--  エラー時に赤枠を付ける -->
             <input type="text"
                    name="item_name"
                    id="editItemInput"
@@ -37,10 +38,11 @@
 
             <div class="text-center d-flex flex-column align-items-center">
 
-              <button type="submit"
-                      name="delete"
-                      value="1"
-                      class="btn p-0"
+              <button type="button"
+                      class="btn p-0 delete-item-btn"
+                      data-type="item"
+                      data-id=""
+                      data-name=""
                       style="border: none; background: none;">
                 <img src="{% static 'tabipre/icons/trash.png' %}" width="22" alt="削除">
               </button>
