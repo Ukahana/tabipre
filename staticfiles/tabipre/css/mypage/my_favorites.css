@@ -13,7 +13,6 @@
 /* 表示用リスト */
 .favorite-list {
   list-style-type: disc;
-  padding-left: 15%;
   max-height: 400px;
   overflow-y: auto;
 }
@@ -21,7 +20,6 @@
 .favorite-list li {
   color: #e91e63;
   font-size: 18px;
-  padding-left: 10px;
   margin-bottom: 8px;
   line-height: 25px;
 }
@@ -55,7 +53,6 @@
 /* 編集画面リスト */
 .edit-list {
   list-style: none;
-  padding-left: 15%;
   max-height: 350px;
   overflow-y: auto;
   padding-right: 20px;
@@ -78,7 +75,7 @@
   color: #e91e63;
   font-size: 18px;
   line-height: 25px;
-  padding: 8px 35px 8px 10px;
+  padding: 10px 35px;
   flex: 1;
 }
 
@@ -134,16 +131,14 @@
     padding-right: 0 !important;
 }
 
-.favorite-list li.empty {
+.favorite-empty {
   font-size: 16px;
   padding-left: 0 !important;
-}
-
-.favorite-list:has(.empty) {
-  padding-left: 0 !important;
+  list-style: none;
   text-align: center;
+  color: #e91e63;
 }
 
-.favorite-list li.empty::marker {
+.favorite-empty::marker {
   content: "" !important;
 }
