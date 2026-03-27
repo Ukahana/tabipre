@@ -196,9 +196,9 @@ input.form-control, select.form-control, textarea.form-control {
 /* モーダル */
 /* ============================= */
 .modal-dialog {
-  width: 100%;
   max-width: 420px;
-  margin: 80px auto 40px;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }
 
 /* ============================= */

@@ -70,7 +70,7 @@
 }
 
 #favoriteModal .stay-option span {
-    color: #e91e63;
+    color: #f06292;
 }
 
 #favoriteModal .favorite-radio {
@@ -178,7 +178,7 @@
 }
 /* お気に入りが空のときのメッセージ */
 #favoriteModal .favorite-none {
-    color: #e91e63;
+    color: #f06292;
     font-size: 16px;
     text-align: center;
 }
@@ -227,7 +227,6 @@
         align-items: center;
     }
 
-    /* お気に入り文字を1行に */
     .favorite-label {
         font-size: 10px !important;
         white-space: nowrap !important;

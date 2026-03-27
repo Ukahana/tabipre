@@ -8,26 +8,24 @@
 {% endblock %}
 
 {% block content %}
+<div class="container mt-4">
 
 <div class="sub-title mb-4">お気に入りリスト</div>
 
-<!-- シンプルな箇条書き -->
 <ul class="favorite-list">
     {% for fav in favorite_items %}
         <li>{{ fav.item_name }}</li>
     {% empty %}
-        <li class="empty">お気に入りはまだ登録されていません</li>
+        <li class="favorite-empty">お気に入りは<br>まだ登録されていません</li>
     {% endfor %}
 </ul>
 
-<!-- 編集ボタン -->
 <div class="button-wrapper mt-4">
     <a href="{% url 'app:favorites_edit' %}" class="btn btn-primary edit-button">編集する</a>
 </div>
 
-<!-- マイページへ戻る -->
 <div class="button-wrapper mt-3">
     <a href="{% url 'app:mypage' %}" class="back-link">戻る</a>
 </div>
-
+</div>
 {% endblock %}

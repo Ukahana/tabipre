@@ -1,4 +1,6 @@
-/* 共通：スクロールバー */
+/* ────────────────
+   スクロールバー（共通）
+   ──────────────── */
 .favorite-list::-webkit-scrollbar,
 .edit-list::-webkit-scrollbar {
   width: 6px;
@@ -10,31 +12,116 @@
   border-radius: 10px;
 }
 
-/* 表示用リスト */
+/* ────────────────
+   コンテナ
+   ──────────────── */
+.container {
+  max-width: 100%;
+  width: 350px;
+  margin: 0 auto;
+}
+
+/* ────────────────
+   表示用リスト
+   ──────────────── */
 .favorite-list {
   list-style-type: disc;
   max-height: 400px;
   overflow-y: auto;
+  padding-left: 28px;
+  padding-right: 20px;
 }
 
 .favorite-list li {
-  color: #e91e63;
+  color: #f06292;
   font-size: 18px;
   margin-bottom: 8px;
   line-height: 25px;
+
 }
 
 .favorite-list li::marker {
   font-size: 0.6em;
-  color: #e91e63;
+  color: #f06292;
 }
 
-/* ボタン中央配置 */
+/* 空表示 */
+.favorite-empty {
+  font-size: 14px;
+  list-style: none;
+  color: #f06292;
+}
+
+.favorite-empty::marker {
+  content: "" !important;
+}
+
+/* ────────────────
+   編集用リスト
+   ──────────────── */
+.edit-list {
+  list-style: none;
+  max-height: 350px;
+  overflow-y: auto;
+  padding-left: 0;
+  padding-right: 20px;
+}
+
+.item-row {
+  display: flex;
+  align-items: center;
+  margin: 10px 0 8px;
+  position: relative;
+}
+
+.dot {
+  color: #f06292;
+  font-size: 18px;
+  margin-right: 8px;
+}
+
+.item-input {
+  color: #f06292;
+  font-size: 18px;
+  line-height: 25px;
+  padding: 10px;
+  flex: 1;
+}
+
+.favorites_edit .item-input {
+  border: none !important;
+  border-radius: 8px !important;
+  outline: none !important;
+  background-color: #fff;
+}
+
+.remove-item {
+  position: absolute;
+  right: 10px;
+  border: none;
+  background: none;
+  color: #f06292;
+  font-size: 18px;
+  cursor: pointer;
+  padding: 0;
+}
+
+.remove-item:hover {
+  color: #c2185b;
+}
+
+.is-invalid {
+  background-image: none !important;
+  padding-right: 0 !important;
+}
+
+/* ────────────────
+   ボタン
+   ──────────────── */
 .button-wrapper {
   text-align: center;
 }
 
-/* 編集ボタン */
 .edit-button {
   background-color: #0b5394ff;
   color: #fff;
@@ -50,95 +137,22 @@
   background-color: #09457a;
 }
 
-/* 編集画面リスト */
-.edit-list {
-  list-style: none;
-  max-height: 350px;
-  overflow-y: auto;
-  padding-right: 20px;
-}
-
-.item-row {
-  display: flex;
-  align-items: center;
-  margin-bottom: 8px;
-  position: relative;
-}
-
-.dot {
-  color: #e91e63;
-  font-size: 18px;
-  margin-right: 8px;
-}
-
-.item-input {
-  color: #e91e63;
-  font-size: 18px;
-  line-height: 25px;
-  padding: 10px 35px;
-  flex: 1;
-}
-
-.remove-item {
-  position: absolute;
-  right: 10px;
-  border: none;
-  background: none;
-  color: #e91e63;
-  font-size: 18px;
-  cursor: pointer;
-  padding: 0;
-}
-
-.remove-item:hover {
-  color: #c2185b;
-}
-
-/* 追加ボタン */
 #add-item {
   background-color: #a7d8ff;
-  border-color: none;
   color: #5c3a3a;
 }
-
 
 #add-item:hover {
   background-color: #8ccfff;
   color: #3a2a2a;
 }
 
-
-/* 保存ボタン */
 .save-btn {
-    background-color: #198754ff !important;
-    border-color: none;
-    color: white;
+  background-color: #198754ff !important;
+  color: white;
 }
+
 .save-btn:hover {
-    background-color: #157347ff !important;
-   color: #fff;
-}
-.favorites_edit .item-input {
-    border: none !important;
-    border-radius: 8px !important;
-    outline: none !important;
-    background-color: #fff;
-}
-
-/* Bootstrap の is-invalid のアイコンを消す */
-.is-invalid {
-    background-image: none !important;
-    padding-right: 0 !important;
-}
-
-.favorite-empty {
-  font-size: 16px;
-  padding-left: 0 !important;
-  list-style: none;
-  text-align: center;
-  color: #e91e63;
-}
-
-.favorite-empty::marker {
-  content: "" !important;
+  background-color: #157347ff !important;
+  color: #fff;
 }

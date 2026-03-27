@@ -7,7 +7,7 @@
     background-color: transparent;
     border: none;
     padding-left: 0;
-    color: #e91e63;
+    color: #f06292;
     font-size: 1rem;
 }
 
@@ -43,7 +43,6 @@ select {
     text-decoration: none;
     border: none;
 }
-
 
    /* 保存ボタン（編集画面） */
 .favorites_edit .btn-primary {
@@ -81,6 +80,6 @@ select {
 
    /* 入力欄の文字色 */
 .item-row input {
-    color: #e91e63;
+    color: #f06292;
 }
 
