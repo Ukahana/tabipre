@@ -57,6 +57,7 @@
 
                 <img src="{% static 'tabipre/icons/edit.png' %}"
                      width="20"
+                     class="edit-item-btn"
                      style="cursor: pointer;"
                      data-bs-toggle="modal"
                      data-bs-target="#editItemModal"
@@ -84,7 +85,7 @@
 
     <!-- 画面下：分類・項目追加ボタン -->
     <div class="text-center mt-4">
-        <a href="{% url 'app:category_item_add' current_template.id %}" 
+        <a href="{% url 'app:category_item_add' current_template.id %}"
             class="btn custom-add-btn mb-3 d-block">
             ＋分類・項目の追加
         </a>

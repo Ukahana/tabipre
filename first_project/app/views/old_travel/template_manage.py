@@ -14,7 +14,7 @@ def old_template_edit(request, template_id):
     travel = template.travel_info
 
     if request.method == "POST":
-        
+
         # テンプレート削除
         delete_template_id = request.POST.get("delete_template")
         if delete_template_id:
@@ -28,16 +28,16 @@ def old_template_edit(request, template_id):
         delete_cat_id = request.POST.get("delete_category")
         if delete_cat_id:
             category = get_object_or_404(
-                TravelCategory, 
+                TravelCategory,
                 id=delete_cat_id,
                 template=template
             )
             TravelItem.objects.filter(travel_category=category).delete()
             category.delete()
             return redirect("app:old_template_edit", template_id=template.id)
-        
+
         # 項目削除
-        delete_item_id = request.POST.get("delete_item")
+        delete_item_id = request.POST.get("delete_item_id")
         if delete_item_id:
             item = get_object_or_404(TravelItem, id=delete_item_id)
             template_id = item.travel_category.template.id
@@ -76,11 +76,11 @@ def old_template_edit(request, template_id):
         "checked_items": checked_items,
         "total_items": total_items,
         "card_travel_info": template.travel_info,
-       "open_edit_modal": request.session.pop("open_edit_modal", None),
-       "edit_item_name": request.session.pop("edit_item_name", ""), 
-       "add_item_error": request.session.pop("add_item_error", False),  
-       "old_value": request.session.pop("old_value", ""),
-       "error_category_id": request.session.pop("error_category_id", None),
+        "open_edit_modal": request.session.pop("open_edit_modal", None),
+        "edit_item_name": request.session.pop("edit_item_name", ""),
+        "add_item_error": request.session.pop("add_item_error", False),
+        "old_value": request.session.pop("old_value", ""),
+        "error_category_id": request.session.pop("error_category_id", None),
     }
 
     return render(request, "old_travel/template_manage.html", context)
@@ -93,32 +93,39 @@ def old_template_edit(request, template_id):
 def edit_item(request, item_id=None):
     if request.method == "POST":
 
-        #  POST の中の item_id を使う（ここが最重要）
-        post_item_id = request.POST.get("edit_item_id")
-        item = get_object_or_404(TravelItem, pk=post_item_id)
-
-        new_name = request.POST.get("item_name", "").strip()
-
-        #  削除処理（これで必ず動く）
-        if "delete" in request.POST:
+        # 削除モーダルからの削除
+        delete_item_id = request.POST.get("delete_item_id")
+        if delete_item_id:
+            item = get_object_or_404(TravelItem, id=delete_item_id)
             item.delete()
             return redirect("app:old_template_edit", template_id=item.travel_category.template.id)
 
-        # ① 必須チェック
+        # 編集モーダルの更新・削除
+        post_item_id = request.POST.get("edit_item_id")
+        item = get_object_or_404(TravelItem, pk=post_item_id)
+
+        # 編集モーダルの削除
+        if request.POST.get("delete_item") == "1":
+            item.delete()
+            return redirect("app:old_template_edit", template_id=item.travel_category.template.id)
+
+        new_name = request.POST.get("item_name", "").strip()
+
+        # 必須チェック
         if not new_name:
             messages.error(request, "項目名を入力してください。")
             request.session["open_edit_modal"] = item.id
             request.session["edit_item_name"] = new_name
             return redirect("app:old_template_edit", template_id=item.travel_category.template.id)
 
-        # ② 文字数チェック
+        # 文字数チェック
         if len(new_name) > 50:
             messages.error(request, "項目名は50文字以内で入力してください。")
             request.session["open_edit_modal"] = item.id
             request.session["edit_item_name"] = new_name
             return redirect("app:old_template_edit", template_id=item.travel_category.template.id)
 
-        # ③ 重複チェック
+        # 重複チェック
         if TravelItem.objects.filter(
             travel_category=item.travel_category,
             item_name=new_name
@@ -135,7 +142,6 @@ def edit_item(request, item_id=None):
         return redirect("app:old_template_edit", template_id=item.travel_category.template.id)
 
     return redirect("app:home")
-
 # -------------------------------
 # 項目追加（モーダル）
 # -------------------------------

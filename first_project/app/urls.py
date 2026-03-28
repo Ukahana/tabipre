@@ -27,6 +27,7 @@ from app.views.old_travel.travel_detail import (
 from app.views.old_travel.template_manage import (
     old_template_edit,
     add_item_page,
+    edit_item,
 )
 from app.views.old_travel.add import category_item_add
 from app.views.old_travel.old_travel_edit import (
@@ -152,7 +153,7 @@ urlpatterns = [
     path("tabipre/old_template/<int:template_id>/add/", category_item_add, name="category_item_add"),
 
     path("tabipre/item/add/<int:template_id>/", add_item_page, name="add_item_page"),
-
+    path("tabipre/item/edit/", edit_item, name="edit_item"),
     path("tabipre/toggle_item/<int:item_id>/", toggle_item_checked, name="toggle_item"),
     path("tabipre/travel/<int:travel_id>/uncheck_all/", travel_uncheck_all, name="travel_uncheck_all"),
 
