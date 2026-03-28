@@ -10,7 +10,6 @@
 {% block content %}
 <div class="container mt-0">
 
-    <!-- タイトル -->
     {% include "parts/travel_card.html" %}
 
     <!--  分類一覧  -->
@@ -83,20 +82,17 @@
     </div>
     {% endfor %}
 
-    <!-- 画面下：分類・項目追加ボタン -->
     <div class="text-center mt-4">
         <a href="{% url 'app:category_item_add' current_template.id %}"
             class="btn custom-add-btn mb-3 d-block">
             ＋分類・項目の追加
         </a>
 
-        <!-- 登録情報を変更する -->
             <a href="{% url 'app:old_travel_edit1' card_travel_info.travel_info_id %}"
                 class="btn custom-edit-btn mb-3 d-block">
                  登録情報を変更する
             </a>
 
-            <!--  テンプレート削除（モーダルを開く）  -->
             <button
                 type="button"
                 class="delete-template-btn"
@@ -115,7 +111,7 @@
 
 <!-- モーダル読込 -->
 {% include "old_travel/modal/add_item_modal.html" with current_template=current_template %}
-{% include "parts/edit_item_modal.html" with current_template=current_template %}
+{% include "old_travel/modal/edit_item_modal.html" with current_template=current_template %}
 {% include "old_travel/modal/delete_modal.html" with current_template=current_template %}
 
 <script src="{% static 'tabipre/js/old_travel/add_item_v2.js' %}"></script>
