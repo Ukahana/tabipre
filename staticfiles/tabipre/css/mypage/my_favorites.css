@@ -49,9 +49,7 @@
 .favorite-empty {
   font-size: 14px;
   list-style: none;
-  text-align: center;
   color: #f06292;
-  padding-left: 0 !important;
 }
 
 .favorite-empty::marker {

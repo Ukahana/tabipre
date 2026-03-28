@@ -167,15 +167,6 @@
     background-color: #ffe599ff !important;
 }
 
-.add-category-item-btn:hover,
-.register-submit-btn:hover {
-    opacity: 0.9;
-}
-
-.register-submit-btn {
-    background-color: #9fc5e8ff !important;
-    border-color: #595959 !important;
-}
 /* お気に入りが空のときのメッセージ */
 #favoriteModal .favorite-none {
     color: #f06292;

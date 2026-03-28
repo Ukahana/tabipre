@@ -162,19 +162,6 @@
 .card-body { padding: 8px 16px !important; }
 
 /* ============================= */
-/* 送信ボタン */
-/* ============================= */
-.app-submit {
-  width: 140px;
-  min-height: 44px;
-  margin: 0 auto;
-  background: #9fc5e8;
-  border: 1px solid #595959;
-  border-radius: 0;
-}
-.app-submit:hover { background: #8ab6d8; }
-
-/* ============================= */
 /* ラベル */
 /* ============================= */
 .form-label { font-size: 20px; margin-bottom: 4px; }
