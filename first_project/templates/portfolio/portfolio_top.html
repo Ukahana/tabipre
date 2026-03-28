@@ -30,18 +30,43 @@
   <!-- 画像ギャラリー -->
   <section class="mb-5">
     <div class="row text-center g-3 mt-3">
+
       <div class="col-6 col-md-3">
-        <img src="{% static 'tabipre/app-img/travel.png' %}" class="img-fluid">
+        <img src="{% static 'tabipre/app-img/travel.png' %}"
+             class="img-fluid"
+             style="cursor:pointer"
+             data-bs-toggle="modal"
+             data-bs-target="#imageModal"
+             onclick="setModalImage(this.src)">
       </div>
+
       <div class="col-6 col-md-3">
-        <img src="{% static 'tabipre/app-img/template.png' %}" class="img-fluid">
+        <img src="{% static 'tabipre/app-img/template.png' %}"
+             class="img-fluid"
+             style="cursor:pointer"
+             data-bs-toggle="modal"
+             data-bs-target="#imageModal"
+             onclick="setModalImage(this.src)">
       </div>
+
       <div class="col-6 col-md-3">
-        <img src="{% static 'tabipre/app-img/add.png' %}" class="img-fluid">
+        <img src="{% static 'tabipre/app-img/add.png' %}"
+             class="img-fluid"
+             style="cursor:pointer"
+             data-bs-toggle="modal"
+             data-bs-target="#imageModal"
+             onclick="setModalImage(this.src)">
       </div>
+
       <div class="col-6 col-md-3">
-        <img src="{% static 'tabipre/app-img/favorite.png' %}" class="img-fluid">
+        <img src="{% static 'tabipre/app-img/favorite.png' %}"
+             class="img-fluid"
+             style="cursor:pointer"
+             data-bs-toggle="modal"
+             data-bs-target="#imageModal"
+             onclick="setModalImage(this.src)">
       </div>
+
     </div>
   </section>
 
@@ -68,4 +93,8 @@
   </footer>
 
 </div>
+
+<!-- モーダルをインクルード -->
+{% include 'portfolio/image_modal.html' %}
+<script src="{% static 'tabipre/js/parts/portfolio_modal.js' %}"></script>
 {% endblock %}
