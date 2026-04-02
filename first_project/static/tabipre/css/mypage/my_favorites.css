@@ -33,7 +33,6 @@
 }
 
 .favorite-list li {
-  color: #f06292;
   font-size: 18px;
   margin-bottom: 8px;
   line-height: 25px;
@@ -42,14 +41,12 @@
 
 .favorite-list li::marker {
   font-size: 0.6em;
-  color: #f06292;
 }
 
 /* 空表示 */
 .favorite-empty {
   font-size: 14px;
   list-style: none;
-  color: #f06292;
 }
 
 .favorite-empty::marker {
@@ -75,13 +72,11 @@
 }
 
 .dot {
-  color: #f06292;
   font-size: 18px;
   margin-right: 8px;
 }
 
 .item-input {
-  color: #f06292;
   font-size: 18px;
   line-height: 25px;
   padding: 10px;
