@@ -14,12 +14,13 @@ document.addEventListener("DOMContentLoaded", function () {
         daysEl.textContent = "";
         errorEl.textContent = "";
 
+        errorEl.textContent = "";
+
         if (!start || !end) return;
 
         const diff = (end - start) / (1000 * 60 * 60 * 24);
 
         if (diff < 0) {
-            errorEl.textContent = "終了日は開始日より後の日付を選択してください";
             return;
         }
 
@@ -27,7 +28,6 @@ document.addEventListener("DOMContentLoaded", function () {
         daysEl.textContent = diff + 1;
     }
 
-    // ▼ 共通設定（前コードと同じレイアウト）
     const commonOptions = {
         dateFormat: "Y-m-d",
         altInput: true,
@@ -37,7 +37,6 @@ document.addEventListener("DOMContentLoaded", function () {
         disableMobile: true,
         clickOpens: true,
         onChange: calcStay,
-        onValueUpdate: calcStay,
 
         parseDate: (value, format) => {
             if (!value) return null;

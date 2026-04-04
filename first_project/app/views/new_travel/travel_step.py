@@ -35,7 +35,10 @@ def travel_create_step1(request):
     else:
         form = TravelStep1Form()
 
-    return render(request, "new_travel/travel_step1.html", {"form": form})
+    return render(request, "new_travel/travel_step1.html", {
+    "form": form,
+    "is_edit": False,
+    })
 # -----------------------------
 # Step2：場所・交通手段・メモ
 # -----------------------------

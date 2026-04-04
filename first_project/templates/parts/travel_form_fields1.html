@@ -15,6 +15,11 @@
     </div>
 
     {{ form.start_date.errors }}
+    {% if not is_edit %}
+    <p class="text-muted small mt-1 mb-1">
+      ※新規旅行では、過去の日付は選択できません
+    </p>
+    {% endif %}
 </div>
 
 <div class="field-block">

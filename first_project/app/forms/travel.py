@@ -1,6 +1,6 @@
 from django import forms
 from ..models import Travel_info, Transport, Travelmode
-
+from django.utils import timezone
 
 # ---------------------------------------------------------
 #  BaseForm（共通設定）
@@ -40,6 +40,10 @@ class TravelStep1Form(TravelBaseForm):
         )
     )
 
+    def __init__(self, *args, **kwargs):
+        self.is_edit = kwargs.pop("is_edit", False)
+        super().__init__(*args, **kwargs)
+
 
     class Meta(TravelBaseForm.Meta):
         fields = ["travel_title", "start_date", "end_date"]
@@ -55,6 +59,16 @@ class TravelStep1Form(TravelBaseForm):
 
         if not start or not end:
             return cleaned
+
+        today = timezone.localdate()
+
+        if not self.is_edit:
+           if start < today:
+               self.add_error("start_date", "開始日は今日以降の日付を選択してください。")
+
+           if end < today:
+               self.add_error("end_date", "終了日は今日以降の日付を選択してください。")
+
 
         if end < start:
             self.add_error("end_date", "終了日は開始日より後の日付を選択してください。")

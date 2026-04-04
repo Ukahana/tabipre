@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // 終了日 < 開始日 のときは計算しない
         if (diff < 0) {
-            return;  
+            return;
         }
 
         nightsEl.textContent = diff;
@@ -34,7 +34,8 @@ document.addEventListener("DOMContentLoaded", function () {
         altFormat: "Y/m/d",
         allowInput: false,
         locale: "ja",
-        disableMobile: true, 
+        disableMobile: true,
+        minDate: "today",
         onChange: calcStay,
         parseDate: (value, format) => {
             if (!value) return null;
@@ -58,7 +59,8 @@ document.addEventListener("DOMContentLoaded", function () {
         altFormat: "Y/m/d",
         allowInput: false,
         locale: "ja",
-        disableMobile: true, 
+        disableMobile: true,
+        minDate: "today",
         onChange: calcStay,
         parseDate: (value, format) => {
             if (!value) return null;

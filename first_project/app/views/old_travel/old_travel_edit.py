@@ -15,7 +15,7 @@ def old_travel_edit1(request, travel_id):
         return nights, nights + 1
 
     if request.method == "POST":
-        form = TravelStep1Form(request.POST, instance=travel)
+        form = TravelStep1Form(request.POST, instance=travel, is_edit=True)
 
         if form.is_valid():
             start = form.cleaned_data["start_date"]
@@ -31,15 +31,16 @@ def old_travel_edit1(request, travel_id):
             return redirect("app:old_travel_edit2", travel_id=travel_id)
 
     else:
-        form = TravelStep1Form(instance=travel)
+        form = TravelStep1Form(instance=travel, is_edit=True)
 
     stay_nights, stay_days = calc_stay(travel)
 
     return render(request, "old_travel/travel_edit1.html", {
         "form": form,
         "travel": travel,
-    })
+        "is_edit": True,
 
+    })
 
 # ---------------------------------------------------------
 #  Step2：旅行詳細情報の編集（交通手段・メモ・場所）
