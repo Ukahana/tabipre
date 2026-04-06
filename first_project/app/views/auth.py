@@ -83,7 +83,6 @@ class PasswordResetMailView(PasswordResetView):
     success_url = reverse_lazy('app:password_reset')
 
     def dispatch(self, request, *args, **kwargs):
-        #  GET/POST どちらでも next_url を初期化
         self.next_url = request.GET.get("next") or request.POST.get("next")
         return super().dispatch(request, *args, **kwargs)
 

@@ -2,7 +2,6 @@ from django import forms
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
-from ..models import User
 import re
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.forms import PasswordResetForm
@@ -43,7 +42,7 @@ def validate_email_common(email):
 
 
 def validate_email_not_used(email, user=None):
-    qs = User.objects.filter(email=email)
+    qs = UserModel.objects.filter(email=email)
     if user:
         qs = qs.exclude(pk=user.pk)
 
