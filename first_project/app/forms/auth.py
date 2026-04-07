@@ -2,11 +2,14 @@ from django import forms
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
+from ..models import User
 import re
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.forms import SetPasswordForm
 from django.conf import settings
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
 
 UserModel = get_user_model()
 
@@ -218,9 +221,23 @@ class CustomPasswordResetForm(PasswordResetForm):
              html_email_template_name=None,
              extra_email_context=None):
 
-        timeout_hours = settings.PASSWORD_RESET_TIMEOUT // 3600
+
+        # 追加コンテキストの初期化
         extra_email_context = extra_email_context or {}
+
+        # 対象ユーザーを取得
+        users = list(self.get_users(self.cleaned_data["email"]))
+        if not users:
+            return  # ユーザーがいない場合は終了
+
+        user = users[0]
+
+
+
+        #  expiration_time をここで追加する
+        timeout_hours = settings.PASSWORD_RESET_TIMEOUT // 3600
         extra_email_context["expiration_time"] = f"{timeout_hours}時間"
+        extra_email_context["user_name"] = user.user_name
 
         return super().save(
             domain_override=domain_override,
