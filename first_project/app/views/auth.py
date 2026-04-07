@@ -112,27 +112,31 @@ class PasswordResetMailView(PasswordResetView):
 #  パスワード再設定（新パスワード入力）
 # ============================
 class CustomPasswordResetConfirmView(PasswordResetConfirmView):
-    template_name = 'mypage/password_change.html'
+    template_name = 'login/password_reset_link.html'
     success_url = reverse_lazy('app:password_reset_complete')
     form_class = CustomSetPasswordForm
 
     def get(self, request, *args, **kwargs):
-        response = super().get(request, *args, **kwargs)
-        if not getattr(self, "validlink", False):
+        # すでにログインしている場合は無効リンク扱いにする
+        if request.user.is_authenticated:
             return render(request, "parts/expired.html", {
                 "mode": "password_reset",
                 "is_share_page": True,
             })
-        return response
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context.update({
-            'reset_mode': True,
-            'is_share_page': True,
-            'next': self.request.GET.get("next"),
-        })
-        return context
+        response = super().get(request, *args, **kwargs)
+
+        # トークン無効
+        if not self.validlink:
+            return render(request, "parts/expired.html", {
+                "mode": "password_reset",
+                "is_share_page": True,
+            })
+
+        # トークン有効
+        context = self.get_context_data()
+        context["is_share_page"] = True
+        return render(request, self.template_name, context)
 
 
 # ============================

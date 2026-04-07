@@ -100,8 +100,20 @@ urlpatterns = [
 
     # パスワード再設定
     path('tabipre/password_reset/', PasswordResetMailView.as_view(), name='password_reset'),
-    path('tabipre/reset/<uidb64>/<token>/',CustomPasswordResetConfirmView.as_view(),
-    name='password_reset_confirm'),
+    # 有効リンク（通常）
+    path(
+       'tabipre/reset/<uidb64>/<token>/',
+       CustomPasswordResetConfirmView.as_view(),
+       name='password_reset_confirm'
+    ),
+
+    # 無効リンク時の fallback
+    path(
+       'tabipre/reset/<uidb64>/set-password/',
+       CustomPasswordResetConfirmView.as_view(),
+       name='password_reset_confirm_fallback'
+    ),
+
     path('tabipre/reset/done/', CustomPasswordResetCompleteView.as_view(), name='password_reset_complete'),
     # ============================
     # 共有リンク（管理画面：IDベース）
