@@ -8,8 +8,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.forms import SetPasswordForm
 from django.conf import settings
-from django.utils.http import urlsafe_base64_encode
-from django.utils.encoding import force_bytes
+
 
 UserModel = get_user_model()
 
@@ -124,6 +123,7 @@ class RegistForm(forms.ModelForm):
             return email
 
         email = validate_email_common(email)
+        email = email.lower()
 
         validate_email_not_used(email)
 
@@ -213,43 +213,42 @@ class CustomPasswordResetForm(PasswordResetForm):
 
         return email
 
-    def save(self, domain_override=None,
-             subject_template_name=None,
-             email_template_name=None,
-             use_https=False, token_generator=None,
-             from_email=None, request=None,
-             html_email_template_name=None,
-             extra_email_context=None):
+    # def save(self, domain_override=None,
+    #          subject_template_name=None,
+    #          email_template_name=None,
+    #          use_https=False, token_generator=None,
+    #          from_email=None, request=None,
+    #          html_email_template_name=None,
+    #          extra_email_context=None):
 
 
-        # 追加コンテキストの初期化
-        extra_email_context = extra_email_context or {}
+    #     # 追加コンテキストの初期化
+    #     extra_email_context = extra_email_context or {}
 
-        # 対象ユーザーを取得
-        users = list(self.get_users(self.cleaned_data["email"]))
-        if not users:
-            return  # ユーザーがいない場合は終了
+    #     # 対象ユーザーを取得
+    #     users = list(self.get_users(self.cleaned_data["email"]))
+    #     if not users:
+    #         return  # ユーザーがいない場合は終了
 
-        user = users[0]
+    #     user = users[0]
 
 
+    #     #  expiration_time をここで追加する
+    #     timeout_hours = settings.PASSWORD_RESET_TIMEOUT // 3600
+    #     extra_email_context["expiration_time"] = f"{timeout_hours}時間"
+    #     extra_email_context["user_name"] = user.user_name
 
-        #  expiration_time をここで追加する
-        timeout_hours = settings.PASSWORD_RESET_TIMEOUT // 3600
-        extra_email_context["expiration_time"] = f"{timeout_hours}時間"
-        extra_email_context["user_name"] = user.user_name
-
-        return super().save(
-            domain_override=domain_override,
-            subject_template_name=subject_template_name,
-            email_template_name=email_template_name,
-            use_https=use_https,
-            token_generator=token_generator,
-            from_email=from_email,
-            request=request,
-            html_email_template_name=html_email_template_name,
-            extra_email_context=extra_email_context,
-        )
+    #     return super().save(
+    #         domain_override=domain_override,
+    #         subject_template_name=subject_template_name,
+    #         email_template_name=email_template_name,
+    #         use_https=use_https,
+    #         token_generator=token_generator,
+    #         from_email=from_email,
+    #         request=request,
+    #         html_email_template_name=html_email_template_name,
+    #         extra_email_context=extra_email_context,
+    #     )
 
 class CustomSetPasswordForm(SetPasswordForm):
 

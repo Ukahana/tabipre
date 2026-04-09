@@ -82,31 +82,62 @@ class PasswordResetMailView(PasswordResetView):
 
     success_url = reverse_lazy('app:password_reset')
 
-    def dispatch(self, request, *args, **kwargs):
-        self.next_url = request.GET.get("next") or request.POST.get("next")
-        return super().dispatch(request, *args, **kwargs)
-
     def form_valid(self, form):
-        try:
-            response = super().form_valid(form)
-            messages.success(self.request, "再設定のメールを送信しました。")
-            return response
-        except (BadHeaderError, SMTPException, ConnectionError):
-            messages.error(self.request, "メールの送信に失敗しました。時間をおいて再度お試しください。")
-            return redirect('app:password_reset')
+        form.save(
+            request=self.request,
+            use_https=self.request.is_secure(),
+            email_template_name=self.email_template_name,
+            html_email_template_name=self.html_email_template_name,
+            subject_template_name=self.subject_template_name,
+        )
+
+        messages.success(self.request, "パスワード再設定メールを送信しました。")
+        return redirect(self.success_url)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        context["protocol"] = self.request.scheme
-        context["domain"] = self.request.get_host()
-
         timeout_hours = settings.PASSWORD_RESET_TIMEOUT // 3600
         context["expiration_time"] = f"{timeout_hours}時間"
 
-        context["next"] = self.next_url
-
         return context
+
+# 元のコード
+# class PasswordResetMailView(PasswordResetView):
+#     template_name = 'login/password_reset.html'
+#     form_class = CustomPasswordResetForm
+
+#     email_template_name = 'login/password_reset_email.txt'
+#     html_email_template_name = 'login/password_reset_email.html'
+#     subject_template_name = 'login/password_reset_subject.txt'
+
+#     success_url = reverse_lazy('app:password_reset')
+
+    # def dispatch(self, request, *args, **kwargs):
+    #     self.next_url = request.GET.get("next") or request.POST.get("next")
+    #     return super().dispatch(request, *args, **kwargs)
+
+    # def form_valid(self, form):
+    #     try:
+    #         response = super().form_valid(form)
+    #         messages.success(self.request, "再設定のメールを送信しました。")
+    #         return response
+    #     except (BadHeaderError, SMTPException, ConnectionError):
+    #         messages.error(self.request, "メールの送信に失敗しました。時間をおいて再度お試しください。")
+    #         return redirect('app:password_reset')
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+
+    #     context["protocol"] = self.request.scheme
+    #     context["domain"] = self.request.get_host()
+
+    #     timeout_hours = settings.PASSWORD_RESET_TIMEOUT // 3600
+    #     context["expiration_time"] = f"{timeout_hours}時間"
+
+    #     context["next"] = self.next_url
+
+    #     return context
 
 # ============================
 #  パスワード再設定（新パスワード入力）
