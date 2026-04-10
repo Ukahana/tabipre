@@ -2,7 +2,6 @@ from django import forms
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
-from ..models import User
 import re
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.forms import PasswordResetForm
@@ -32,13 +31,9 @@ def validate_user_name_common(name):
 
 
 def validate_email_common(email):
-    email = email.strip().lower()
 
     if not email:
         raise ValidationError("メールアドレスを入力してください。")
-
-    if not re.match(r"[^@]+@[^@]+\.[^@]+", email):
-        raise ValidationError("正しいメールアドレスを入力してください。")
 
     return email
 
@@ -213,42 +208,18 @@ class CustomPasswordResetForm(PasswordResetForm):
 
         return email
 
-    # def save(self, domain_override=None,
-    #          subject_template_name=None,
-    #          email_template_name=None,
-    #          use_https=False, token_generator=None,
-    #          from_email=None, request=None,
-    #          html_email_template_name=None,
-    #          extra_email_context=None):
+    def save(self, *args, **kwargs):
+        extra = kwargs.get("extra_email_context", {}) or {}
 
+        # 有効期限（秒 → 時間）
+        timeout_hours = settings.PASSWORD_RESET_TIMEOUT // 3600
+        extra["expiration_time"] = f"{timeout_hours}時間"
 
-    #     # 追加コンテキストの初期化
-    #     extra_email_context = extra_email_context or {}
+        # context に戻す
+        kwargs["extra_email_context"] = extra
 
-    #     # 対象ユーザーを取得
-    #     users = list(self.get_users(self.cleaned_data["email"]))
-    #     if not users:
-    #         return  # ユーザーがいない場合は終了
+        return super().save(*args, **kwargs)
 
-    #     user = users[0]
-
-
-    #     #  expiration_time をここで追加する
-    #     timeout_hours = settings.PASSWORD_RESET_TIMEOUT // 3600
-    #     extra_email_context["expiration_time"] = f"{timeout_hours}時間"
-    #     extra_email_context["user_name"] = user.user_name
-
-    #     return super().save(
-    #         domain_override=domain_override,
-    #         subject_template_name=subject_template_name,
-    #         email_template_name=email_template_name,
-    #         use_https=use_https,
-    #         token_generator=token_generator,
-    #         from_email=from_email,
-    #         request=request,
-    #         html_email_template_name=html_email_template_name,
-    #         extra_email_context=extra_email_context,
-    #     )
 
 class CustomSetPasswordForm(SetPasswordForm):
 

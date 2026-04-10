@@ -8,9 +8,7 @@ from django.contrib.auth.views import (
     PasswordResetConfirmView,
     PasswordResetCompleteView,
 )
-from django.conf import settings
-from smtplib import SMTPException
-from django.core.mail import BadHeaderError
+
 
 from ..forms.auth import (
     RegistForm,
@@ -18,9 +16,10 @@ from ..forms.auth import (
     CustomPasswordResetForm,
     CustomSetPasswordForm,
 )
+from django.conf import settings
 
 # ============================
-#  新規登録
+# 新規登録
 # ============================
 class RegistUserView(CreateView):
     template_name = 'login/regist.html'
@@ -29,7 +28,7 @@ class RegistUserView(CreateView):
 
     def form_valid(self, form):
         self.object = form.save()
-        login(self.request, self.object, backend='app.backends.EmailBackend')
+        login(self.request, self.object)
         return redirect(self.get_success_url())
 
     def get_success_url(self):
@@ -37,7 +36,7 @@ class RegistUserView(CreateView):
 
 
 # ============================
-#  ログイン
+# ログイン
 # ============================
 class UserLoginView(FormView):
     template_name = 'login/user_login.html'
@@ -62,7 +61,7 @@ class UserLoginView(FormView):
             form.add_error(None, "このアカウントは現在ご利用いただけません。")
             return self.form_invalid(form)
 
-        login(self.request, user, backend='app.backends.EmailBackend')
+        login(self.request, user)
         return redirect(self.get_success_url())
 
     def get_success_url(self):
@@ -70,7 +69,7 @@ class UserLoginView(FormView):
 
 
 # ============================
-#  パスワード再設定（メール送信）
+# パスワード再設定（メール送信）
 # ============================
 class PasswordResetMailView(PasswordResetView):
     template_name = 'login/password_reset.html'
@@ -80,98 +79,54 @@ class PasswordResetMailView(PasswordResetView):
     html_email_template_name = 'login/password_reset_email.html'
     subject_template_name = 'login/password_reset_subject.txt'
 
-    success_url = reverse_lazy('app:password_reset')
 
     def form_valid(self, form):
+         # Django のメール送信処理を直接呼ぶ（URL 生成含む）
         form.save(
             request=self.request,
             use_https=self.request.is_secure(),
             email_template_name=self.email_template_name,
             html_email_template_name=self.html_email_template_name,
             subject_template_name=self.subject_template_name,
+            extra_email_context={},
         )
 
         messages.success(self.request, "パスワード再設定メールを送信しました。")
-        return redirect(self.success_url)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-
-        timeout_hours = settings.PASSWORD_RESET_TIMEOUT // 3600
-        context["expiration_time"] = f"{timeout_hours}時間"
-
-        return context
-
-# 元のコード
-# class PasswordResetMailView(PasswordResetView):
-#     template_name = 'login/password_reset.html'
-#     form_class = CustomPasswordResetForm
-
-#     email_template_name = 'login/password_reset_email.txt'
-#     html_email_template_name = 'login/password_reset_email.html'
-#     subject_template_name = 'login/password_reset_subject.txt'
-
-#     success_url = reverse_lazy('app:password_reset')
-
-    # def dispatch(self, request, *args, **kwargs):
-    #     self.next_url = request.GET.get("next") or request.POST.get("next")
-    #     return super().dispatch(request, *args, **kwargs)
-
-    # def form_valid(self, form):
-    #     try:
-    #         response = super().form_valid(form)
-    #         messages.success(self.request, "再設定のメールを送信しました。")
-    #         return response
-    #     except (BadHeaderError, SMTPException, ConnectionError):
-    #         messages.error(self.request, "メールの送信に失敗しました。時間をおいて再度お試しください。")
-    #         return redirect('app:password_reset')
-
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-
-    #     context["protocol"] = self.request.scheme
-    #     context["domain"] = self.request.get_host()
-
-    #     timeout_hours = settings.PASSWORD_RESET_TIMEOUT // 3600
-    #     context["expiration_time"] = f"{timeout_hours}時間"
-
-    #     context["next"] = self.next_url
-
-    #     return context
+        # リダイレクトせず同じ画面を表示
+        return render(self.request, self.template_name, {
+         "form": self.form_class()
+        })
 
 # ============================
-#  パスワード再設定（新パスワード入力）
+# パスワード再設定（新パスワード入力）
 # ============================
 class CustomPasswordResetConfirmView(PasswordResetConfirmView):
     template_name = 'login/password_reset_link.html'
     success_url = reverse_lazy('app:password_reset_complete')
     form_class = CustomSetPasswordForm
 
-    def get(self, request, *args, **kwargs):
-        # すでにログインしている場合は無効リンク扱いにする
+    def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return render(request, "parts/expired.html", {
                 "mode": "password_reset",
                 "is_share_page": True,
             })
+        return super().dispatch(request, *args, **kwargs)
 
+    def get(self, request, *args, **kwargs):
         response = super().get(request, *args, **kwargs)
 
-        # トークン無効
         if not self.validlink:
             return render(request, "parts/expired.html", {
                 "mode": "password_reset",
                 "is_share_page": True,
             })
-
-        # トークン有効
-        context = self.get_context_data()
-        context["is_share_page"] = True
-        return render(request, self.template_name, context)
+        return response
 
 
 # ============================
-#  パスワード再設定完了
+# パスワード再設定完了
 # ============================
 class CustomPasswordResetCompleteView(PasswordResetCompleteView):
     def dispatch(self, request, *args, **kwargs):

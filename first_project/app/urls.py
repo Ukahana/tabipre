@@ -77,6 +77,7 @@ from app.views.old_travel.share_view import (
     share_edit_view,
     share_add_category_item
 )
+from django.urls import re_path
 
 
 def user_logout(request):
@@ -101,11 +102,12 @@ urlpatterns = [
     # パスワード再設定
     path('tabipre/password_reset/', PasswordResetMailView.as_view(), name='password_reset'),
     # パスポート再設定メールのリンク
-    path(
-       'tabipre/reset/<uidb64>/<token>/',
-       CustomPasswordResetConfirmView.as_view(),
-       name='password_reset_confirm'
+    re_path(
+    r'^tabipre/reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>.+)/$',
+    CustomPasswordResetConfirmView.as_view(),
+    name='password_reset_confirm'
     ),
+
 
 
     path('tabipre/reset/done/', CustomPasswordResetCompleteView.as_view(), name='password_reset_complete'),
