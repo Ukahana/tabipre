@@ -53,14 +53,19 @@ def validate_email_not_used(email, user=None):
 class CustomPasswordChangeForm(PasswordChangeForm):
 
     def validate_password_rules(self, pw):
+        errors = []
+
         if len(pw) < 10:
-            self.add_error('new_password1', "10文字以上必要です。")
+            errors.append("10文字以上必要です。")
         if not any(c.isdigit() for c in pw):
-            self.add_error('new_password1', "数字を入れてください。")
+            errors.append("数字を入れてください。")
         if not any(c.islower() for c in pw):
-            self.add_error('new_password1', "小文字を入れてください。")
+            errors.append("小文字を入れてください。")
         if not any(c.isupper() for c in pw):
-            self.add_error('new_password1', "大文字を入れてください。")
+            errors.append("大文字を入れてください。")
+
+        if errors:
+            self.add_error('new_password1', " / ".join(errors))
 
     def clean(self):
         cleaned = super().clean()
@@ -126,19 +131,25 @@ class RegistForm(forms.ModelForm):
 
     # --- パスワードチェック ---
     def validate_password_rules(self, pw):
+        errors = []
+
         if len(pw) < 10:
-            self.add_error('password', "10文字以上必要です。")
+            errors.append("10文字以上必要です。")
         if not any(c.isdigit() for c in pw):
-            self.add_error('password', "数字を入れてください。")
+            errors.append("数字を入れてください。")
         if not any(c.islower() for c in pw):
-            self.add_error('password', "小文字を入れてください。")
+            errors.append("小文字を入れてください。")
         if not any(c.isupper() for c in pw):
-            self.add_error('password', "大文字を入れてください。")
+            errors.append("大文字を入れてください。")
 
         try:
             validate_password(pw)
         except ValidationError as e:
-            self.add_error('password', " / ".join(e.messages))
+            errors.append(" / ".join(e.messages))
+
+
+        if errors:
+            self.add_error('password', " / ".join(errors))
 
     def clean(self):
         cleaned = super().clean()
@@ -224,34 +235,37 @@ class CustomPasswordResetForm(PasswordResetForm):
 class CustomSetPasswordForm(SetPasswordForm):
 
     def validate_password_rules(self, pw):
+        errors = []
+
         if len(pw) < 10:
-            self.add_error('new_password1', "10文字以上必要です。")
+            errors.append("10文字以上必要です。")
         if not any(c.isdigit() for c in pw):
-            self.add_error('new_password1', "数字を入れてください。")
+            errors.append("数字を入れてください。")
         if not any(c.islower() for c in pw):
-            self.add_error('new_password1', "小文字を入れてください。")
+            errors.append("小文字を入れてください。")
         if not any(c.isupper() for c in pw):
-            self.add_error('new_password1', "大文字を入れてください。")
+            errors.append("大文字を入れてください。")
 
         try:
             validate_password(pw)
         except ValidationError as e:
-            self.add_error('new_password1', " / ".join(e.messages))
+            errors.append(" / ".join(e.messages))
+
+
+        if errors:
+            self.add_error('new_password1', " / ".join(errors))
 
     def clean(self):
         cleaned = super().clean()
         pw1 = cleaned.get("new_password1")
         pw2 = cleaned.get("new_password2")
 
-        # パスワード一致チェック
         if pw1 and pw2 and pw1 != pw2:
             self.add_error('new_password2', "パスワードが一致しません。")
 
-        # 現在のパスワードと同じかチェック
         if pw1 and self.user.check_password(pw1):
             self.add_error('new_password1', "現在のパスワードと同じです。別のパスワードを設定してください。")
 
-        # パスワードルールチェック
         if pw1:
             self.validate_password_rules(pw1)
 

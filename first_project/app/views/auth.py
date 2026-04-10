@@ -16,7 +16,6 @@ from ..forms.auth import (
     CustomPasswordResetForm,
     CustomSetPasswordForm,
 )
-from django.conf import settings
 
 # ============================
 # 新規登録
@@ -106,13 +105,11 @@ class CustomPasswordResetConfirmView(PasswordResetConfirmView):
     success_url = reverse_lazy('app:password_reset_complete')
     form_class = CustomSetPasswordForm
 
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            return render(request, "parts/expired.html", {
-                "mode": "password_reset",
-                "is_share_page": True,
-            })
-        return super().dispatch(request, *args, **kwargs)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["is_share_page"] = True
+        return context
+
 
     def get(self, request, *args, **kwargs):
         response = super().get(request, *args, **kwargs)
